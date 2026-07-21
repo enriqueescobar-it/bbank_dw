@@ -1,0 +1,9751 @@
+-- Databricks SQL for bronze catalog
+-- Uses populated source catalogs from dbx/*.dbx.sql and applies the sqlserver/brz-*.sql transformation logic.
+
+CREATE CATALOG IF NOT EXISTS bronze;
+USE CATALOG bronze;
+
+CREATE SCHEMA IF NOT EXISTS default;
+USE SCHEMA default;
+
+-- From bronze-apex.dbx.sql
+-- Source model: bronze_apex_daily_accounts
+CREATE OR REPLACE TABLE bronze.default.bronze_apex_daily_accounts AS
+-- NAME: BRONZE_APEX_DAILY_ACCOUNTS
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: November 19, 2024
+
+
+
+with landing_data AS (
+    SELECT
+         account_id
+        ,correspondent_code
+        ,account_group_code
+        ,ownership_type
+        ,registration_type
+        ,funding_type
+        ,status
+        ,fdid
+        ,cat_account_holder_type
+        ,title
+        ,CASE
+            WHEN instr(created_time, '.') > 0
+                 AND length(SUBSTRING(created_time, instr(created_time, '.') + 1, length(created_time))) > 3
+            THEN CAST(LEFT(created_time, instr(created_time, '.') + 3) AS TIMESTAMP)
+            WHEN created_time is NULL
+            THEN NULL
+            ELSE CAST(created_time AS TIMESTAMP)
+         END AS created_time
+        ,CASE
+            WHEN instr(opened_time, '.') > 0
+                 AND length(SUBSTRING(opened_time, instr(opened_time, '.') + 1, length(opened_time))) > 3
+            THEN CAST(LEFT(opened_time, instr(opened_time, '.') + 3) AS TIMESTAMP)
+            WHEN opened_time is NULL
+            THEN NULL
+            ELSE CAST(opened_time AS TIMESTAMP)
+        END AS opened_time
+        ,is_pattern_day_trader
+        ,accepts_issuer_direct_communication
+        ,primary_registered_rep_id
+        ,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(investment_profile, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ', ', ',') AS investment_profile
+        ,dividend_reinvestment_plan
+        ,business_unit
+        ,external_account_id
+        ,margin_group_id
+        ,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(tax_profile, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ', ', ',') AS tax_profile
+        ,finra_coa_code
+        ,reserve_class
+        ,account_number
+        ,CASE
+            WHEN instr(close_time, '.') > 0
+                 AND length(SUBSTRING(close_time, instr(close_time, '.') + 1, length(close_time))) > 3
+            THEN CAST(LEFT(close_time, instr(close_time, '.') + 3) AS TIMESTAMP)
+            WHEN close_time is NULL
+            THEN NULL
+            ELSE CAST(close_time AS TIMESTAMP)
+        END AS close_time
+        ,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(agreements, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ', ', ',') AS agreements
+        ,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(enrollments, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ', ', ',') AS enrollments
+        ,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(active_restrictions, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ', ', ',') AS active_restrictions
+        ,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(interested_parties, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ', ', ',') AS interested_parties
+        ,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(registered_representatives, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ', ', ',') AS registered_representatives
+        ,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(parties, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ', ', ',') AS parties
+        ,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(entitlements, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ', ', ',') AS entitlements
+        ,_key
+        ,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(trusted_contacts, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ', ', ',') AS trusted_contacts
+        ,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(correspondents_record, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ', ', ',') AS correspondents_record
+        ,identifiers
+        ,replacing_fdid
+        ,fdid_end_reason
+        ,last_modified_by
+        ,CASE
+            WHEN instr(last_modified_time, '.') > 0
+                 AND length(SUBSTRING(last_modified_time, instr(last_modified_time, '.') + 1, length(last_modified_time))) > 3
+            THEN CAST(LEFT(last_modified_time, instr(last_modified_time, '.') + 3) AS TIMESTAMP)
+            WHEN last_modified_time is NULL
+            THEN NULL
+            ELSE CAST(last_modified_time AS TIMESTAMP)
+         END AS last_modified_time
+        ,mutual_fund_external_facilitation_account
+        ,CASE
+            WHEN instr(snapshot_timestamp, '.') > 0
+                 AND length(SUBSTRING(snapshot_timestamp, instr(snapshot_timestamp, '.') + 1, length(snapshot_timestamp))) > 3
+            THEN CAST(LEFT(snapshot_timestamp, instr(snapshot_timestamp, '.') + 3) AS TIMESTAMP)
+	    	WHEN snapshot_timestamp is NULL
+            THEN NULL
+            ELSE CAST(snapshot_timestamp AS TIMESTAMP)
+        END AS snapshot_timestamp
+        ,source_file
+        ,CAST(DATE_OF_DATA AS DATE) AS DATE_OF_DATA
+        ,CAST(LEFT(REPLACE(REPLACE(RIGHT(source_file,18),'.parquet',''),'-',''),6) AS INT) AS YEARMONTH
+        ,loaded_at
+
+    FROM
+         apex.default.apex_daily_accounts
+    
+	
+),
+
+bronze_data AS (
+    SELECT
+	     account_id                                                                                 AS account_id
+	    ,account_group_code                                                                         AS account_group_code
+	    ,correspondent_code                                                                         AS correspondent_code
+	    ,ownership_type                                                                             AS ownership_type
+	    ,registration_type                                                                          AS registration_type
+	    ,funding_type                                                                               AS funding_type
+	    ,status                                                                                     AS status
+	    ,fdid                                                                                       AS fdid
+	    ,cat_account_holder_type                                                                    AS cat_account_holder_type
+	    ,title                                                                                      AS title
+        ,created_time                                                                               AS created_time
+        ,opened_time                                                                                AS opened_time
+	    ,is_pattern_day_trader                                                                      AS is_pattern_day_trader
+        ,accepts_issuer_direct_communication                                                        AS accepts_issuer_direct_communication
+        ,primary_registered_rep_id                                                                  AS primary_registered_rep_id
+        ,get_json_object(investment_profile, '$.investment_profile_id')                                  AS investment_profile_investment_profile_id
+        ,get_json_object(investment_profile, '$.account_goals.investment_objective')                     AS investment_profile_account_goals_investment_objective
+        ,get_json_object(investment_profile, '$.account_goals.risk_tolerance')                           AS investment_profile_account_goals_risk_tolerance
+        ,get_json_object(investment_profile, '$.account_goals.liquidity_needs')                          AS investment_profile_account_goals_liquidity_needs
+        ,get_json_object(investment_profile, '$.account_goals.time_horizon')                             AS investment_profile_account_goals_time_horizon
+        ,get_json_object(investment_profile, '$.customer_profile.investment_experience')                 AS investment_profile_customer_profile_investment_experience
+        ,get_json_object(investment_profile, '$.customer_profile.annual_income_range_usd')               AS investment_profile_customer_profile_annual_income_range_usd
+        ,get_json_object(investment_profile, '$.customer_profile.liquid_net_worth_range_usd')            AS investment_profile_customer_profile_liquid_net_worth_range_usd
+        ,get_json_object(investment_profile, '$.customer_profile.total_net_worth_range_usd')             AS investment_profile_customer_profile_total_net_worth_range_usd
+        ,CAST(get_json_object(investment_profile, '$.customer_profile.federal_tax_bracket') AS DOUBLE)    AS investment_profile_customer_profile_federal_tax_bracket
+        ,dividend_reinvestment_plan                                                                 AS dividend_reinvestment_plan
+        ,business_unit                                                                              AS business_unit
+        ,external_account_id                                                                        AS external_account_id
+        ,margin_group_id                                                                            AS margin_group_id
+        ,get_json_object(tax_profile, '$.cost_basis_lot_disposal_method')                                AS tax_profile_cost_basis_lot_disposal_method
+        ,get_json_object(tax_profile, '$.wash_sale_eligible')                                            AS tax_profile_wash_sale_eligible
+        ,get_json_object(tax_profile, '$.section_475_election')                                          AS tax_profile_section_475_election
+        ,finra_coa_code                                                                             AS finra_coa_code
+        ,reserve_class                                                                              AS reserve_class
+        ,account_number                                                                             AS account_number
+        ,close_time                                                                                 AS close_time
+        ,agreements                                                                                 AS agreements
+        ,enrollments                                                                                AS enrollments
+        ,active_restrictions                                                                        AS active_restrictions
+        ,interested_parties                                                                         AS interested_parties
+        ,registered_representatives                                                                 AS registered_representatives
+        ,parties                                                                                    AS parties
+        ,entitlements                                                                               AS entitlements
+        ,_key                                                                                       AS _key
+        ,trusted_contacts                                                                           AS trusted_contacts
+        ,get_json_object(correspondents_record, '$.correspondent_id')                                    AS correspondents_record_correspondent_id
+        ,get_json_object(correspondents_record, '$.trading_mpid')                                        AS correspondents_record_trading_mpid
+        ,get_json_object(correspondents_record, '$.correspondent_code')                                  AS correspondents_record_correspondent_code
+        ,get_json_object(correspondents_record, '$.client_id')                                           AS correspondents_record_client_id
+        ,get_json_object(correspondents_record, '$.client_code')                                         AS correspondents_record_client_code
+        ,get_json_object(correspondents_record, '$.account_group_code')                                  AS correspondents_record_account_group_code
+        ,get_json_object(correspondents_record, '$.account_group_id')                                    AS correspondents_record_account_group_id
+        ,CAST(get_json_object(correspondents_record, '$.branch_office') AS INTEGER)                      AS correspondents_record_branch_office
+        ,identifiers                                                                                AS identifiers
+        ,replacing_fdid                                                                             AS replacing_fdid
+        ,fdid_end_reason                                                                            AS fdid_end_reason
+        ,last_modified_by                                                                           AS last_modified_by
+        ,last_modified_time                                                                         AS last_modified_time
+        ,mutual_fund_external_facilitation_account                                                  AS mutual_fund_external_facilitation_account
+        ,snapshot_timestamp                                                                         AS snapshot_timestamp
+        ,source_file                                                                                AS source_file
+        ,DATE_OF_DATA                                                                               AS DATE_OF_DATA
+        ,YEARMONTH                                                                                  AS YEARMONTH
+	    ,current_timestamp()                                                                                  AS LOADED_AT
+    FROM
+        landing_data
+)
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-apex.dbx.sql
+-- Source model: bronze_apex_daily_activities
+CREATE OR REPLACE TABLE bronze.default.bronze_apex_daily_activities AS
+-- NAME: BRONZE_APEX_DAILY_ACTIVITIES
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: November 21, 2024
+
+
+
+
+WITH landing_data AS (
+SELECT
+	 account_id
+	,activity_id
+	,type
+	,sub_type
+	,symbol
+	,asset_type
+	,region_code
+	,asset_id
+	,side
+	,quantity
+	,currency_code
+	,currency_asset_id
+	,price
+	,gross_amount
+	,net_amount
+	,activity_date
+	,activity_time
+	,process_date
+	,settle_date
+	,state
+	,activity_description
+	,asset_description
+	,asset_version
+	-- Trade fields
+	,get_json_object(trade, '$.symbol_description')																	 AS trade_symbol_description
+	,get_json_object(trade, '$.additional_instructions')																 AS trade_additional_instructions
+	,get_json_object(trade, '$.special_instructions')																 AS trade_special_instructions
+	,get_json_object(trade, '$.client_order_id')																		 AS trade_client_order_id
+	,get_json_object(trade, '$.exchange')																			 AS trade_exchange
+	,get_json_object(trade, '$.broker_capacity')																		 AS trade_broker_capacity
+	,get_json_object(trade, '$.route')																			     AS trade_route
+	,get_json_object(trade, '$.algo')																			     AS trade_algo
+	,get_json_object(trade, '$.broker')																				 AS trade_broker
+	,get_json_object(trade, '$.execution_id')																		 AS trade_execution_id
+	,CAST(get_json_object(trade, '$.markup') AS DOUBLE)																 AS trade_markup
+	,CAST(get_json_object(trade, '$.markdown') AS DOUBLE)																 AS trade_markdown
+	,CAST(get_json_object(trade, '$.execution_only') AS BOOLEAN)															 AS trade_execution_only
+	,CAST(get_json_object(trade, '$.when_issued') AS BOOLEAN)															 AS trade_when_issued
+	,CAST(get_json_object(trade, '$.when_distributed') AS BOOLEAN)														 AS trade_when_distributed
+	,CAST(get_json_object(trade, '$.is_writeoff') AS BOOLEAN)															 AS trade_is_writeoff
+	,get_json_object(trade, '$.client_memos')																		 AS trade_client_memos
+	,get_json_object(trade, '$.order_id')																			 AS trade_order_id
+	,get_json_object(trade, '$.alternate_order_id')																	 AS trade_alternate_order_id
+	,get_json_object(trade, '$.external_id')																			 AS trade_external_id
+	,get_json_object(trade, '$.source_account_id')																	 AS trade_source_account_id
+	,get_json_object(trade, '$.booking_api_trade_id')																 AS trade_booking_api_trade_id
+	,get_json_object(trade, '$.booking_api_trade_allocation_id')														 AS trade_booking_api_trade_allocation_id
+	,get_json_object(trade, '$.gateway_client_order_id')																 AS trade_gateway_client_order_id
+	,CAST(get_json_object(trade, '$.internal_error') AS BOOLEAN)															 AS trade_internal_error
+	,CAST(get_json_object(trade, '$.prevailing_market_price') AS DOUBLE)												 AS trade_prevailing_market_price
+	,get_json_object(trade, '$.price_adjustment_type')																 AS trade_price_adjustment_type
+	,CAST(get_json_object(trade, '$.price_adjustment_amount') AS DOUBLE)												 AS trade_price_adjustment_amount
+	,CAST(get_json_object(trade, '$.price_adjustment_percent') AS DOUBLE)												 AS trade_price_adjustment_percent
+	,get_json_object(trade, '$.yield_records')																		 AS trade_yield_records
+
+	-- Reverse Stock Split fields
+	,get_json_object(reverse_stock_split, '$.symbol_description')													 AS reverse_stock_split_symbol_description
+	,CAST(get_json_object(reverse_stock_split, '$.factor_numerator') AS DOUBLE)										 AS reverse_stock_split_factor_numerator
+	,CAST(get_json_object(reverse_stock_split, '$.factor_denominator') AS DOUBLE)										 AS reverse_stock_split_factor_denominator
+	,CAST(get_json_object(reverse_stock_split, '$.quantity') AS DOUBLE)												 AS reverse_stock_split_quantity
+	,get_json_object(reverse_stock_split, '$.new_cusip')																 AS reverse_stock_split_new_cusip
+	,CAST(get_json_object(reverse_stock_split, '$.cash_rate') AS DOUBLE)												 AS reverse_stock_split_cash_rate
+	,get_json_object(reverse_stock_split, '$.old_cusip')																 AS reverse_stock_split_old_cusip
+	,get_json_object(reverse_stock_split, '$.action')																 AS reverse_stock_split_action
+	,get_json_object(reverse_stock_split, '$.effective_date')														 AS reverse_stock_split_effective_date
+	,get_json_object(reverse_stock_split, '$.corporate_action_general_information.corporate_action_id')				 AS reverse_stock_split_corporate_action_id
+	,get_json_object(reverse_stock_split, '$.corporate_action_general_information.target_symbol_description')		 AS reverse_stock_split_target_symbol_description
+	,get_json_object(reverse_stock_split, '$.corporate_action_general_information.target_cusip')						 AS reverse_stock_split_target_cusip
+	,CAST(get_json_object(reverse_stock_split, '$.corporate_action_general_information.target_asset_id') AS DOUBLE)	 AS reverse_stock_split_target_asset_id
+	,get_json_object(reverse_stock_split, '$.corporate_action_general_information.disbursed_symbol_description')		 AS reverse_stock_split_disbursed_symbol_description
+	,get_json_object(reverse_stock_split, '$.corporate_action_general_information.disbursed_cusip')					 AS reverse_stock_split_disbursed_cusip
+	,CAST(get_json_object(reverse_stock_split, '$.corporate_action_general_information.disbursed_asset_id') AS DOUBLE) AS reverse_stock_split_disbursed_asset_id
+
+	-- cash_dividend symbol_description
+	,get_json_object(cash_dividend, '$.symbol_description')														AS cash_dividend_symbol_description
+	,get_json_object(cash_dividend, '$.cash_rate')																AS cash_dividend_cash_rate
+	,get_json_object(cash_dividend, '$.settled')																	AS cash_dividend_settled
+	,get_json_object(cash_dividend, '$.record_date')																AS cash_dividend_record_date
+	,get_json_object(cash_dividend, '$.payment_date')															AS cash_dividend_payment_date
+	,get_json_object(cash_dividend, '$.tefra_withholding')														AS cash_dividend_tefra_withholding
+	,get_json_object(cash_dividend, '$.foreign_withholding')														AS cash_dividend_foreign_withholding
+	,get_json_object(cash_dividend, '$.nra_withholding')															AS cash_dividend_nra_withholding
+	,get_json_object(cash_dividend, '$.qualified')																AS cash_dividend_qualified
+	,get_json_object(cash_dividend, '$.long_term_gain')															AS cash_dividend_long_term_gain
+	,get_json_object(cash_dividend, '$.free')																	AS cash_dividend_free
+	,get_json_object(cash_dividend, '$.fpsl')																	AS cash_dividend_fpsl
+	,get_json_object(cash_dividend, '$.is_substitute_payment')													AS cash_dividend_is_substitute_payment
+	,get_json_object(cash_dividend, '$.subtype')																	AS cash_dividend_subtype
+	,get_json_object(cash_dividend, '$.quantity')																AS cash_dividend_quantity
+	,get_json_object(cash_dividend, '$.corporate_action_general_information.corporate_action_id')				AS cash_dividend_corporate_action_id
+	,get_json_object(cash_dividend, '$.corporate_action_general_information.target_symbol_description')			AS cash_dividend_target_symbol_description
+	,get_json_object(cash_dividend, '$.corporate_action_general_information.target_cusip')						AS cash_dividend_target_cusip
+	,get_json_object(cash_dividend, '$.corporate_action_general_information.target_asset_id')					AS cash_dividend_target_asset_id
+	,get_json_object(cash_dividend, '$.corporate_action_general_information.disbursed_symbol_description')		AS cash_dividend_disbursed_symbol_description
+	,get_json_object(cash_dividend, '$.corporate_action_general_information.disbursed_cusip')					AS cash_dividend_disbursed_cusip
+	,get_json_object(cash_dividend, '$.corporate_action_general_information.disbursed_asset_id')					AS cash_dividend_disbursed_asset_id
+	,get_json_object(cash_dividend, '$.reinvested')																AS cash_dividend_reinvested
+
+	-- Stock Dividend fields
+	,CAST(ISNULL(NULLIF(get_json_object(stock_dividend, '$.rate'), 'null'), NULL) AS DOUBLE)							AS stock_dividend_rate
+	,CAST(ISNULL(NULLIF(get_json_object(stock_dividend, '$.quantity'), 'null'), NULL) AS DOUBLE)						AS stock_dividend_quantity
+	,get_json_object(stock_dividend, '$.record_date')																AS stock_dividend_record_date
+	,get_json_object(stock_dividend, '$.pay_date')																	AS stock_dividend_pay_date
+	,get_json_object(stock_dividend, '$.corporate_action_general_information.corporate_action_id')					AS stock_dividend_corporate_action_id
+	,get_json_object(stock_dividend, '$.corporate_action_general_information.target_symbol_description')				AS stock_dividend_target_symbol_description
+	,get_json_object(stock_dividend, '$.corporate_action_general_information.target_cusip')							AS stock_dividend_target_cusip
+	,get_json_object(stock_dividend, '$.corporate_action_general_information.target_asset_id')						AS stock_dividend_target_asset_id
+	,get_json_object(stock_dividend, '$.corporate_action_general_information.disbursed_symbol_description')			AS stock_dividend_disbursed_symbol_description
+	,get_json_object(stock_dividend, '$.corporate_action_general_information.disbursed_cusip')						AS stock_dividend_disbursed_cusip
+	,get_json_object(stock_dividend, '$.corporate_action_general_information.disbursed_asset_id')					AS stock_dividend_disbursed_asset_id
+
+	-- Withdrawal Deposit Transfer
+	,get_json_object(withdrawal_deposit_transfer, '$.originating_institution')										AS withdrawal_deposit_transfer_originating_institution
+	,get_json_object(withdrawal_deposit_transfer, '$.destination_institution')										AS withdrawal_deposit_transfer_destination_institution
+	,get_json_object(withdrawal_deposit_transfer, '$.additional_instructions')										AS withdrawal_deposit_transfer_additional_instructions
+
+
+	-- stock_split
+	,CAST(ISNULL(NULLIF(get_json_object(stock_split, '$.factor_numerator'), 'null'), NULL) AS DOUBLE)					AS stock_split_factor_numerator
+	,CAST(ISNULL(NULLIF(get_json_object(stock_split, '$.factor_denominator'), 'null'), NULL) AS DOUBLE)				AS stock_split_factor_denominator
+	,CAST(ISNULL(NULLIF(get_json_object(stock_split, '$.quantity'), 'null'), NULL) AS DOUBLE)							AS stock_split_quantity
+	,get_json_object(stock_split, '$.record_date')																	AS stock_split_record_date
+	,get_json_object(stock_split, '$.pay_date')																		AS stock_split_pay_date
+	,get_json_object(stock_split, '$.corporate_action_general_information.corporate_action_id')						AS stock_split_corporate_action_id
+	,get_json_object(stock_split, '$.corporate_action_general_information.target_symbol_description')				AS stock_split_target_symbol_description
+	,get_json_object(stock_split, '$.corporate_action_general_information.target_cusip')								AS stock_split_target_cusip
+	,CAST(ISNULL(NULLIF(get_json_object(stock_split, '$.corporate_action_general_information.target_asset_id'), 'null'), NULL) AS DOUBLE) AS stock_split_target_asset_id
+	,get_json_object(stock_split, '$.corporate_action_general_information.disbursed_symbol_description')				AS stock_split_disbursed_symbol_description
+	,get_json_object(stock_split, '$.corporate_action_general_information.disbursed_cusip')							AS stock_split_disbursed_cusip
+	,CAST(ISNULL(NULLIF(get_json_object(stock_split, '$.corporate_action_general_information.disbursed_asset_id'), 'null'), NULL) AS DOUBLE) AS stock_split_disbursed_asset_id
+
+	-- name_change
+	,get_json_object(name_change, '$.old_symbol_description')														AS name_change_old_symbol_description
+	,CAST(ISNULL(NULLIF(get_json_object(name_change, '$.quantity'), 'null'), NULL) AS DOUBLE)							AS name_change_quantity
+	,get_json_object(name_change, '$.old_cusip')																		AS name_change_old_cusip
+	,get_json_object(name_change, '$.new_cusip')																		AS name_change_new_cusip
+	,get_json_object(name_change, '$.action')																		AS name_change_action
+	,get_json_object(name_change, '$.effective_date')																AS name_change_effective_date
+	,get_json_object(name_change, '$.corporate_action_general_information.corporate_action_id')						AS name_change_corporate_action_id
+	,get_json_object(name_change, '$.corporate_action_general_information.target_symbol_description')				AS name_change_target_symbol_description
+	,get_json_object(name_change, '$.corporate_action_general_information.target_cusip')								AS name_change_target_cusip
+	,CAST(ISNULL(NULLIF(get_json_object(name_change, '$.corporate_action_general_information.target_asset_id'), 'null'), NULL) AS DOUBLE) AS name_change_target_asset_id
+	,get_json_object(name_change, '$.corporate_action_general_information.disbursed_symbol_description')				AS name_change_disbursed_symbol_description
+	,get_json_object(name_change, '$.corporate_action_general_information.disbursed_cusip')							AS name_change_disbursed_cusip
+	,CAST(ISNULL(NULLIF(get_json_object(name_change, '$.corporate_action_general_information.disbursed_asset_id'), 'null'), NULL) AS DOUBLE) AS name_change_disbursed_asset_id
+
+	-- capital_gains
+	,CAST(ISNULL(NULLIF(get_json_object(capital_gains, '$.quantity'), 'null'), NULL) AS DOUBLE)						AS capital_gains_quantity
+	,get_json_object(capital_gains, '$.record_date')																	AS capital_gains_record_date
+	,get_json_object(capital_gains, '$.payment_date')																AS capital_gains_payment_date
+	,CAST(ISNULL(NULLIF(get_json_object(capital_gains, '$.long_term_gain'), 'null'), NULL) AS DOUBLE)					AS capital_gains_long_term_gain
+	,get_json_object(capital_gains, '$.corporate_action_general_information.corporate_action_id')					AS capital_gains_corporate_action_id
+	,get_json_object(capital_gains, '$.corporate_action_general_information.target_symbol_description')				AS capital_gains_target_symbol_description
+	,get_json_object(capital_gains, '$.corporate_action_general_information.target_cusip')							AS capital_gains_target_cusip
+	,CAST(ISNULL(NULLIF(get_json_object(capital_gains, '$.corporate_action_general_information.target_asset_id'), 'null'), NULL) AS DOUBLE) AS capital_gains_target_asset_id
+	,get_json_object(capital_gains, '$.corporate_action_general_information.disbursed_symbol_description')			AS capital_gains_disbursed_symbol_description
+	,get_json_object(capital_gains, '$.corporate_action_general_information.disbursed_cusip')						AS capital_gains_disbursed_cusip
+	,CAST(ISNULL(NULLIF(get_json_object(capital_gains, '$.corporate_action_general_information.disbursed_asset_id'), 'null'), NULL) AS DOUBLE) AS capital_gains_disbursed_asset_id
+	,CAST(ISNULL(NULLIF(get_json_object(capital_gains, '$.reinvested'), 'null'), NULL) AS BOOLEAN)						AS capital_gains_reinvested
+
+	-- spinoff
+	,get_json_object(spinoff, '$.old_symbol_description')															AS spinoff_old_symbol_description
+	,get_json_object(spinoff, '$.new_symbol_description')															AS spinoff_new_symbol_description
+	,CAST(ISNULL(NULLIF(get_json_object(spinoff, '$.quantity'), 'null'), NULL) AS DOUBLE)								AS spinoff_quantity
+	,get_json_object(spinoff, '$.record_date')																		AS spinoff_record_date
+	,get_json_object(spinoff, '$.pay_date')																			AS spinoff_pay_date
+	,get_json_object(spinoff, '$.corporate_action_general_information.corporate_action_id')							AS spinoff_corporate_action_id
+	,get_json_object(spinoff, '$.corporate_action_general_information.target_symbol_description')					AS spinoff_target_symbol_description
+	,get_json_object(spinoff, '$.corporate_action_general_information.target_cusip')									AS spinoff_target_cusip
+	,CAST(ISNULL(NULLIF(get_json_object(spinoff, '$.corporate_action_general_information.target_asset_id'), 'null'), NULL) AS DOUBLE) AS spinoff_target_asset_id
+	,get_json_object(spinoff, '$.corporate_action_general_information.disbursed_symbol_description')					AS spinoff_disbursed_symbol_description
+	,get_json_object(spinoff, '$.corporate_action_general_information.disbursed_cusip')								AS spinoff_disbursed_cusip
+	,CAST(ISNULL(NULLIF(get_json_object(spinoff, '$.corporate_action_general_information.disbursed_asset_id'), 'null'), NULL) AS DOUBLE) AS spinoff_disbursed_asset_id
+
+	-- interest_payment
+	,get_json_object(interest_payment, '$.symbol_description') AS interest_payment_symbol_description
+	,CAST(ISNULL(NULLIF(get_json_object(interest_payment, '$.cash_rate'), 'null'), NULL) AS DOUBLE)					AS interest_payment_cash_rate
+	,CAST(ISNULL(NULLIF(get_json_object(interest_payment, '$.settled'), 'null'), NULL) AS DOUBLE)						AS interest_payment_settled
+	,get_json_object(interest_payment, '$.record_date')																AS interest_payment_record_date
+	,get_json_object(interest_payment, '$.payment_date')																AS interest_payment_payment_date
+	,get_json_object(interest_payment, '$.corporate_action_general_information.corporate_action_id')					AS interest_payment_corporate_action_id
+	,get_json_object(interest_payment, '$.corporate_action_general_information.target_symbol_description')			AS interest_payment_target_symbol_description
+	,get_json_object(interest_payment, '$.corporate_action_general_information.target_cusip')						AS interest_payment_target_cusip
+	,CAST(ISNULL(NULLIF(get_json_object(interest_payment, '$.corporate_action_general_information.target_asset_id'), 'null'), NULL) AS DOUBLE) AS interest_payment_target_asset_id
+	,get_json_object(interest_payment, '$.corporate_action_general_information.disbursed_symbol_description')		AS interest_payment_disbursed_symbol_description
+	,get_json_object(interest_payment, '$.corporate_action_general_information.disbursed_cusip')						AS interest_payment_disbursed_cusip
+	,CAST(ISNULL(NULLIF(get_json_object(interest_payment, '$.corporate_action_general_information.disbursed_asset_id'), 'null'), NULL) AS DOUBLE) AS interest_payment_disbursed_asset_id
+
+	-- liquidation
+	,get_json_object(liquidation, '$.symbol_description')															AS liquidation_symbol_description
+	,get_json_object(liquidation, '$.cash_rate')																		AS liquidation_cash_rate
+	,get_json_object(liquidation, '$.quantity')																		AS liquidation_quantity
+	,get_json_object(liquidation, '$.settled')																		AS liquidation_settled
+	,get_json_object(liquidation, '$.action')																		AS liquidation_action
+	,get_json_object(liquidation, '$.subtype')																		AS liquidation_subtype
+	,get_json_object(liquidation, '$.record_date')																	AS liquidation_record_date
+	,get_json_object(liquidation, '$.payment_date')																	AS liquidation_payment_date
+	,get_json_object(liquidation, '$.effective_date')																AS liquidation_effective_date
+	,get_json_object(liquidation, '$.corporate_action_general_information.corporate_action_id')						AS liquidation_corporate_action_id
+	,get_json_object(liquidation, '$.corporate_action_general_information.target_symbol_description')				AS liquidation_target_symbol_description
+	,get_json_object(liquidation, '$.corporate_action_general_information.target_cusip')								AS liquidation_target_cusip
+	,get_json_object(liquidation, '$.corporate_action_general_information.target_asset_id')							AS liquidation_target_asset_id
+	,get_json_object(liquidation, '$.corporate_action_general_information.disbursed_symbol_description')				AS liquidation_disbursed_symbol_description
+	,get_json_object(liquidation, '$.corporate_action_general_information.disbursed_cusip')							AS liquidation_disbursed_cusip
+	,get_json_object(liquidation, '$.corporate_action_general_information.disbursed_asset_id')						AS liquidation_disbursed_asset_id
+
+	-- dividend
+	,get_json_object(dividend, '$.symbol_description') AS dividend_symbol_description
+	,CAST(ISNULL(NULLIF(get_json_object(dividend, '$.cash_rate'), 'null'), NULL) AS DOUBLE)							AS dividend_cash_rate
+	,CAST(ISNULL(NULLIF(get_json_object(dividend, '$.settled'), 'null'), NULL) AS DOUBLE)								AS dividend_settled
+	,get_json_object(dividend, '$.record_date')																		AS dividend_record_date
+	,get_json_object(dividend, '$.subtype')																			AS dividend_subtype
+	,get_json_object(dividend, '$.corporate_action_general_information.corporate_action_id')							AS dividend_corporate_action_id
+	,get_json_object(dividend, '$.corporate_action_general_information.target_symbol_description')					AS dividend_target_symbol_description
+	,get_json_object(dividend, '$.corporate_action_general_information.target_cusip')								AS dividend_target_cusip
+	,CAST(ISNULL(NULLIF(get_json_object(dividend, '$.corporate_action_general_information.target_asset_id'), 'null'), NULL) AS DOUBLE) AS dividend_target_asset_id
+	,get_json_object(dividend, '$.corporate_action_general_information.disbursed_symbol_description') AS dividend_disbursed_symbol_description
+	,get_json_object(dividend, '$.corporate_action_general_information.disbursed_cusip')								AS dividend_disbursed_cusip
+	,CAST(ISNULL(NULLIF(get_json_object(dividend, '$.corporate_action_general_information.disbursed_asset_id'), 'null'), NULL) AS DOUBLE) AS dividend_disbursed_asset_id
+
+	-- sale_of_rights
+	,get_json_object(sale_of_rights, '$.symbol_description') AS sale_of_rights_symbol_description
+	,CAST(ISNULL(NULLIF(get_json_object(sale_of_rights, '$.cash_rate'), 'null'), NULL) AS DOUBLE)						AS sale_of_rights_cash_rate
+	,CAST(ISNULL(NULLIF(get_json_object(sale_of_rights, '$.settled'), 'null'), NULL) AS DOUBLE)						AS sale_of_rights_settled
+	,get_json_object(sale_of_rights, '$.record_date')																AS sale_of_rights_record_date
+	,get_json_object(sale_of_rights, '$.payment_date')																AS sale_of_rights_payment_date
+	,get_json_object(sale_of_rights, '$.corporate_action_general_information.corporate_action_id')					AS sale_of_rights_corporate_action_id
+	,get_json_object(sale_of_rights, '$.corporate_action_general_information.target_symbol_description')				AS sale_of_rights_target_symbol_description
+	,get_json_object(sale_of_rights, '$.corporate_action_general_information.target_cusip')							AS sale_of_rights_target_cusip
+	,CAST(ISNULL(NULLIF(get_json_object(sale_of_rights, '$.corporate_action_general_information.target_asset_id'), 'null'), NULL) AS DOUBLE) AS sale_of_rights_target_asset_id
+	,get_json_object(sale_of_rights, '$.corporate_action_general_information.disbursed_symbol_description')			AS sale_of_rights_disbursed_symbol_description
+	,get_json_object(sale_of_rights, '$.corporate_action_general_information.disbursed_cusip')						AS sale_of_rights_disbursed_cusip
+	,CAST(ISNULL(NULLIF(get_json_object(sale_of_rights, '$.corporate_action_general_information.disbursed_asset_id'), 'null'), NULL) AS DOUBLE) AS sale_of_rights_disbursed_asset_id
+
+	-- redemption_full
+	,get_json_object(redemption_full, '$.symbol_description')														AS redemption_full_symbol_description
+	,CAST(ISNULL(NULLIF(get_json_object(redemption_full, '$.cash_rate'), 'null'), NULL) AS DOUBLE)					AS redemption_full_cash_rate
+	,CAST(ISNULL(NULLIF(get_json_object(redemption_full, '$.quantity'), 'null'), NULL) AS DOUBLE)						AS redemption_full_quantity
+	,get_json_object(redemption_full, '$.action')																	AS redemption_full_action
+	,get_json_object(redemption_full, '$.subtype')																	AS redemption_full_subtype
+	,get_json_object(redemption_full, '$.payment_date')																AS redemption_full_payment_date
+	,get_json_object(redemption_full, '$.corporate_action_general_information.corporate_action_id')					AS redemption_full_corporate_action_id
+	,get_json_object(redemption_full, '$.corporate_action_general_information.target_symbol_description')			AS redemption_full_target_symbol_description
+	,get_json_object(redemption_full, '$.corporate_action_general_information.target_cusip')							AS redemption_full_target_cusip
+	,CAST(ISNULL(NULLIF(get_json_object(redemption_full, '$.corporate_action_general_information.target_asset_id'), 'null'), NULL) AS DOUBLE) AS redemption_full_target_asset_id
+	,get_json_object(redemption_full, '$.corporate_action_general_information.disbursed_symbol_description')			AS redemption_full_disbursed_symbol_description
+	,get_json_object(redemption_full, '$.corporate_action_general_information.disbursed_cusip')						AS redemption_full_disbursed_cusip
+	,CAST(ISNULL(NULLIF(get_json_object(redemption_full, '$.corporate_action_general_information.disbursed_asset_id'), 'null'), NULL) AS DOUBLE) AS redemption_full_disbursed_asset_id
+
+    -- rights_distribution
+	,get_json_object(rights_distribution, '$.new_symbol_description')												AS rights_distribution_new_symbol_description
+	,CAST(ISNULL(NULLIF(get_json_object(rights_distribution, '$.settled'), 'null'), NULL) AS DOUBLE)					AS rights_distribution_settled
+	,get_json_object(rights_distribution, '$.record_date')															AS rights_distribution_record_date
+	,get_json_object(rights_distribution, '$.payment_date')															AS rights_distribution_payment_date
+	,get_json_object(rights_distribution, '$.corporate_action_general_information.corporate_action_id')				AS rights_distribution_corporate_action_id
+	,get_json_object(rights_distribution, '$.corporate_action_general_information.target_symbol_description')		AS rights_distribution_target_symbol_description
+	,get_json_object(rights_distribution, '$.corporate_action_general_information.target_cusip')						AS rights_distribution_target_cusip
+	,CAST(ISNULL(NULLIF(get_json_object(rights_distribution, '$.corporate_action_general_information.target_asset_id'), 'null'), NULL) AS DOUBLE)		AS rights_distribution_target_asset_id
+	,get_json_object(rights_distribution, '$.corporate_action_general_information.disbursed_symbol_description')		AS rights_distribution_disbursed_symbol_description
+	,get_json_object(rights_distribution, '$.corporate_action_general_information.disbursed_cusip')					AS rights_distribution_disbursed_cusip
+	,CAST(ISNULL(NULLIF(get_json_object(rights_distribution, '$.corporate_action_general_information.disbursed_asset_id'), 'null'), NULL) AS DOUBLE)	AS rights_distribution_disbursed_asset_id
+
+	-- deposit
+	 ,get_json_object(deposit, '$.contribution_type')																AS deposit_contribution_type
+	 ,get_json_object(deposit, '$.contribution_year')																AS deposit_contribution_year
+	 ,get_json_object(deposit, '$.conversion')																		AS deposit_conversion
+	 ,get_json_object(deposit, '$.futures_settlement')																AS deposit_futures_settlement
+	 ,get_json_object(deposit, '$.micro')																			AS deposit_micro
+	 ,get_json_object(deposit, '$.retirement_type')																	AS deposit_retirement_type
+	 ,get_json_object(deposit, '$.type')																				AS deposit_type
+	 ,get_json_object(deposit, '$.originating_institution')															AS deposit_originating_institution
+	 ,get_json_object(deposit, '$.destination_institution')															AS deposit_destination_institution
+	 ,get_json_object(deposit, '$.additional_instructions')															AS deposit_additional_instructions
+	 ,get_json_object(deposit, '$.fed_reference_number')																AS deposit_fed_reference_number
+	 ,get_json_object(deposit, '$.originating_account_number')														AS deposit_originating_account_number
+
+	-- withdrawal
+	,get_json_object(withdrawal, '$.conversion')																		AS withdrawal_conversion
+	,get_json_object(withdrawal, '$.distribution_type')																AS withdrawal_distribution_type
+	,get_json_object(withdrawal, '$.distribution_year')																AS withdrawal_distribution_year
+	,get_json_object(withdrawal, '$.closing_account')																AS withdrawal_closing_account
+	,get_json_object(withdrawal, '$.futures_settlement')																AS withdrawal_futures_settlement
+	,get_json_object(withdrawal, '$.micro')																			AS withdrawal_micro
+	,get_json_object(withdrawal, '$.periodic')																		AS withdrawal_periodic
+	,get_json_object(withdrawal, '$.retirement_type')																AS withdrawal_retirement_type
+	,get_json_object(withdrawal, '$.taxable')																		AS withdrawal_taxable
+	,get_json_object(withdrawal, '$.type')																			AS withdrawal_type
+	,get_json_object(withdrawal, '$.advance')																		AS withdrawal_advance
+	,get_json_object(withdrawal, '$.originating_institution')														AS withdrawal_originating_institution
+	,get_json_object(withdrawal, '$.destination_institution')														AS withdrawal_destination_institution
+	,get_json_object(withdrawal, '$.additional_instructions')														AS withdrawal_additional_instructions
+	,get_json_object(withdrawal, '$.fed_reference_number')															AS withdrawal_fed_reference_number
+	,get_json_object(withdrawal, '$.destination_account_number')														AS withdrawal_destination_account_number
+
+  	-- worthless
+	,get_json_object(worthless, '$.symbol_description')																AS worthless_symbol_description
+	,get_json_object(worthless, '$.effective_date')																	AS worthless_effective_date
+	,get_json_object(worthless, '$.payment_date')																	AS worthless_payment_date
+	,get_json_object(worthless, '$.corporate_action_general_information.corporate_action_id')						AS worthless_corporate_action_id
+	,get_json_object(worthless, '$.corporate_action_general_information.target_symbol_description')					AS worthless_target_symbol_description
+	,get_json_object(worthless, '$.corporate_action_general_information.target_cusip')								AS worthless_target_cusip
+	,CAST(ISNULL(NULLIF(get_json_object(worthless, '$.corporate_action_general_information.target_asset_id'), 'null'), NULL) AS DOUBLE) AS worthless_target_asset_id
+	,get_json_object(worthless, '$.corporate_action_general_information.disbursed_symbol_description') AS worthless_disbursed_symbol_description
+	,get_json_object(worthless, '$.corporate_action_general_information.disbursed_cusip')							AS worthless_disbursed_cusip
+	,CAST(ISNULL(NULLIF(get_json_object(worthless, '$.corporate_action_general_information.disbursed_asset_id'), 'null'), NULL) AS DOUBLE) AS worthless_disbursed_asset_id
+
+	-- transfer
+	,get_json_object(transfer, '$.first_party')																		AS transfer_first_party
+	,get_json_object(transfer, '$.originating_institution')															AS transfer_originating_institution
+	,get_json_object(transfer, '$.destination_institution')															AS transfer_destination_institution
+	,get_json_object(transfer, '$.additional_instructions')															AS transfer_additional_instructions
+	,get_json_object(transfer, '$.client_brokerage')																	AS transfer_client_brokerage
+	,get_json_object(transfer, '$.transfer_type')																	AS transfer_transfer_type
+
+	-- rounding_adjustment
+	,get_json_object(rounding_adjustment, '$.rounding_reason')														AS rounding_adjustment_rounding_reason
+	,fees
+	,withholdings
+	,commissions
+	,accrued_interests
+
+	-- merger
+	,get_json_object(merger, '$.symbol_description')																	AS merger_symbol_description
+	,CAST(get_json_object(merger, '$.quantity') AS DOUBLE)															AS merger_quantity
+	,get_json_object(merger, '$.old_cusip')																			AS merger_old_cusip
+	,get_json_object(merger, '$.new_cusip')																			AS merger_new_cusip
+	,CAST(get_json_object(merger, '$.cash_rate') AS DOUBLE)															AS merger_cash_rate
+	,CAST(get_json_object(merger, '$.stock_rate') AS DOUBLE)															AS merger_stock_rate
+	,get_json_object(merger, '$.type')																				AS merger_type
+	,get_json_object(merger, '$.action')																				AS merger_action
+	,get_json_object(merger, '$.effective_date')																		AS merger_effective_date
+	,get_json_object(merger, '$.corporate_action_general_information.corporate_action_id')							AS merger_corporate_action_id
+	,get_json_object(merger, '$.corporate_action_general_information.target_symbol_description')						AS merger_target_symbol_description
+	,get_json_object(merger, '$.corporate_action_general_information.target_cusip')									AS merger_target_cusip
+	,CAST(get_json_object(merger, '$.corporate_action_general_information.target_asset_id') AS DOUBLE)				AS merger_target_asset_id
+	,get_json_object(merger, '$.corporate_action_general_information.disbursed_symbol_description')					AS merger_disbursed_symbol_description
+	,get_json_object(merger, '$.corporate_action_general_information.disbursed_cusip')								AS merger_disbursed_cusip
+	,CAST(get_json_object(merger, '$.corporate_action_general_information.disbursed_asset_id') AS DOUBLE)				AS merger_disbursed_asset_id
+
+	-- credit fields
+	,get_json_object(credit, '$.credit_type')																		AS credit_credit_type
+	,get_json_object(credit, '$.taxable')																			AS credit_taxable
+	,get_json_object(credit, '$.additional_instructions')															AS credit_additional_instructions
+
+	-- fpsl fields
+	,get_json_object(fpsl, '$.action')																				AS fpsl_action
+
+	-- account_transfer fields
+	, get_json_object(account_transfer, '$.action')																	AS account_transfer_action
+	, get_json_object(account_transfer, '$.acats_control_number')													AS account_transfer_acats_control_number
+	, get_json_object(account_transfer, '$.institution')																AS account_transfer_institution
+	, get_json_object(account_transfer, '$.additional_instructions')													AS account_transfer_additional_instructions
+	, get_json_object(account_transfer, '$.acats_asset_sequence_number')												AS account_transfer_acats_asset_sequence_number
+	, get_json_object(account_transfer, '$.contra_party_id')															AS account_transfer_contra_party_id
+	, get_json_object(account_transfer, '$.contra_party_account_number')												AS account_transfer_contra_party_account_number
+	, get_json_object(account_transfer, '$.method')																	AS account_transfer_method
+
+	-- tender_offer fields
+	, get_json_object(tender_offer, '$.symbol_description')															AS tender_offer_symbol_description
+	, get_json_object(tender_offer, '$.target_cusip')																AS tender_offer_target_cusip
+	, CAST(get_json_object(tender_offer, '$.cash_rate') AS DOUBLE)													AS tender_offer_cash_rate
+	, get_json_object(tender_offer, '$.corporate_action_general_information.corporate_action_id')					AS tender_offer_corporate_action_id
+	, get_json_object(tender_offer, '$.corporate_action_general_information.target_symbol_description')				AS tender_offer_target_symbol_description
+	, get_json_object(tender_offer, '$.corporate_action_general_information.target_cusip')							AS tender_offer_corporate_action_general_information_target_cusip
+	, CAST(get_json_object(tender_offer, '$.corporate_action_general_information.target_asset_id') AS DOUBLE)			AS tender_offer_target_asset_id
+	, get_json_object(tender_offer, '$.corporate_action_general_information.disbursed_symbol_description')			AS tender_offer_disbursed_symbol_description
+	, get_json_object(tender_offer, '$.corporate_action_general_information.disbursed_cusip')						AS tender_offer_disbursed_cusip
+	, CAST(get_json_object(tender_offer, '$.corporate_action_general_information.disbursed_asset_id') AS DOUBLE)		AS tender_offer_disbursed_asset_id
+
+
+	-- unit_split fields
+	, get_json_object(unit_split, '$.symbol_description')															AS unit_split_symbol_description
+	, CAST(get_json_object(unit_split, '$.stock_rate') AS DOUBLE)														AS unit_split_stock_rate
+	, get_json_object(unit_split, '$.corporate_action_general_information.corporate_action_id')						AS unit_split_corporate_action_id
+	, get_json_object(unit_split, '$.corporate_action_general_information.target_symbol_description')				AS unit_split_target_symbol_description
+	, get_json_object(unit_split, '$.corporate_action_general_information.target_cusip')								AS unit_split_target_cusip
+	, CAST(get_json_object(unit_split, '$.corporate_action_general_information.target_asset_id') AS DOUBLE)			AS unit_split_target_asset_id
+	, get_json_object(unit_split, '$.corporate_action_general_information.disbursed_symbol_description')				AS unit_split_disbursed_symbol_description
+	, get_json_object(unit_split, '$.corporate_action_general_information.disbursed_cusip')							AS unit_split_disbursed_cusip
+	, CAST(get_json_object(unit_split, '$.corporate_action_general_information.disbursed_asset_id') AS DOUBLE)		AS unit_split_disbursed_asset_id
+
+	-- Exchange fields
+	, get_json_object(exchange, '$.symbol_description')																AS exchange_symbol_description
+	, get_json_object(exchange, '$.old_cusip')																		AS exchange_old_cusip
+	, get_json_object(exchange, '$.new_cusip')																		AS exchange_new_cusip
+	, CAST(get_json_object(exchange, '$.cash_rate') AS DOUBLE)														AS exchange_cash_rate
+	, CAST(get_json_object(exchange, '$.stock_rate') AS DOUBLE)														AS exchange_stock_rate
+	, get_json_object(exchange, '$.type')																			AS exchange_type
+	, get_json_object(exchange, '$.corporate_action_general_information.corporate_action_id')						AS exchange_corporate_action_id
+	, get_json_object(exchange, '$.corporate_action_general_information.target_symbol_description')					AS exchange_target_symbol_description
+	, get_json_object(exchange, '$.corporate_action_general_information.target_cusip')								AS exchange_target_cusip
+	, CAST(get_json_object(exchange, '$.corporate_action_general_information.target_asset_id') AS DOUBLE)				AS exchange_target_asset_id
+	, get_json_object(exchange, '$.corporate_action_general_information.disbursed_symbol_description')				AS exchange_disbursed_symbol_description
+	, get_json_object(exchange, '$.corporate_action_general_information.disbursed_cusip')							AS exchange_disbursed_cusip
+	, CAST(get_json_object(exchange, '$.corporate_action_general_information.disbursed_asset_id') AS DOUBLE)			AS exchange_disbursed_asset_id
+
+	-- Conversion fields
+	, get_json_object(conversion, '$.symbol_description')															AS conversion_symbol_description
+	, get_json_object(conversion, '$.old_cusip')																		AS conversion_old_cusip
+	, get_json_object(conversion, '$.new_cusip')																		AS conversion_new_cusip
+	, CAST(get_json_object(conversion, '$.cash_rate') AS DOUBLE)														AS conversion_cash_rate
+	, CAST(get_json_object(conversion, '$.stock_rate') AS DOUBLE)														AS conversion_stock_rate
+	, get_json_object(conversion, '$.type')																			AS conversion_type
+	, get_json_object(conversion, '$.corporate_action_general_information.corporate_action_id')						AS conversion_corporate_action_id
+	, get_json_object(conversion, '$.corporate_action_general_information.target_symbol_description')				AS conversion_target_symbol_description
+	, get_json_object(conversion, '$.corporate_action_general_information.target_cusip')								AS conversion_target_cusip
+	, CAST(get_json_object(conversion, '$.corporate_action_general_information.target_asset_id') AS DOUBLE)			AS conversion_target_asset_id
+	, get_json_object(conversion, '$.corporate_action_general_information.disbursed_symbol_description')				AS conversion_disbursed_symbol_description
+	, get_json_object(conversion, '$.corporate_action_general_information.disbursed_cusip')							AS conversion_disbursed_cusip
+	, CAST(get_json_object(conversion, '$.corporate_action_general_information.disbursed_asset_id') AS DOUBLE)		AS conversion_disbursed_asset_id
+
+	,account_memo
+	-- Warrant Exercise Fields
+	, get_json_object(warrant_exercise, '$.symbol_description') AS warrant_exercise_symbol_description
+	, get_json_object(warrant_exercise, '$.corporate_action_general_information.corporate_action_id')				AS warrant_exercise_corporate_action_id
+	, get_json_object(warrant_exercise, '$.corporate_action_general_information.target_symbol_description')			AS warrant_exercise_target_symbol_description
+	, get_json_object(warrant_exercise, '$.corporate_action_general_information.target_cusip')						AS warrant_exercise_target_cusip
+	, CAST(get_json_object(warrant_exercise, '$.corporate_action_general_information.target_asset_id') AS DOUBLE)		AS warrant_exercise_target_asset_id
+	, get_json_object(warrant_exercise, '$.corporate_action_general_information.disbursed_symbol_description')		AS warrant_exercise_disbursed_symbol_description
+	, get_json_object(warrant_exercise, '$.corporate_action_general_information.disbursed_cusip')					AS warrant_exercise_disbursed_cusip
+	, CAST(get_json_object(warrant_exercise, '$.corporate_action_general_information.disbursed_asset_id') AS DOUBLE)	AS warrant_exercise_disbursed_asset_id
+
+	-- Rights Subscription Fields
+	, get_json_object(rights_subscription, '$.symbol_description') AS rights_subscription_symbol_description
+	, get_json_object(rights_subscription, '$.corporate_action_general_information.corporate_action_id')					AS rights_subscription_corporate_action_id
+	, get_json_object(rights_subscription, '$.corporate_action_general_information.target_symbol_description')			AS rights_subscription_target_symbol_description
+	, get_json_object(rights_subscription, '$.corporate_action_general_information.target_cusip')						AS rights_subscription_target_cusip
+	, CAST(get_json_object(rights_subscription, '$.corporate_action_general_information.target_asset_id') AS DOUBLE)		AS rights_subscription_target_asset_id
+	, get_json_object(rights_subscription, '$.corporate_action_general_information.disbursed_symbol_description')		AS rights_subscription_disbursed_symbol_description
+	, get_json_object(rights_subscription, '$.corporate_action_general_information.disbursed_cusip')						AS rights_subscription_disbursed_cusip
+	, CAST(get_json_object(rights_subscription, '$.corporate_action_general_information.disbursed_asset_id') AS DOUBLE)	AS rights_subscription_disbursed_asset_id
+
+	-- Maturity Fields
+	, CAST(get_json_object(maturity, '$.cash_rate') AS DOUBLE) AS maturity_cash_rate
+	, CAST(get_json_object(maturity, '$.quantity') AS DOUBLE) AS maturity_quantity
+	, get_json_object(maturity, '$.payment_date') AS maturity_payment_date
+	, get_json_object(maturity, '$.corporate_action_general_information.corporate_action_id')					AS maturity_corporate_action_id
+	, get_json_object(maturity, '$.corporate_action_general_information.target_symbol_description')				AS maturity_target_symbol_description
+	, get_json_object(maturity, '$.corporate_action_general_information.target_cusip')							AS maturity_target_cusip
+	, CAST(get_json_object(maturity, '$.corporate_action_general_information.target_asset_id') AS DOUBLE)			AS maturity_target_asset_id
+	, get_json_object(maturity, '$.corporate_action_general_information.disbursed_symbol_description')			AS maturity_disbursed_symbol_description
+	, get_json_object(maturity, '$.corporate_action_general_information.disbursed_cusip')						AS maturity_disbursed_cusip
+	, CAST(get_json_object(maturity, '$.corporate_action_general_information.disbursed_asset_id') AS DOUBLE)		AS maturity_disbursed_asset_id
+
+	-- Drip Field
+	, get_json_object(drip, '$.action')																			AS drip_action
+
+	-- Fee fields
+	, get_json_object(fee, '$.additional_instructions')															AS fee_additional_instructions
+
+	-- Sweep fields
+	, get_json_object(sweep, '$.action')																			AS sweep_action
+	, get_json_object(sweep, '$.type')																			AS sweep_type
+	, CAST(get_json_object(sweep, '$.eod_redemption') AS BOOLEAN)													AS sweep_eod_redemption
+
+	,subtype_category
+	,source_application
+	,source_application_id
+	,generation
+	,client_id
+	,suppress_downstream
+	,rounded_offset
+	,suppress_documents
+	,creation_time
+	,initiating_user_id
+	,previous_activity_id
+	,previous_process_date
+	,_key
+	,_ingested_at
+
+	-- Kafka Metadata fields
+	,get_json_object(_kafka_metadata, '$.topic')																	AS kafka_metadata_topic
+	,CAST(get_json_object(_kafka_metadata, '$.partition') AS INT)												AS kafka_metadata_partition
+	,CAST(get_json_object(_kafka_metadata, '$.offset') AS DOUBLE)													AS kafka_metadata_offset
+
+	-- Proto Metadata fields
+	,get_json_object(_proto_metadata, '$.type_name')																AS proto_metadata_type_name
+	,CAST(get_json_object(_proto_metadata, '$.schema_id') AS INT)												AS proto_metadata_schema_id
+	,snapshot_timestamp
+	,correspondent_id
+	,source_file
+	,DATE_OF_DATA
+	,YEARMONTH
+	,LOADED_AT
+FROM (
+	 SELECT
+	     account_id
+		,activity_id
+		,type
+		,sub_type
+		,symbol
+		,asset_type
+		,region_code
+		,asset_id
+		,side
+		,quantity
+		,currency_code
+		,currency_asset_id
+		,price
+		,gross_amount
+		,net_amount
+		,activity_date
+		,activity_time
+		,process_date
+		,settle_date
+		,state
+		,activity_description
+		,asset_description
+		,asset_version
+		-- Parse and clean "trade" field
+	    ,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(trade, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ', ', ','),'),','')																					AS trade
+	    -- Parse and clean "reverse_stock_split" field
+	    ,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(reverse_stock_split, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ', ', ',')																						AS reverse_stock_split
+		-- Parse and clean "cash_dividend" field
+		,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(cash_dividend, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ', ', ',')																							AS cash_dividend
+	    -- Parse and clean "stock_dividend" field
+	    ,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(stock_dividend, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')				AS stock_dividend
+	    -- Parse and clean "withdrawal_deposit_transfer" field
+	    ,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(withdrawal_deposit_transfer, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')	AS withdrawal_deposit_transfer
+		--Parse and clean "stock_split" field
+		,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(stock_split, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')					AS stock_split
+		,-- Parse and clean "name_change" field
+		REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(name_change, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')					AS name_change
+		,-- Parse and clean "capital_gains" field
+		REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(capital_gains, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')					AS capital_gains
+		,-- Parse and clean "spinoff" field
+		REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(spinoff, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')						AS spinoff
+		,-- Parse and clean "interest_payment" field
+		REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(interest_payment, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')				AS interest_payment
+		-- Parse and clean "liquidation" field
+		,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(liquidation, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ', ', ',')																								AS liquidation
+		,-- Parse and clean "dividend" field
+		REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(dividend, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')						AS dividend
+		,-- Parse and clean "sale_of_rights" field
+		REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(sale_of_rights, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')					AS sale_of_rights
+		,-- Parse and clean "redemption_full" field
+		REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(redemption_full, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')				AS redemption_full
+		,-- Parse and clean "rights_distribution" field
+		REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(rights_distribution, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')			AS rights_distribution
+		,-- Parse and clean "deposit" field
+		REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(deposit, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')						AS deposit
+		,-- Parse and clean "withdrawal" field
+		REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(withdrawal, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')						AS withdrawal
+		,-- Parse and clean "worthless" field
+		REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(worthless, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')						AS worthless
+		,-- Parse and clean "transfer" field
+		REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(transfer, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')						AS transfer
+		,-- Parse and clean "rounding_adjustment" field
+		REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(rounding_adjustment, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')			AS rounding_adjustment
+		,fees
+		,withholdings
+		,commissions
+		,REPLACE(accrued_interests, '[]','') as accrued_interests
+		-- Parse and clean "merger" field
+		,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(merger, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')						AS merger
+		 -- Parse and clean "credit" field
+	    ,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(credit, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')						AS credit
+	    -- Parse and clean "fpsl" field
+	    ,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(fpsl, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')							AS fpsl
+		-- Parse and clean "acats_pending_out" field
+		,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(acats_pending_out, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')				AS acats_pending_out
+		-- Parse and clean "account_transfer" field
+		,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(account_transfer, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')				AS account_transfer
+		-- Parse and clean "tender_offer" field
+		,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(tender_offer, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')					AS tender_offer
+		-- Parse and clean "unit_split" field
+		,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(unit_split, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')					AS unit_split
+		-- Parse and clean "exchange" field
+		, REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(exchange, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')						AS exchange
+		-- Parse and clean "conversion" field
+		, REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(conversion, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')					AS conversion
+		,account_memo
+		-- Parse and clean "warrant_exercise" field
+		, REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(warrant_exercise, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')				AS warrant_exercise
+		-- Parse and clean "rights_subscription" field
+		, REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(rights_subscription, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')			AS rights_subscription
+		-- Parse and clean "maturity" field
+		, REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(maturity, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')						AS maturity
+		-- Parse and clean "drip" field
+		, REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(drip, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')							AS drip
+		-- Parse and clean "fee" field
+		,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(fee, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')							AS fee
+		-- Parse and clean "sweep" field
+		,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(sweep, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')							AS sweep
+		,subtype_category
+		,source_application
+		,source_application_id
+		,generation
+		,client_id
+		,suppress_downstream
+		,rounded_offset
+		,suppress_documents
+		,creation_time
+		,initiating_user_id
+		,previous_activity_id
+		,previous_process_date
+		,_key
+		,_ingested_at
+		-- Parse and clean "kafka_metadata" field
+		,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(_kafka_metadata, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')				AS _kafka_metadata
+		-- Parse and clean "proto_metadata" field
+		,REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(_proto_metadata, '''', '"'), 'None', 'null'), 'False', 'false'), 'True', 'true'), 'Decimal(', ''), 'TIMESTAMP.date(', ''), ')', ''), 'array([], dtype=object)', '[]'), 'array([', '['), '], dtype=object)', ']'), 'dtype=object', ''), ': ', ':')				AS _proto_metadata
+		,snapshot_timestamp
+		,correspondent_id
+		,source_file
+		,CAST(DATE_OF_DATA AS DATE) AS DATE_OF_DATA
+		,CAST(LEFT(REPLACE(REPLACE(RIGHT(source_file,18),'.parquet',''),'-',''),6) AS INT) as YEARMONTH
+		,LOADED_AT
+	FROM apex.default.apex_daily_activities
+	
+	
+	)ada -- convert all json fields to json sql server format
+),
+ bronze_data AS (
+	SELECT
+		 account_id
+		,activity_id
+		,type
+		,sub_type
+		,symbol
+		,asset_type
+		,region_code
+		,asset_id
+		,side
+		,quantity
+		,currency_code
+		,currency_asset_id
+		,price
+		,gross_amount
+		,net_amount
+		,activity_date
+		,activity_time
+		,process_date
+		,settle_date
+		,state
+		,activity_description
+		,asset_description
+		,asset_version
+		,trade_symbol_description
+		,trade_additional_instructions
+		,trade_special_instructions
+		,trade_client_order_id
+		,trade_exchange
+		,trade_broker_capacity
+		,trade_route
+		,trade_algo
+		,trade_broker
+		,trade_execution_id
+		,trade_markup
+		,trade_markdown
+		,trade_execution_only
+		,trade_when_issued
+		,trade_when_distributed
+		,trade_is_writeoff
+		,trade_client_memos
+		,trade_order_id
+		,trade_alternate_order_id
+		,trade_external_id
+		,trade_source_account_id
+		,trade_booking_api_trade_id
+		,trade_booking_api_trade_allocation_id
+		,trade_gateway_client_order_id
+		,trade_internal_error
+		,trade_prevailing_market_price
+		,trade_price_adjustment_type
+		,trade_price_adjustment_amount
+		,trade_price_adjustment_percent
+		,trade_yield_records
+		,reverse_stock_split_symbol_description
+		,reverse_stock_split_factor_numerator
+		,reverse_stock_split_factor_denominator
+		,reverse_stock_split_quantity
+		,reverse_stock_split_new_cusip
+		,reverse_stock_split_cash_rate
+		,reverse_stock_split_old_cusip
+		,reverse_stock_split_action
+		,reverse_stock_split_effective_date
+		,reverse_stock_split_corporate_action_id
+		,reverse_stock_split_target_symbol_description
+		,reverse_stock_split_target_cusip
+		,reverse_stock_split_target_asset_id
+		,reverse_stock_split_disbursed_symbol_description
+		,reverse_stock_split_disbursed_cusip
+		,reverse_stock_split_disbursed_asset_id
+		,cash_dividend_symbol_description
+		,cash_dividend_cash_rate
+		,cash_dividend_settled
+		,cash_dividend_record_date
+		,cash_dividend_payment_date
+		,cash_dividend_tefra_withholding
+		,cash_dividend_foreign_withholding
+		,cash_dividend_nra_withholding
+		,cash_dividend_qualified
+		,cash_dividend_long_term_gain
+		,cash_dividend_free
+		,cash_dividend_fpsl
+		,cash_dividend_is_substitute_payment
+		,cash_dividend_subtype
+		,cash_dividend_quantity
+		,cash_dividend_corporate_action_id
+		,cash_dividend_target_symbol_description
+		,cash_dividend_target_cusip
+		,cash_dividend_target_asset_id
+		,cash_dividend_disbursed_symbol_description
+		,cash_dividend_disbursed_cusip
+		,cash_dividend_disbursed_asset_id
+		,cash_dividend_reinvested
+		,stock_dividend_rate
+		,stock_dividend_quantity
+		,stock_dividend_record_date
+		,stock_dividend_pay_date
+		,stock_dividend_corporate_action_id
+		,stock_dividend_target_symbol_description
+		,stock_dividend_target_cusip
+		,stock_dividend_target_asset_id
+		,stock_dividend_disbursed_symbol_description
+		,stock_dividend_disbursed_cusip
+		,stock_dividend_disbursed_asset_id
+		,withdrawal_deposit_transfer_originating_institution
+		,withdrawal_deposit_transfer_destination_institution
+		,withdrawal_deposit_transfer_additional_instructions
+		,stock_split_factor_numerator
+		,stock_split_factor_denominator
+		,stock_split_quantity
+		,stock_split_record_date
+		,stock_split_pay_date
+		,stock_split_corporate_action_id
+		,stock_split_target_symbol_description
+		,stock_split_target_cusip
+		,stock_split_target_asset_id
+		,stock_split_disbursed_symbol_description
+		,stock_split_disbursed_cusip
+		,stock_split_disbursed_asset_id
+		,name_change_old_symbol_description
+		,name_change_quantity
+		,name_change_old_cusip
+		,name_change_new_cusip
+		,name_change_action
+		,name_change_effective_date
+		,name_change_corporate_action_id
+		,name_change_target_symbol_description
+		,name_change_target_cusip
+		,name_change_target_asset_id
+		,name_change_disbursed_symbol_description
+		,name_change_disbursed_cusip
+		,name_change_disbursed_asset_id
+		,capital_gains_quantity
+		,capital_gains_record_date
+		,capital_gains_payment_date
+		,capital_gains_long_term_gain
+		,capital_gains_corporate_action_id
+		,capital_gains_target_symbol_description
+		,capital_gains_target_cusip
+		,capital_gains_target_asset_id
+		,capital_gains_disbursed_symbol_description
+		,capital_gains_disbursed_cusip
+		,capital_gains_disbursed_asset_id
+		,capital_gains_reinvested
+		,spinoff_old_symbol_description
+		,spinoff_new_symbol_description
+		,spinoff_quantity
+		,spinoff_record_date
+		,spinoff_pay_date
+		,spinoff_corporate_action_id
+		,spinoff_target_symbol_description
+		,spinoff_target_cusip
+		,spinoff_target_asset_id
+		,spinoff_disbursed_symbol_description
+		,spinoff_disbursed_cusip
+		,spinoff_disbursed_asset_id
+		,interest_payment_symbol_description
+		,interest_payment_cash_rate
+		,interest_payment_settled
+		,interest_payment_record_date
+		,interest_payment_payment_date
+		,interest_payment_corporate_action_id
+		,interest_payment_target_symbol_description
+		,interest_payment_target_cusip
+		,interest_payment_target_asset_id
+		,interest_payment_disbursed_symbol_description
+		,interest_payment_disbursed_cusip
+		,interest_payment_disbursed_asset_id
+		,liquidation_symbol_description
+		,liquidation_cash_rate
+		,liquidation_quantity
+		,liquidation_settled
+		,liquidation_action
+		,liquidation_subtype
+		,liquidation_record_date
+		,liquidation_payment_date
+		,liquidation_effective_date
+		,liquidation_corporate_action_id
+		,liquidation_target_symbol_description
+		,liquidation_target_cusip
+		,liquidation_target_asset_id
+		,liquidation_disbursed_symbol_description
+		,liquidation_disbursed_cusip
+		,liquidation_disbursed_asset_id
+		,dividend_symbol_description
+		,dividend_cash_rate
+		,dividend_settled
+		,dividend_record_date
+		,dividend_subtype
+		,dividend_corporate_action_id
+		,dividend_target_symbol_description
+		,dividend_target_cusip
+		,dividend_target_asset_id
+		,dividend_disbursed_symbol_description
+		,dividend_disbursed_cusip
+		,dividend_disbursed_asset_id
+		,sale_of_rights_symbol_description
+		,sale_of_rights_cash_rate
+		,sale_of_rights_settled
+		,sale_of_rights_record_date
+		,sale_of_rights_payment_date
+		,sale_of_rights_corporate_action_id
+		,sale_of_rights_target_symbol_description
+		,sale_of_rights_target_cusip
+		,sale_of_rights_target_asset_id
+		,sale_of_rights_disbursed_symbol_description
+		,sale_of_rights_disbursed_cusip
+		,sale_of_rights_disbursed_asset_id
+		,redemption_full_symbol_description
+		,redemption_full_cash_rate
+		,redemption_full_quantity
+		,redemption_full_action
+		,redemption_full_subtype
+		,redemption_full_payment_date
+		,redemption_full_corporate_action_id
+		,redemption_full_target_symbol_description
+		,redemption_full_target_cusip
+		,redemption_full_target_asset_id
+		,redemption_full_disbursed_symbol_description
+		,redemption_full_disbursed_cusip
+		,redemption_full_disbursed_asset_id
+		,rights_distribution_new_symbol_description
+		,rights_distribution_settled
+		,rights_distribution_record_date
+		,rights_distribution_payment_date
+		,rights_distribution_corporate_action_id
+		,rights_distribution_target_symbol_description
+		,rights_distribution_target_cusip
+		,rights_distribution_target_asset_id
+		,rights_distribution_disbursed_symbol_description
+		,rights_distribution_disbursed_cusip
+		,rights_distribution_disbursed_asset_id
+		,deposit_contribution_type
+		,deposit_contribution_year
+		,deposit_conversion
+		,deposit_futures_settlement
+		,deposit_micro
+		,deposit_retirement_type
+		,deposit_type
+		,deposit_originating_institution
+		,deposit_destination_institution
+		,deposit_additional_instructions
+		,deposit_fed_reference_number
+		,deposit_originating_account_number
+		,withdrawal_conversion
+		,withdrawal_distribution_type
+		,withdrawal_distribution_year
+		,withdrawal_closing_account
+		,withdrawal_futures_settlement
+		,withdrawal_micro
+		,withdrawal_periodic
+		,withdrawal_retirement_type
+		,withdrawal_taxable
+		,withdrawal_type
+		,withdrawal_advance
+		,withdrawal_originating_institution
+		,withdrawal_destination_institution
+		,withdrawal_additional_instructions
+		,withdrawal_fed_reference_number
+		,withdrawal_destination_account_number
+		,worthless_symbol_description
+		,worthless_effective_date
+		,worthless_payment_date
+		,worthless_corporate_action_id
+		,worthless_target_symbol_description
+		,worthless_target_cusip
+		,worthless_target_asset_id
+		,worthless_disbursed_symbol_description
+		,worthless_disbursed_cusip
+		,worthless_disbursed_asset_id
+		,transfer_first_party
+		,transfer_originating_institution
+		,transfer_destination_institution
+		,transfer_additional_instructions
+		,transfer_client_brokerage
+		,transfer_transfer_type
+		,rounding_adjustment_rounding_reason
+		,fees
+		,withholdings
+		,commissions
+		,accrued_interests
+		,merger_symbol_description
+		,merger_quantity
+		,merger_old_cusip
+		,merger_new_cusip
+		,merger_cash_rate
+		,merger_stock_rate
+		,merger_type
+		,merger_action
+		,merger_effective_date
+		,merger_corporate_action_id
+		,merger_target_symbol_description
+		,merger_target_cusip
+		,merger_target_asset_id
+		,merger_disbursed_symbol_description
+		,merger_disbursed_cusip
+		,merger_disbursed_asset_id
+		,credit_credit_type
+		,credit_taxable
+		,credit_additional_instructions
+		,fpsl_action
+		,account_transfer_action
+		,account_transfer_acats_control_number
+		,account_transfer_institution
+		,account_transfer_additional_instructions
+		,account_transfer_acats_asset_sequence_number
+		,account_transfer_contra_party_id
+		,account_transfer_contra_party_account_number
+		,account_transfer_method
+		,tender_offer_symbol_description
+		,tender_offer_target_cusip
+		,tender_offer_cash_rate
+		,tender_offer_corporate_action_id
+		,tender_offer_target_symbol_description
+		,tender_offer_corporate_action_general_information_target_cusip
+		,tender_offer_target_asset_id
+		,tender_offer_disbursed_symbol_description
+		,tender_offer_disbursed_cusip
+		,tender_offer_disbursed_asset_id
+		,unit_split_symbol_description
+		,unit_split_stock_rate
+		,unit_split_corporate_action_id
+		,unit_split_target_symbol_description
+		,unit_split_target_cusip
+		,unit_split_target_asset_id
+		,unit_split_disbursed_symbol_description
+		,unit_split_disbursed_cusip
+		,unit_split_disbursed_asset_id
+		,exchange_symbol_description
+		,exchange_old_cusip
+		,exchange_new_cusip
+		,exchange_cash_rate
+		,exchange_stock_rate
+		,exchange_type
+		,exchange_corporate_action_id
+		,exchange_target_symbol_description
+		,exchange_target_cusip
+		,exchange_target_asset_id
+		,exchange_disbursed_symbol_description
+		,exchange_disbursed_cusip
+		,exchange_disbursed_asset_id
+		,conversion_symbol_description
+		,conversion_old_cusip
+		,conversion_new_cusip
+		,conversion_cash_rate
+		,conversion_stock_rate
+		,conversion_type
+		,conversion_corporate_action_id
+		,conversion_target_symbol_description
+		,conversion_target_cusip
+		,conversion_target_asset_id
+		,conversion_disbursed_symbol_description
+		,conversion_disbursed_cusip
+		,conversion_disbursed_asset_id
+		,account_memo
+		,warrant_exercise_symbol_description
+		,warrant_exercise_corporate_action_id
+		,warrant_exercise_target_symbol_description
+		,warrant_exercise_target_cusip
+		,warrant_exercise_target_asset_id
+		,warrant_exercise_disbursed_symbol_description
+		,warrant_exercise_disbursed_cusip
+		,warrant_exercise_disbursed_asset_id
+		,rights_subscription_symbol_description
+		,rights_subscription_corporate_action_id
+		,rights_subscription_target_symbol_description
+		,rights_subscription_target_cusip
+		,rights_subscription_target_asset_id
+		,rights_subscription_disbursed_symbol_description
+		,rights_subscription_disbursed_cusip
+		,rights_subscription_disbursed_asset_id
+		,maturity_cash_rate
+		,maturity_quantity
+		,maturity_payment_date
+		,maturity_corporate_action_id
+		,maturity_target_symbol_description
+		,maturity_target_cusip
+		,maturity_target_asset_id
+		,maturity_disbursed_symbol_description
+		,maturity_disbursed_cusip
+		,maturity_disbursed_asset_id
+		,drip_action
+		,fee_additional_instructions
+		,sweep_action
+		,sweep_type
+		,sweep_eod_redemption
+		,subtype_category
+		,source_application
+		,source_application_id
+		,generation
+		,client_id
+		,suppress_downstream
+		,rounded_offset
+		,suppress_documents
+		,creation_time
+		,initiating_user_id
+		,previous_activity_id
+		,previous_process_date
+		,_key
+		,_ingested_at
+		,kafka_metadata_topic
+		,kafka_metadata_partition
+		,kafka_metadata_offset
+		,proto_metadata_type_name
+		,proto_metadata_schema_id
+		,snapshot_timestamp
+		,correspondent_id
+		,source_file
+		,DATE_OF_DATA
+		,YEARMONTH
+		,current_timestamp() AS LOADED_AT
+	FROM landing_data
+
+)
+
+
+
+
+SELECT * FROM BRONZE_DATA;
+
+-- From bronze-apex.dbx.sql
+-- Source model: bronze_apex_daily_overnight_balances
+CREATE OR REPLACE TABLE bronze.default.bronze_apex_daily_overnight_balances AS
+-- NAME: BRONZE_APEX_DAILY_OVERNIGHT_BALANCES
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: November 20, 2024
+
+
+
+
+WITH landing_data as (
+    SELECT
+        account_id
+        ,firm
+        ,process_date
+        ,currency_code
+        ,CAST(CAST(total_equity AS DOUBLE)  AS DECIMAL(18,9))									AS total_equity
+        ,CAST(CAST(margin_equity AS DOUBLE)  AS DECIMAL(18,9))									AS margin_equity
+        ,CAST(CAST(margin_requirement AS DOUBLE)  AS DECIMAL(18,9))								AS margin_requirement
+        ,CAST(CAST(margin_excess_equity AS DOUBLE)  AS DECIMAL(18,9))							AS margin_excess_equity
+        ,CAST(CAST(cash_equity AS DOUBLE)  AS DECIMAL(18,9))										AS cash_equity
+        ,CAST(CAST(cash_requirement AS DOUBLE)  AS DECIMAL(18,9))								AS cash_requirement
+        ,CAST(CAST(cash_excess_equity AS DOUBLE)  AS DECIMAL(18,9))								AS cash_excess_equity
+        ,CAST(CAST(margin_requirement_with_concentration AS DOUBLE)  AS DECIMAL(18,9))			AS margin_requirement_with_concentration
+        ,CAST(CAST(margin_excess_equity_with_concentration AS DOUBLE)  AS DECIMAL(18,9))			AS margin_excess_equity_with_concentration
+        ,CAST(CAST(overnight_buying_power_calculated AS DOUBLE)  AS DECIMAL(18,9))				AS overnight_buying_power_calculated
+        ,CAST(CAST(overnight_buying_power_issued AS DOUBLE)  AS DECIMAL(18,9))					AS overnight_buying_power_issued
+        ,CAST(CAST(day_trade_buying_power_issued AS DOUBLE)  AS DECIMAL(18,9))					AS day_trade_buying_power_issued
+        ,CAST(CAST(regt_buying_power_calculated AS DOUBLE)  AS DECIMAL(18,9))					AS regt_buying_power_calculated
+        ,CAST(CAST(regt_buying_power_issued AS DOUBLE)  AS DECIMAL(18,9))						AS regt_buying_power_issued
+        ,CAST(CAST(overnight_factor_calculated AS DOUBLE)  AS DECIMAL(18,9))						AS overnight_factor_calculated
+        ,CAST(CAST(overnight_factor_issued AS DOUBLE)  AS DECIMAL(18,9))							AS overnight_factor_issued
+        ,CAST(CAST(day_trade_factor_calculated AS DOUBLE)  AS DECIMAL(18,9))						AS day_trade_factor_calculated
+        ,CAST(CAST(day_trade_factor_issued AS DOUBLE)  AS DECIMAL(18,9))							AS day_trade_factor_issued
+        ,CAST(CAST(margin_equity_percent AS DOUBLE)  AS DECIMAL(18,9))							AS margin_equity_percent
+        ,CAST(CAST(position_market_value AS DOUBLE)  AS DECIMAL(18,9))							AS position_market_value
+        ,CAST(CAST(long_equity_market_value AS DOUBLE)  AS DECIMAL(18,9))						AS long_equity_market_value
+        ,CAST(CAST(short_equity_market_value AS DOUBLE)  AS DECIMAL(18,9))						AS short_equity_market_value
+        ,CAST(CAST(long_option_market_value AS DOUBLE)  AS DECIMAL(18,9))						AS long_option_market_value
+        ,CAST(CAST(short_option_market_value AS DOUBLE)  AS DECIMAL(18,9))						AS short_option_market_value
+        ,CAST(CAST(total_trade_balance AS DOUBLE)  AS DECIMAL(18,9))								AS total_trade_balance
+        ,CAST(CAST(total_settle_balance AS DOUBLE)  AS DECIMAL(18,9))							AS total_settle_balance
+        ,CAST(CAST(cash_trade_balance AS DOUBLE)  AS DECIMAL(18,9))								AS cash_trade_balance
+        ,CAST(CAST(margin_trade_balance AS DOUBLE)  AS DECIMAL(18,9))							AS margin_trade_balance
+        ,CAST(CAST(short_trade_balance AS DOUBLE)  AS DECIMAL(18,9))								AS short_trade_balance
+        ,CAST(CAST(money_market_trade_balance AS DOUBLE)  AS DECIMAL(18,9))						AS money_market_trade_balance
+        ,CAST(CAST(cash_settle_balance AS DOUBLE)  AS DECIMAL(18,9))								AS cash_settle_balance
+        ,CAST(CAST(margin_settle_balance AS DOUBLE)  AS DECIMAL(18,9))							AS margin_settle_balance
+        ,CAST(CAST(short_settle_balance AS DOUBLE)  AS DECIMAL(18,9))							AS short_settle_balance
+        ,CAST(CAST(money_market_settle_balance AS DOUBLE)  AS DECIMAL(18,9))						AS money_market_settle_balance
+        ,CAST(CAST(free_cash AS DOUBLE)  AS DECIMAL(18,9))										AS free_cash
+        ,CAST(CAST(sma AS DOUBLE)  AS DECIMAL(18,9))												AS sma
+        ,CAST(CAST(available_to_withdraw AS DOUBLE)  AS DECIMAL(18,9))							AS available_to_withdraw
+        ,CAST(CAST(future_balance AS DOUBLE)  AS DECIMAL(18,9))									AS future_balance
+        ,CAST(CAST(future_equity AS DOUBLE)  AS DECIMAL(18,9))									AS future_equity
+        ,CAST(CAST(future_requirement AS DOUBLE)  AS DECIMAL(18,9))								AS future_requirement
+        ,CAST(CAST(options_requirement AS DOUBLE)  AS DECIMAL(18,9))								AS options_requirement
+        ,CAST(CAST(non_options_requirement AS DOUBLE)  AS DECIMAL(18,9))							AS non_options_requirement
+        ,last_update_time
+        ,CAST(CAST(non_options_requirement_not_concentrated AS DOUBLE)  AS DECIMAL(18,9))		AS non_options_requirement_not_concentrated
+        ,CAST(CAST(type1_unavailable_cash_proceeds AS DOUBLE)  AS DECIMAL(18,9))					AS type1_unavailable_cash_proceeds
+        ,CAST(CAST(type2_unavailable_cash_proceeds AS DOUBLE)  AS DECIMAL(18,9))					AS type2_unavailable_cash_proceeds
+        ,CAST(CAST(net_balance AS DOUBLE)  AS DECIMAL(18,9))										AS net_balance
+        ,CAST(CAST(sma_committed AS DOUBLE)  AS DECIMAL(18,9))									AS sma_committed
+        ,CAST(CAST(high_water_mark AS DOUBLE)  AS DECIMAL(18,9))									AS high_water_mark
+        ,CAST(CAST(margin_requirement_nyse AS DOUBLE)  AS DECIMAL(18,9))							AS margin_requirement_nyse
+        ,CAST(CAST(margin_excess_equity_nyse AS DOUBLE)  AS DECIMAL(18,9))						AS margin_excess_equity_nyse
+        ,CAST(CAST(settled_cash_available_to_withdraw AS DOUBLE)  AS DECIMAL(18,9))				AS settled_cash_available_to_withdraw
+        ,snapshot_timestamp
+        ,correspondent_id
+        ,source_file
+        ,CAST(DATE_OF_DATA AS DATE) AS DATE_OF_DATA
+        ,CAST(LEFT(REPLACE(REPLACE(RIGHT(source_file,18),'.parquet',''),'-',''),6) AS INT)          AS YEARMONTH
+        ,LOADED_AT
+    FROM apex.default.apex_daily_overnight_balances
+    
+	
+),
+bronze_data as (
+    SELECT
+        account_id
+        ,firm
+        ,process_date
+        ,currency_code
+        ,total_equity
+        ,margin_equity
+        ,margin_requirement
+        ,margin_excess_equity
+        ,cash_equity
+        ,cash_requirement
+        ,cash_excess_equity
+        ,margin_requirement_with_concentration
+        ,margin_excess_equity_with_concentration
+        ,overnight_buying_power_calculated
+        ,overnight_buying_power_issued
+        ,day_trade_buying_power_issued
+        ,regt_buying_power_calculated
+        ,regt_buying_power_issued
+        ,overnight_factor_calculated
+        ,overnight_factor_issued
+        ,day_trade_factor_calculated
+        ,day_trade_factor_issued
+        ,margin_equity_percent
+        ,position_market_value
+        ,long_equity_market_value
+        ,short_equity_market_value
+        ,long_option_market_value
+        ,short_option_market_value
+        ,total_trade_balance
+        ,total_settle_balance
+        ,cash_trade_balance
+        ,margin_trade_balance
+        ,short_trade_balance
+        ,money_market_trade_balance
+        ,cash_settle_balance
+        ,margin_settle_balance
+        ,short_settle_balance
+        ,money_market_settle_balance
+        ,free_cash
+        ,sma
+        ,available_to_withdraw
+        ,future_balance
+        ,future_equity
+        ,future_requirement
+        ,options_requirement
+        ,non_options_requirement
+        ,last_update_time
+        ,non_options_requirement_not_concentrated
+        ,type1_unavailable_cash_proceeds
+        ,type2_unavailable_cash_proceeds
+        ,net_balance
+        ,sma_committed
+        ,high_water_mark
+        ,margin_requirement_nyse
+        ,margin_excess_equity_nyse
+        ,settled_cash_available_to_withdraw
+        ,snapshot_timestamp
+        ,correspondent_id
+        ,source_file
+        ,DATE_OF_DATA
+        ,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM  landing_data
+
+)
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-apex.dbx.sql
+-- Source model: bronze_apex_daily_positions
+CREATE OR REPLACE TABLE bronze.default.bronze_apex_daily_positions AS
+-- NAME: BRONZE_APEX_DAILY_POSITIONS
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: November 20, 2024
+
+
+
+
+WITH landing_data as (
+	SELECT
+		account_id
+		,asset_id
+		,date
+		,CAST(CAST(trade AS DOUBLE)  AS DECIMAL(18,9))					AS trade
+		,CAST(CAST(settled AS DOUBLE)  AS DECIMAL(18,9))					AS settled
+		,last_adjusted_date
+		,CAST(CAST(adjusted_trade AS DOUBLE)  AS DECIMAL(18,9))			AS adjusted_trade
+		,CAST(CAST(adjusted_settled AS DOUBLE)  AS DECIMAL(18,9))		AS adjusted_settled
+		,CAST(CAST(free AS DOUBLE)  AS DECIMAL(18,9))					AS free
+		,CAST(CAST(fpsl AS DOUBLE)  AS DECIMAL(18,9))					AS fpsl
+		,CAST(CAST(pending_outgoing_acat AS DOUBLE)  AS DECIMAL(18,9))	AS pending_outgoing_acat
+		,CAST(CAST(unrestricted AS DOUBLE)  AS DECIMAL(18,9))			AS unrestricted
+		,CAST(CAST(pending_drip AS DOUBLE)  AS DECIMAL(18,9))			AS pending_drip
+		,CAST(CAST(pending_withdrawal AS DOUBLE)  AS DECIMAL(18,9))		AS pending_withdrawal
+		,snapshot_timestamp
+		,correspondent_id
+		,source_file
+		,CAST(DATE_OF_DATA AS DATE) AS DATE_OF_DATA
+		,CAST(LEFT(REPLACE(REPLACE(RIGHT(source_file,18),'.parquet',''),'-',''),6) AS INT)	AS YEARMONTH
+		,LOADED_AT
+	FROM apex.default.apex_daily_positions
+    
+	
+
+),
+bronze_data as (
+	SELECT
+		 account_id
+		,asset_id
+		,date
+		,trade
+		,settled
+		,last_adjusted_date
+		,adjusted_trade
+		,adjusted_settled
+		,free
+		,fpsl
+		,pending_outgoing_acat
+		,unrestricted
+		,pending_drip
+		,pending_withdrawal
+		,snapshot_timestamp
+		,correspondent_id
+		,source_file
+		,DATE_OF_DATA
+		,YEARMONTH
+		,current_timestamp() AS LOADED_AT
+	from landing_data
+
+)
+
+
+
+
+
+select * from bronze_data;
+
+-- From bronze-apex.dbx.sql
+-- Source model: bronze_apex_daily_stock_record
+CREATE OR REPLACE TABLE bronze.default.bronze_apex_daily_stock_record AS
+-- NAME: BRONZE_APEX_DAILY_STOCK_RECORD
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: November 20, 2024
+
+
+
+WITH landing_data as (
+	SELECT
+		Id
+		,business_date
+		,branch_id
+		,account_id
+		,account_type
+		,account_class
+		,account_class_type
+		,account_name
+		,account_group_id
+		,asset_id
+		,asset_type
+		,asset_country
+		,cusip
+		,symbol
+		,symbol_description
+		,CAST(CAST(trade_position AS DOUBLE)  AS DECIMAL(18,9))				AS trade_position
+		,CAST(CAST(settled_position AS DOUBLE)  AS DECIMAL(18,9))			AS settled_position
+		,CAST(CAST(closing_price AS DOUBLE)  AS DECIMAL(18,9))				AS closing_price
+		,closing_price_date
+		,CAST(CAST(factor AS DOUBLE)  AS DECIMAL(18,9))						AS factor
+		,CAST(CAST(trade_position_value AS DOUBLE)  AS DECIMAL(18,9))		AS trade_position_value
+		,CAST(CAST(settled_position_value AS DOUBLE)  AS DECIMAL(18,9))		AS settled_position_value
+		,contract_price
+		,currency_code
+		,CAST(CAST(currency_rate AS DOUBLE)  AS DECIMAL(18,9))				AS currency_rate
+		,CAST(CAST(trade_position_value_usd AS DOUBLE)  AS DECIMAL(18,9))	AS trade_position_value_usd
+		,CAST(CAST(settled_position_value_usd AS DOUBLE)  AS DECIMAL(18,9))	AS settled_position_value_usd
+		,ref_id
+		,source
+		,created_date
+		,allocation_code
+		,correspondent_code
+		,trading_mpid
+		,account_number
+		,correspondent_id
+		,CAST(CAST(fpsl_position AS DOUBLE)  AS DECIMAL(18,9))				AS fpsl_position
+		,snapshot_timestamp
+		,source_file
+		,CAST(DATE_OF_DATA AS DATE) AS DATE_OF_DATA
+		,CAST(LEFT(REPLACE(REPLACE(RIGHT(source_file,18),'.parquet',''),'-',''),6) AS INT) AS YEARMONTH
+		,LOADED_AT
+	from apex.default.apex_daily_stock_record
+	
+	
+),
+bronze_data AS (
+	SELECT
+ 		 Id
+		,business_date
+		,branch_id
+		,account_id
+		,account_type
+		,account_class
+		,account_class_type
+		,account_name
+		,account_group_id
+		,asset_id
+		,asset_type
+		,asset_country
+		,cusip
+		,symbol
+		,symbol_description
+		,trade_position
+		,settled_position
+		,closing_price
+		,closing_price_date
+		,factor
+		,trade_position_value
+		,settled_position_value
+		,contract_price
+		,currency_code
+		,currency_rate
+		,trade_position_value_usd
+		,settled_position_value_usd
+		,ref_id
+		,source
+		,created_date
+		,allocation_code
+		,correspondent_code
+		,trading_mpid
+		,account_number
+		,correspondent_id
+		,fpsl_position
+		,snapshot_timestamp
+		,source_file
+		,DATE_OF_DATA
+		,YEARMONTH
+		,current_timestamp() AS LOADED_AT
+	FROM landing_data
+
+)
+
+
+
+
+
+select * from bronze_data;
+
+-- From bronze-apex.dbx.sql
+-- Source model: bronze_apex_onboarding_status
+CREATE OR REPLACE TABLE bronze.default.bronze_apex_onboarding_status AS
+-- NAME: APEX_ONBOARDING_STATUS
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: November 20, 2024
+
+
+
+
+WITH landing_data as (
+    SELECT
+	    id
+	    ,cif
+	    ,partnerUserId
+	    ,status
+	    ,partnerAccountId
+	    ,createdAt
+	    ,updatedAt
+	    ,partnerFileUploadId
+	    ,failureReason
+	    ,failures
+	    ,brokerAccountId
+        ,CAST(current_timestamp() AS DATE) AS AsOfDate
+        ,NULL AS YEARMONTH
+	    ,loaded_at
+    FROM apex.default.apex_onboarding_status
+),
+bronze_data as (
+    SELECT
+        id
+        ,cif
+        ,partnerUserId
+        ,status
+        ,partnerAccountId
+        ,createdAt
+        ,updatedAt
+        ,partnerFileUploadId
+        ,failureReason
+        ,failures
+        ,brokerAccountId
+        ,AsOfDate
+        ,CAST(date_format(AsOfDate, 'yyyyMM') AS INT) AS YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data
+    
+    
+)
+
+
+
+
+
+
+select * from bronze_data;
+
+-- From bronze-assist.dbx.sql
+-- Source model: bronze_assist_codfil_ref
+CREATE OR REPLACE TABLE bronze.default.bronze_assist_codfil_ref AS
+-- NAME: BRONZE_ASSIST_CODFIL_REF
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY - 4TH BUSINESS DAY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 26, 2024
+
+
+
+WITH landing_data as (
+    SELECT
+        COD_COD
+        ,COD_TYP
+        ,COD_USD
+        ,COD_DES
+        ,COD_GR
+        ,COD_SIG
+        ,Cod_Risk
+        ,CAST(CAST(add_months(LOADED_AT, -1) AS STRING) AS INT) AS YEARMONTH
+        ,LOADED_AT
+    FROM
+        assist.default.assist_codfil_ref
+),
+-- The SQL order of execution will run the where command first, so we are
+-- using the landing`s loaded_at on its run, this will capture new rows for us,
+-- on otherhand the select clause is using a new loaded_at that will replace this
+-- value with the loaded_at of this layer (bronze). Even if they have same names,
+--they are different concepts.
+
+bronze_data AS (
+    SELECT
+        COD_COD
+        ,COD_TYP
+        ,COD_USD
+        ,COD_DES
+        ,COD_GR
+        ,COD_SIG
+        ,Cod_Risk
+        ,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data
+
+
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-assist.dbx.sql
+-- Source model: bronze_assist_customer_addl_fields
+CREATE OR REPLACE TABLE bronze.default.bronze_assist_customer_addl_fields AS
+-- NAME: BRONZE_ASSIST_CUSTOMER_ADDL_FIELDS
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY - 4TH BUSINESS DAY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+WITH landing_data as (
+    SELECT
+        cifno
+	    ,fullName
+	    ,firstName
+	    ,middleName
+	    ,lastName
+	    ,class
+	    ,officer_code
+	    ,cifGroupID
+	    ,cifGroupDesc
+	    ,residenceCountryCode
+	    ,residenceCountryDesc
+	    ,customerSince
+	    ,date_imported
+		,CAST(CAST(add_months(LOADED_AT, -1) AS STRING) AS INT) AS YEARMONTH
+        ,LOADED_AT
+    FROM
+        assist.default.assist_customer_addl_fields
+),
+-- The SQL order of execution will run the where command first, so we are
+-- using the landing`s loaded_at on its run, this will capture new rows for us,
+-- on otherhand the select clause is using a new loaded_at that will replace this
+-- value with the loaded_at of this layer (bronze). Even if they have same names,
+--they are different concepts.
+
+bronze_data AS (
+    SELECT
+        cifno
+	    ,fullName
+	    ,firstName
+	    ,middleName
+	    ,lastName
+	    ,class
+	    ,officer_code
+	    ,cifGroupID
+	    ,cifGroupDesc
+	    ,residenceCountryCode
+	    ,residenceCountryDesc
+	    ,customerSince
+	    ,date_imported
+		,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data
+
+
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-assist.dbx.sql
+-- Source model: bronze_assist_customer_class
+CREATE OR REPLACE TABLE bronze.default.bronze_assist_customer_class AS
+-- NAME: BRONZE_ASSIST_CUSTOMER_CLASS
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY - 4TH BUSINESS DAY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+WITH landing_data as (
+    SELECT
+        class_code
+        ,class_description
+        ,CAST(CAST(add_months(LOADED_AT, -1) AS STRING) AS INT) AS YEARMONTH
+        ,LOADED_AT
+    FROM
+        assist.default.assist_customer_class
+),
+-- The SQL order of execution will run the where command first, so we are
+-- using the landing`s loaded_at on its run, this will capture new rows for us,
+-- on otherhand the select clause is using a new loaded_at that will replace this
+-- value with the loaded_at of this layer (bronze). Even if they have same names,
+--they are different concepts.
+
+bronze_data AS (
+    SELECT
+        class_code
+        ,class_description
+        ,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data
+
+
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-assist.dbx.sql
+-- Source model: bronze_assist_customer_tbl
+CREATE OR REPLACE TABLE bronze.default.bronze_assist_customer_tbl AS
+-- NAME: BRONZE_ASSIST_CUSTOMER_TBL
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY - 4TH BUSINESS DAY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+WITH landing_data as (
+    SELECT
+        ASCIFN
+        ,ASCUSTYP
+        ,ASFNAM
+        ,ASLNAM
+        ,ASCODE
+        ,ASIDTYP
+        ,ASDTBIR
+        ,ASSTRDAT
+        ,ASOCCUP
+        ,ASCNTNAT
+        ,ASCNTDOM
+        ,ASCFNA2
+        ,ASCFNA3
+        ,ASCITDOM
+        ,ASSTADOM
+        ,ASZIPDOM
+        ,ASPHONE1
+        ,ASPHONE2
+        ,ASEMAIL
+        ,ASPOLEXP
+        ,ASRISK
+        ,ASSRCWEA
+        ,ASTARGTP
+        ,ASENDDAT
+        ,ASECOGRP
+        ,IMPYM
+        ,LMODDT
+        ,IMPDT
+        ,CAST(CAST(add_months(LOADED_AT, -1) AS STRING) AS INT) AS YEARMONTH
+        ,LOADED_AT
+    FROM
+        assist.default.assist_customer_tbl
+),
+-- The SQL order of execution will run the where command first, so we are
+-- using the landing`s loaded_at on its run, this will capture new rows for us,
+-- on otherhand the select clause is using a new loaded_at that will replace this
+-- value with the loaded_at of this layer (bronze). Even if they have same names,
+--they are different concepts.
+
+bronze_data AS (
+    SELECT
+        ASCIFN
+        ,ASCUSTYP
+        ,ASFNAM
+        ,ASLNAM
+        ,ASCODE
+        ,ASIDTYP
+        ,ASDTBIR
+        ,ASSTRDAT
+        ,ASOCCUP
+        ,ASCNTNAT
+        ,ASCNTDOM
+        ,ASCFNA2
+        ,ASCFNA3
+        ,ASCITDOM
+        ,ASSTADOM
+        ,ASZIPDOM
+        ,ASPHONE1
+        ,ASPHONE2
+        ,ASEMAIL
+        ,ASPOLEXP
+        ,ASRISK
+        ,ASSRCWEA
+        ,ASTARGTP
+        ,ASENDDAT
+        ,ASECOGRP
+        ,IMPYM
+        ,LMODDT
+        ,IMPDT
+        ,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data
+
+
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-assist.dbx.sql
+-- Source model: bronze_assist_master_account_tbl
+CREATE OR REPLACE TABLE bronze.default.bronze_assist_master_account_tbl AS
+-- NAME: BRONZE_ASSIST_MASTER_ACCOUNT_TBL
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY - 4TH BUSINESS DAY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+WITH landing_data as (
+    SELECT
+        ASACCT
+        ,ASOFDT
+        ,ASCIFN
+        ,ASBRNC
+        ,ASCURC
+        ,ASOFFI
+        ,ASCTYR
+        ,ASCLAS
+        ,ASDAOP
+        ,ASDACL
+        ,ASCODE
+        ,ASTYPE
+        ,ASBUST
+        ,ASTARGTP
+        ,ASCMCI
+        ,ASCMCO
+        ,ASBALA
+        ,ASFNAME
+        ,ASLNAME
+        ,ASCTYP
+        ,ASSTAT
+        ,ASABLK
+        ,ASCTYL
+        ,IMPYM
+        ,IMPDT
+        ,CAST(CAST(add_months(LOADED_AT, -1) AS STRING) AS INT) AS YEARMONTH
+        ,LOADED_AT
+    FROM
+        assist.default.assist_master_account_tbl
+),
+-- The SQL order of execution will run the where command first, so we are
+-- using the landing`s loaded_at on its run, this will capture new rows for us,
+-- on otherhand the select clause is using a new loaded_at that will replace this
+-- value with the loaded_at of this layer (bronze). Even if they have same names,
+--they are different concepts.
+
+bronze_data AS (
+    SELECT
+        ASACCT
+        ,ASOFDT
+        ,ASCIFN
+        ,ASBRNC
+        ,ASCURC
+        ,ASOFFI
+        ,ASCTYR
+        ,ASCLAS
+        ,ASDAOP
+        ,ASDACL
+        ,ASCODE
+        ,ASTYPE
+        ,ASBUST
+        ,ASTARGTP
+        ,ASCMCI
+        ,ASCMCO
+        ,ASBALA
+        ,ASFNAME
+        ,ASLNAME
+        ,ASCTYP
+        ,ASSTAT
+        ,ASABLK
+        ,ASCTYL
+        ,IMPYM
+        ,IMPDT
+        ,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data
+
+
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-assist.dbx.sql
+-- Source model: bronze_assist_officers_costcenter
+CREATE OR REPLACE TABLE bronze.default.bronze_assist_officers_costcenter AS
+-- NAME: BRONZE_ASSIST_OFFICERS_COSTCENTER
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY - 4TH BUSINESS DAY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+WITH landing_data as (
+    SELECT
+        officer_code
+        ,first_name
+        ,last_name
+        ,cost_center
+        ,CAST(CAST(add_months(LOADED_AT, -1) AS STRING) AS INT) AS YEARMONTH
+        ,LOADED_AT
+    FROM
+        assist.default.assist_officers_costcenter
+),
+-- The SQL order of execution will run the where command first, so we are
+-- using the landing`s loaded_at on its run, this will capture new rows for us,
+-- on otherhand the select clause is using a new loaded_at that will replace this
+-- value with the loaded_at of this layer (bronze). Even if they have same names,
+--they are different concepts.
+
+bronze_data AS (
+    SELECT
+        officer_code
+        ,first_name
+        ,last_name
+        ,cost_center
+        ,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data
+
+
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-assist.dbx.sql
+-- Source model: bronze_assist_transactions_tbl
+CREATE OR REPLACE TABLE bronze.default.bronze_assist_transactions_tbl AS
+-- NAME: BRONZE_ASSIST_TRANSACTIONS_TBL
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY - 4TH BUSINESS DAY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+WITH landing_data as (
+    SELECT
+        TRID
+        ,ASTRCD
+        ,ASAMTB
+        ,ASTRDA
+        ,ASACCT
+        ,ASDESC
+        ,ASAMTO
+        ,ASCURC
+        ,ASAPCO
+        ,ASTIME
+        ,ASORGI
+        ,ASTOBK
+        ,ASTIBK
+        ,ASTBBK
+        ,ASBENE
+        ,ASTRCO
+        ,ASORDE
+        ,ASTRDE
+        ,ASTVDA
+        ,ASTBNK
+        ,ASIBAN
+        ,ASCNTR
+        ,IMPYM
+        ,IMPDT
+        ,CAST(date_format(CAST(ASTRDA AS DATE),'yyyyMM') as INTEGER) AS YEARMONTH
+        ,LOADED_AT
+    FROM
+        assist.default.assist_transaction_tbl
+),
+-- The SQL order of execution will run the where command first, so we are
+-- using the landing`s loaded_at on its run, this will capture new rows for us,
+-- on otherhand the select clause is using a new loaded_at that will replace this
+-- value with the loaded_at of this layer (bronze). Even if they have same names,
+--they are different concepts.
+
+bronze_data AS (
+    SELECT
+        TRID
+        ,ASTRCD
+        ,ASAMTB
+        ,ASTRDA
+        ,ASACCT
+        ,ASDESC
+        ,ASAMTO
+        ,ASCURC
+        ,ASAPCO
+        ,ASTIME
+        ,ASORGI
+        ,ASTOBK
+        ,ASTIBK
+        ,ASTBBK
+        ,ASBENE
+        ,ASTRCO
+        ,ASORDE
+        ,ASTRDE
+        ,ASTVDA
+        ,ASTBNK
+        ,ASIBAN
+        ,ASCNTR
+        ,IMPYM
+        ,IMPDT
+        ,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data
+
+
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-auxiliary.dbx.sql
+-- Source model: bronze_auxiliary_br_dcode
+CREATE OR REPLACE TABLE bronze.default.bronze_auxiliary_br_dcode AS
+-- NAME: BRONZE_AUXILIARY_BR_DCODE
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY
+-- LOAD TYPE: FULL LOAD
+-- TYPE: SOURCE
+-- DATE: July 31, 2025
+
+
+
+WITH landing_data as (
+   SELECT * FROM (
+   VALUES
+        ('Account Type Description', 'J', 'Euro Denominator CDs'),
+        ('Account Type Description', 'U', 'Pershing Investment'),
+        ('Account Type Description', 'T', 'Time Deposit'),
+        ('Account Type Description', 'E', 'Dovenmuehle Mortgage'),
+        ('Account Type Description', 'I', 'BradescoInvestUS'),
+        ('Account Type Description', 'C', 'Letters of Credit'),
+        ('Account Type Description', 'R', 'Pershing Cash Acct'),
+        ('Account Type Description', 'D', 'Demand Deposit'),
+        ('Account Type Description', 'L', 'Loan'),
+        ('Account Type Description', 'S', 'Saving Account'),
+        ('Account Type Description', 'F', 'AMEX GOLD'),
+        ('Account Type Description', 'M', 'Amex Centurion'),
+        ('Account Type Description', 'N', 'Bradesco Credit Card')
+) AS t (Mapping_Type, `Key`, `Value`)
+)
+
+SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
+
+-- From bronze-auxiliary.dbx.sql
+-- Source model: bronze_auxiliary_jha_sei_trans_code
+CREATE OR REPLACE TABLE bronze.default.bronze_auxiliary_jha_sei_trans_code AS
+-- NAME: BRONZE_AUXILIARY_JHA_SEI_TRANS_CODE
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY
+-- LOAD TYPE: FULL LOAD
+-- TYPE: SOURCE
+-- DATE: October 17, 2025
+
+
+
+WITH landing_data AS (
+    SELECT * FROM (
+        VALUES
+         ('DDA', 365, 'C', 'I', '** Balance Credit in Serv Chg ', 'Cash Receipt', 'All', 'Addition to Account', 'Cash Deposits'),
+    ('DDA', 361, 'D', 'I', '** Below Minimum Balance Fee  ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 374, 'D', 'I', '** Below Minimum Balance Fee  ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 364, 'D', 'I', '** Dormant Fee (Savings & DDA)', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 363, 'D', 'I', '** FDIC Ins Fee in Serv Chg   ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 362, 'D', 'I', '** Item Charges in Serv Chrg  ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 373, 'D', 'I', '** Item Fee in Service Charge ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 378, 'D', 'I', '** Local Fee in Service Charge', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 367, 'D', 'I', '** Minimum Fee Debit to S/C   ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 375, 'D', 'I', '** MMD third party Excess Chg ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 368, 'C', 'I', '** OD Balance Credit to S/C   ', 'Cash Receipt', 'All', 'Addition to Account', 'Cash Deposits'),
+    ('DDA', 372, 'D', 'I', '** On Us Fee in Service Chg   ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 376, 'D', 'I', '** Regulation D Violation Fee ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 377, 'C', 'I', '** Rel. Pricing Credit to S/C ', 'Cash Receipt', 'All', 'Addition to Account', 'Cash Deposits'),
+    ('DDA', 366, 'C', 'I', '** Related Acct credit to S/C ', 'Cash Receipt', 'All', 'Addition to Account', 'Cash Deposits'),
+    ('DDA', 371, 'D', 'I', '** Transit Fee in Serv Charge ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 341, 'C', 'B', '3rd Party Sweeps Credit       ', 'Cash Receipt', 'All', 'Miscellaneous Receipt', 'Currency Transfer - Credit'),
+    ('DDA', 344, 'D', 'B', '3rd Party Sweeps Debit        ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 988, 'D', 'B', 'Account Analysis Bill Fee     ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 302, 'C', 'B', 'Account Recon Credit          ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 333, 'D', 'B', 'Account Service Fee           ', 'Cash Disbursement', 'All', 'Accounting Fees', 'Other Disbursement'),
+    ('DDA', 156, 'C', 'B', 'Accounts Payable Payment      ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 33, 'C', 'I', 'Accrued Interest Credit       ', 'Cash Receipt', 'All', 'Interest Payment', 'Other Interest'),
+    ('DDA', 63, 'D', 'I', 'Accrued Interest Debit        ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 163, 'C', 'B', 'ACH Credit                    ', 'Cash Receipt', 'All', 'Addition to Account', 'Cash Deposits'),
+    ('DDA', 183, 'D', 'B', 'ACH Debit                     ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 26, 'D', 'B', 'ACH FEE                       ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 59, 'C', 'B', 'ACH Returned                  ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 23, 'C', 'C', 'Add Int to Bal.-Raise YTD     ', 'Cash Receipt', 'All', 'Interest Payment', 'Other Interest'),
+    ('DDA', 161, 'C', 'B', 'AFT Credit                    ', 'Cash Receipt', 'All', 'Cash Receipt', 'Other Receipts'),
+    ('DDA', 181, 'D', 'B', 'AFT Debit                     ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 37, 'C', 'B', 'Ameri Transfer Cr.            ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 35, 'C', 'B', 'Ameritransfer Cr.             ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 34, 'D', 'B', 'Ameritransfer Dr.             ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 51, 'D', 'B', 'AmeriTransfer Incoming Transfe', 'Cash Disbursement', 'all', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 36, 'D', 'B', 'Ameritransfer Outgoing Transfe', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 825, 'C', 'B', 'ARP Return Item               ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 826, 'C', 'B', 'ARP Return Item               ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 272, 'D', 'B', 'ATM - Withdrawal - DDA        ', 'Cash Disbursement', 'Non-IRA Account', 'Withdrawal from Account', 'Withdrawal from Account'),
+    ('DDA', 297, 'D', 'B', 'ATM Credit Reversal           ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 296, 'C', 'B', 'ATM Debit Reversal            ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 222, 'C', 'B', 'ATM Deposit                   ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 232, 'C', 'B', 'ATM Deposit                   ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 212, 'C', 'B', 'ATM Deposit - DDA             ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 281, 'C', 'B', 'ATM Deposit - Savings         ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 294, 'D', 'B', 'ATM Service Charge            ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 299, 'D', 'B', 'ATM Service Charge            ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 295, 'C', 'B', 'ATM Service Charge Reversal   ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 298, 'C', 'B', 'ATM Service Charge Reversal   ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 132, 'D', 'B', 'ATM Transaction Charge        ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 261, 'D', 'B', 'ATM Transfer DDA to Savings   ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 287, 'C', 'B', 'ATM Transfer DDA to Savings   ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 242, 'C', 'B', 'ATM Transfer Savings to DDA   ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 283, 'D', 'B', 'ATM Transfer Savings to DDA   ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 227, 'D', 'B', 'ATM Withdrawal                ', 'Cash Disbursement', 'Non-IRA Account', 'Withdrawal from Account', 'Withdrawal from Account'),
+    ('DDA', 237, 'D', 'B', 'ATM Withdrawal                ', 'Cash Disbursement', 'Non-IRA Account', 'Withdrawal from Account', 'Withdrawal from Account'),
+    ('DDA', 285, 'D', 'B', 'ATM Withdrawal - Savings      ', 'Cash Disbursement', 'Non-IRA Account', 'Withdrawal from Account', 'Withdrawal from Account'),
+    ('DDA', 171, 'C', 'B', 'Automatic Cash Advance        ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 173, 'D', 'B', 'Automatic Cash Reserve Payment', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 473, 'D', 'B', 'Automatic Loan Payment        ', 'Cash Disbursement', 'All', 'Loan Payment', 'Other Disbursement'),
+    ('DDA', 21, 'C', 'B', 'Bene Deduct Reimbursement     ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 46, 'C', 'B', 'Book Transfer - Credit        ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 69, 'C', 'B', 'Book Transfer - Credit        ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 44, 'D', 'B', 'Book Transfer - Debit         ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 68, 'D', 'B', 'Book Transfer - Debit         ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 75, 'D', 'B', 'Book Transfer Online Fee      ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 311, 'C', 'B', 'Cash Management Credit        ', 'Cash Receipt', 'All', 'Cash Receipt', 'Other Receipts'),
+    ('DDA', 310, 'D', 'B', 'Cash Management Debit         ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 27, 'C', 'B', 'CASHIER,EXPENSE & INTEREST CK ', 'Cash Receipt', 'All', 'Interest Payment', 'Other Interest'),
+    ('DDA', 155, 'C', 'B', 'CD Interest                   ', 'Cash Receipt', 'All', 'Interest Payment', 'Other Interest'),
+    ('DDA', 135, 'D', 'B', 'Chargeback                    ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 319, 'D', 'B', 'Chargeback Item               ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 320, 'D', 'B', 'Chargeback Item Fee           ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 71, 'D', 'B', 'Check                 \SERIAL ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 72, 'D', 'B', 'Check                 \SERIAL ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 78, 'D', 'B', 'Check                 \SERIAL ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 185, 'D', 'B', 'Christmas Club Closing Entry  ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 921, 'C', 'B', 'Clear Pre-Auth Memo Hold      ', 'Cash Receipt', 'All', 'Cash Receipt', 'Miscellaneous'),
+    ('DDA', 917, 'D', 'C', 'Closing entry - create check  ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 918, 'D', 'C', 'Closing entry - Deposit funds ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 919, 'C', 'B', 'Closing entry - Deposit funds ', 'Cash Receipt', 'Non-IRA Account', 'Addition to Account', 'Cash Deposits'),
+    ('DDA', 914, 'D', 'B', 'Closing entry - service charge', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 916, 'D', 'C', 'Closing entry - zero balance  ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 926, 'C', 'C', 'Closing entry -Credit balance ', 'Cash Receipt', 'All', 'Interest Payment', 'Other Interest'),
+    ('DDA', 928, 'C', 'C', 'Closing entry -Credit transfer', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 929, 'D', 'B', 'Closing entry -Funds Transfer ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 913, 'C', 'B', 'Closing Entry:Accrued int paid', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 912, 'D', 'Y', 'Closing Entry:Increase YTD int', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 911, 'D', 'I', 'Closing Entry:Reduce accrued  ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 25, 'D', 'C', 'Closing Withdrawal            ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 186, 'D', 'Y', 'Club Account Interest Payment ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 170, 'D', 'B', 'Continuous Overdraft Charge   ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 972, 'C', 'B', 'Contract Collection Check     ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 970, 'C', 'B', 'Contract Collection Deposit   ', 'Cash Receipt', 'Non-IRA Account', 'Addition to Account', 'Cash Deposits'),
+    ('DDA', 971, 'D', 'B', 'Contract Collection Reversal  ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 250, 'C', 'I', 'Credit Accrual Adjustment     ', 'Cash Receipt', 'All', 'Interest Payment', 'Other Interest'),
+    ('DDA', 138, 'D', 'B', 'Credit Back Fee               ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 136, 'C', 'B', 'Credit Back Item              ', 'Cash Receipt', 'All', 'Cash Receipt', 'Other Receipts'),
+    ('DDA', 43, 'D', 'B', 'Credit Card Payment Fee       ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 42, 'D', 'B', 'Credit Card Payments          ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 425, 'C', 'B', 'Dealer disbursement credit    ', 'Cash Receipt', 'All', 'Cash Receipt', 'Other Receipts'),
+    ('DDA', 426, 'D', 'B', 'Dealer disbursement debit     ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 55, 'D', 'B', 'Debit                         ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 60, 'D', 'B', 'Debit                         ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 62, 'D', 'B', 'Debit                         ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 251, 'D', 'I', 'Debit Accrual Adjustment      ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 65, 'D', 'W', 'Debit YTD Withholding         ', 'Cash Receipt', 'IRA Account', 'Federal Withholding', '1099-MISC - Federal Income Tax Withheld'),
+    ('DDA', 65, 'D', 'W', 'Debit YTD Withholding         ', 'Cash Receipt', 'Non-IRA Account', 'Federal Withholding', 'Federal Withholding Tax on Distributions'),
+    ('DDA', 476, 'D', 'B', 'Debt Protection Payment       ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 3, 'C', 'B', 'Deposit                       ', 'Cash Receipt', 'Non-IRA Account', 'Addition to Account', 'Cash Deposits'),
+    ('DDA', 5, 'C', 'B', 'Deposit                       ', 'Cash Receipt', 'Non-IRA Account', 'Addition to Account', 'Cash Deposits'),
+    ('DDA', 9, 'C', 'B', 'Deposit                       ', 'Cash Receipt', 'Non-IRA Account', 'Addition to Account', 'Cash Deposits'),
+    ('DDA', 20, 'C', 'B', 'Deposit                       ', 'Cash Receipt', 'Non-IRA Account', 'Addition to Account', 'Cash Deposits'),
+    ('DDA', 32, 'C', 'B', 'Deposit                       ', 'Cash Receipt', 'Non-IRA Account', 'Addition to Account', 'Cash Deposits'),
+    ('DDA', 41, 'D', 'Y', 'Deposit                       ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 12, 'C', 'B', 'Deposit Adjustment            ', 'Cash Receipt', 'Non-IRA Account', 'Addition to Account', 'Cash Deposits'),
+    ('DDA', 54, 'D', 'B', 'Deposit Adjustment-Collection ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 14, 'C', 'B', 'Deposit Adjustment-Credit     ', 'Cash Receipt', 'Non-IRA Account', 'Addition to Account', 'Cash Deposits'),
+    ('DDA', 150, 'C', 'B', 'Deposit from CD               ', 'Cash Receipt', 'Non-IRA Account', 'Addition to Account', 'Cash Deposits'),
+    ('DDA', 56, 'C', 'B', 'Deposit or Special item       ', 'Cash Receipt', 'Non-IRA Account', 'Addition to Account', 'Cash Deposits'),
+    ('DDA', 157, 'C', 'B', 'Distribution from IRA         ', 'Cash Receipt', 'IRA Account', 'Cash Receipt', 'Miscellaneous'),
+    ('DDA', 57, 'D', 'B', 'Dr Official Ck to abandom prop', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 188, 'D', 'B', 'EAA Net Charge                ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 800, 'C', 'B', 'EAA Net Excess Credit         ', 'Cash Receipt', 'All', 'Cash Receipt', 'Other Receipts'),
+    ('DDA', 401, 'C', 'B', 'EFT Credit                    ', 'Cash Receipt', 'All', 'Cash Receipt', 'Other Receipts'),
+    ('DDA', 400, 'D', 'B', 'EFT Debit                     ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 50, 'D', 'B', 'Escrow Disbursement           ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 175, 'D', 'B', 'Excess MMD transaction charge ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 198, 'D', 'B', 'Federal Interest Withheld     ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 133, 'C', 'W', 'Federal withholding           ', 'Cash Disbursement', 'IRA Account', 'Federal Withholding', 'Federal Withholding Tax on Distributions'),
+    ('DDA', 133, 'C', 'W', 'Federal withholding           ', 'Cash Disbursement', 'Non-IRA Account', 'Federal Withholding', 'Federal Withholding Tax on Distributions'),
+    ('DDA', 334, 'C', 'B', 'Fee Code                      ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 960, 'C', 'B', 'Fresh Start Advance           ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 961, 'D', 'B', 'Fresh Start Payment           ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 102, 'D', 'B', 'Funding Investment Account    ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 147, 'D', 'B', 'Funds To Open CD              ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 647, 'D', 'B', 'Funds To Open CD              ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 53, 'D', 'B', 'Funds To Open Time Deposit    ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 752, 'D', 'B', 'HB Transaction Fee            ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 28, 'D', 'B', 'Hold Mail Service Charge      ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 77, 'D', 'B', 'Inclearing check Adjustment   ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 8, 'C', 'B', 'Incoming Wire Transfer        ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 91, 'C', 'W', 'Increase Federal Withholding  ', 'Cash Receipt', 'IRA Account', 'Federal Withholding', 'Federal Withholding Tax on Distributions'),
+    ('DDA', 91, 'C', 'W', 'Increase Federal Withholding  ', 'Cash Receipt', 'Non-IRA Account', 'Federal Withholding', 'Federal Withholding Tax on Distributions'),
+    ('DDA', 317, 'C', 'B', 'In-Person Transfer Credit     ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 316, 'D', 'B', 'In-Person Transfer Debit      ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 122, 'D', 'B', 'Insufficient Funds Charge     ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 767, 'D', 'B', 'Int Bnking ACH batch          ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 768, 'D', 'B', 'Int Bnking ACH file upload    ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 766, 'D', 'B', 'Int Bnking ACH items          ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 757, 'D', 'B', 'Int Bnking adding a stop      ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 780, 'D', 'B', 'Int Bnking ARP file upload    ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 770, 'D', 'B', 'Int Bnking Bill Pay cycle fee ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 769, 'D', 'B', 'Int Bnking Bill Pay enroll fee', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 771, 'D', 'B', 'Int Bnking Bill Pay item fee  ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 755, 'D', 'B', 'Int Bnking current day inquiry', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 760, 'D', 'B', 'Int Bnking doing a repeat wire', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 759, 'D', 'B', 'Int Bnking doing a single wire', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 763, 'D', 'B', 'Int Bnking downloading file   ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 772, 'C', 'B', 'Int Bnking E-mail alert credit', 'Cash Receipt', 'All', 'Cash Receipt', 'Other Receipts'),
+    ('DDA', 773, 'D', 'B', 'Int Bnking E-mail alert fee   ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 756, 'D', 'B', 'Int Bnking history inquiry    ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 758, 'D', 'B', 'Int Bnking inquiring on a stop', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 754, 'D', 'B', 'Int Bnking prior day inquiry  ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 753, 'D', 'B', 'Int Bnking Service Charge     ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 774, 'C', 'B', 'Int Bnking text alert credit  ', 'Cash Receipt', 'All', 'Cash Receipt', 'Other Receipts'),
+    ('DDA', 775, 'D', 'B', 'Int Bnking text alert fee     ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 762, 'D', 'B', 'Int Bnking transfering funds  ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 764, 'D', 'B', 'Int Bnking uploading pos pay  ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 765, 'D', 'B', 'Int Bnking uploading recon    ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 761, 'D', 'B', 'Int Bnking view of statement  ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 70, 'D', 'B', 'Interbank Transfer Fee        ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 160, 'C', 'B', 'Interest Deposit              ', 'Cash Receipt', 'All', 'Interest Payment', 'Other Interest'),
+    ('DDA', 169, 'D', 'B', 'Interest on Overdraft Balance ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 151, 'C', 'I', 'Interest Rate Change          ', 'Cash Receipt', 'All', 'Interest Payment', 'Other Interest'),
+    ('DDA', 167, 'C', 'B', 'Interest Transfer Credit      ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 166, 'D', 'B', 'Interest Transfer Debit       ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 24, 'D', 'B', 'Interest Uncollected Balance  ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 191, 'D', 'B', 'Interest Withheld - Checking  ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 192, 'D', 'B', 'Interest Withheld - Savings   ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 193, 'D', 'B', 'Interest Withheld - Xmas Club ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 194, 'D', 'B', 'Interest Withheld for CD      ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 195, 'D', 'B', 'Interest Withheld for Escrow  ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 196, 'D', 'B', 'Interest Withheld for Escrow  ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 197, 'D', 'B', 'Interest Withheld for LIP     ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 38, 'D', 'B', 'Internal Transfer/same client ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 39, 'C', 'B', 'Internal Transfer/same client ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 47, 'D', 'B', 'Internal/book transfer        ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 103, 'C', 'B', 'Investment Withdrawal         ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 689, 'C', 'B', 'IRA Transfer                  ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 2, 'D', 'B', 'Last Month S/C Ave Under 50MM ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 158, 'D', 'B', 'Lease security check          ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 152, 'C', 'B', 'Lease security credit         ', 'Cash Receipt', 'All', 'Cash Receipt', 'Other Receipts'),
+    ('DDA', 153, 'D', 'B', 'Lease security debit          ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 154, 'D', 'Y', 'Lease security increase YTD   ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 98, 'C', 'B', 'Zelle Credit', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 96, 'D', 'B', 'Letter Of Credit Amendment    ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 99, 'D', 'B', 'Zelle Debit', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 94, 'D', 'B', 'LETTER OF CREDIT ISSUANCE     ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 97, 'D', 'B', 'Letter Of Credit Payment      ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 190, 'D', 'B', 'List Post                     ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 410, 'C', 'B', 'Loan dealer interest credit   ', 'Cash Receipt', 'All', 'Interest on Loan Payment', 'Other Interest'),
+    ('DDA', 430, 'C', 'B', 'Loan escrow disbursement      ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 61, 'D', 'B', 'Loan Payment                  ', 'Cash Disbursement', 'All', 'Loan Payment', 'Other Disbursement'),
+    ('DDA', 164, 'C', 'B', 'Loans In Process Payment      ', 'Cash Receipt', 'All', 'Loan Payment', 'Loan Payment'),
+    ('DDA', 920, 'C', 'B', 'Memo Credit                   ', 'Cash Receipt', 'All', 'Cash Receipt', 'Miscellaneous'),
+    ('DDA', 980, 'D', 'B', 'Memo Debit                    ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 30, 'C', 'B', 'Misc. Credit                  ', 'Cash Receipt', 'All', 'Cash Receipt', 'Miscellaneous'),
+    ('DDA', 85, 'D', 'B', 'Misc. Credit  (PTA)           ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 101, 'D', 'B', 'Monthly Maintenance Fee       ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 1, 'D', 'B', 'Monthly S/C Daily Statements  ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 177, 'D', 'B', 'Multiple Statement Copy Fee   ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 176, 'D', 'B', 'Multiple Statement Cycle Fee  ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 58, 'D', 'B', 'Netteller Book Transfer Fee   ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 121, 'D', 'B', 'Non-Sufficient Funds Fee      ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 178, 'D', 'B', 'Non-Sufficient Funds Fee      ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 557, 'D', 'B', 'Non-Sufficient Funds Fee      ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 123, 'D', 'B', 'NSF Item Paid                 ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 127, 'D', 'B', 'NSF Item Paid                 ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 174, 'C', 'I', 'ODP Payment - Interest        ', 'Cash Receipt', 'All', 'Interest Payment', 'Other Interest'),
+    ('DDA', 87, 'D', 'B', 'Outgoing W/T International Fee', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 83, 'D', 'B', 'Outgoing Wire ( Bene-Deduct ) ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 93, 'D', 'B', 'Outgoing Wire Transfer        ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 86, 'D', 'B', 'Outgoing Wire Transfer-USA Fee', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 52, 'D', 'B', 'Over the counter Withdrawal   ', 'Cash Disbursement', 'Non-IRA Account', 'Withdrawal from Account', 'Withdrawal from Account'),
+    ('DDA', 129, 'D', 'B', 'Overdraft Item Charge         ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 13, 'D', 'B', 'Overnight Investment          ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 10, 'C', 'B', 'Overnight Investment Interest ', 'Cash Receipt', 'All', 'Interest Payment', 'Other Interest'),
+    ('DDA', 128, 'D', 'B', 'Paid Item Fee                 ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 179, 'D', 'B', 'Paid Item Fee                 ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 550, 'D', 'B', 'Paid Item Fee                 ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 472, 'C', 'B', 'Participation Credit          ', 'Cash Receipt', 'All', 'Cash Receipt', 'Other Receipts'),
+    ('DDA', 475, 'D', 'B', 'Participation Debit           ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 22, 'D', 'B', 'Payment Platform Fee Corp     ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 76, 'D', 'B', 'Payment Platform Fee Indv     ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 73, 'C', 'B', 'Payment Platform Inc Trf      ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 74, 'D', 'B', 'Payment Platform Out Trf      ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 233, 'C', 'B', 'POS - Credit - Savings        ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 223, 'C', 'B', 'POS Credit - DDA              ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 228, 'D', 'B', 'POS Debit - DDA               ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 238, 'D', 'B', 'POS Debit - Savings           ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 229, 'D', 'B', 'POS Pre-Authorized Debit - DDA', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 239, 'D', 'B', 'POS Pre-Authorized Debit - Sav', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 981, 'D', 'B', 'Pre-auth Memo Hold            ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 16, 'C', 'B', 'Previous Day Overnight Invest ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 159, 'D', 'B', 'Print Interest Check          ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 187, 'C', 'B', 'Proceeds of Club Account      ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 301, 'D', 'B', 'RC T/C                        ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 205, 'D', 'B', 'Redeposit fee                 ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 100, 'D', 'B', 'Reduced Fee Below Minimum Bala', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 89, 'D', 'B', 'Reduced Wire Transfer Fee     ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 92, 'C', 'Y', 'Reduces YTD Inerest           ', 'Cash Receipt', 'All', 'Interest Payment', 'Other Interest'),
+    ('DDA', 88, 'C', 'B', 'Refund Charge Reversal        ', 'Cash Receipt', 'All', 'Miscellaneous Receipt', 'Addition to Account'),
+    ('DDA', 120, 'C', 'B', 'Return Item Credit            ', 'Cash Receipt', 'All', 'Cash Receipt', 'Other Receipts'),
+    ('DDA', 137, 'D', 'B', 'Returned Check Fee            ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 7, 'C', 'B', 'Returned Item Credit          ', 'Cash Receipt', 'All', 'Cash Receipt', 'Other Receipts'),
+    ('DDA', 119, 'C', 'B', 'Returned Item Credit          ', 'Cash Receipt', 'All', 'Cash Receipt', 'Other Receipts'),
+    ('DDA', 31, 'C', 'B', 'Rev WT Book/Internal TRF Fee  ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 49, 'C', 'B', 'Reveresal NT Wire Fee         ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 40, 'C', 'B', 'Reversal of FED Int Withheld  ', 'Cash Receipt', 'All', 'Miscellaneous Receipt', 'Addition to Account'),
+    ('DDA', 18, 'C', 'B', 'Reverse Book Transfer - Credit', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 45, 'D', 'B', 'Reverse Book TRF Debit        ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 19, 'C', 'B', 'Reverse Book TRF Fee          ', 'Cash Receipt', 'All', 'Miscellaneous Receipt', 'Addition to Account'),
+    ('DDA', 81, 'C', 'B', 'Reverse Fee Below Minimum Bala', 'Cash Receipt', 'All', 'Miscellaneous Receipt', 'Addition to Account'),
+    ('DDA', 556, 'C', 'B', 'Reverse NCF Item Charge       ', 'Cash Receipt', 'All', 'Miscellaneous Receipt', 'Addition to Account'),
+    ('DDA', 139, 'C', 'B', 'Reverse NonSufficient Fund Fee', 'Cash Receipt', 'All', 'Miscellaneous Receipt', 'Addition to Account'),
+    ('DDA', 558, 'C', 'B', 'Reverse NonSufficient Fund Fee', 'Cash Receipt', 'All', 'Miscellaneous Receipt', 'Addition to Account'),
+    ('DDA', 124, 'C', 'B', 'Reverse NSF Item Charge       ', 'Cash Receipt', 'All', 'Miscellaneous Receipt', 'Addition to Account'),
+    ('DDA', 84, 'C', 'B', 'Reverse Positive Pay Serv Fee ', 'Cash Receipt', 'All', 'Miscellaneous Receipt', 'Addition to Account'),
+    ('DDA', 79, 'C', 'B', 'Reverse Remote Deposit Fee    ', 'Cash Receipt', 'All', 'Cash Receipt', 'Other Receipts'),
+    ('DDA', 551, 'C', 'B', 'Reverse UCF Item Charge       ', 'Cash Receipt', 'All', 'Miscellaneous Receipt', 'Addition to Account'),
+    ('DDA', 559, 'C', 'B', 'Reverse UCF Item Charge       ', 'Cash Receipt', 'All', 'Miscellaneous Receipt', 'Addition to Account'),
+    ('DDA', 370, 'D', 'I', 'S/C per Credit Items          ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 369, 'D', 'I', 'S/C per Debit Items           ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 17, 'C', 'B', 'S/C Uncollected Funds Reversal', 'Cash Receipt', 'All', 'Miscellaneous Receipt', 'Addition to Account'),
+    ('DDA', 110, 'D', 'B', 'Safe Deposit Rental Payment   ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 189, 'D', 'B', 'Sales Tax on Service Charge   ', 'Cash Disbursement', 'All', 'Other Taxes', 'Other Taxes'),
+    ('DDA', 82, 'D', 'B', 'Savings Cash Withdrawal       ', 'Cash Disbursement', 'Non-IRA Account', 'Withdrawal from Account', 'Withdrawal from Account'),
+    ('DDA', 15, 'C', 'B', 'Savings Deposit               ', 'Cash Receipt', 'Non-IRA Account', 'Addition to Account', 'Cash Deposits'),
+    ('DDA', 48, 'D', 'B', 'Savings Funds To Open CD      ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 95, 'D', 'B', 'Savings Withdrawal            ', 'Cash Disbursement', 'Non-IRA Account', 'Withdrawal from Account', 'Withdrawal from Account'),
+    ('DDA', 180, 'D', 'B', 'Service Charge                ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 360, 'D', 'B', 'Service Charge                ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 6, 'C', 'B', 'Shadow Deposit ICS            ', 'Cash Receipt', 'Non-IRA Account', 'Addition to Account', 'Cash Deposits'),
+    ('DDA', 741, 'C', 'B', 'Shadow Transfer from DDA      ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 742, 'C', 'B', 'Shadow Transfer from Savings  ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 744, 'D', 'B', 'Shadow Transfer to DDA        ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 745, 'D', 'B', 'Shadow Transfer to Savings    ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 4, 'D', 'B', 'Shadow Withdrawal ICS         ', 'Cash Disbursement', 'Non-IRA Account', 'Withdrawal from Account', 'Withdrawal from Account'),
+    ('DDA', 199, 'D', 'B', 'State Interest Withheld       ', 'Cash Disbursement', 'All', 'Interest Payment', 'Interest - Miscellaneous'),
+    ('DDA', 134, 'C', 'S', 'State withholding             ', 'Cash Receipt', 'IRA Account', 'State Tax Withheld by Payer - Adjustment', '1099-MISC - State Income Tax Withheld'),
+    ('DDA', 134, 'C', 'S', 'State withholding             ', 'Cash Receipt', 'Non-IRA Account', 'State Withholding', '1099-MISC - State Income Tax Withheld'),
+    ('DDA', 165, 'C', 'B', 'Stockholder Dividend Deposit  ', 'Cash Receipt', 'Non-IRA Account', 'Addition to Account', 'Cash Deposits'),
+    ('DDA', 130, 'D', 'B', 'Stop Payment                  ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 64, 'D', 'B', 'Stop Payment Check Replacement', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 125, 'C', 'B', 'Stop Payment Returned Item    ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 126, 'C', 'B', 'Stop Payment Returned Item    ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 131, 'D', 'B', 'Sweep Transaction Charge      ', 'Cash Disbursement', 'All', 'Miscellaneous Expense', 'Other Miscellaneous Expenses'),
+    ('DDA', 471, 'C', 'B', 'Syndication Credit            ', 'Cash Receipt', 'All', 'Cash Receipt', 'Other Receipts'),
+    ('DDA', 474, 'D', 'B', 'Syndication Debit             ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 114, 'C', 'B', 'Telephone Transfer Credit     ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 113, 'D', 'B', 'Telephone Transfer Debit      ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 115, 'D', 'B', 'Telephone Transfer Fee        ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 66, 'C', 'B', 'Teller Book Transfer - Credit ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 67, 'D', 'B', 'Teller Book Transfer - Debit  ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 11, 'C', 'B', 'Trade Credit                  ', 'Cash Receipt', 'All', 'Cash Receipt', 'Addition to Account'),
+    ('DDA', 90, 'D', 'B', 'Trade Debit                   ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 750, 'D', 'B', 'Trans to DDA Credit Relation  ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 751, 'D', 'B', 'Trans to Sav Credit Relation  ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 140, 'C', 'B', 'Transfer From CD              ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 640, 'C', 'B', 'Transfer From CD              ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 141, 'C', 'B', 'Transfer from DDA             ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 641, 'C', 'B', 'Transfer from DDA             ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 541, 'C', 'B', 'Transfer from G/L             ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 143, 'C', 'B', 'Transfer from Loan            ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 643, 'C', 'B', 'Transfer from Loan            ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 142, 'C', 'B', 'Transfer from Savings         ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 642, 'C', 'B', 'Transfer from Savings         ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 149, 'D', 'B', 'Transfer to Christmas Club    ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 144, 'D', 'B', 'Transfer to DDA               ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 644, 'D', 'B', 'Transfer to DDA               ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 544, 'D', 'B', 'Transfer to G/L               ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 148, 'D', 'B', 'Transfer to IRA               ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 146, 'D', 'B', 'Transfer to Loan              ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 646, 'D', 'B', 'Transfer to Loan              ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 145, 'D', 'B', 'Transfer to Savings           ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 645, 'D', 'B', 'Transfer to Savings           ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 201, 'C', 'B', 'Voice Response Credit         ', 'Cash Receipt', 'All', 'Cash Receipt', 'Other Receipts'),
+    ('DDA', 202, 'D', 'B', 'Voice Response Debit          ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 203, 'D', 'B', 'VR Transaction Fee            ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 116, 'C', 'B', 'Wire Transfer Credit          ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 111, 'D', 'B', 'Wire Transfer Debit           ', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Currency Transfer - Debit'),
+    ('DDA', 29, 'D', 'B', 'Wire Transfer Fee             ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 112, 'D', 'B', 'Wire Transfer Fee             ', 'Cash Disbursement', 'All', 'Miscellaneous Fee', 'Miscellaneous Fee'),
+    ('DDA', 80, 'C', 'B', 'Wire Transfer Fee Reversal    ', 'Cash Receipt', 'All', 'Addition to Account', 'Transfers Received'),
+    ('DDA', 104, 'D', 'B', 'Custody Acct-Cash Disbursement', 'Cash Disbursement', 'All', 'Cash Disbursement', 'Other Disbursement'),
+    ('DDA', 105, 'C', 'B', 'Me to Me Transit Account Cr', 'Cash Receipt', 'All', 'Cash Receipt', 'Other Receipts'),
+    ('DDA', 106, 'C', 'B', 'Custody Account-Cash Receipt', 'Cash Receipt', 'All', 'Cash Receipt', 'Other Receipts'),
+    ('CD', 663, 'C', 'B', 'ACH Credit                              ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 683, 'D', 'B', 'ACH Debit                               ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 641, 'C', 'B', 'Automatic Transfer from DDA             ', 'Free Receipt', 'All', 'Contribution', 'Free Receipt Of Security'),
+    ('CD', 650, 'C', 'B', 'Automatic Transfer from G/L             ', 'Free Receipt', 'All', 'Contribution', 'Free Receipt Of Security'),
+    ('CD', 647, 'C', 'B', 'Automatic Transfer from Loan            ', 'Free Receipt', 'All', 'Contribution', 'Free Receipt Of Security'),
+    ('CD', 648, 'C', 'B', 'Automatic Transfer from ODP             ', 'Free Receipt', 'All', 'Contribution', 'Free Receipt Of Security'),
+    ('CD', 642, 'C', 'B', 'Automatic Transfer from Savings         ', 'Free Receipt', 'All', 'Contribution', 'Free Receipt Of Security'),
+    ('CD', 645, 'D', 'B', 'Automatic Transfer to DDA               ', 'Free Delivery', 'All', 'Free Delivery', 'Security Transfer - Other'),
+    ('CD', 646, 'D', 'B', 'Automatic Transfer to Savings           ', 'Free Delivery', 'All', 'Free Delivery', 'Security Transfer - Other'),
+    ('CD', 826, 'C', 'B', 'Balancing Transaction from CDBAL        ', 'Free Receipt', 'All', 'Contribution', 'Free Receipt Of Security'),
+    ('CD', 828, 'D', 'B', 'Balancing Transaction from CDBAL        ', 'Free Delivery', 'All', 'Free Delivery', 'Security Transfer - Other'),
+    ('CD', 10, 'C', 'B', 'CD Deposit                              ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 2, 'C', 'B', 'CD Increase Deposit                     ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 670, 'D', 'I', 'CD Interest Payment                     ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 5, 'C', 'B', 'CD-Credit Memo                          ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 6, 'D', 'B', 'CD-Debit Memo                           ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 681, 'C', 'B', 'Closing balance adjustment credit       ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 680, 'D', 'B', 'Closing balance adjustment debit        ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 684, 'C', 'C', 'Credit closing interest for Death Dist. ', 'Free Receipt', 'All', 'Death Distribution', 'Death Distribution'),
+    ('CD', 12, 'C', 'C', 'Credit Interest to Balance/Raise YTD    ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 686, 'C', 'B', 'Death Contribution                      ', 'Free Receipt', 'All', 'Death Distribution', 'Death Distribution'),
+    ('CD', 687, 'D', 'B', 'Death Distribution Transfer             ', 'Free Delivery', 'All', 'Death Distribution', 'Death Distribution'),
+    ('CD', 688, 'C', 'B', 'Death Transfer                          ', 'Free Receipt', 'All', 'Death Distribution', 'Death Distribution'),
+    ('CD', 979, 'D', 'C', 'Debit Closing                           ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 13, 'D', 'C', 'Debit Interest to Balance/Raise YTD     ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 40, 'D', 'I', 'Decrease Accrued Interest               ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 95, 'D', 'W', 'Decrease Federal Withholding            ', 'Free Receipt', 'All', 'Free Receipt','Free Receipt Of Security'),
+    ('CD', 41, 'D', 'P', 'Decrease Penalty YTD                    ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 42, 'C', 'Y', 'Decrease YTD Interest                   ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 640, 'C', 'B', 'Deposit from CD withdrawal              ', 'Free Receipt', 'All', 'Reinvestment', 'Free Receipt Of Security'),
+    ('CD', 690, 'C', 'B', 'FDICLBIDM Insurance Determination Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 691, 'D', 'B', 'FDICLBIDM Insurance Determination Debit ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 623, 'D', 'B', 'Fed Withholding Balance Reduction       ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 675, 'C', 'W', 'Federal Interest Withheld               ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 750, 'C', 'I', 'Generated Int Credit for Backdated Trans', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 751, 'D', 'I', 'Generated Int Debit for Backdated Trans ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 14, 'C', 'I', 'Increase Accrued Interest               ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 17, 'C', 'W', 'Increase Federal Withholding            ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 629, 'C', 'P', 'Increase Penalty Paid YTD               ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 18, 'C', 'S', 'Increase State Withholding              ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 16, 'D', 'Y', 'Increase YTD Interest                   ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 15, 'C', 'P', 'Increase YTD Penalty                    ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 671, 'C', 'B', 'Interest Added Back                     ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 674, 'D', 'Y', 'Interest Paid by ACH Deposit            ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 672, 'D', 'Y', 'Interest Paid by Check                  ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 673, 'D', 'Y', 'Interest Paid by Deposit                ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 651, 'C', 'I', 'Interest Rate Change                    ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 20, 'C', 'B', 'IRA - Current Year Contribution         ', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 55, 'D', 'B', 'IRA - Death W/D Current Tax Year        ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 56, 'D', 'B', 'IRA - Death W/D Previous Tax Year       ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 53, 'D', 'B', 'IRA - Disability W/D Current Tax Year   ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 54, 'D', 'B', 'IRA - Disability W/D Previous Tax Year  ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 62, 'D', 'B', 'IRA - Excess Contribution W/D Curr Tx Yr', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 63, 'D', 'B', 'IRA - Excess Contribution W/D Prev Tx Yr', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 22, 'C', 'B', 'IRA - External Rollover Deposit         ', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 57, 'D', 'B', 'IRA - External Rollover W/D Current Yr  ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 21, 'C', 'B', 'IRA - External Transfer Deposit         ', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 43, 'D', 'B', 'IRA - Fees Assessed                     ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 19, 'C', 'B', 'IRA - Internal Renewal Transfer Deposit ', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 59, 'D', 'B', 'IRA - Legal Representative W/D Cur. Yr  ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 60, 'D', 'B', 'IRA - Legal Representative W/D Prev. Yr ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 37, 'D', 'B', 'IRA - Miscellaneous Debit               ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 61, 'D', 'B', 'IRA - Normal Withdrawal Current Tax Year', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 51, 'D', 'B', 'IRA - Premature W/D Current Tax Year    ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 52, 'D', 'B', 'IRA - Premature W/D Previous Tax Year   ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 66, 'D', 'B', 'IRA - Previous Year Withdrawal          ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 23, 'C', 'B', 'IRA - Prior Year Contribution           ', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 44, 'C', 'B', 'IRA - Reverse Fees Assessed             ', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 64, 'D', 'B', 'IRA - Transfer for Spouse W/D Curr Tx Yr', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 65, 'D', 'B', 'IRA - Transfer for Spouse W/D Prev Tx Yr', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 50, 'D', 'B', 'IRA - Transfer W/D Current Tax Year     ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 658, 'D', 'B', 'IRA Auto Prior Year Distribution        ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 685, 'D', 'B', 'IRA Death Distribution                  ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 657, 'D', 'B', 'IRA Distribution                        ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 633, 'D', 'B', 'IRA Excess Contribution Withdrawal      ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 631, 'D', 'B', 'IRA Rollover Withdrawal                 ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 632, 'D', 'B', 'IRA Transfer Withdrawal                 ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 630, 'D', 'B', 'IRA Withdrawal for Current Year         ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 3, 'C', 'B', 'IRA-Miscellaneous Credit                ', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 4, 'D', 'B', 'IRA-Miscellaneous Debit                 ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 941, 'D', 'I', 'Memo Accrual Adjustment Decrease        ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 940, 'C', 'I', 'Memo Accrual Adjustment Increase        ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 920, 'C', 'B', 'Memo Credit                             ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 980, 'D', 'B', 'Memo Debit                              ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 974, 'D', 'W', 'Memo Decrease Federal Interest Withheld ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 930, 'D', 'P', 'Memo Decrease Penalty Paid YTD          ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 977, 'D', 'S', 'Memo Decrease State Interest Withheld   ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 975, 'C', 'W', 'Memo Federal Interest Withheld          ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 929, 'C', 'P', 'Memo Increase Penlaty Paid YTD          ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 926, 'D', 'B', 'Memo Penalty Balance Reduction          ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 976, 'C', 'S', 'Memo State Interest Withheld            ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 925, 'D', 'B', 'Memo Withdrawal Balance Reduction       ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 927, 'D', 'B', 'Memo Withdrawal Fee                     ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 928, 'C', 'C', 'Memo Withdrawal Interest Credit         ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 950, 'C', 'Y', 'Memo YTD Interest Decrease              ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 951, 'D', 'Y', 'Memo YTD Interest Increase              ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 1, 'C', 'B', 'New CD Deposit                          ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 38, 'D', 'B', 'Partial Redemption - Regular CD         ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 626, 'D', 'B', 'Penalty Balance Reduction               ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 874, 'D', 'Y', 'Premature Int Distribution by ACH Dep   ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 872, 'D', 'Y', 'Premature Int Distribution by Check     ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 873, 'D', 'Y', 'Premature Int Distribution by Deposit   ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 733, 'C', 'I', 'Purged Accrued Credits                  ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 703, 'D', 'I', 'Purged Accrued Debits                   ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 731, 'C', 'B', 'Purged Balance Credits                  ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 701, 'D', 'B', 'Purged Balance Debits                   ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 732, 'C', 'C', 'Purged Closing Credits                  ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 702, 'D', 'C', 'Purged Closing Debits                   ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 736, 'C', 'W', 'Purged Fed Withholding Credits          ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 706, 'D', 'W', 'Purged Fed Withholding Debits           ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 734, 'C', 'P', 'Purged Penalty Credits                  ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 704, 'D', 'P', 'Purged Penalty Debits                   ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 735, 'C', 'S', 'Purged State Withholding Credits        ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 705, 'D', 'S', 'Purged State Withholding Debits         ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 737, 'C', 'I', 'Purged YTD Interest Credits             ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 707, 'D', 'I', 'Purged YTD Interest Debits              ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 39, 'D', 'B', 'Redemption Withdrawal - Regular CD      ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 30, 'D', 'B', 'Reversal IRA - Current Year Contribution', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 32, 'D', 'B', 'Reversal IRA - External Rollover Deposit', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 31, 'D', 'B', 'Reversal IRA - External Transfer Deposit', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 36, 'D', 'B', 'Reversal IRA - Miscellaneous Credit     ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 33, 'D', 'B', 'Reversal IRA - Prior Year Contribution  ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 34, 'D', 'B', 'Reversal SEP - Current Year Contribution', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 35, 'D', 'B', 'Reversal SEP - Prior Year Contribution  ', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 75, 'C', 'B', 'Reverse-IRA - Death W/D Curr. Year      ', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 76, 'C', 'B', 'Reverse-IRA - Death W/D Prev. Year      ', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 73, 'C', 'B', 'Reverse-IRA - Disability W/D Curr. Yr   ', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 74, 'C', 'B', 'Reverse-IRA - Disability W/D Prev. Year ', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 82, 'C', 'B', 'Reverse-IRA - Excess Cont. W/D Curr Yr  ', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 83, 'C', 'B', 'Reverse-IRA - Excess Cont. W/D Prev Yr  ', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 77, 'C', 'B', 'Reverse-IRA - Ext. Rollover W/D Curr. Yr', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 79, 'C', 'B', 'Reverse-IRA - Legal Rep. W/D Cur. Yr    ', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 80, 'C', 'B', 'Reverse-IRA - Legal Rep. W/D Prev. Yr   ', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 81, 'C', 'B', 'Reverse-IRA - Normal W/D Current Year   ', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 71, 'C', 'B', 'Reverse-IRA - Premature W/D Curr. Year  ', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 72, 'C', 'B', 'Reverse-IRA - Premature W/D Prev. Year  ', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 70, 'C', 'B', 'Reverse-IRA - Transfer W/D Curr. Year   ', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 84, 'C', 'B', 'Reverse-IRA - Tsf for Spouse W/D Curr Yr', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 85, 'C', 'B', 'Reverse-IRA - Tsf for Spouse W/D Prev Yr', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 29, 'D', 'B', 'Reversel IRA -Internal Renewal Trans Dep', 'Free Delivery', 'All', NULL, NULL),
+    ('CD', 24, 'C', 'B', 'SEP - Current Year Contribution         ', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 25, 'C', 'B', 'SEP - Prior Year Contribution           ', 'Free Receipt', 'All', NULL, NULL),
+    ('CD', 679, 'D', 'B', 'Service Fee                             ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 676, 'C', 'S', 'State Interest Withheld                 ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 624, 'D', 'B', 'State Withholding Balance Reduction     ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 625, 'D', 'B', 'Withdrawal Balance Reduction            ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 620, 'D', 'C', 'Withdrawal Closing Entry                ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 100, 'D', 'C', 'Withdrawal Closing Entry-Digital Banking', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 627, 'D', 'B', 'Withdrawal Fee                          ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 628, 'C', 'C', 'Withdrawal Interest Credit              ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('CD', 677, 'C', 'W', 'Withholding - Federal                   ', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('CD', 678, 'C', 'S', 'Withholding - State                     ', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 5, 'Debit', 'Principal', 'New Loan Advance', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 6, 'Debit', 'Principal', 'Principal Draw', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 7, 'Debit', 'Principal', 'Force Principal Draw', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 8, 'Credit', 'Backdated Payoff', 'Backdated Payoff', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 9, 'Credit', 'Backdated Payoff', 'Force Payoff', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 10, 'Credit', 'Regular Payment', 'Regular Payment with Computer Split', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 11, 'Credit', 'Late Charge', 'Late Charge Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 12, 'Credit', 'Interest Payment', 'Interest Payment-Not affecting due date', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 13, 'Credit', 'Interest Payment', 'Interest Payment - Affecting Due Date', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 14, 'Credit', 'Principal', 'Principal Pymt-Not affecting due date', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 15, 'Credit', 'Fee Adjustment', 'Decrease Other Charges', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 16, 'Debit', 'Fee Adjustment', 'Increase Other Charges', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 17, 'Credit', 'Secondary Accrual', 'Decrease Secondary Accrual', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 18, 'Debit', 'Secondary Accrual', 'Increase Secondary Accrual', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 19, 'Debit', 'Suspense', 'Decrease Payment Suspense', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 20, 'Credit', 'Suspense', 'Increase Payment Suspense', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 21, 'Credit', 'Accrual Adjustment', 'Decrease Accrual Adjustment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 22, 'Debit', 'Accrual Adjustment', 'Increase Accrual Adjustment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 23, 'Debit', 'Late Charge Assessed', 'Late Charge Reversal Assessed', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 24, 'Credit', 'Interest Payment', 'Miscellaneous Interest Decrease - YTD', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 25, 'Debit', 'Interest Payment', 'Miscellaneous Interest Increase - YTD', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 26, 'Credit', 'Interest Payment', 'Decrease Accrued Interest Adj', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 27, 'Credit', 'Late Charge Assessed', 'Waive Late Charges Assessed', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 28, 'Debit', 'Late Charge Assessed', 'Late Fees Assessment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 30, 'Credit', 'Escrow Balance 1', 'Escrow Balance  #1 Increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 31, 'Credit', 'Escrow Balance 2', 'Escrow Balance  #2 Increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 32, 'Credit', 'Escrow Balance 3', 'Escrow Balance  #3 Increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 33, 'Credit', 'Escrow Balance 4', 'Escrow Balance  #4 Increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 34, 'Credit', 'Escrow Balance 5', 'Escrow Balance  #5 Increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 35, 'Credit', 'Escrow Balance 1', 'Escrow Balance  #1 Increase/Analyze', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 36, 'Credit', 'Escrow Balance 2', 'Escrow Balance  #2 Increase/Analyze', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 37, 'Credit', 'Escrow Balance 3', 'Escrow Balance  #3 Increase/Analyze', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 38, 'Credit', 'Escrow Balance 4', 'Escrow Balance  #4 Increase/Analyze', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 39, 'Credit', 'Escrow Balance 5', 'Escrow Balance  #5 Increase/Analyze', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 40, 'Credit', 'Escrow Interest 1', 'Escrow interest #1 increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 41, 'Credit', 'Escrow Interest 2', 'Escrow interest #2 increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 42, 'Credit', 'Escrow Interest 3', 'Escrow interest #3 increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 43, 'Credit', 'Escrow Interest 4', 'Escrow interest #4 increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 44, 'Credit', 'Escrow Interest 5', 'Escrow interest #5 increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 45, 'Debit', 'Escrow Interest 1', 'Escrow interest #1 decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 46, 'Debit', 'Escrow Interest 2', 'Escrow interest #2 decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 47, 'Debit', 'Escrow Interest 3', 'Escrow interest #3 decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 48, 'Debit', 'Escrow Interest 4', 'Escrow interest #4 decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 49, 'Debit', 'Escrow Interest 5', 'Escrow interest #5 decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 50, 'Debit', 'Escrow Balance 1', 'Escrow Balance  #1 Decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 51, 'Debit', 'Escrow Balance 2', 'Escrow Balance  #2 Decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 52, 'Debit', 'Escrow Balance 3', 'Escrow Balance  #3 Decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 53, 'Debit', 'Escrow Balance 4', 'Escrow Balance  #4 Decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 54, 'Debit', 'Escrow Balance 5', 'Escrow Balance  #5 Decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 55, 'Credit', 'Escrow Interest 1 Adj', 'Escrow accrual #1 increase adjustment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 56, 'Credit', 'Escrow Interest 2 Adj', 'Escrow accrual #2 increase adjustment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 57, 'Credit', 'Escrow Interest 3 Adj', 'Escrow accrual #3 increase adjustment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 58, 'Credit', 'Escrow Interest 4 Adj', 'Escrow accrual #4 increase adjustment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 59, 'Credit', 'Escrow Interest 5 Adj', 'Escrow accrual #5 increase adjustment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 60, 'Debit', 'Escrow Interest 1 Adj', 'Escrow accrual #1 decrease adjustment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 61, 'Debit', 'Escrow Interest 2 Adj', 'Escrow accrual #2 decrease adjustment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 62, 'Debit', 'Escrow Interest 3 Adj', 'Escrow accrual #3 decrease adjustment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 63, 'Debit', 'Escrow Interest 4 Adj', 'Escrow accrual #4 decrease adjustment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 64, 'Debit', 'Escrow Interest 5 Adj', 'Escrow accrual #5 decrease adjustment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 65, 'Credit', 'Escrow Balance 6', 'Escrow Balance  #6 Increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 66, 'Credit', 'Escrow Balance 6', 'Escrow Balance  #6 Increase/Analyze', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 67, 'Debit', 'Escrow Balance 6', 'Escrow Balance  #6 Decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 70, 'Debit', 'Charge Off of Principal', 'Shadow Processing - Charge off Principal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 71, 'Debit', 'Charge Off of Interest', 'Shadow Processing - Charge off Interest', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 72, 'Credit', 'Charged Off Principal Adj', 'Shadow-Chg off Principal Adjustment CR', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 73, 'Credit', 'Charged Off Interest  Adj', 'Shadow-Chg off Interest Adjustment CR', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 74, 'Debit', 'Charged Off Principal Adj', 'Shadow-Chg off Principal Adjustment DR', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 75, 'Debit', 'Charged Off Interest  Adj', 'Shadow-Chg off Interest Adjustment DR', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 76, 'Credit', 'Shadow Accrued Interest Adjustments', 'Shadow-Lower Accrued Interest-CR', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 77, 'Debit', 'Shadow Accrued Interest Adjustments', 'Shadow-Increase Shadow Accrued Int DR', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 80, 'Debit', 'Principal', 'Regular Payment Reversal-Principal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 81, 'Debit', 'Interest Payment', 'Regular Payment Reversal-Interest', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 82, 'Credit', 'Other Charges', 'Late Charge Reversal Paid', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 85, 'Debit', 'Principal', 'Home Equity Check (Advance)', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 90, 'Debit', 'Other Charges', 'Other Loan Charges-Administrative', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 91, 'Credit', 'Other Charges', 'Other Loan Charges-Administrative', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 98, 'Debit', 'Interest Added to Principal', 'Shdw-Int Add to Prin-MANUAL CONV ONLY DR', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 99, 'Credit', 'Interest Added to Principal', 'Shdw-Int Add to Prin-MANUAL CONV ONLY', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 105, 'Debit', 'Principal', 'Principal Draw', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 110, 'Credit', 'Regular Payment', 'Correction entry', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 111, 'Credit', 'Late Charge Assessed', 'Late Charge Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 112, 'Credit', 'Interest Payment', 'Interest Only Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 113, 'Credit', 'Credit Life Accrual Adjustment', 'Credit Life Insurance Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 114, 'Credit', 'Principal', 'Principal Only Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 115, 'Credit', 'A & H Insurance Accrual Adjustment', 'A & H Insurance Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 121, 'Debit', 'Late Charge Assessed', 'Reversal-Late Charge Payment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 122, 'Debit', 'Interest Payment', 'Reversal-Interest Only Payment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 123, 'Debit', 'Credit Life Accrual Adjustment', 'Reversal-Credit Life Payment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 124, 'Debit', 'Principal', 'Reversal-Principal Only Pmt', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 125, 'Debit', 'A & H Insurance Accrual Adjustment', 'Reversal-A & H Insurance', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 127, 'Credit', 'Late Charge Assessed', 'Waive Late Charge', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 135, 'Credit', 'Principal', 'Reversal-Principal Draw', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 136, 'Debit', 'Interest Payment', 'Increase Accrued Interest Adj', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 170, 'Credit', 'Force Payoff', 'Closing Transaction/Close Line', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 175, 'Debit', 'Principal', 'Force Advance', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 176, 'Debit', 'Accrual Adjustment', 'Increase Accrual Adjustment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 177, 'Credit', 'Accrual Adjustment', 'Decrease Accrual Adjustment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 310, 'Debit', 'Principal', 'Cash Management Debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 311, 'Credit', 'Regular Payment', 'Cash Management Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 312, 'Credit', 'Principal', 'Cash Management Principal Reduction', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 321, 'Credit', 'Regular Payment', 'ATM Payment Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 322, 'Credit', 'Principal', 'ATM Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 327, 'Debit', 'Principal', 'ATM Debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 330, 'Debit', 'Principal', 'LIP Auto Disbursement', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 331, 'Credit', 'Interest Payment', 'LIP Interest Reserve Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 332, 'Debit', 'Principal', 'LIP Interest Reserve Disbursement', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 339, 'Credit', 'Regular Payment', 'Payoff-Override Close on Zero', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 340, 'Credit', 'Regular Payment', 'Automatic Transfer from LOAN', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 341, 'Credit', 'Regular Payment', 'Automatic Transfer from DDA', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 342, 'Credit', 'Regular Payment', 'Automatic Transfer from Savings', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 343, 'Credit', 'Principal', 'Automatic Princ Transfer from DDA', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 344, 'Credit', 'Principal', 'Automatic Princ Transfer from Savings', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 345, 'Credit', 'Regular Payment', 'Telephone Transfer from DDA', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 346, 'Credit', 'Regular Payment', 'Telephone Transfer from Savings', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 347, 'Debit', 'Principal', 'Telephone Transfer to DDA', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 348, 'Debit', 'Principal', 'Telephone Transfer to Savings', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 349, 'Credit', 'Principal', 'Telephone Principal Transfer from DDA', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 350, 'Credit', 'Principal', 'Telephone Principal Transfer frm Savings', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 351, 'Credit', 'Principal', 'Transfer from DDA', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 352, 'Credit', 'Principal', 'Transfer from Savings', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 353, 'Debit', 'Principal', 'Transfer to DDA', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 354, 'Debit', 'Principal', 'Transfer to Savings', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 355, 'Debit', 'Principal', 'Transfer to Time Deposit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 356, 'Debit', 'Principal', 'Transfer to LOAN', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 357, 'Credit', 'Regular Payment', 'Transfer from DDA', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 358, 'Credit', 'Regular Payment', 'Transfer from Savings', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 360, 'Credit', 'Regular Payment', 'Voice Response Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 361, 'Credit', 'Interest Payment', 'Automatic Int Transfer from DDA', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 362, 'Credit', 'Interest Payment', 'Automatic Int Transfer from Savings', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 363, 'Credit', 'Regular Payment', 'Auto Transfer Credit(ACH)', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 364, 'Credit', 'Regular Payment', 'Automatic Transfer from G/L', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 365, 'Credit', 'Principal', 'Automatic Princ Transfer from G/L', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 370, 'Debit', 'Principal', 'Wire Transfer Debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 371, 'Debit', 'Principal', 'Wire Transfer Debit Fee', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 372, 'Credit', 'Regular Payment', 'Incoming Wire Transfer', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 375, 'Credit', 'Regular Payment', 'Transfer from DDA', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 376, 'Credit', 'Regular Payment', 'Transfer from GL', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 377, 'Credit', 'Principal', 'Transfer from DDA', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 378, 'Credit', 'Principal', 'Transfer from GL', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 379, 'Debit', 'Promotional Balance Adjustment', 'Promotional Balance Debit Adjustment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 380, 'Credit', 'Promotional Balance Adjustment', 'Promotional Balance Credit Adjustment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 383, 'Debit', 'Principal', 'ACH Transfer Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 384, 'Debit', 'Fee Adjustment', 'Credit Life Insurance Assessed', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 385, 'Debit', 'Fee Adjustment', 'A & H Insurance Assessed', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 386, 'Debit', 'Fee Adjustment', 'Unemployment Insurance Assessed', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 387, 'Debit', 'Fee Adjustment', 'Unused Line Charge Assessed', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 390, 'Debit', 'Fee Adjustment', 'Assess Prepayment Penalty', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 391, 'Credit', 'Fee Adjustment', 'Prepayment Penalty Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 392, 'Debit', 'Fee Adjustment', 'Prepayment Penalty Payment Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 393, 'Credit', 'Fee Adjustment', 'Waive Penalty Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 394, 'Debit', 'Fee Adjustment', 'NSF Fee Assessed', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 395, 'Debit', 'Fee Adjustment', 'Assess Seasonal Promotion Fee', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 396, 'Debit', 'Fee Adjustment', 'Overline Fee Assessed', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 397, 'Credit', 'Fee Adjustment', 'Waive Seasonal Promotion Fee', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 400, 'Credit', 'Unemployment Ins Accrual Adjustment', 'Unemployment Insurance Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 401, 'Debit', 'Unemployment Ins Accrual Adjustment', 'Unemployment Insurance Payment Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 402, 'Debit', 'Unemployment Ins Accrual Adjustment', 'Unemployment Ins Accrual Adj Debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 403, 'Credit', 'Unemployment Ins Accrual Adjustment', 'Unemployment Ins Accrual Adj Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 404, 'Debit', 'Principal', 'Capitalize Unemployment Insurance', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 405, 'Credit', 'Principal', 'Capitalize Unemployment Ins Reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 406, 'Credit', 'Principal', 'Capitalized Unemployment Ins Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 407, 'Debit', 'Principal', 'Capitalized Unemploymnt Ins Pmt Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 408, 'Credit', 'Fee Adjustment', 'Credit Life Insurance Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 409, 'Debit', 'Fee Adjustment', 'Credit Life Insurance Payment Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 410, 'Credit', 'Fee Adjustment', 'A & H Insurance Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 411, 'Debit', 'Fee Adjustment', 'A & H Insurance Payment Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 412, 'Credit', 'Fee Adjustment', 'Unemployment Insurance Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 413, 'Debit', 'Fee Adjustment', 'Unemployment Insurance Payment Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 414, 'Credit', 'Fee Adjustment', 'Unused Line Charge Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 415, 'Debit', 'Fee Adjustment', 'Unused Line Charge Payment Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 416, 'Debit', 'Principal', 'Capitalized Overline Fee Payment Rev.', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 417, 'Credit', 'Principal', 'Capitalized Overline Fee Reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 418, 'Credit', 'Principal', 'Capitalized Overline Fee Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 419, 'Debit', 'Principal', 'Capitalized Seasonal Pr Fee Pmt Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 420, 'Credit', 'Principal', 'Capitalized Seasonal Promo Fee Reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 421, 'Credit', 'Principal', 'Capitalized Seasonal Promo Fee Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 422, 'Credit', 'Unused Credit Line Accrual Adjustment', 'Effective Dated Unused Acc Adj', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 423, 'Debit', 'Unused Credit Line Accrual Adjustment', 'Effective Dated Unused Acc Adj', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 424, 'Credit', 'Credit Life Accrual Adjustment', 'Effective Dated Cr Life Adj', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 425, 'Debit', 'Credit Life Accrual Adjustment', 'Effective Dated Cr Life Adj', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 426, 'Credit', 'A & H Insurance Accrual Adjustment', 'Effective Dated A&H Adjustment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 427, 'Debit', 'A & H Insurance Accrual Adjustment', 'Effective Dated A&H Adjustment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 428, 'Debit', 'Principal', 'Capitalized Overline Fee', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 429, 'Debit', 'Principal', 'Capitalized Seasonal Promotion Fee', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 430, 'Credit', 'Principal', 'Capitalized Finance Charge Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 431, 'Credit', 'Principal', 'Capitalized Credit Life Charge Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 432, 'Credit', 'Principal', 'Capitalized Unused Line Charge Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 433, 'Credit', 'Principal', 'Capitalized Late Charge Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 434, 'Credit', 'Principal', 'Capitalized Advance Fee Charge Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 435, 'Credit', 'Principal', 'Capitalized Annual Fee Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 436, 'Credit', 'Principal', 'Capitalized Other Fee Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 437, 'Credit', 'Principal', 'Capitalized A & H Ins Charge Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 438, 'Credit', 'Principal', 'Capitalized NSF Fee Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 439, 'Credit', 'Principal', 'Capitalized Minimum Check Fee Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 440, 'Credit', 'Principal', 'Capitalized Finance Charge Reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 441, 'Credit', 'Principal', 'Capitalized Credit Life Reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 442, 'Credit', 'Principal', 'Capitalized Unused Line Reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 443, 'Credit', 'Principal', 'Capitalized Late Charge Reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 444, 'Credit', 'Principal', 'Capitalized Advance Fee Reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 445, 'Credit', 'Principal', 'Capitalized Annual Fee Reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 446, 'Credit', 'Principal', 'Capitalized Other Fee Reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 447, 'Credit', 'Principal', 'Capitalized A & H Insurance Reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 448, 'Credit', 'Principal', 'Capitalized NSF Fee Reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 449, 'Credit', 'Principal', 'Capitalized Minimum Check Fee Reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 450, 'Debit', 'Principal', 'Capitalized Finance Chg Pmt Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 451, 'Debit', 'Principal', 'Capitalized Credit Life Chg Pmt Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 452, 'Debit', 'Principal', 'Capitalized Unused Line Chg Pmt Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 453, 'Debit', 'Principal', 'Capitalized Late Charge Payment Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 454, 'Debit', 'Principal', 'Capitalized Advance Fee Chg Pmt Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 455, 'Debit', 'Principal', 'Capitalized Annual Fee Payment Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 456, 'Debit', 'Principal', 'Capitalized Other Fee Payment Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 457, 'Debit', 'Principal', 'Capitalized A & H Ins Chg Pmt Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 458, 'Debit', 'Principal', 'Capitalized NSF Fee Payment Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 459, 'Debit', 'Principal', 'Balancing Transaction', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 460, 'Debit', 'Principal', 'Capitalized Minimum Check Fee Pmt Rev', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 461, 'Debit', 'Principal', 'Capitalized NSF Fee', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 462, 'Debit', 'Principal', 'Capitalized Unused Line', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 463, 'Debit', 'Principal', 'Capitalized Late Charges', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 464, 'Debit', 'Principal', 'Capitalized Advance Fee', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 465, 'Debit', 'Principal', 'Capitalized Annual Fee', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 466, 'Debit', 'Principal', 'Capitalized Other Fees', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 467, 'Debit', 'Principal', 'Capitalized Minimum Check Fee', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 468, 'Debit', 'Principal', 'Capitalized Stop/Hold Fee', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 469, 'Debit', 'Fee Adjustment', 'Annual Fee Debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 470, 'Debit', 'Principal', 'Capitalized Finance Charge', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 471, 'Debit', 'Fee Adjustment', 'Advance Fee Assessment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 472, 'Debit', 'Principal', 'Capitalized Credit Life', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 473, 'Debit', 'Principal', 'Capitalized A & H Insurance', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 474, 'Credit', 'Fee Adjustment', 'Advance Fee Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 475, 'Credit', 'Credit Life Accrual Adjustment', 'Credit Life Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 476, 'Credit', 'Fee Adjustment', 'NSF Fee Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 477, 'Credit', 'Fee Adjustment', 'Seasonal Promotion Fee Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 478, 'Debit', 'Fee Adjustment', 'Minimum Check Fee Assessment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 479, 'Credit', 'Fee Adjustment', 'Minimum Check Fee Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 480, 'Credit', 'Unused Credit Line Accrual Adjustment', 'Unused Credit Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 481, 'Credit', 'Fee Adjustment', 'Annual Fee Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 482, 'Debit', 'Fee Adjustment', 'NSF Fee Debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 483, 'Debit', 'Fee Adjustment', 'Minimum Check Fee Debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 484, 'Debit', 'A & H Insurance Accrual Adjustment', 'A&H Insurance Accrual Debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 485, 'Credit', 'A & H Insurance Accrual Adjustment', 'A&H Insurance Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 486, 'Debit', 'Credit Life Accrual Adjustment', 'Credit Life Accrual Debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 487, 'Debit', 'Unused Credit Line Accrual Adjustment', 'Unused Line Debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 488, 'Debit', 'Fee Adjustment', 'Advance Fee Debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 489, 'Debit', 'Fee Adjustment', 'Annual Fee Debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 490, 'Credit', 'Regular Payment', 'Automatic Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 491, 'Debit', 'Fee Adjustment', 'Seasonal Promotion Fee Debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 492, 'Credit', 'Fee Adjustment', 'Overline Fee Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 493, 'Debit', 'Fee Adjustment', 'Overline Fee Debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 494, 'Credit', 'Credit Life Accrual Adjustment', 'Credit Life Accrual Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 497, 'Credit', 'Regular Payment', 'Memo Post Payment Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 498, 'Debit', 'Principal', 'Memo Debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 499, 'Credit', 'Principal', 'Memo Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 500, 'Debit', 'Fee Adjustment', 'Debt Protection Fee Assessment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 501, 'Credit', 'Fee Adjustment', 'Waive Debt Protection Fee', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 502, 'Credit', 'Fee Adjustment', 'Debt Protection Fee Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 503, 'Debit', 'Fee Adjustment', 'Debt Protection Fee Payment Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 504, 'Debit', 'Principal', 'Capitalized Debt Protection Fee', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 505, 'Credit', 'Principal', 'Capitalized Debt Protection Fee Reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 506, 'Credit', 'Principal', 'Capitalized Debt Protection Fee Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 507, 'Debit', 'Principal', 'Capitalized Debt Protection Fee Pmt Rev', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 508, 'Credit', 'Debt Protection Accrual Adjustment', 'Generated DP Acc Dec for DP Fee Calc Chg', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 509, 'Debit', 'Debt Protection Accrual Adjustment', 'Generated DP Acc Inc for DP Fee Calc Chg', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 510, 'Credit', 'Debt Protection Accrual Adjustment', 'Effective Dated DP Accrual Cr Adjustment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 511, 'Debit', 'Debt Protection Accrual Adjustment', 'Effective Dated DP Accrual Dr Adjustment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 512, 'Credit', 'Debt Protection Accrual Adjustment', 'Debt Protection Accrual Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 513, 'Debit', 'Debt Protection Accrual Adjustment', 'Debt Protection Accrual Debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 514, 'Debit', 'Fee Adjustment', 'Line of Credit Fee Assessed', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 515, 'Debit', 'Principal', 'Capitalized Line of Credit Fee Pmt Rev.', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 516, 'Credit', 'Principal', 'Reverse Line of Cr Fee Capitalization', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 517, 'Credit', 'Principal', 'Capitalized Line of Credit Fee Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 518, 'Debit', 'Principal', 'Capitalize Line of Credit Fee', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 519, 'Credit', 'Fee Adjustment', 'Line of Credit Fee Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 520, 'Debit', 'Fee Adjustment', 'Line of Credit Fee Debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 521, 'Credit', 'Fee Adjustment', 'Waive Line of Credit Fee', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 530, 'Debit', 'Fee Adjustment', 'Assess Insufficient Notice Fee', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 531, 'Credit', 'Fee Adjustment', 'Insufficient Notice Fee Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 532, 'Debit', 'Fee Adjustment', 'Reverse Insufficient Notice Fee Payment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 533, 'Credit', 'Fee Adjustment', 'Waive Insufficient Notice Fee', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 534, 'Credit', 'Fee Adjustment', 'Reverse Assess of Insufficient Notice Fe', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 535, 'Debit', 'Fee Adjustment', 'Assess Recoupment Penalty Fee', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 536, 'Credit', 'Fee Adjustment', 'Recoupment Penalty Fee Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 537, 'Debit', 'Fee Adjustment', 'Reverse Recoupment Penalty Fee Payment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 538, 'Credit', 'Fee Adjustment', 'Waive Recoupment Penalty Fee', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 539, 'Credit', 'Fee Adjustment', 'Reverse Assessment of Recoupment Penalty', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 541, 'Credit', 'Non-monetary', 'Curtailment Transaction Causing Penalty', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 542, 'Credit', 'Non-monetary', 'Regular Pmt Transaction Causing Penalty', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 543, 'Credit', 'Non-monetary', 'Payoff Transaction Causing Penalty', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 544, 'Credit', 'Non-monetary', 'Excess Prin Split after Curtail Penalty', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 545, 'Credit', 'Principal', 'Prin Curtailment Split after Penalty', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 550, 'Credit', 'Charge Off of Principal', 'Shadow charge off principal reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 551, 'Credit', 'Charge Off of Interest', 'Shadow charge off interest reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 552, 'Debit', 'Charge Off of Principal', 'Shadow C/O principal adjustment reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 553, 'Debit', 'Charge Off of Interest', 'Shadow C/O interest adjustment reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 566, 'Debit', 'Shadow Capitalized Fees', 'Shadow Capitalized Fees', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 567, 'Credit', 'Shadow Capitalized Fees', 'Shadow Capitalized Fee Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 568, 'Debit', 'Shadow Capitalized No Book Interest', 'Shadow Capitalized No Book Interest', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 570, 'Credit', 'Charged Off Principal Adj', 'Lower Charged Off Principal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 571, 'Debit', 'Charged Off Principal Adj', 'Raise Charged Off Principal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 572, 'Credit', 'Charged Off Interest  Adj', 'Lower Charged Off Interest', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 573, 'Debit', 'Charged Off Interest  Adj', 'Raise Charged Off Interest', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 574, 'Credit', 'Interest Added to Principal', 'Raise Interest Applied to Principal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 575, 'Debit', 'Interest Added to Principal', 'Lower Interest Applied to Principal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 576, 'Credit', 'Charged Off Principal Adj', 'Charged Off Principal Recovery', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 577, 'Credit', 'Charged Off Principal Adj', 'Chg Off Principal Recovery from Interest', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 578, 'Credit', 'Charged Off Interest  Adj', 'Charged Off Interest Recovery', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 579, 'Credit', 'Charged Off Interest  Adj', 'Chg Off Interest Recovery from Principal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 580, 'Credit', 'Shadow Accrued Interest Adjustments', 'Lower Shadow Accrued Interest', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 581, 'Debit', 'Shadow Accrued Interest Adjustments', 'Raise Shadow Accrued Interest', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 582, 'Credit', 'Shadow Interest Payments', 'Shadow Interest Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 583, 'Debit', 'Shadow Interest Payments', 'Shadow Interest Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 584, 'Credit', 'Shadow Principal Payments', 'Shadow Principal Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 585, 'Debit', 'Shadow Principal Payments', 'Shadow Principal Advance', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 586, 'Credit', 'Principal', 'Forgiveness of debt - principal side', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 587, 'Debit', 'Forgiveness of Charged Off Debt', 'Forgiveness reversal - Charge off side', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 588, 'Debit', 'Principal', 'Forgiveness reversal - Principal side', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 589, 'Credit', 'Shadow Income Payments', 'Shadow interest payment income credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 590, 'Credit', 'Shadow Income Payments', 'Shadow principal payment income credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 591, 'Debit', 'Shadow Income Payments', 'Shadow payment income reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 592, 'Debit', 'Shadow Income Payments', 'Shadow principal payment income reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 593, 'Debit', 'LIP Customer Balance Int Adjustment', 'Purged LIP Escrow Accrued Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 594, 'Credit', 'LIP Customer Balance Int Adjustment', 'Purged LIP Escrow Accrued Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 595, 'Debit', 'LIP Customer Balance', 'Purged Customer Balance Escrow Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 596, 'Credit', 'LIP Customer Balance', 'Purged Customer Balance Escrow Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 597, 'Debit', 'Charged Off Principal Adj', 'Reverse C/O Principal Recovery from int', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 598, 'Debit', 'Charge Off of Interest', 'Shadow Processing - Charge Off Interest', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 599, 'Debit', 'LIP Customer Balance Interest', 'Customer Balance Escrow Int Decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 600, 'Credit', 'LIP Customer Balance Interest', 'Customer Balance Escrow Int Increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 601, 'Credit', 'Escrow Interest 1', 'Escrow interest #1 increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 602, 'Credit', 'Escrow Interest 2', 'Escrow interest #2 increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 603, 'Credit', 'Escrow Interest 3', 'Escrow interest #3 increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 604, 'Credit', 'Escrow Interest 4', 'Escrow interest #4 increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 605, 'Credit', 'Escrow Interest 5', '.scrow interest #5 increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 606, 'Credit', 'Escrow Interest 6', 'Escrow interest #6 increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 607, 'Credit', 'Escrow Interest 7', 'Escrow interest #7 increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 608, 'Credit', 'Escrow Interest 8', 'Escrow interest #8 increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 609, 'Credit', 'Escrow Interest 9', 'Escrow interest #9 increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 610, 'Credit', 'Escrow Interest 10', 'Escrow interest #10 increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 611, 'Debit', 'Escrow Interest 1', 'Escrow interest #1 decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 612, 'Debit', 'Escrow Interest 2', 'Escrow interest #2 decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 613, 'Debit', 'Escrow Interest 3', 'Escrow interest #3 decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 614, 'Debit', 'Escrow Interest 4', 'Escrow interest #4 decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 615, 'Debit', 'Escrow Interest 5', 'Escrow interest #5 decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 616, 'Debit', 'Escrow Interest 6', 'Escrow interest #6 decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 617, 'Debit', 'Escrow Interest 7', 'Escrow interest #7 decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 618, 'Debit', 'Escrow Interest 8', 'Escrow interest #8 decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 619, 'Debit', 'Escrow Interest 9', 'Escrow interest #9 decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 620, 'Debit', 'Escrow Interest 10', 'Escrow interest #10 decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 621, 'Credit', 'Escrow Interest 1 Adj', 'Escrow interest #1 increase adjustment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 622, 'Credit', 'Escrow Interest 2 Adj', 'Escrow interest #2 increase adjustment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 623, 'Credit', 'Escrow Interest 3 Adj', 'Escrow interest #3 increase adjustment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 624, 'Credit', 'Escrow Interest 4 Adj', 'Escrow interest #4 increase adjustment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 625, 'Credit', 'Escrow Interest 5 Adj', 'Escrow interest #5 increase adjustment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 626, 'Credit', 'Escrow Interest 6 Adj', 'Escrow interest #6 increase adjustment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 627, 'Credit', 'Escrow Interest 7 Adj', 'Escrow interest #7 increase adjustment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 628, 'Credit', 'Escrow Interest 8 Adj', 'Escrow interest #8 increase adjustment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 629, 'Credit', 'Escrow Interest 9 Adj', 'Escrow interest #9 increase adjustment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 630, 'Credit', 'Escrow Interest 10 Adj', 'Escrow interest #10 increase adjustment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 631, 'Debit', 'Escrow Interest 1 Adj', 'Escrow interest #1 decrease adjustment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 632, 'Debit', 'Escrow Interest 2 Adj', 'Escrow interest #2 decrease adjustment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 633, 'Debit', 'Escrow Interest 3 Adj', 'Escrow interest #3 decrease adjustment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 634, 'Debit', 'Escrow Interest 4 Adj', 'Escrow interest #4 decrease adjustment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 635, 'Debit', 'Escrow Interest 5 Adj', 'Escrow interest #5 decrease adjustment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 636, 'Debit', 'Escrow Interest 6 Adj', 'Escrow interest #6 decrease adjustment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 637, 'Debit', 'Escrow Interest 7 Adj', 'Escrow interest #7 decrease adjustment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 638, 'Debit', 'Escrow Interest 8 Adj', 'Escrow interest #8 decrease adjustment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 639, 'Debit', 'Escrow Interest 9 Adj', 'Escrow interest #9 decrease adjustment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 640, 'Debit', 'Escrow Interest 10 Adj', 'Escrow interest #10 decrease adjustment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 641, 'Debit', 'Escrow Balance 1', 'Escrow #1 Federal Withholding', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 642, 'Debit', 'Escrow Balance 2', 'Escrow #2 Federal Withholding', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 643, 'Debit', 'Escrow Balance 3', 'Escrow #3 Federal Withholding', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 644, 'Debit', 'Escrow Balance 4', 'Escrow #4 Federal Withholding', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 645, 'Debit', 'Escrow Balance 5', 'Escrow #5 Federal Withholding', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 646, 'Debit', 'Escrow Balance 6', 'Escrow #6 Federal Withholding', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 647, 'Debit', 'Escrow Balance 7', 'Escrow #7 Federal Withholding', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 648, 'Debit', 'Escrow Balance 8', 'Escrow #8 Federal Withholding', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 649, 'Debit', 'Escrow Balance 9', 'Escrow #9 Federal Withholding', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 650, 'Debit', 'Escrow Balance 10', 'Escrow #10 Federal Withholding', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 651, 'Debit', 'LIP Customer Balance', 'Customer Balance Esc Federal Withholding', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 652, 'Debit', 'LIP Customer Balance', 'Customer Balance Esc State Withholding', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 653, 'Debit', 'LIP Customer Balance Int Adjustment', 'Customer Balance Escrow Int Decrease Adj', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 654, 'Credit', 'LIP Customer Balance Int Adjustment', 'Customer Balance Escrow Int Increase Adj', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 655, 'Credit', 'Principal', 'Unit Price Principal Advance Reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 656, 'Debit', 'Principal', 'Unit Price Principal Credit Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 657, 'Debit', 'Interest Payment', 'Unit Price Interest Credit Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 658, 'Debit', 'Late Charge', 'Unit Price Late Charge Credit Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 659, 'Debit', 'Other Charges', 'Unit Price Other Charge Credit Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 660, 'Debit', 'Principal', 'Unit Price Loan Transfer Debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 661, 'Credit', 'Principal', 'Unit Price Loan Transfer Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 671, 'Debit', 'Escrow Balance 1', 'Escrow #1 State Withholding', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 672, 'Debit', 'Escrow Balance 2', 'Escrow #2 State Withholding', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 673, 'Debit', 'Escrow Balance 3', 'Escrow #3 State Withholding', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 674, 'Debit', 'Escrow Balance 4', 'Escrow #4 State Withholding', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 675, 'Debit', 'Escrow Balance 5', 'Escrow #5 State Withholding', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 676, 'Debit', 'Escrow Balance 6', 'Escrow #6 State Withholding', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 677, 'Debit', 'Escrow Balance 7', 'Escrow #7 State Withholding', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 678, 'Debit', 'Escrow Balance 8', 'Escrow #8 State Withholding', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 679, 'Debit', 'Escrow Balance 9', 'Escrow #9 State Withholding', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 680, 'Debit', 'Escrow Balance 10', 'Escrow #10 State Withholding', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 681, 'Credit', 'Shadow Income Payments', 'Shadow Fee Payment Income', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 682, 'Debit', 'Shadow Income Payments', 'Shadow Fee Payment Income Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 683, 'Credit', 'Charged Off Principal Adj', 'Charge Off Principal Recovery from Fees', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 684, 'Debit', 'Charged Off Principal Adj', 'Reverse C/O Principal Recovery from Fees', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 701, 'Debit', 'Accrual Adjustment', 'Purged Accrual Debit Adjustments', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 703, 'Debit', 'Suspense', 'Purged Suspense Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 704, 'Debit', 'Interest Payment', 'Purged Interest Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 705, 'Debit', 'Late Charge', 'Purged Late Charge Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 706, 'Debit', 'Other Charges', 'Purged Other Charges Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 707, 'Debit', 'Principal', 'Purged Principle Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 708, 'Debit', 'Secondary Accrual', 'Purged Secondary Interest Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 730, 'Credit', 'Force Payoff', 'Purged Force Payoff Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 731, 'Credit', 'Accrual Adjustment', 'Purged Accrual Credit Adjustments', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 733, 'Credit', 'Suspense', 'Purged Suspense Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 734, 'Credit', 'Interest Payment', 'Purged Interest Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 735, 'Credit', 'Late Charge', 'Purged Late Charge Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 736, 'Credit', 'Other Charges', 'Purged Other Charges Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 737, 'Credit', 'Principal', 'Purged Principle Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 738, 'Credit', 'Secondary Accrual', 'Purged Secondary Interest Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 739, 'Credit', 'Escrow Balance 1', 'Purged Escrow Balance 1 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 740, 'Credit', 'Escrow Balance 2', 'Purged Escrow Balance 2 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 741, 'Credit', 'Escrow Balance 3', 'Purged Escrow Balance 3 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 742, 'Credit', 'Escrow Balance 4', 'Purged Escrow Balance 4 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 743, 'Credit', 'Escrow Balance 5', 'Purged Escrow Balance 5 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 744, 'Credit', 'Escrow Balance 6', 'Purged Escrow Balance 6 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 745, 'Credit', 'Escrow Balance 7', 'Purged Escrow Balance 7 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 746, 'Credit', 'Escrow Balance 8', 'Purged Escrow Balance 8 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 747, 'Credit', 'Escrow Balance 9', 'Purged Escrow Balance 9 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 748, 'Credit', 'Escrow Balance 10', 'Purged Escrow Balance 10 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 749, 'Debit', 'Escrow Balance 1', 'Purged Escrow Balance 1 debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 750, 'Debit', 'Escrow Balance 2', 'Purged Escrow Balance 2 debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 751, 'Debit', 'Escrow Balance 3', 'Purged Escrow Balance 3 debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 752, 'Debit', 'Escrow Balance 4', 'Purged Escrow Balance 4 debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 753, 'Debit', 'Escrow Balance 5', 'Purged Escrow Balance 5 debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 754, 'Debit', 'Escrow Balance 6', 'Purged Escrow Balance 6 debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 755, 'Debit', 'Escrow Balance 7', 'Purged Escrow Balance 7 debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 756, 'Debit', 'Escrow Balance 8', 'Purged Escrow Balance 8 debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 757, 'Debit', 'Escrow Balance 9', 'Purged Escrow Balance 9 debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 758, 'Debit', 'Escrow Balance 10', 'Purged Escrow Balance 10 debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 760, 'Credit', 'Escrow Interest 1 Adj', 'Purged Escrow Accrued 1 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 761, 'Credit', 'Escrow Interest 2 Adj', 'Purged Escrow Accrued 2 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 762, 'Credit', 'Escrow Interest 3 Adj', 'Purged Escrow Accrued 3 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 763, 'Credit', 'Escrow Interest 4 Adj', 'Purged Escrow Accrued 4 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 764, 'Credit', 'Escrow Interest 5 Adj', 'Purged Escrow Accrued 5 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 765, 'Credit', 'Escrow Interest 6 Adj', 'Purged Escrow Accrued 6 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 766, 'Credit', 'Escrow Interest 7 Adj', 'Purged Escrow Accrued 7 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 767, 'Credit', 'Escrow Interest 8 Adj', 'Purged Escrow Accrued 8 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 768, 'Credit', 'Escrow Interest 9 Adj', 'Purged Escrow Accrued 9 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 769, 'Credit', 'Escrow Interest 10 Adj', 'Purged Escrow Accrued 10 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 770, 'Debit', 'Escrow Interest 1 Adj', 'Purged Escrow Accrued 1 Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 771, 'Debit', 'Escrow Interest 2 Adj', 'Purged Escrow Accrued 2 Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 772, 'Debit', 'Escrow Interest 3 Adj', 'Purged Escrow Accrued 3 Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 773, 'Debit', 'Escrow Interest 4 Adj', 'Purged Escrow Accrued 4 Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 774, 'Debit', 'Escrow Interest 5 Adj', 'Purged Escrow Accrued 5 Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 775, 'Debit', 'Escrow Interest 6 Adj', 'Purged Escrow Accrued 6 Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 776, 'Debit', 'Escrow Interest 7 Adj', 'Purged Escrow Accrued 7 Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 777, 'Debit', 'Escrow Interest 8 Adj', 'Purged Escrow Accrued 8 Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 778, 'Debit', 'Escrow Interest 9 Adj', 'Purged Escrow Accrued 9 Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 779, 'Debit', 'Escrow Interest 10 Adj', 'Purged Escrow Accrued 10 Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 780, 'Credit', 'Escrow Interest 1', 'Purged Escrow Insurance 1 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 781, 'Credit', 'Escrow Interest 2', 'Purged Escrow Insurance 2 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 782, 'Credit', 'Escrow Interest 3', 'Purged Escrow Insurance 3 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 783, 'Credit', 'Escrow Interest 4', 'Purged Escrow Insurance 4 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 784, 'Credit', 'Escrow Interest 5', 'Purged Escrow Insurance 5 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 785, 'Credit', 'Escrow Interest 6', 'Purged Escrow Insurance 6 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 786, 'Credit', 'Escrow Interest 7', 'Purged Escrow Insurance 7 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 787, 'Credit', 'Escrow Interest 8', 'Purged Escrow Insurance 8 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 788, 'Credit', 'Escrow Interest 9', 'Purged Escrow Insurance 9 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 789, 'Credit', 'Escrow Interest 10', 'Purged Escrow Insurance 10 Credits', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 790, 'Debit', 'Escrow Interest 1', 'Purged Escrow Insurance 1 Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 791, 'Debit', 'Escrow Interest 2', 'Purged Escrow Insurance 2 Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 792, 'Debit', 'Escrow Interest 3', 'Purged Escrow Insurance 3 Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 793, 'Debit', 'Escrow Interest 4', 'Purged Escrow Insurance 4 Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 794, 'Debit', 'Escrow Interest 5', 'Purged Escrow Insurance 5 Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 795, 'Debit', 'Escrow Interest 6', 'Purged Escrow Insurance 6 Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 796, 'Debit', 'Escrow Interest 7', 'Purged Escrow Insurance 7 Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 797, 'Debit', 'Escrow Interest 8', 'Purged Escrow Insurance 8 Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 798, 'Debit', 'Escrow Interest 9', 'Purged Escrow Insurance 9 Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 799, 'Debit', 'Escrow Interest 10', 'Purged Escrow Insurance 10 Debits', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 800, 'Credit', 'Non-monetary', 'Advance Due Date-Minimum Amount for Bill', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 801, 'Credit', 'Non-monetary', 'Loan Extension', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 802, 'Credit', 'Non-monetary', 'Loan Renewal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 803, 'Credit', 'Non-monetary', 'Loan Extension Fee', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 804, 'Debit', 'Late Charge Assessed', 'Late Charge Assessed', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 805, 'Credit', 'Late Charge Assessed', 'Reversed Late Charge Assessed', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 815, 'Credit', 'Deferred Interest', 'Deferred Interest Increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 816, 'Debit', 'Deferred Interest', 'Deferred Interest Decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 817, 'Credit', 'Paid to Deferred Interest', 'Paid To Deferred Interest Increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 818, 'Debit', 'Paid to Deferred Interest', 'Paid To Deferred Interest Decrease', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 820, 'Credit', 'Non-monetary', 'Add-on interest earned', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 821, 'Credit', 'Non-monetary', 'Credit Bank Interest', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 822, 'Debit', 'Non-monetary', 'Reverse Bank Interest', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 824, 'Credit', 'Non-monetary', 'Dealer Add-on Interest Earned', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 825, 'Credit', 'Non-monetary', 'Credit Dealer Interest (Upfront)', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 826, 'Debit', 'Non-monetary', 'Reverse Dealer Interest (Upfront)', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 830, 'Debit', 'Non-monetary', 'Add-on Interest Rebate Increase', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 831, 'Debit', 'Non-monetary', 'Reverse Dealer Earnings (Upfront)', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 832, 'Credit', 'Non-monetary', 'Credit Dealer Earnings (Upfront)', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 834, 'Debit', 'Non-monetary', 'Dealer Add-on Interest Rebate Increase', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 836, 'Debit', 'Non-monetary', 'Forfeit Rebate (Upfront)', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 837, 'Debit', 'Non-monetary', 'Forfeit Discount (Upfront)', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 838, 'Credit', 'Regular Payment', 'Dealer Recourse Regular Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 839, 'Credit', 'Principal', 'Dealer Recourse Principal Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 841, 'Credit', 'Non-monetary', 'Insurance #1 premium earned', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 842, 'Credit', 'Non-monetary', 'Insurance #2 premium earned', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 843, 'Credit', 'Non-monetary', 'Insurance #3 premium earned', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 844, 'Credit', 'Non-monetary', 'Insurance #4 premium earned', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 845, 'Credit', 'Non-monetary', 'Insurance #5 premium earned', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 846, 'Credit', 'Non-monetary', 'Insurance #6 premium earned', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 847, 'Credit', 'Non-monetary', 'Insurance #7 premium earned', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 848, 'Credit', 'Non-monetary', 'Insurance #8 premium earned', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 849, 'Credit', 'Non-monetary', 'Insurance #9 premium earned', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 850, 'Credit', 'Non-monetary', 'Insurance #10 premium earned', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 851, 'Debit', 'Non-monetary', 'Insurance #1 premium rebate increase', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 852, 'Debit', 'Non-monetary', 'Insurance #2 premium rebate increase', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 853, 'Debit', 'Non-monetary', 'Insurance #3 premium rebate increase', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 854, 'Debit', 'Non-monetary', 'Insurance #4 premium rebate increase', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 855, 'Debit', 'Non-monetary', 'Insurance #5 premium rebate increase', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 856, 'Debit', 'Non-monetary', 'Insurance #6 premium rebate increase', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 857, 'Debit', 'Non-monetary', 'Insurance #7 premium rebate increase', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 858, 'Debit', 'Non-monetary', 'Insurance #8 premium rebate increase', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 859, 'Debit', 'Non-monetary', 'Insurance #9 premium rebate increase', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 860, 'Debit', 'Non-monetary', 'Insurance #10 premium rebate increase', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 870, 'Credit', 'Suspense', 'Raise payment suspense', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 871, 'Debit', 'Suspense', 'Lower payment suspense', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 877, 'Credit', 'Non-monetary', 'Escrow #1 rate change', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 878, 'Credit', 'Non-monetary', 'Escrow #2 rate change', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 879, 'Credit', 'Non-monetary', 'Escrow #3 rate change', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 880, 'Credit', 'Non-monetary', 'Escrow #4 rate change', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 881, 'Credit', 'Non-monetary', 'Escrow #5 rate change', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 882, 'Credit', 'Non-monetary', 'Escrow #6 rate change', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 883, 'Credit', 'Non-monetary', 'Escrow #7 rate change', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 884, 'Credit', 'Non-monetary', 'Escrow #8 rate change', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 885, 'Credit', 'Non-monetary', 'Escrow #9 rate change', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 886, 'Credit', 'Non-monetary', 'Escrow #10 rate change', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 887, 'Credit', 'Non-monetary', 'Customer Balance Escrow Rate Change', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 889, 'Credit', 'Non-monetary', 'Interest Rate Change', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 890, 'Credit', 'Non-monetary', 'Assumption Processed', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 891, 'Credit', 'Non-monetary', 'Status Change', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 892, 'Credit', 'Shadow Fee Payment NonAccrual Basis-Fee to Prin', 'Raise Shadow Fee Payment-L/C to Prin', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 893, 'Debit', 'Shadow Fee Payment NonAccrual Basis-Fee to Prin', 'Lower Shadow Fee Payment-L/C to Prin', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 898, 'Credit', 'Shadow Fee Assessment Reversal', 'Shadow Fee Assess Reversal-Assessed L/C', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 899, 'Debit', 'Shadow Fee Assessment Reversal', 'Shadow Fee Assess Reinstatement L/C', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 900, 'Credit', 'Regular Payment', 'Debt Protection Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 903, 'Credit', 'Backdated Payoff', 'Effective Dated Payoff', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 904, 'Credit', 'Non-monetary', 'Unposted Piece of a Regular Transaction', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 905, 'Credit', 'Interest Payment', 'Interest Paid by Capitalization', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 906, 'Credit', 'E', 'Escrow Payment from Capitalization', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 907, 'Credit', 'Non-monetary', 'Amortized payment suspense', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 908, 'Debit', 'Non-monetary', 'Used amortized payment suspense', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 909, 'Credit', 'Force Payoff', 'Forced Payoff-Split Screen', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 910, 'Credit', 'Regular Payment', 'Regular Payment with Computer Split', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 911, 'Credit', 'Late Charge', 'Late Charge Split Out', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 912, 'Credit', 'Interest Payment', 'Interest Payment Split Out', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 913, 'Credit', 'E', 'Escrow payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 914, 'Credit', 'Principal', 'Principal Payment Split Out', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 915, 'Debit', 'Principal', 'Generated Principal Advance', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 916, 'Credit', 'Other Charges', 'Other Charges Split Out', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 917, 'Debit', 'Other Charges', 'Other Charges Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 918, 'Credit', 'Accrual Adjustment', 'Generated Accrual Adjustment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 919, 'Debit', 'Accrual Adjustment', 'Generated Accrual Adjustment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 920, 'Credit', 'Accrual Adjustment', 'Effective Date Credit Interest Adj.', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 921, 'Debit', 'Accrual Adjustment', 'Effective Date Debit Interest Adj.', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 922, 'Debit', 'Interest Payment', 'Interest Payment Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 923, 'Debit', 'Late Charge', 'Late Charge Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 924, 'Credit', 'Principal', 'Principal Debit Reversal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 925, 'Debit', 'Interest Payment', 'Interest Payment Reversal - Affects N', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 927, 'Credit', 'Secondary Accrual', 'Secondary accrual credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 928, 'Debit', 'Secondary Accrual', 'Secondary accrual debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 929, 'Debit', 'LIP Customer Balance', 'Decrease Customer Balance Escrow', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 930, 'Debit', 'Escrow Balance 10', 'Decrease escrow balance 10', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 931, 'Debit', 'Escrow Balance 1', 'Decrease escrow balance 1', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 932, 'Debit', 'Escrow Balance 2', 'Decrease escrow balance 2', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 933, 'Debit', 'Escrow Balance 3', 'Decrease escrow balance 3', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 934, 'Debit', 'Escrow Balance 4', 'Decrease escrow balance 4', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 935, 'Debit', 'Escrow Balance 5', 'Decrease escrow balance 5', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 936, 'Debit', 'Escrow Balance 6', 'Decrease escrow balance 6', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 937, 'Debit', 'Escrow Balance 7', 'Decrease escrow balance 6', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 938, 'Debit', 'Escrow Balance 8', 'Decrease escrow balance 8', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 939, 'Debit', 'Escrow Balance 9', 'Decrease escrow balance 9', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 940, 'Credit', 'Escrow Balance 10', 'Escrow No. 10 Balance Increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 941, 'Credit', 'Escrow Balance 1', 'Escrow No. 1 Balance Increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 942, 'Credit', 'Escrow Balance 2', 'Escrow No. 2 Balance Increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 943, 'Credit', 'Escrow Balance 3', 'Escrow No. 3 Balance Increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 944, 'Credit', 'Escrow Balance 4', 'Escrow No. 4 Balance Increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 945, 'Credit', 'Escrow Balance 5', 'Escrow No. 5 Balance Increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 946, 'Credit', 'Escrow Balance 6', 'Escrow No. 6 Balance Increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 947, 'Credit', 'Escrow Balance 7', 'Escrow No. 7 Balance Increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 948, 'Credit', 'Escrow Balance 8', 'Escrow No. 8 Balance Increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 949, 'Credit', 'Escrow Balance 9', 'Escrow No. 9 Balance Increase', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 950, 'Debit', 'Principal', 'Curtailment reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 951, 'Credit', 'Principal', 'Principal curtailment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 952, 'Debit', 'Principal', 'Finance Charge', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 954, 'Credit', 'Regular Payment', 'Unit Price Regular Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 955, 'Debit', 'Principal', 'Unit Price Principal Advance', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 956, 'Credit', 'Principal', 'Unit Price Principal Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 957, 'Credit', 'Interest Payment', 'Unit Price Interest Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 958, 'Credit', 'Late Charge', 'Unit Price Late Charge Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 959, 'Credit', 'Other Charges', 'Unit Price Other Charge Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 960, 'Debit', 'Principal', 'Generated Principal Reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 962, 'Credit', 'Interest Payment', 'Credit Student Loan Accrued Interest', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 965, 'Credit', 'Contract Investor Fee', 'Contract Inv. Fee Assessment Reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 966, 'Credit', 'Regular Payment', 'Contract Payment w/Computer Split', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 968, 'Debit', 'Contract Investor Fee', 'Contract Investor Fee Assessment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 969, 'Credit', 'Contract Investor Fee', 'Contract Investor Fee Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 970, 'Credit', 'Escrow Balance 10', 'Interest paid on Escrow balance 10', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 971, 'Credit', 'Escrow Balance 1', 'Interest paid on Escrow balance 1', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 972, 'Credit', 'Escrow Balance 2', 'Interest paid on Escrow balance 2', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 973, 'Credit', 'Escrow Balance 3', 'Interest paid on Escrow balance 3', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 974, 'Credit', 'Escrow Balance 4', 'Interest paid on Escrow balance 4', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 975, 'Credit', 'Escrow Balance 5', 'Interest paid on Escrow balance 5', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 976, 'Credit', 'Escrow Balance 6', 'Interest paid on Escrow balance 6', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 977, 'Credit', 'Escrow Balance 7', 'Interest paid on Escrow balance 7', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 978, 'Credit', 'Escrow Balance 8', 'Interest paid on Escrow balance 8', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 979, 'Credit', 'Escrow Balance 9', 'Interest paid on Escrow balance 9', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 980, 'Credit', 'Principal', 'Interest Rebate', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 983, 'Credit', 'Principal', 'Dealer Rebate', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 984, 'Credit', 'LIP Customer Balance', 'Customer Balance Escrow Reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 985, 'Credit', 'LIP Customer Balance', 'Customer Balance Escrow Interest Paid', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 988, 'Credit', 'Principal', 'Payoff Adjustment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 990, 'Credit', 'Principal', 'Insurance #10 rebate', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 991, 'Credit', 'Principal', 'Insurance #1 rebate', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 992, 'Credit', 'Principal', 'Insurance #2 rebate', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 993, 'Credit', 'Principal', 'Insurance #3 rebate', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 994, 'Credit', 'Principal', 'Insurance #4 rebate', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 995, 'Credit', 'Principal', 'Insurance #5 rebate', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 996, 'Credit', 'Principal', 'Insurance #6 rebate', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 997, 'Credit', 'Principal', 'Insurance #7 rebate', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 998, 'Credit', 'Principal', 'Insurance #8 rebate', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 999, 'Credit', 'Principal', 'Insurance #9 rebate', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1000, 'Debit', 'Principal', 'Affiliate Loan Funding Advance', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 1012, 'Credit', 'Interest Payment', 'Affiliate 100% sold interest credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1022, 'Debit', 'Interest Payment', 'Affiliate 100% sold interest debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 1051, 'Debit', 'Accrual Adjustment', 'Rate Swap Interest Adjustment Debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 1053, 'Credit', 'Accrual Adjustment', 'Rate Swap Interest Adj Debit Reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1326, 'Credit', 'Principal', 'Return of ATM Advance', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1327, 'Debit', 'Principal', 'ATM Advance', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 1328, 'Debit', 'Principal', 'POS Advance', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 1337, 'Credit', 'Principal', 'Return of POS Advance', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1585, 'Debit', 'Shadow Principal Payments', 'Shadow Cap Fee - Increase GL Principal', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 1586, 'Credit', 'Non-monetary', 'Shadow Capitalized Fee Reversal', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1801, 'Credit', 'Non-monetary', 'Interest Assessment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1802, 'Credit', 'Non-monetary', 'Unused Line Fee Assessment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1803, 'Credit', 'Non-monetary', 'Credit Life Fee Assessment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1804, 'Credit', 'Non-monetary', 'A&H Fee Assessment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1814, 'Credit', 'Non-monetary', 'Unemployment Fee Assessment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1815, 'Credit', 'Non-monetary', 'Debt Protection Fee Assessment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1907, 'Credit', 'Suspense', 'Rate Swap Increase Suspense', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1908, 'Debit', 'Suspense', 'Rate Swap Decrease Suspense', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 1910, 'Credit', 'Regular Payment', 'Rate Swap Generated Payment - Suspense', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1912, 'Credit', 'Interest Payment', 'Rate Swap Generated Interest Payment', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1918, 'Credit', 'Rate Swap Interest Accrual Adjustment', 'Rate Swap Generated Accrual Adj Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1919, 'Debit', 'Rate Swap Interest Accrual Adjustment', 'Rate Swap Generated Accrual Adj Debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 1920, 'Credit', 'Rate Swap Interest Accrual Adjustment', 'Rate Swap Eff Dated Credit Interest Adj', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1921, 'Debit', 'Rate Swap Interest Accrual Adjustment', 'Rate Swap Eff Dated Debit Interest Adj', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 1922, 'Debit', 'Interest Payment', 'Rate Swap Generated Interest Payment Rev', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 1930, 'Debit', 'Escrow Balance 10', 'Decrease escrow balance 10  Affects Y', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 1931, 'Debit', 'Escrow Balance 1', 'Decrease escrow balance 1   Affects Y', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 1932, 'Debit', 'Escrow Balance 2', 'Decrease escrow balance 2   Affects Y', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 1933, 'Debit', 'Escrow Balance 3', 'Decrease escrow balance 3   Affects Y', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 1934, 'Debit', 'Escrow Balance 4', 'Decrease escrow balance 4   Affects Y', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 1935, 'Debit', 'Escrow Balance 5', 'Decrease escrow balance 5   Affects Y', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 1936, 'Debit', 'Escrow Balance 6', 'Decrease escrow balance 6   Affects Y', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 1937, 'Debit', 'Escrow Balance 7', 'Decrease escrow balance 7   Affects Y', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 1938, 'Debit', 'Escrow Balance 8', 'Decrease escrow balance 8   Affects Y', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 1939, 'Debit', 'Escrow Balance 9', 'Decrease escrow balance 9   Affects Y', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 1940, 'Credit', 'Escrow Balance 10', 'Escrow No. 10 Balance Increase  Aff N', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1941, 'Credit', 'Escrow Balance 1', 'Escrow No. 1  Balance Increase  Aff N', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1942, 'Credit', 'Escrow Balance 2', 'Escrow No. 2  Balance Increase  Aff N', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1943, 'Credit', 'Escrow Balance 3', 'Escrow No. 3  Balance Increase  Aff N', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1944, 'Credit', 'Escrow Balance 4', 'Escrow No. 4  Balance Increase  Aff N', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1945, 'Credit', 'Escrow Balance 5', 'Escrow No. 5  Balance Increase  Aff N', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1946, 'Credit', 'Escrow Balance 6', 'Escrow No. 6  Balance Increase  Aff N', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1947, 'Credit', 'Escrow Balance 7', 'Escrow No. 7  Balance Increase  Aff N', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1948, 'Credit', 'Escrow Balance 8', 'Escrow No. 8  Balance Increase  Aff N', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1949, 'Credit', 'Escrow Balance 9', 'Escrow No. 9  Balance Increase  Aff N', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1957, 'Credit', 'Suspense', 'Compound in Arrears Increase Suspense', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 1958, 'Debit', 'Suspense', 'Compound in Arrears Decrease Suspense', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 1960, 'Credit', 'Regular Payment', 'Compound in Arrears Gen Pmt/Suspense', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 2801, 'Debit', 'Non-monetary', 'Rev Interest Assessment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 2802, 'Debit', 'Non-monetary', 'Rev Unused Line Fee Assessment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 2803, 'Debit', 'Non-monetary', 'Rev Credit Life Fee Assessment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 2804, 'Debit', 'Non-monetary', 'Rev A&H Fee Assessment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 2814, 'Debit', 'Non-monetary', 'Rev Unemployment Fee Assessment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 2815, 'Debit', 'Non-monetary', 'Rev Debt Protection Fee Assessment', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 3100, 'Credit', 'MPLOC split from Principal', 'Principal Payment With Computer Split', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 3366, 'Credit', 'Principal', 'Tranche Principal Split - No Due Date', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 3367, 'Credit', 'Principal', 'Tranche Principal Split - Due Date', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 10500, 'Credit', 'Principal', 'Principal Transferred to DOVENMUEHLE', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 10501, 'Credit', 'Interest Payment', 'Interest Transferred to DOVENMUEHLE', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 10502, 'Debit', 'Interest Payment', 'Interest Transferred to DOVENMUEHLE', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 10503, 'Credit', 'Secondary Accrual', 'Interest Transferred to DOVENMUEHLE', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 10504, 'Debit', 'Secondary Accrual', 'Interest Transferred to DOVENMUEHLE', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 10505, 'Credit', 'Other Charges', 'Other Charges Transferred to DOVENMUEHLE', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 10506, 'Credit', 'Late Charge', 'Late Charges Transferred to DOVENMUEHLE', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 10507, 'Credit', 'Suspense', 'Suspense Transferred to DOVENMUEHLE', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 10511, 'Credit', 'Escrow Balance 1', 'Escrow Transferred to DOVENMUEHLE', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 10512, 'Credit', 'Escrow Balance 2', 'Escrow Transferred to DOVENMUEHLE', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 10513, 'Credit', 'Escrow Balance 3', 'Escrow Transferred to DOVENMUEHLE', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 10514, 'Credit', 'Escrow Balance 4', 'Escrow Transferred to DOVENMUEHLE', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 10515, 'Credit', 'Escrow Balance 5', 'Escrow Transferred to DOVENMUEHLE', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('LOAN', 10521, 'Debit', 'Escrow Balance 1', 'Escrow Transferred to DOVENMUEHLE', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 10522, 'Debit', 'Escrow Balance 2', 'Escrow Transferred to DOVENMUEHLE', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 10523, 'Debit', 'Escrow Balance 3', 'Escrow Transferred to DOVENMUEHLE', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 10524, 'Debit', 'Escrow Balance 4', 'Escrow Transferred to DOVENMUEHLE', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('LOAN', 10525, 'Debit', 'Escrow Balance 5', 'Escrow Transferred to DOVENMUEHLE', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('MORT', 99999, 'Credit', 'Mortgage Catch All Credit', 'Mortgage Catch All Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('MORT', 11111, 'Debit', 'Mortgage Catch All Debit', 'Mortgage Catch All Debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security'),
+    ('SBLC', 99999, 'Credit', 'Mortgage Catch All Credit', 'Mortgage Catch All Credit', 'Free Receipt', 'All', 'Free Receipt', 'Free Receipt Of Security'),
+    ('SBLC', 11111, 'Debit', 'Mortgage Catch All Debit', 'Mortgage Catch All Debit', 'Free Delivery', 'All', 'Free Delivery', 'Free Delivery Of Security')
+    ) AS t (
+        `TYPE`,
+        `CODE`,
+        `DEBIT_CREDIT`,
+        `AFFECT`,
+        `DESCRIPTION`,
+        `TRANSACTION_TYPE`,
+        `ACCOUNT_TYPE`,
+        `DESCRIPTION_CODE`,
+        `TREATMENT_CODE`
+    )
+),
+adjusted_data AS (
+        select
+                CAST(`TYPE` AS STRING) AS `TYPE`,
+                CAST(CODE AS INTEGER) AS CODE,
+                CAST(DEBIT_CREDIT AS STRING) AS DEBIT_CREDIT,
+                CAST(AFFECT AS STRING) AS AFFECT,
+                CAST(`DESCRIPTION` AS STRING) AS `DESCRIPTION`,
+                CAST(TRANSACTION_TYPE AS STRING) AS TRANSACTION_TYPE,
+                CAST(ACCOUNT_TYPE AS STRING) AS ACCOUNT_TYPE,
+                CAST(DESCRIPTION_CODE AS STRING) AS DESCRIPTION_CODE,
+                CAST(TREATMENT_CODE AS STRING) AS TREATMENT_CODE
+        FROM
+                landing_data
+)
+SELECT *, current_timestamp() AS LOADED_AT FROM adjusted_data;
+
+-- From bronze-axiom.dbx.sql
+-- Source model: bronze_axiom_acct
+CREATE OR REPLACE TABLE bronze.default.bronze_axiom_acct AS
+-- NAME: BRONZE_AXIOM_ACCT
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: May 22, 2025
+
+
+
+WITH landing_data AS (
+    SELECT
+        ACCT
+        ,Description
+        ,AX_NewACCT
+        ,AX_AcctType
+        ,AX_DRCR
+        ,AX_ReportSign
+        ,AX_BSACCT
+        ,AX_YieldDTYPE
+        ,AX_Accrual_Basis
+        ,AX_BUDACCT
+        ,AX_FinStmt
+        ,AX_StandardReport
+        ,AX_LoanLossReserveCategory
+        ,AX_LoanLossReserveType
+        ,AX_ForecastAcct
+        ,RptLvl1
+        ,RptLvl2
+        ,RptLvl3
+        ,RptLvl4
+        ,FTPAcctNum
+        ,RptLvl5
+        ,BOD_Level
+        ,ElimRpt
+        ,YieldRpt
+        ,Stats_Ratios
+        ,ScorecardYieldRpt
+        ,Scorecard
+        ,MgtglRpt
+        ,RAROCBS
+        ,RAROCBCAlloc
+        ,Strategy
+        ,ConsolidatedAuditedFS
+        ,InstProf
+        ,BradescoMISReporting
+        ,CashFlowCategory
+        ,StressTesting
+        ,BradescoHistorialBasis
+        ,BUDReport
+        ,Group__CS
+        ,GroupActuals
+        ,GroupActualsSummary
+        ,MISProductLevel1
+        ,MISProductLevel2
+        ,MISProductLevel3
+        ,FTPAcct
+        ,DATE_OF_DATA
+    FROM
+        axiom.default.axiom_acct
+)
+
+SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
+
+-- From bronze-axiom.dbx.sql
+-- Source model: bronze_axiom_cds
+CREATE OR REPLACE TABLE bronze.default.bronze_axiom_cds AS
+-- NAME: BRONZE_AXIOM_CDS
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: August 12, 2025
+
+
+
+WITH landing_data AS (
+    SELECT
+        YRMO,
+        InstrumentID,
+        ITYPE,
+        ACCT,
+        DEPT,
+        PROD,
+        CIFID,
+        AX_AccrualBasis,
+        OFFICERID,
+        AX_AvgBal,
+        AX_AvgBalAnnualized,
+        AX_ClosedDate,
+        AX_ClosedThisMonth,
+        AX_CurBal,
+        AX_DWInterest,
+        AX_FTP,
+        AX_FTPAnnual,
+        AX_FTPRate,
+        AX_FTPRateSpread,
+        AX_FTPSpread,
+        AX_FTPSpreadAnnual,
+        AX_Interest,
+        AX_InterestAnnual,
+        AX_IntIndex,
+        AX_IntRate,
+        AX_IntSpread,
+        AX_IsNonMaturity,
+        AX_MatDate,
+        AX_MatTerm,
+        AX_NextRateResetDate,
+        AX_OpenedThisMonth,
+        AX_OrigBal,
+        AX_OrigDate,
+        AX_SourceFileDesc,
+        AX_PrevRateResetDate,
+        AX_SourceSysDesc,
+        AX_RateResetFreq,
+        AX_RecCount,
+        AX_RenewalDate,
+        AX_RenewedThisMonth,
+        AX_Status,
+        AX_Capital,
+        BAC_InstType,
+        Company,
+        AcctType,
+        CDTypeCode,
+        ArgoProdType,
+        Branch,
+        GLGroup,
+        GLCostCntr,
+        `Status`,
+        Class,
+        CDNumber,
+        StmtCode,
+        IntPenalty,
+        DepThisTerm,
+        WthdrwThisMo,
+        IntExpMTD,
+        MTDWaived,
+        AggrBal,
+        AggrDays,
+        ConvDate,
+        LstStmtDate,
+        CDTerm,
+        CDTermCode,
+        LstRenewTerm,
+        OrgnCDTrmCode,
+        IntTerm,
+        IntTermCode,
+        RenewCode,
+        DepAcctNmbr,
+        RateFloor,
+        RateCeiling,
+        RateRevTrmCod,
+        RateSchdCode,
+        RegCDAggDays,
+        RegCDAggBal,
+        RegCDIntErnd,
+        IRAPlanCode,
+        IRADistSeq,
+        NewAcct,
+        ClsRsnCode,
+        Renew2Type,
+        MTDAggDays,
+        CustName,
+        MTDIntAccr,
+        Residency,
+        Postal,
+        RedemptionDate,
+        GLProdCode,
+        Agent,
+        HighRisk,
+        TierPB,
+        TierPrem,
+        TierDOMB,
+        TierDIGB,
+        GroupID,
+        GroupDescription,
+        CDmatTerm,
+        Tier,
+        AccInt,
+        AX_PmtFreq,
+        AX_PmtType,
+        AX_NextPmtDate,
+        DATE_OF_DATA
+    FROM
+        axiom.default.axiom_cds
+)
+
+SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
+
+-- From bronze-axiom.dbx.sql
+-- Source model: bronze_axiom_devops
+CREATE OR REPLACE TABLE bronze.default.bronze_axiom_devops AS
+-- NAME: BRONZE_AXIOM_DEVOPS
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: August 14, 2025
+
+
+
+WITH landing_data AS (
+    SELECT
+        YRMO,
+        InstrumentID,
+        ITYPE,
+        ACCT,
+        DEPT,
+        PROD,
+        CIFID,
+        OFFICERID,
+        AX_AccrualBasis,
+        AX_AvgBal,
+        AX_AvgBalAnnualized,
+        AX_ClosedDate,
+        AX_ClosedThisMonth,
+        AX_CurBal,
+        AX_DWInterest,
+        AX_FTP,
+        AX_FTPAnnual,
+        AX_FTPRate,
+        AX_FTPRateSpread,
+        AX_FTPSpread,
+        AX_FTPSpreadAnnual,
+        AX_IntRate,
+        AX_Interest,
+        AX_InterestAnnual,
+        AX_IsNonMaturity,
+        AX_SourceFileDesc,
+        AX_OpenedThisMonth,
+        AX_SourceSysDesc,
+        AX_OrigBal,
+        AX_OrigDate,
+        AX_RecCount,
+        AX_Status,
+        AX_Capital,
+        Company,
+        Center,
+        Branch,
+        BACInstType,
+        GLGroup,
+        GLProdCode,
+        Agent,
+        SrvcChrg,
+        ACC_Method,
+        RecordID,
+        ACCT_Type,
+        ARGO_ProdType,
+        CollectOfficer,
+        `Status`,
+        Class,
+        DateOpen,
+        DateEnter,
+        LastStmnt,
+        DateClose,
+        ConvDate,
+        AggrDays,
+        AggrLdgBal,
+        CollectedBal,
+        AggrDaysPrevCyc,
+        AggrLdgBalPrevCyc,
+        AggrCollBalPrevCyc,
+        AggrDaysThisStmnt,
+        AggrLdgThisStmnt,
+        AggrDaysIntCyc,
+        AggrLdgBalIntCyc,
+        StmntCyc,
+        StmntCode,
+        Num_SC_DR,
+        Amt_SC_DR,
+        Num_SC_CR,
+        Amt_SC_CR,
+        Num_OnusATM_CR,
+        Num_OnusATM_DR,
+        Num_OnusATM_Transf,
+        Num_OnusATM_Inq,
+        Num_FXATM_CR,
+        Num_FXATM_DR,
+        AMT_FXATM_Trans,
+        Num_FXATM_Inq,
+        AmtNSF,
+        ODPrivStatus,
+        ATM_Card,
+        AutoNSF_Chrg,
+        ChrgContODFee,
+        NumOD_ThisCyc,
+        ItemsOD_ThisCyc,
+        DaysOD_ThisCyc,
+        CksDep_OnUs,
+        CksDep_FX,
+        CksDep_Local,
+        CashDepThisCyc,
+        CycTD_Fees,
+        CashPdThisCyc,
+        TimesRtrnThisCyc,
+        ItemsRtrnThisCyc,
+        DaysRtrnThisCyc,
+        TimesNSFThisCyc,
+        ItemsNSFThisCyc,
+        DaysNSFThisCyc,
+        MTD_SrvcChrg,
+        MTD_IntPd,
+        MTD_AggrBal,
+        MTD_AggrBal2,
+        MTD_AggrDays,
+        RtrnCkChg_MTD,
+        RtrnCkWve_MTD,
+        ODChrg_MTD,
+        ODChrgWve_MTD,
+        NumRtrnChk_MTD,
+        TimesOD_MTD,
+        TimesNSF_MTD,
+        MTD_SrvcChrgWve,
+        ChrgOffAmnt,
+        CycTD_Waived,
+        MTD_Waived,
+        CycTD_FeesChrg,
+        MTD_FeesChrg,
+        CycTD_Refund,
+        MTD_Refund,
+        OD_RegReport,
+        STD_NSFChgsPaid,
+        STD_NSFRetItems,
+        ACH_CRCyc,
+        ACH_CRCyc2,
+        ACH_DRCyc,
+        ACH_DRCyc2,
+        PaperStmntCode,
+        WveReasonCode,
+        StmntDelMeth,
+        ItemsODBal,
+        NSFFeesBal,
+        ODChrgBal,
+        SCBal,
+        UCFBal,
+        CurBalPrvCyc,
+        CardOptInOut,
+        BillPay,
+        HighRisk,
+        EnhancedDueDiligence,
+        AmericanExpress,
+        Residency,
+        Postal,
+        TierPB,
+        TierPrem,
+        TierDOMB,
+        TierDIGB,
+        GroupID,
+        GroupDescription,
+        Crossselling,
+        Tier,
+        DepositType,
+        AccInt,
+        DATE_OF_DATA
+    FROM
+        axiom.default.axiom_deposits
+)
+
+SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
+
+-- From bronze-axiom.dbx.sql
+-- Source model: bronze_axiom_dmi_chargeoffs
+CREATE OR REPLACE TABLE bronze.default.bronze_axiom_dmi_chargeoffs AS
+-- NAME: BRONZE_AXIOM_DMI_CHARGEOFFS
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: August 12, 2025
+
+
+
+WITH landing_data AS (
+    SELECT
+        InstrumentID,
+        YRMO,
+        ChargeOffAmt,
+        INVID,
+        CAT,
+        ProdLnCode,
+        DATE_OF_DATA
+    FROM
+        axiom.default.axiom_dmi_chargeoffs
+)
+
+SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
+
+-- From bronze-axiom.dbx.sql
+-- Source model: bronze_axiom_dmiloans
+CREATE OR REPLACE TABLE bronze.default.bronze_axiom_dmiloans AS
+-- NAME: BRONZE_AXIOM_DMILOANS
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: August 14, 2025
+
+
+
+WITH landing_data AS (
+    SELECT
+        YRMO,
+        InstrumentID,
+        ACCT,
+        DEPT,
+        PROD,
+        CIFID,
+        OFFICERID,
+        AX_AccrualBasis,
+        AX_Amortizing,
+        AX_AmortTerm,
+        AX_AvgBal,
+        AX_CurBal,
+        AX_CurBalEOM,
+        AX_FirstRateResetCap,
+        AX_FTP,
+        AX_FTPAnnual,
+        AX_FTPRate,
+        AX_FTPRateSpread,
+        AX_FTPSpread,
+        AX_FTPSpreadAnnual,
+        AX_IntIndex,
+        AX_IntRate,
+        AX_Interest,
+        AX_InterestAnnual,
+        AX_IntroRateEndDate,
+        AX_IntSpread,
+        AX_IsNonMaturity,
+        AX_LifeRateCeiling,
+        AX_LifeRateFloor,
+        AX_MatDate,
+        AX_MatTerm,
+        AX_NextPmtDate,
+        AX_NextRateResetDate,
+        AX_NonAccrual,
+        AX_OrigBal,
+        AX_OrigDate,
+        AX_Payment,
+        AX_PeriodicRateResetCap,
+        AsOfDate,
+        LN_NUM,
+        AX_PmtFreq,
+        OLD_LN_NUM,
+        NaturalKey,
+        BILLING_NAME,
+        AX_PmtType,
+        CustAcctNbr,
+        INV_ID,
+        AX_PrevRateResetDate,
+        CAT,
+        GL_ACCT,
+        NEXT_PMT_DUE_DT,
+        AX_RateResetFreq,
+        FIRST_PRIN_BAL,
+        Company,
+        ORIG_MTG_AMT,
+        AX_RecCount,
+        LN_CLOSING_DT,
+        Department,
+        LN_MAT_DT,
+        AX_RenewalDate,
+        ANN_INT_RT,
+        ITYPE,
+        AX_AvgBalAnnualized,
+        AX_DWInterest,
+        LN_TRM,
+        AX_SourceFileDesc,
+        REM_TRM,
+        NativeProdCode,
+        PRODUCT_LINE_CODE,
+        AX_SourceSysDesc,
+        ARM_IND,
+        NativeCIF,
+        ARM_IND_DESC,
+        NativeOfficerCode,
+        Branch_Number,
+        AccountType,
+        Officer,
+        `Status`,
+        Loan_type,
+        Class_Code,
+        PROP_TYPE_FNMA_CODE,
+        PROP_TYPE_FNMA_CODE_DESC,
+        INVESTOR_LN_NUM,
+        OCCUPANCY_CODE,
+        OCCUPANCY_CODE_DESC,
+        LN_PURPOSE_CODE,
+        LN_PURPOSE_CODE_DESC,
+        HI_TYPE,
+        HI_TYPE_DESC,
+        LO_TYPE,
+        LO_TYPE_DESC,
+        FIRST_DUE_DT,
+        FIRST_P_AND_I_AMT,
+        FIRST_SERVICE_FEE_RT,
+        FRCLS_STOP_CODE,
+        FRCLS_STOP_CODE_DESC,
+        ORIG_LN_TO_VAL_RATIO,
+        INT_PAID_THROUGH_DT,
+        ESCROW_BAL,
+        ESCROW_ADV_BAL,
+        PLEDGED_LN_TO_CODE,
+        PLEDGED_LN_TO_CODE_DESC,
+        PMT_PERIOD,
+        BAD_CHECK_TABLE,
+        TIMES_DLQ,
+        TOTAL_MONTHLY_PMT,
+        NUM_OF_UNITS,
+        INT_FLAG,
+        INT_FLAG_DESC,
+        CAP_LN_FLAG,
+        CAP_LN_FLAG_DESC,
+        CUST_LAST_NAME,
+        CUST_FIRST_NAME,
+        MTG_INS_PAYEE,
+        T_AND_I_MONTHLY_AMT,
+        GUAR_FEE_AFTER_BUYUP_DOWN_FC,
+        RECOURSE_FLAG,
+        RECOURSE_FLAG_DESC,
+        POOL_NUM,
+        BR_OFF_CODE,
+        PREPMT_PENALTY_IND,
+        FASB_UNAMRT__COSTFEES,
+        ARM_NEXT_IR_EFFECTIVE_DT,
+        ARM_ORIG_INT_RT,
+        ARM_IR_MARGIN_RT,
+        ARM_NEXT_PI_EFFECTIVE_DT,
+        ARM_IR_CHANGE_PERIOD,
+        ARM_PI_CHANGE_PERIOD,
+        ARM_IR_MAX_LIFE_CEILING_RT,
+        ARM_IR_MAX_LIFE_FLOOR_RT,
+        ARM_IR_MAX_INCREASE_RT,
+        ARM_IR_MAX_DECREASE_RT,
+        ARM_IR_MAX_LIFE_INCR_RT,
+        ARM_IR_MAX_LIFE_DECR_RT,
+        ARM_PI_MAX_INCR_PCT,
+        ARM_PI_MAX_DECR_PCT,
+        ARM_PI_MAX_LIFE_AMT,
+        ARM_PI_MAX_LIFE_INCR_PCT,
+        ARM_PI_MAX_LIFE_DECR_PCT,
+        ARM_ORIG_PI_AMT,
+        ARM_INITIAL_INDEX_RT,
+        ARM_IR_INITIAL_RT,
+        ARM_ORIG_IR_CHANGE_DT,
+        ARM_IR_ROUND_TYPE,
+        ARM_IR_ROUND_DESC,
+        ARM_IR_ROUND_FCTR,
+        ARM_PLAN_ID,
+        ARM_PLAN_ID_DESC,
+        ARM_INDEX_CODE_1,
+        ARM_INDEX_CODE_1_DESC,
+        ARM_INDEX_LEAD_DAYS,
+        AX_Date_Entered,
+        CustName,
+        COCUST_LAST_NAME,
+        Residency,
+        COCUST_FIRST_NAME,
+        Postal,
+        FLOOD_ZONE_POS_1,
+        ORIGDTYRMO,
+        MATDTYRMO,
+        ORIG_CRDT_QUAL_CODE,
+        CHARGE_OFF_BAL,
+        Credit_Qual_Code,
+        ChargeOffAmt,
+        FEES_Ins_NSF,
+        FEES_Proc_Underwriting,
+        FEES_DocPrep,
+        DaysPastDue,
+        WorkOut,
+        ProvisionExp,
+        ProvisionReserve,
+        DaysDelinqunet,
+        EnterNonAcc,
+        LeaveNonAcc,
+        AppraisalDate,
+        LnModAppraisalDt,
+        LnModAppraisalAmt,
+        ChargeOffDt,
+        DraftRoutingTranNum,
+        FirstOrigCostAmt,
+        FirstOrigFeeAmt,
+        AX_AmortizationStartDate,
+        PropAlphaStateCode,
+        OriginalLTV,
+        LTVratio,
+        PropZipCode,
+        ACC_STAT,
+        Call_Report_Date,
+        Call_Report_Date_Classification,
+        AccInt,
+        LATE_CHARGE_FCTR,
+        GRACE_DAYS,
+        LATE_CHARGE_CODE_,
+        Prop_Value_amt,
+        Orig_Prop_Value_Amt,
+        CondoYrBuilt,
+        DATE_OF_DATA
+    FROM
+        axiom.default.axiom_dmiloans
+)
+
+SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
+
+-- From bronze-axiom.dbx.sql
+-- Source model: bronze_axiom_instmodelstg
+CREATE OR REPLACE TABLE bronze.default.bronze_axiom_instmodelstg AS
+-- NAME: BRONZE_AXIOM_INSTMODELSTG
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: May 22, 2025
+
+
+
+WITH landing_data AS (
+    SELECT
+        InstrumentID
+        ,REPLACE(
+            InstrumentID,
+            SUBSTRING(
+            	InstrumentID,
+                instr(InstrumentID, '_'),
+                length(InstrumentID)
+            ),
+            ''
+        ) AS InstrumentType
+        ,REPLACE(
+            InstrumentID,
+            LEFT(InstrumentID, instr(InstrumentID, '_')),
+            ''
+        ) AS InstrumentCode
+        ,ITYPE
+        ,ACCT
+        ,DEPT
+        ,PROD
+        ,CIFID
+        ,OFFICERID
+        ,AX_DQAReviewed
+        ,AX_DQAEventCode
+        ,AX_AccrualBasis
+        ,AX_AmortizationStartDate
+        ,AX_Amortizing
+        ,AX_AmortTerm
+        ,AX_APSFlag
+        ,AX_AvgBal
+        ,AX_Coupon
+        ,AX_CurBal
+        ,AX_DaysDelay
+        ,AX_FirstRateResetCap
+        ,AX_FirstRateResetDate
+        ,AX_FTP
+        ,AX_FTPEngineType
+        ,AX_FTPAnnual
+        ,AX_FTPKeyRate
+        ,AX_FTPRateSpread
+        ,AX_FTPRate
+        ,AX_FTPKeyRateName
+        ,AX_FTPSpread
+        ,AX_FTPSpreadAnnual
+        ,AX_IntRate
+        ,AX_Interest
+        ,AX_InterestAnnual
+        ,AX_IntIndex
+        ,AX_IntSpread
+        ,AX_FTPMessage
+        ,AX_IsNonMaturity
+        ,AX_IssueDate
+        ,AX_LifeRateCeiling
+        ,AX_FTPMessageCd
+        ,AX_LifeRateFloor
+        ,AX_MatDate
+        ,AX_MatTerm
+        ,AX_FTPMethod
+        ,AX_NextPmtDate
+        ,AX_NextRateResetDate
+        ,AX_NonAccrual
+        ,AX_FTPYieldCurve
+        ,AX_OrigBal
+        ,AX_OrigDate
+        ,AX_OrigPrepayRate
+        ,AX_OrigPrepayType
+        ,AX_Payment
+        ,AX_PeriodicRateResetCap
+        ,AX_PmtFreq
+        ,AX_SourceTable
+        ,AX_PmtType
+        ,AX_PrepayRate
+        ,AX_PrepayType
+        ,AX_PrevRateResetDate
+        ,AX_RateResetFreq
+        ,AX_RecCount
+        ,AX_RenewalDate
+        ,AX_IntroRateEndDate
+        ,LateChargePct
+        ,GraceDays
+        ,LateChargeCode
+        ,DATE_OF_DATA
+        ,YRMO AS YEARMONTH
+    FROM
+        axiom.default.axiom_instmodelstg
+)
+
+SELECT *,current_timestamp() AS LOADED_AT FROM landing_data;
+
+-- From bronze-axiom.dbx.sql
+-- Source model: bronze_axiom_loans
+CREATE OR REPLACE TABLE bronze.default.bronze_axiom_loans AS
+-- NAME: BRONZE_AXIOM_LOANS
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: August 12, 2025
+
+
+
+
+WITH landing_data AS (
+    SELECT
+        YRMO,
+        InstrumentID,
+        ITYPE,
+        ACCT,
+        DEPT,
+        PROD,
+        CIFID,
+        OFFICERID,
+        AX_AccrualBasis,
+        AX_AmortizationStartDate,
+        AX_Amortizing,
+        AX_AmortTerm,
+        AX_AvgBal,
+        AX_AvgBalAnnualized,
+        AX_ClosedDate,
+        AX_ClosedThisMonth,
+        AX_CurBal,
+        AX_CurBalOrig,
+        AX_DWInterest,
+        AX_FirstRateResetCap,
+        AX_FTP,
+        AX_FTPAnnual,
+        AX_IntIndex,
+        AX_FTPRate,
+        AX_FTPRateSpread,
+        AX_FTPSpread,
+        AX_FTPSpreadAnnual,
+        AX_IntRate,
+        AX_Interest,
+        AX_InterestAnnual,
+        AX_IntroRateEndDate,
+        AX_IntSpread,
+        AX_IsNonMaturity,
+        AX_LifeRateCeiling,
+        AX_LifeRateFloor,
+        AX_MatDate,
+        AX_MatTerm,
+        AX_NextPmtDate,
+        AX_NextRateResetDate,
+        AX_NonAccrual,
+        AX_OpenedThisMonth,
+        AX_OrigBal,
+        AX_OrigDate,
+        AX_Payment,
+        AX_PeriodicRateResetCap,
+        AX_PmtFreq,
+        AX_SourceFileDesc,
+        AX_PmtType,
+        AX_SourceSysDesc,
+        AX_PrevRateResetDate,
+        AX_RateResetFreq,
+        AX_RecCount,
+        AX_RenewalDate,
+        AX_RenewedThisMonth,
+        AX_Status,
+        AX_Capital,
+        AsOfDate,
+        NaturalKey,
+        CustAcctNbr,
+        GL_ACCT,
+        Company,
+        Department,
+        NativeProdCode,
+        NativeCIF,
+        NativeOfficerCode,
+        Branch_Number,
+        AccountType,
+        Officer,
+        `Status`,
+        Loan_type,
+        Class_Code,
+        Query_Balance,
+        Sold_Balances,
+        Bank_Discount,
+        Dealer_Discount,
+        Assessed_Late_Charges,
+        Paid_Late_Charges,
+        InterestRebate,
+        Dealer_Rebate,
+        Princ_and_intpmtamt,
+        Billed_Late_Chgs,
+        Billed_Other_Chgs,
+        Billed_CreditLife,
+        Billed_AandH_Insurance,
+        Billed_Unemployment,
+        Old_PaymentAmount,
+        Old_PandI_amount,
+        Old_Escrow_pmtamt,
+        New_PaymentAmount,
+        New_PandI_PmtAmount,
+        Balloon_Payment,
+        Charge_Off_Amount,
+        Shadow_charged_off_principal,
+        Shadow_charged_off_interest,
+        Shadow_interestapplied_to_principal,
+        Shadow_Status,
+        Yearly_fee,
+        Unpaid_Charges,
+        Original_Loan_Date,
+        Maturity_Date,
+        Date_Entered,
+        NextReview_Date,
+        FirstPymtDate,
+        LastPymtDate,
+        NextPymtDue_Date,
+        Original_Maturity_Date,
+        New_PandI_Effective_Date,
+        Date_paid_off,
+        Nonaccrual_Date,
+        Chg_off_Date,
+        Date_on_Watch_list,
+        Foreclosure_date,
+        Dealer_Rate,
+        Upfront_percentage,
+        Dealer_Reserve_Pct,
+        Total_Interest,
+        Rate_Number,
+        Rate_Cap_Upwards,
+        Rate_Cap_Downwards,
+        Rate_Cap_Period_Code,
+        Rounding_Method,
+        Previous_Rate,
+        New_Rate,
+        Convertable_ARM,
+        Convertable_Index_number,
+        Convertable_Variance,
+        Convertable_Variance_code,
+        Loan_Term_Code,
+        Payment_Freq_Code,
+        Payment_Code,
+        Alternate_PymtSched,
+        ProfitPeriod_Late_Chgs,
+        ProfitPeriod_ExtFees,
+        Profitperiod_Agg_Bal,
+        Profitperiod_Int_earned,
+        Profitperiod_Agg_Days,
+        Times_PastDue_10_29,
+        Times_PastDue_30_59,
+        Times_PastDue_60_89,
+        Times_PastDue_90_119,
+        Participation_Code,
+        CreditLine_Code,
+        DepartmentCode,
+        Shadow_processing_flag,
+        Shadow_accrual_flag,
+        Shadow_reportas_C_O,
+        Group_Code_,
+        GL_CostCenter_,
+        GL_ProductCode,
+        Collateral_Code,
+        Purpose_Code_,
+        Dealer_Num,
+        CreditRating_Code,
+        Participation_Percent,
+        Part_principal_pmt_split_pct,
+        Part_int_pmt_split_pct,
+        Watch_listCode,
+        PrepaymentPenalty_Code,
+        Number_of_bad_checks,
+        Times_PastDue_120_149,
+        Times_PastDue_150_179,
+        Times_PastDue_180,
+        Participation_Percentage,
+        LOC_Fee_Calc_Code,
+        LOC_Fee_Frequency,
+        LOC_Fee_Freq_Code,
+        Unused_Line_Calc_Code,
+        Unused_Line_Frequency,
+        Unused_Line_Freq_Code,
+        Tech_Serv_amount1_,
+        Tech_Serv_amount2_,
+        Tech_Serv_misc_code_1,
+        Tech_Serv_misc_code_2,
+        Tech_Serv_misc_code_3,
+        Tech_Serv_misc_code_4,
+        Primary_Risk_Rating,
+        Call_report_code,
+        AX_Date_Entered,
+        CustName,
+        Residency,
+        Postal,
+        ORIGDTYRMO,
+        MATDTYRMO,
+        DaysPastDue,
+        WorkOut,
+        ProvisionExp,
+        ProvisionReserve,
+        GroupID,
+        GroupDescription,
+        Agent,
+        Insurance,
+        AccInt,
+        DATE_OF_DATA
+    FROM
+        axiom.default.axiom_loans
+)
+
+SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
+
+-- From bronze-axiom.dbx.sql
+-- Source model: bronze_axiom_ovrntdep
+CREATE OR REPLACE TABLE bronze.default.bronze_axiom_ovrntdep AS
+-- NAME: BRONZE_AXIOM_OVRNTDEP
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: August 12, 2025
+
+
+
+WITH landing_data AS (
+    SELECT
+        YRMO,
+        InstrumentID,
+        ACCT,
+        DEPT,
+        PROD,
+        CIFID,
+        OFFICERID,
+        AX_AccrualBasis,
+        AX_Amortizing,
+        AX_AmortTerm,
+        AX_AvgBal,
+        AX_CurBal,
+        AX_FirstRateResetCap,
+        AX_FTP,
+        AX_FTPAnnual,
+        AX_FTPRate,
+        AX_FTPRateSpread,
+        AX_FTPSpread,
+        AX_FTPSpreadAnnual,
+        AX_IntIndex,
+        AX_IntRate,
+        AX_Interest,
+        AX_InterestAnnual,
+        AX_IntroRateEndDate,
+        AX_IntSpread,
+        AX_IsNonMaturity,
+        AX_LifeRateCeiling,
+        AX_LifeRateFloor,
+        AX_MatDate,
+        AX_MatTerm,
+        AX_NextPmtDate,
+        AX_NextRateResetDate,
+        AX_NonAccrual,
+        AX_OrigBal,
+        AX_OrigDate,
+        AX_Payment,
+        AX_PeriodicRateResetCap,
+        AsOfDate,
+        AX_PmtFreq,
+        ACCOUNT,
+        NaturalKey,
+        GL_ACCT,
+        AX_PmtType,
+        ACCT_TYPE,
+        CustAcctNbr,
+        CIF,
+        AX_PrevRateResetDate,
+        SHORT_NAME,
+        COMPENSATING_AMT,
+        AX_RateResetFreq,
+        IBF_INVEST_ACCT,
+        Company,
+        Year_Base_Code,
+        AX_RecCount,
+        INV_BLOCK_AMT,
+        Department,
+        INVESTMENT_RATE,
+        AX_RenewalDate,
+        COUNTRY_CODE,
+        ITYPE,
+        INV_TYPE,
+        AX_SourceFileDesc,
+        CURR_INV_AMT,
+        NativeProdCode,
+        CURR_INV_DATE,
+        AX_SourceSysDesc,
+        CURR_INV_RTE,
+        NativeCIF,
+        CURR_INT_ACCR,
+        NativeOfficerCode,
+        BAL_B4_INVST,
+        Branch_Number,
+        AccountType,
+        Officer,
+        `Status`,
+        CustName,
+        Residency,
+        Postal,
+        GroupID,
+        GroupDescription,
+        DATE_OF_DATA
+    FROM
+        axiom.default.axiom_ovrntdep
+)
+
+SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
+
+-- From bronze-cos.dbx.sql
+-- Source model: bronze_cos_applicant
+CREATE OR REPLACE TABLE bronze.default.bronze_cos_applicant AS
+-- NAME: BRONZE_COS_APPLICANT
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+WITH landing_data AS (
+    SELECT
+        APPLICANT_ID
+        ,APPLICANT_INDEX
+        ,CPF
+        ,APP_REF
+        ,FIRST_NM
+        ,LAST_NM
+        ,MIDDLE_NM
+        ,ADD1
+        ,ADD2
+        ,CITY_STATE_ZIP
+        ,HOME_PH
+        ,MOBILE_PH
+        ,LONG_HM_PH
+        ,LONG_BUS_PH
+        ,EMAIL
+        ,OCCUPATION
+        ,GENDER
+        ,BBD_ID
+        ,BUS_PH
+        ,BUS_PH_EXT
+        ,APPLICANT_CUST1
+        ,APPLICANT_CUST2
+        ,APPLICANT_CUST3
+        ,APPLICANT_CUST4
+        ,APPLICANT_CUST5
+        ,ALIEN_CNTRY
+        ,ALIEN_CITY
+        ,ALIEN_CNTRY_RESIDE
+        ,EMPLOYER_NM
+        ,OTHER_EMAIL
+        ,INSUFFICIENT_ADDRESS
+        ,PROFIT_ANALYSIS
+        ,`RETENTION`
+        ,SIC_USER1_DEFINED
+        ,SIC_USER2_DEFINED
+        ,SIC_USER3_DEFINED
+        ,SIC_USER4_DEFINED
+        ,SIC_USER5_DEFINED
+        ,SIC_USER6_DEFINED
+        ,SIC_USER7_DEFINED
+        ,SPECIAL_CUST
+        ,ALIEN_CUST
+        ,FINCEN_LEGAL_ENTITY
+        ,CLASS
+        ,NO_CALL_CUST
+        ,PRVCY_ACT_OPT_OUT
+        ,TIN_NM_MATCH
+        ,AFFLT_OPT_OUT
+        ,FAX_PH
+        ,LONG_CELL_PH
+        ,LONG_OTHR_PH
+        ,LONG_FAX_PH
+        ,IRS_ADDRESS
+        ,IRS_FOREIGN_ADDRESS
+        ,IRS_FOREIGN_CNTRY
+        ,INQUIRY_ID_NUM
+        ,ALIEN_W8_CERT_DATE
+        ,EXCLUSION_REASON
+        ,TITTLE
+        ,FOREIGN_CNTRY
+        ,TAX_ID_NUM_TYPE
+        ,TIN_CERT
+        ,TIN_CERT_DATE
+        ,OFFICERS
+        ,DATE_LAST_CONTACT
+        ,OTHR_CELL_PH
+        ,SIC_USER8_DEFINED
+        ,CUSTOMER_NUMBER
+        ,MAIL_NOTICE_CODE
+        ,PRINT_NAME_ON_STATEMENT
+        ,DOB
+        ,ADD3
+        ,EWF_PROCESSED
+        ,CREATED_DT
+        ,ALIEN_W8_EXP_DATE
+        ,ALIEN_W8_TYPE
+        ,ALIEN_W8_STATUS
+        ,ALIEN_CHPT3_EXEMP_CODE
+        ,ALIEN_CHPT3_STATUS_CODE
+        ,ALIEN_CHPT4_EXEMP_CODE
+        ,ALIEN_CHPT4_STATUS_CODE
+        ,CITY
+        ,`STATE`
+        ,ZIP_CODE
+        ,LONG_BUS_PH_EXT
+        ,IS_PEP
+        ,IS_ORIGIN_BRAD
+        ,HAS_NEG_NEWS
+        ,TAX_ID
+        ,SUFFIX
+        ,COMMNAME
+        ,Q2_ENROLL
+        ,SS
+        ,CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
+        ,LOADED_AT
+    FROM
+        cos.default.cos_applicant
+),
+
+bronze_data AS (
+    SELECT
+        APPLICANT_ID
+        ,APPLICANT_INDEX
+        ,CPF
+        ,APP_REF
+        ,FIRST_NM
+        ,LAST_NM
+        ,MIDDLE_NM
+        ,ADD1
+        ,ADD2
+        ,CITY_STATE_ZIP
+        ,HOME_PH
+        ,MOBILE_PH
+        ,LONG_HM_PH
+        ,LONG_BUS_PH
+        ,EMAIL
+        ,OCCUPATION
+        ,GENDER
+        ,BBD_ID
+        ,BUS_PH
+        ,BUS_PH_EXT
+        ,APPLICANT_CUST1
+        ,APPLICANT_CUST2
+        ,APPLICANT_CUST3
+        ,APPLICANT_CUST4
+        ,APPLICANT_CUST5
+        ,ALIEN_CNTRY
+        ,ALIEN_CITY
+        ,ALIEN_CNTRY_RESIDE
+        ,EMPLOYER_NM
+        ,OTHER_EMAIL
+        ,INSUFFICIENT_ADDRESS
+        ,PROFIT_ANALYSIS
+        ,`RETENTION`
+        ,SIC_USER1_DEFINED
+        ,SIC_USER2_DEFINED
+        ,SIC_USER3_DEFINED
+        ,SIC_USER4_DEFINED
+        ,SIC_USER5_DEFINED
+        ,SIC_USER6_DEFINED
+        ,SIC_USER7_DEFINED
+        ,SPECIAL_CUST
+        ,ALIEN_CUST
+        ,FINCEN_LEGAL_ENTITY
+        ,CLASS
+        ,NO_CALL_CUST
+        ,PRVCY_ACT_OPT_OUT
+        ,TIN_NM_MATCH
+        ,AFFLT_OPT_OUT
+        ,FAX_PH
+        ,LONG_CELL_PH
+        ,LONG_OTHR_PH
+        ,LONG_FAX_PH
+        ,IRS_ADDRESS
+        ,IRS_FOREIGN_ADDRESS
+        ,IRS_FOREIGN_CNTRY
+        ,INQUIRY_ID_NUM
+        ,ALIEN_W8_CERT_DATE
+        ,EXCLUSION_REASON
+        ,TITTLE
+        ,FOREIGN_CNTRY
+        ,TAX_ID_NUM_TYPE
+        ,TIN_CERT
+        ,TIN_CERT_DATE
+        ,OFFICERS
+        ,DATE_LAST_CONTACT
+        ,OTHR_CELL_PH
+        ,SIC_USER8_DEFINED
+        ,CUSTOMER_NUMBER
+        ,MAIL_NOTICE_CODE
+        ,PRINT_NAME_ON_STATEMENT
+        ,DOB
+        ,ADD3
+        ,EWF_PROCESSED
+        ,CREATED_DT
+        ,ALIEN_W8_EXP_DATE
+        ,ALIEN_W8_TYPE
+        ,ALIEN_W8_STATUS
+        ,ALIEN_CHPT3_EXEMP_CODE
+        ,ALIEN_CHPT3_STATUS_CODE
+        ,ALIEN_CHPT4_EXEMP_CODE
+        ,ALIEN_CHPT4_STATUS_CODE
+        ,CITY
+        ,`STATE`
+        ,ZIP_CODE
+        ,LONG_BUS_PH_EXT
+        ,IS_PEP
+        ,IS_ORIGIN_BRAD
+        ,HAS_NEG_NEWS
+        ,TAX_ID
+        ,SUFFIX
+        ,COMMNAME
+        ,Q2_ENROLL
+        ,SS
+        ,YEARMONTH
+        ,current_timestamp() LOADED_AT
+    FROM landing_data
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-cos.dbx.sql
+-- Source model: bronze_cos_prospect
+CREATE OR REPLACE TABLE bronze.default.bronze_cos_prospect AS
+-- NAME: BRONZE_COS_PROSPECT
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+WITH landing_data AS (
+    SELECT
+        APP_REF
+        ,REQUEST_DATA
+        ,`STATUS`
+        ,MODIFED_ON
+        ,MODIFIED_BY
+        ,CREATED_ON
+        ,CREATED_BY
+        ,CONTACORRENTE
+        ,AGENCIA
+        ,SEGMENTO
+        ,CBLC
+        ,BBDID
+        ,STAGE_PROSPECT
+        ,USER_WORKING
+        ,BBDESK_VERSION
+        ,CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
+        ,LOADED_AT
+    FROM
+        cos.default.cos_prospect
+),
+
+bronze_data AS (
+    SELECT
+        APP_REF
+        ,REQUEST_DATA
+        ,`STATUS`
+        ,MODIFED_ON
+        ,MODIFIED_BY
+        ,CREATED_ON
+        ,CREATED_BY
+        ,CONTACORRENTE
+        ,AGENCIA
+        ,SEGMENTO
+        ,CBLC
+        ,BBDID
+        ,STAGE_PROSPECT
+        ,USER_WORKING
+        ,BBDESK_VERSION
+        ,YEARMONTH
+        ,current_timestamp() LOADED_AT
+    FROM landing_data
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-cos.dbx.sql
+-- Source model: bronze_cos_td_treasury_rate
+CREATE OR REPLACE TABLE bronze.default.bronze_cos_td_treasury_rate AS
+-- NAME: BRONZE_COS_TD_TREASURY_RATE
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: May 01, 2025
+
+
+
+WITH landing_data AS (
+    SELECT
+        CD_Type_Code
+        ,Effective_Date
+        ,Base_Renewal_Rate
+        ,Standard_Rate
+        ,Cap_Rate
+        ,Rate_Code
+        ,created_date
+        ,created_by
+        ,CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
+        ,LOADED_AT
+    FROM
+        cos.default.cos_td_treasury_rate
+),
+
+bronze_data AS (
+    SELECT
+        CD_Type_Code
+        ,Effective_Date
+        ,Base_Renewal_Rate
+        ,Standard_Rate
+        ,Cap_Rate
+        ,Rate_Code
+        ,created_date
+        ,created_by
+        ,YEARMONTH
+        ,current_timestamp() LOADED_AT
+    FROM landing_data
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-dmi.dbx.sql
+-- Source model: bronze_dmi_bacmast
+CREATE OR REPLACE TABLE bronze.default.bronze_dmi_bacmast AS
+-- NAME: BRONZE_DMI_BACMAST
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: January 02, 2026
+
+
+
+WITH landing_data AS (
+    SELECT
+        LOAN,
+        OLDLOANNO,
+        BILLNAME,
+        BANK,
+        AGGR,
+        NEXTDUE,
+        CAST(FIRSTPB AS DECIMAL(19,3)) AS FIRSTPB,
+        CAST(ORGMTGAMT AS DECIMAL(17,3)) AS ORGMTGAMT,
+        LOANDATE,
+        MATDATE,
+        CASE
+        	WHEN ANNUALINT LIKE '%E%'
+        	THEN CAST(CAST(TRIM(ANNUALINT) AS DOUBLE) AS DECIMAL(17,6))
+        ELSE CAST(ANNUALINT AS DECIMAL(17,6))
+        END AS ANNUALINT,
+        LOANTERM,
+        REMTERM,
+        PRODLINECD,
+        ARMIND,
+        ARMINDESC,
+        ORGPROPVAL,
+        PROPVAL,
+        PROPERTYST,
+        PROPERTYCT,
+        PROPSTATE,
+        PROPZIP,
+        SSNCODE,
+        PTFNMACODE,
+        PTFNMADESC,
+        INVESTLOAN,
+        OCCCODE,
+        OCCUDESC,
+        LNPURPCODE,
+        LNPURPDESC,
+        HITYPE,
+        HITYPEDESC,
+        LOTYPE,
+        LOTYPEDESC,
+        FIRSTDUE,
+        CAST(FIRSTPI AS DECIMAL(17,3)) AS FIRSTPI,
+        CAST(FSTSERFEE AS DECIMAL(20,6)) AS FSTSERFEE,
+        FORECLSCOD,
+        FORECLSDES,
+        CAST(ORGLTV AS DECIMAL(13,3)) AS ORGLTV,
+        INTPDTHRU,
+        CAST(ESCROWBAL AS DECIMAL(17,3)) AS ESCROWBAL,
+        CAST(ESCROWADV AS DECIMAL(17,3)) AS ESCROWADV,
+        PLGCODE,
+        PLGDESC,
+        PMNTPERD,
+        BADCHKTBLE,
+        TIMESDLQ,
+        CAST(TOTPMNT AS DECIMAL(19,3)) AS TOTPMNT,
+        NOOFUNIT,
+        INTFLAG,
+        INTFLAGDES,
+        CAPLNFLAG,
+        CAPLNFDESC,
+        MTGRLNAME,
+        MTGRFNAME,
+        MTGRHAZPAY,
+        CAST(TIPMNT AS DECIMAL(17,3)) AS TIPMNT,
+        CAST(GUARFEE AS DECIMAL(17,3)) AS GUARFEE,
+        RECFLAG,
+        RECFLAGDES,
+        POOLNUM,
+        DLQPMNTCNT,
+        IOEFLAG,
+        IOEFLAGDES,
+        MANCODE,
+        BBCODE,
+        BRNCHOFF,
+        ACRLSTAT,
+        PREPMNTIND,
+        FHLBBPP,
+        CAST(FSTORGCOST AS DECIMAL(17,3)) AS FSTORGCOST,
+        CAST(FSTORIGFEE AS DECIMAL(17,3)) AS FSTORIGFEE,
+        CAST(FSTUNAMORT AS DECIMAL(17,3)) AS FSTUNAMORT,
+        ARMIREFFDT,
+        CAST(ARMORGIR AS DECIMAL(20,6)) AS ARMORGIR,
+        CAST(ARMMARGIN AS DECIMAL(19,6)) AS ARMMARGIN,
+        ARMPIEFFDT,
+        ARMCHGPRD,
+        CAST(ARMPICHGPR AS DECIMAL(8,2)) AS ARMPICHGPR,
+        CAST(ARMIRMAXCL AS DECIMAL(20,6)) AS ARMIRMAXCL,
+        CAST(ARMIRMAXFL AS DECIMAL(20,6)) AS ARMIRMAXFL,
+        CAST(ARMIMAXINC AS DECIMAL(20,6)) AS ARMIMAXINC,
+        CAST(ARMIMAXDEC AS DECIMAL(20,6)) AS ARMIMAXDEC,
+        CAST(AIRMAXLINC AS DECIMAL(20,6)) AS AIRMAXLINC,
+        CAST(AIRMAXLDEC AS DECIMAL(20,6)) AS AIRMAXLDEC,
+        CAST(APIMAXPCTI AS DECIMAL(20,6)) AS APIMAXPCTI,
+        CAST(APIMAXPCTD AS DECIMAL(20,6)) AS APIMAXPCTD,
+        CAST(APIMAXLIFE AS DECIMAL(20,6)) AS APIMAXLIFE,
+        CAST(APIPCTMINC AS DECIMAL(20,6)) AS APIPCTMINC,
+        CAST(APIPCTMDEC AS DECIMAL(20,6)) AS APIPCTMDEC,
+        CAST(AORGPIAMT AS DECIMAL(20,6)) AS AORGPIAMT,
+        CAST(ARMINDEX AS DECIMAL(20,6)) AS ARMINDEX,
+        CAST(ARMIRRATE AS DECIMAL(20,6)) AS ARMIRRATE,
+        AOIRCHGDT,
+        AIRRNDTP,
+        AIRRNDDESC,
+        CAST(AIRRNDFACT AS DECIMAL(20,6)) AS AIRRNDFACT,
+        ARMPLANID,
+        ARMPLANDES,
+        ARMINDCO,
+        ARMINDDESC,
+        AILEADDAYS,
+        USR15POS1,
+        USR2POS1A,
+        USR2POS2A,
+        DFTIND,
+        BANKNAME,
+        LOT,
+        BLOCK,
+        SUBDIV,
+        COUNTYCODE,
+        CAST(COUNTYTAX AS DECIMAL(19,3)) AS COUNTYTAX,
+        CAST(HAZMONTHLY AS DECIMAL(19,3)) AS HAZMONTHLY,
+        LASTANALDT,
+        CAST(ESCMINBALC AS DECIMAL(19,3)) AS ESCMINBALC,
+        CAST(LASTANALOS AS DECIMAL(19,3)) AS LASTANALOS,
+        OVSHTCHGDT,
+        MORTSSNO,
+        COMORTSSNO,
+        SSNCERTDT,
+        SSNVERCODE,
+        SSNVERDATE,
+        SETUPDATE,
+        CAST(SUSPBAL AS DECIMAL(19,3)) AS SUSPBAL,
+        CAST(RESTESCBAL AS DECIMAL(19,3)) AS RESTESCBAL,
+        CRQUALCODE,
+        INTONLYIND,
+        PAYFULLDT,
+        SERVSOLDDT,
+        COMTGLNAME,
+        COMTGFNAME,
+        FLOZPOS1,
+        MTGRDOB,
+        COMTGRDOB,
+        PROPUNITNO,
+        CAST(LTV AS DECIMAL(14,3)) AS LTV,
+        BILLADDR3,
+        BILLADDR4,
+        BILLCITY,
+        BILLSTATE,
+        BILLZIP,
+        ORIGSCORE,
+        BILLADDR2,
+        USR1POS3A,
+        CAST(CHGOFFBAL AS DECIMAL(17,3)) AS CHGOFFBAL,
+        CAST(ACC_LATECA AS DECIMAL(17,3)) AS ACC_LATECA,
+        CAST(LATECF AS DECIMAL(17,6)) AS LATECF,
+        GRACEDAYS,
+        LCCODE,
+        PHONE,
+        PHONE2,
+        EMAILF,
+        PROCSC,
+        DAIND,
+        CSBORCBC,
+        CSBORCBST,
+        CAST(FIRSTFF1 AS DECIMAL(17,3)) AS FIRSTFF1,
+        ASSUMDATE,
+        VACDATE,
+        LNMODDATE,
+        USR20POS1A,
+        CAST(RECOVERCAB AS DECIMAL(17,3)) AS RECOVERCAB,
+        CAST(NONRECCAB AS DECIMAL(17,3)) AS NONRECCAB,
+        CAST(THIRDPRCB AS DECIMAL(17,3)) AS THIRDPRCB,
+        CAST(PENDPIAMT AS DECIMAL(17,3)) AS PENDPIAMT,
+        ADLCBN1,
+        ADLCSTN1,
+        ADLCBS,
+        ADLCBC,
+        ADLCBST,
+        ADLCBZC,
+        ADLCBPN,
+        LASTFPAYDT,
+        CAST(YTDINTAMT AS DECIMAL(19,3)) AS YTDINTAMT,
+        CAST(YTDPPAMT AS DECIMAL(19,3)) AS YTDPPAMT,
+        YTDTAXAMT,
+        YTDHAZAMT,
+        USR1PO4A,
+        DAYDELIQUE,
+        ENTERNONAC,
+        LEAVENONAC,
+        APPRAIDATE,
+        LNMOAPPDAT,
+        LNMOAPPAMT,
+        CHAROFFDAT,
+        DRROUTRNUM,
+        FIORCOSAMT,
+        FIORFEEAMT,
+	    CAST(DATE_OF_DATA AS DATE) AS DATE_OF_DATA,
+	    YEARMONTH
+    FROM
+        dmi.default.dmi_bacmast
+    
+    
+)
+
+
+
+
+
+SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
+
+-- From bronze-dmi.dbx.sql
+-- Source model: bronze_dmi_disb
+CREATE OR REPLACE TABLE bronze.default.bronze_dmi_disb AS
+-- NAME: BRONZE_DMI_DISB
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: MARCH 16, 2026
+
+
+
+WITH cte_bronze_dmi_disb AS (
+SELECT
+	 LOAN_NUMBER
+	,INVESTOR_NUMBER
+	,CATEGORY_CODE
+	,DSB_TRANSACTION_DATE
+	,DSB_TRANSACTION_CODE
+	,DSB_AMOUNT
+	,MSP_LAST_RUN_DATE
+	,FILE_NAME_DMI
+
+FROM  dmi.default.dmi_disb
+WHERE MSP_LAST_RUN_DATE IS NOT NULL
+),
+
+bronze_data as (
+
+SELECT
+	 LOAN_NUMBER
+	,INVESTOR_NUMBER
+	,CATEGORY_CODE
+	,DSB_TRANSACTION_DATE
+	,DSB_TRANSACTION_CODE
+	,DSB_AMOUNT
+	,MSP_LAST_RUN_DATE
+	,FILE_NAME_DMI
+
+FROM  cte_bronze_dmi_disb 
+    
+    
+      
+)
+
+
+    
+
+
+SELECT *, current_timestamp() AS LOADED_AT FROM bronze_data;
+
+-- From bronze-dmi.dbx.sql
+-- Source model: bronze_dmi_e006
+CREATE OR REPLACE TABLE bronze.default.bronze_dmi_e006 AS
+-- NAME: BRONZE_DMI_E006
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: MARCH 16, 2026
+
+
+
+WITH cte_bronze_dmi_e006 AS (
+	SELECT
+		 BatchCode
+		,SequenceNumber
+		,TransactionCode
+		,CLTNumber
+		,LoanNumber
+		,HITypeCode
+		,PrincipalAdjustment
+		,InterestAdjustment
+		,DiscountAdjustmentOrPercent
+		,InterestDueAdjustment
+		,TransactionTotal
+		,DueDateAdjustment
+		,NXNumber
+		,NLOR
+		,CSCode
+		,DISCCode
+		,DISMCode
+		,ORGADJCode
+		,STPAcr
+		,ACSTCode
+		,SCCode
+		,ReasonCode
+		,CardCode
+		,PointsPaidByBorrower
+		,RPTGYR_26_27
+		,AutoAdjSW1098
+		,DiscFlag
+		,PPBBFlag
+		,UpfrontMIP
+		,RPTGYR_40_41
+		,MI1098AdjSW
+		,`Auto`
+		,FILE_NAME_DMI
+	FROM  dmi.default.dmi_e006
+),
+
+bronze_data as (
+	SELECT
+		BatchCode
+		,SequenceNumber
+		,TransactionCode
+		,CLTNumber
+		,LoanNumber
+		,HITypeCode
+		,PrincipalAdjustment
+		,InterestAdjustment
+		,DiscountAdjustmentOrPercent
+		,InterestDueAdjustment
+		,TransactionTotal
+		,DueDateAdjustment
+		,NXNumber
+		,NLOR
+		,CSCode
+		,DISCCode
+		,DISMCode
+		,ORGADJCode
+		,STPAcr
+		,ACSTCode
+		,SCCode
+		,ReasonCode
+		,CardCode
+		,PointsPaidByBorrower
+		,RPTGYR_26_27
+		,AutoAdjSW1098
+		,DiscFlag
+		,PPBBFlag
+		,UpfrontMIP
+		,RPTGYR_40_41
+		,MI1098AdjSW
+		,`Auto`
+		,FILE_NAME_DMI
+	FROM  cte_bronze_dmi_e006
+    	
+    	
+)
+
+
+    
+
+
+SELECT *, current_timestamp() AS LOADED_AT FROM bronze_data;
+
+-- From bronze-dmi.dbx.sql
+-- Source model: bronze_dmi_gl_mapping
+CREATE OR REPLACE TABLE bronze.default.bronze_dmi_gl_mapping AS
+-- NAME: BRONZE_DMI_GL_MAPPING
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: FULL LOAD
+-- TYPE: SOURCE
+-- DATE: JANUARY 27, 2026
+
+
+
+
+WITH cte_data AS (
+	SELECT
+	    CAST(v.col1 AS STRING) AS Investor_Type
+	   ,CAST(v.col2 AS STRING) AS Investor_Name
+	   ,CAST(v.col3 AS STRING) AS Perm_Inv
+	   ,CAST(v.col4 AS STRING) AS Perm_Cat
+	   ,CAST(v.col5 AS STRING) AS Recon_Method
+	   ,CAST(v.col6 AS STRING) AS P_I_DDA_Number
+	   ,CAST(v.col7 AS STRING) AS T_I_DDA_Number
+	   ,CAST(v.col8 AS STRING) AS G_L_Corp_Code
+	   ,CAST(v.col9 AS STRING) AS ABA_Number
+	   ,CAST(v.col10 AS STRING) AS Principal_Payee
+	   ,CAST(v.col11 AS STRING) AS Principal_G_L_Acct_No
+	   ,CAST(v.col12 AS STRING) AS Principal_GL_Number
+	   ,CAST(v.col13 AS STRING) AS Principal_G_L_Cost_Center
+	   ,CAST(v.col14 AS STRING) AS Escrow_Replacement_Reserve_Payee
+	   ,CAST(v.col15 AS STRING) AS Escrow_Replacement_Reserve_G_L_Acct_No
+	   ,CAST(v.col16 AS STRING) AS Escrow_Replacement_Reserve_G_L_Cost_Center
+	   ,CAST(v.col17 AS STRING) AS Interest_Receivable_Payee
+	   ,CAST(v.col18 AS STRING) AS Interest_Receivable_G_L_Acct_No
+	   ,CAST(v.col19 AS STRING) AS Interest_Receivable_G_L_Cost_Center
+	   ,CAST(v.col20 AS STRING) AS Servicing_Fee_Payee
+	   ,CAST(v.col21 AS STRING) AS Servicing_Fee_G_L_Acct_No
+	   ,CAST(v.col22 AS STRING) AS Servicing_Fee_G_L_Cost_Center
+	   ,CAST(v.col23 AS STRING) AS Late_Charge_Payee
+	   ,CAST(v.col24 AS STRING) AS Late_Charge_G_L_Acct_No
+	   ,CAST(v.col25 AS STRING) AS Late_Charge_G_L_Cost_Center
+	   ,CAST(v.col26 AS STRING) AS Loans_in_Process_Payee
+	   ,CAST(v.col27 AS STRING) AS Loans_in_Process_G_L_Acct_No
+	   ,CAST(v.col28 AS STRING) AS Loans_in_Process_G_L_Cost_Center
+	   ,CAST(v.col29 AS STRING) AS Loans_in_Process_Payee_2
+	   ,CAST(v.col30 AS STRING) AS Part_Conta_G_L_Acct_No
+	   ,CAST(v.col31 AS STRING) AS Part_Conta_G_L_Cost_Center
+	   ,CAST(v.col32 AS STRING) AS Interest_Income_Payee
+	   ,CAST(v.col33 AS STRING) AS Interest_Income_G_L_Acct_No
+	   ,CAST(v.col34 AS STRING) AS Interest_Income_G_L_Cost_Center
+	   ,CAST(v.col35 AS STRING) AS Loans_Sold_Payee
+	   ,CAST(v.col36 AS STRING) AS Loans_Sold_G_L_Acct_No
+	   ,CAST(v.col37 AS STRING) AS Loans_Sold_G_L_Cost_Center
+	   ,CAST(v.col38 AS STRING) AS P_I_Adv_Payee
+	   ,CAST(v.col39 AS STRING) AS Doc_Custod_Payee
+	   ,CAST(v.col40 AS STRING) AS Penalty_Int_Penalty_Payee 
+	   ,CAST(v.col41 AS STRING) AS Penalty_Int_Penalty_G_L_Acct_No 
+	   ,CAST(v.col42 AS STRING) AS Penalty_Int_Penalty_G_L_Cost_Center
+	   ,CAST(v.col43 AS STRING) AS Penalty_Int_Penalty
+	   ,CAST(v.col44 AS STRING) AS Straightline_Disc_Unearned_Payee
+	   ,CAST(v.col45 AS STRING) AS Straightline_Disc_Unearned_G_L_Acct_No
+	   ,CAST(v.col46 AS STRING) AS Straightline_Disc_Unearned_G_L_Cost_Center
+	   ,CAST(v.col47 AS STRING) AS Straightline_Disc_Earned_Payee
+	   ,CAST(v.col48 AS STRING) AS Straightline_Disc_Earned_G_L_Acct_No
+	   ,CAST(v.col49 AS STRING) AS Straightline_Disc_Earned_G_L_Cost_Center
+	   ,CAST(v.col50 AS STRING) AS FASB_91_1_Unearned_Fees_Payee
+	   ,CAST(v.col51 AS STRING) AS FASB_91_1_Unearned_Fees_G_L_Acct_No
+	   ,CAST(v.col52 AS STRING) AS FASB_91_1_Unearned_Fees_G_L_Cost_Center
+	   ,CAST(v.col53 AS STRING) AS FASB_91_1_Earned_Fees_Payee
+	   ,CAST(v.col54 AS STRING) AS FASB_91_1_Earned_Fees_G_L_Acct_No
+	   ,CAST(v.col55 AS STRING) AS FASB_91_1_Earned_Fees_G_L_Cost_Center
+	   ,CAST(v.col56 AS STRING) AS FASB_91_2_Unearned_Cost_Payee
+	   ,CAST(v.col57 AS STRING) AS FASB_91_2_Unearned_Cost_G_L_Acct_No
+	   ,CAST(v.col58 AS STRING) AS FASB_91_2_Unearned_Cost_G_L_Cost_Center
+	   ,CAST(v.col59 AS STRING) AS FASB_91_2_Earned_Cost_Payee
+	   ,CAST(v.col60 AS STRING) AS FASB_91_2_Earned_Cost_G_L_Acct_No
+	   ,CAST(v.col61 AS STRING) AS FASB_91_2_Earned_Cost_G_L_Cost_Center
+	   ,CAST(v.col62 AS STRING) AS FASB_91_3_Unearned_Cost_Payee
+	   ,CAST(v.col63 AS STRING) AS FASB_91_3_Unearned_Cost_G_L_Acct_No
+	   ,CAST(v.col64 AS STRING) AS FASB_91_3_Unearned_Cost_G_L_Cost_Center
+	   ,CAST(v.col65 AS STRING) AS FASB_91_3_Earned_Cost_Payee
+	   ,CAST(v.col66 AS STRING) AS FASB_91_3_Earned_Cost_G_L_Acct_No
+	   ,CAST(v.col67 AS STRING) AS FASB_91_3_Earned_Cost_G_L_Cost_Center
+	   ,CAST(v.col68 AS STRING) AS FASB_91_4_Unearned_Payee
+	   ,CAST(v.col69 AS STRING) AS FASB_91_4_Unearned_G_L_Acct_No
+	   ,CAST(v.col70 AS STRING) AS FASB_91_4_Unearned_G_L_Cost_Center
+	   ,CAST(v.col71 AS STRING) AS FASB_91_4_Earned_Payee
+	   ,CAST(v.col72 AS STRING) AS FASB_91_4_Earned_G_L_Acct_No
+	   ,CAST(v.col73 AS STRING) AS FASB_91_4_Earned_G_L_Cost_Center
+	FROM
+	(
+	VALUES
+	    ('Port. Residential', 'BAC Florida Bank', 'L41', '001', '139', '037019970', '037020080', '027', '067009044', '16250', '001-113014', '113014', '7400-000', '44L41', 'n/a', 'n/a', '16252', '001-116037', '7400-000', '02910', 'n/a', 'n/a', '16254', '001-442041', '7400-000', '16256', '001-113052', '7400-000', NULL, NULL, NULL, '16258', '001-440039', '7400-000', '16260', '001-113053', '7400-000', NULL, NULL, '16262', '001-440035', '7400-000', NULL, '16268', '001-113019', '7400-000', '16270', '001-440042', '7400-000', '16264', '001-113018', '7400-000', '16266', '001-440041', '7400-000', '16268', '001-113019', '7400-000', '16244', '001-551021', '7400-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Port. Commercial', 'BAC Florida Bank', 'L41', '002', '139', '037019970', '037020080', '027', '067009044', '16251', '001-113015', '113015', '7400-000', '44L41', 'n/a', 'n/a', '16253', '001-116038', '7400-000', '02910', 'n/a', 'n/a', '16255', '001-442041', '7400-000', '16257', '001-113054', '7400-000', NULL, NULL, NULL, '16259', '001-440040', '7400-000', '16261', '001-113056', '7400-000', NULL, NULL, '16263', '001-440035', '7400-000', NULL, '16269', '001-113021', '7400-000', '16271', '001-440042', '7400-000', '16265', '001-113020', '7400-000', '16267', '001-440041', '7400-000', '16269', '001-113021', '7400-000', '16244', '001-551021', '7400-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('CRA', 'BAC Florida Bank', 'L41', '003', '139', '037019970', '037020080', '027', '067009044', '16272', '001-113024', '113024', '7400-000', '44L41', 'n/a', 'n/a', '16273', '001-116044', '7400-000', '02910', 'n/a', 'n/a', '16255', '001-442041', '7400-000', '16257', '001-113054', '7400-000', NULL, NULL, NULL, '16274', '001-440054', '7400-000', '16261', '001-113056', '7400-000', NULL, NULL, '16263', '001-440035', '7400-000', NULL, '16275', '001-113025', '7400-000', '16276', '001-440055', '7400-000', '16275', '001-113025', '7400-000', '16276', '001-440055', '7400-000', '16275', '001-113025', '7400-000', '16244', '001-551021', '7400-000', '16275', '001-113025', '7400-000', '16276', '001-440055', '7400-000', '16275', '001-113025', '7400-000', '16276', '001-440055', '7400-000'),
+	    ('Held for Sale', 'BAC Florida Bank', 'L41', '004', '139', '037019970', '037020080', '027', '067009044', '16277', '001-113104', '113104', '7400-000', '44L41', 'n/a', 'n/a', '16252', '001-116037', '7400-000', '02910', 'n/a', 'n/a', '16254', '001-442041', '7400-000', '16256', '001-113052', '7400-000', NULL, NULL, NULL, '16258', '001-440039', '7400-000', '16260', '001-113053', '7400-000', NULL, NULL, '16262', '001-440035', '7400-000', NULL, '16268', '001-113019', '7400-000', '16270', '001-440042', '7400-000', '16264', '001-113018', '7400-000', '16266', '001-440041', '7400-000', '16268', '001-113019', '7400-000', '16244', '001-551021', '7400-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Held to Maturity - Texas', 'BAC Florida Bank', 'L41', '005', '139', '037019970', '037020080', '027', '067009044', '16278', '001-113014', '113014', '7410-000', '44L41', 'n/a', 'n/a', '16280', '001-116037', '7410-000', '02910', 'n/a', 'n/a', '16281', '001-442041', '7410-000', '16256', '001-113052', '7400-000', NULL, NULL, NULL, '16283', '001-440039', '7410-000', '16284', '001-113053', '7410-000', NULL, NULL, '16262', '001-440035', '7400-000', NULL, '16286', '001-113019', '7410-000', '16287', '001-440042', '7410-000', '16288', '001-113018', '7410-000', '16289', '001-440041', '7410-000', '16290', '001-113019', '7410-000', '16244', '001-551021', '7400-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Held for Sale - Texas', 'BAC Florida Bank', 'L41', '006', '139', '037019970', '037020080', '027', '067009044', '16279', '001-113104', '113104', '7410-000', '44L41', 'n/a', 'n/a', '16280', '001-116037', '7410-000', '02910', 'n/a', 'n/a', '16281', '001-442041', '7410-000', '16282', '001-113052', '7410-000', NULL, NULL, NULL, '16283', '001-440039', '7410-000', '16284', '001-113053', '7410-000', NULL, NULL, '16285', '001-440035', '7410-000', NULL, '16286', '001-113019', '7410-000', '16287', '001-440042', '7410-000', '16288', '001-113018', '7410-000', '16289', '001-440041', '7410-000', '16290', '001-113019', '7410-000', '16244', '001-551021', '7400-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Panama', 'BAC Florida Bank', 'L41', '007', '139', '037019970', '037020080', '027', '067009044', '16292', '001-113014', '113014', '7420-000', '44L41', 'n/a', 'n/a', '16293', '001-116037', '7420-000', '02910', 'n/a', 'n/a', '16294', '001-442041', '7420-000', '16295', '001-113052', '7420-000', NULL, NULL, NULL, '16296', '001-440039', '7420-000', '16297', '001-113053', '7420-000', NULL, NULL, '16211', '001-440035', '7420-000', NULL, '16298', '001-113019', '7420-000', '16299', '001-440042', '7420-000', '16212', '001-113018', '7420-000', '16213', '001-440041', '7420-000', '16214', '001-113019', '7420-000', '16244', '001-551021', '7400-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Modified Loans', 'BAC Florida Bank', 'L41', '008', '139', '037019970', '037020080', '027', '067009044', '16250', '001-113014', '113014', '7400-000', '44L41', 'n/a', 'n/a', '16252', '001-116037', '7400-000', '02910', 'n/a', 'n/a', '16254', '001-442041', '7400-000', '16256', '001-113052', '7400-000', NULL, NULL, NULL, '16258', '001-440039', '7400-000', '16260', '001-113053', '7400-000', NULL, NULL, '16262', '001-440035', '7400-000', NULL, '16268', '001-113019', '7400-000', '16270', '001-440042', '7400-000', '16264', '001-113018', '7400-000', '16266', '001-440041', '7400-000', '16268', '001-113019', '7400-000', '16244', '001-551021', '7400-000', '16241', '001-228097', '7400-000', '16242', '001-440039', '7400-000', NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Modified Commercial', 'BAC Florida Bank', 'L41', '009', '139', '037019970', '037020080', '027', '067009044', '16251', '001-113015', '113015', '7400-000', '44L41', 'n/a', 'n/a', '16253', '001-116038', '7400-000', '02910', 'n/a', 'n/a', '16255', '001-442041', '7400-000', '16257', '001-113054', '7400-000', NULL, NULL, NULL, '16259', '001-440040', '7400-000', '16261', '001-113056', '7400-000', NULL, NULL, '16263', '001-440035', '7400-000', NULL, '16269', '001-113021', '7400-000', '16271', '001-440042', '7400-000', '16265', '001-113020', '7400-000', '16267', '001-440041', '7400-000', '16269', '001-113021', '7400-000', '16244', '001-551021', '7400-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Loss Mitigation', 'BAC Florida Bank', 'L41', '010', '139', '037019970', '037020080', '027', '067009044', '16250', '001-113014', '113014', '7400-000', '44L41', 'n/a', 'n/a', '16252', '001-116037', '7400-000', '02910', 'n/a', 'n/a', '16254', '001-442041', '7400-000', '16256', '001-113052', '7400-000', NULL, NULL, NULL, '16258', '001-440039', '7400-000', '16260', '001-113053', '7400-000', NULL, NULL, '16262', '001-440035', '7400-000', NULL, '16268', '001-113019', '7400-000', '16270', '001-440042', '7400-000', '16264', '001-113018', '7400-000', '16266', '001-440041', '7400-000', '16268', '001-113019', '7400-000', '16244', '001-551021', '7400-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Hardship Stipulations', 'BAC Florida Bank', 'L41', '011', '139', '037019970', '037020080', '027', '067009044', '16250', '001-113014', '113014', '7400-000', '44L41', 'n/a', 'n/a', '16252', '001-116037', '7400-000', '02910', 'n/a', 'n/a', '16254', '001-442041', '7400-000', '16256', '001-113052', '7400-000', NULL, NULL, NULL, '16258', '001-440039', '7400-000', '16260', '001-113053', '7400-000', NULL, NULL, '16262', '001-440035', '7400-000', NULL, '16268', '001-113019', '7400-000', '16270', '001-440042', '7400-000', '16264', '001-113018', '7400-000', '16266', '001-440041', '7400-000', '16268', '001-113019', '7400-000', '16244', '001-551021', '7400-000', '16241', '001-228097', '7400-000', '16242', '001-440039', '7400-000', NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('New York Loans', 'BAC Florida Bank', 'L41', '012', '139', '037019970', '037020080', '027', '067009044', '16216', '001-113026', '113026', '7400-000', '44L41', 'n/a', 'n/a', '16217', '001-116046', '7400-000', '02910', 'n/a', 'n/a', '16254', '001-442041', '7400-000', '16256', '001-113052', '7400-000', NULL, NULL, NULL, '16218', '001-440046', '7400-000', '16260', '001-113053', '7400-000', NULL, NULL, '16219', '001-440047', '7400-000', NULL, '16220', '001-113028', '7400-000', '16221', '001-440049', '7400-000', '16222', '001-113027', '7400-000', '16223', '001-440048', '7400-000', '16220', '001-113028', '7400-000', '16224', '001-551022', '7400-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Port. Residential', 'BAC Florida Bank', 'L41', '013', '139', '037019970', '037020080', '027', '067009044', '16250', '001-113014', '113014', '7400-000', '44L41', 'n/a', 'n/a', '16252', '001-116037', '7400-000', '02910', 'n/a', 'n/a', '16254', '001-442041', '7400-000', '16256', '001-113052', '7400-000', NULL, NULL, NULL, '16258', '001-440039', '7400-000', '16260', '001-113053', '7400-000', NULL, NULL, '16262', '001-440035', '7400-000', NULL, '16268', '001-113019', '7400-000', '16270', '001-440042', '7400-000', '16264', '001-113018', '7400-000', '16266', '001-440041', '7400-000', '16268', '001-113019', '7400-000', '16244', '001-551021', '7400-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Port. Residential - GPB LATAM', 'BAC Florida Bank', 'L41', '014', '139', '037019970', '037020080', '027', '067009044', '16236', '001-113014', '113014', '7500-000', '44L41', 'n/a', 'n/a', '21102', '001-116037', '7500-000', '02910', 'n/a', 'n/a', '16300', '001-442041', '7500-000', '21140', '001-113052', '7500-000', NULL, NULL, NULL, '21160', '001-440039', '7500-000', '21180', '001-113053', '7500-000', NULL, NULL, '21171', '001-440035', '7500-000', NULL, '21188', '001-113019', '7500-000', '21120', '001-440042', '7500-000', '21148', '001-113018', '7500-000', '21113', '001-440041', '7500-000', '21188', '001-113019', '7500-000', '29401', '001-551021', '7500-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Port. Residential - GPB Brazil', 'BAC Florida Bank', 'L41', '015', '139', '037019970', '037020080', '027', '067009044', '16237', '001-113014', '113014', '7505-000', '44L41', 'n/a', 'n/a', '21103', '001-116037', '7505-000', '02910', 'n/a', 'n/a', '21130', '001-442041', '7505-000', '21141', '001-113052', '7505-000', NULL, NULL, NULL, '21161', '001-440039', '7505-000', '21181', '001-113053', '7505-000', NULL, NULL, '21172', '001-440035', '7505-000', NULL, '21189', '001-113019', '7505-000', '21121', '001-440042', '7505-000', '21149', '001-113018', '7505-000', '21114', '001-440041', '7505-000', '21189', '001-113019', '7505-000', '29402', '001-551021', '7505-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Port. Residential - Family Office', 'BAC Florida Bank', 'L41', '016', '139', '037019970', '037020080', '027', '067009044', '16238', '001-113014', '113014', '7515-000', '44L41', 'n/a', 'n/a', '21104', '001-116037', '7515-000', '02910', 'n/a', 'n/a', '21131', '001-442041', '7515-000', '21142', '001-113052', '7515-000', NULL, NULL, NULL, '21162', '001-440039', '7515-000', '21182', '001-113053', '7515-000', NULL, NULL, '21173', '001-440035', '7515-000', NULL, '21190', '001-113019', '7515-000', '21122', '001-440042', '7515-000', '21150', '001-113018', '7515-000', '21115', '001-440041', '7515-000', '21190', '001-113019', '7515-000', '29403', '001-551021', '7515-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Port. Residential - Domestic', 'BAC Florida Bank', 'L41', '017', '139', '037019970', '037020080', '027', '067009044', '16239', '001-113014', '113014', '7520-000', '44L41', 'n/a', 'n/a', '21105', '001-116037', '7520-000', '02910', 'n/a', 'n/a', '21132', '001-442041', '7520-000', '21143', '001-113052', '7520-000', NULL, NULL, NULL, '21163', '001-440039', '7520-000', '21183', '001-113053', '7520-000', NULL, NULL, '21174', '001-440035', '7520-000', NULL, '21191', '001-113019', '7520-000', '21123', '001-440042', '7520-000', '21151', '001-113018', '7520-000', '21116', '001-440041', '7520-000', '21191', '001-113019', '7520-000', '29404', '001-551021', '7520-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Port. Residential - Premium Banking', 'BAC Florida Bank', 'L41', '018', '139', '037019970', '037020080', '027', '067009044', '16240', '001-113014', '113014', '7550-000', '44L41', 'n/a', 'n/a', '21106', '001-116037', '7550-000', '02910', 'n/a', 'n/a', '21133', '001-442041', '7550-000', '21144', '001-113052', '7550-000', NULL, NULL, NULL, '21164', '001-440039', '7550-000', '21184', '001-113053', '7550-000', NULL, NULL, '21175', '001-440035', '7550-000', NULL, '21192', '001-113019', '7550-000', '21124', '001-440042', '7550-000', '21152', '001-113018', '7550-000', '21117', '001-440041', '7550-000', '21192', '001-113019', '7550-000', '29405', '001-551021', '7550-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Port. Residential - Prime', 'BAC Florida Bank', 'L41', '019', '139', '037019970', '037020080', '027', '067009044', '16229', '001-113014', '113014', '7560-000', '44L41', 'n/a', 'n/a', '21107', '001-116037', '7560-000', '02910', 'n/a', 'n/a', '21134', '001-442041', '7560-000', '21145', '001-113052', '7560-000', NULL, NULL, NULL, '21165', '001-440039', '7560-000', '21185', '001-113053', '7560-000', NULL, NULL, '21176', '001-440035', '7560-000', NULL, '21193', '001-113019', '7560-000', '21125', '001-440042', '7560-000', '21153', '001-113018', '7560-000', '21118', '001-440041', '7560-000', '21193', '001-113019', '7560-000', '29406', '001-551021', '7560-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Port. Residential - Digital Banking', 'BAC Florida Bank', 'L41', '020', '139', '037019970', '037020080', '027', '067009044', '16245', '001-113014', '113014', '7540-000', '44L41', 'n/a', 'n/a', '21108', '001-116037', '7540-000', '02910', 'n/a', 'n/a', '21135', '001-442041', '7540-000', '21146', '001-113052', '7540-000', NULL, NULL, NULL, '21166', '001-440039', '7540-000', '21186', '001-113053', '7540-000', NULL, NULL, '21177', '001-440035', '7540-000', NULL, '21194', '001-113019', '7540-000', '21126', '001-440042', '7540-000', '21154', '001-113018', '7540-000', '21119', '001-440041', '7540-000', '21194', '001-113019', '7540-000', '29407', '001-551021', '7540-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Modified Commercial - GPB Brazil', 'BAC Florida Bank', 'L41', '021', '139', '037019970', '037020080', '027', '067009044', '16246', '001-113015', '113015', '7505-000', '44L41', 'n/a', 'n/a', '21109', '001-116038', '7505-000', '02910', 'n/a', 'n/a', '21130', '001-442041', '7505-000', '21147', '001-113054', '7505-000', NULL, NULL, NULL, '21167', '001-440040', '7505-000', '21187', '001-113056', '7505-000', NULL, NULL, '21172', '001-440035', '7505-000', NULL, '21195', '001-113021', '7505-000', '21121', '001-440042', '7505-000', '21155', '001-113020', '7505-000', '21114', '001-440041', '7505-000', '21195', '001-113021', '7505-000', '29402', '001-551021', '7505-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Port. Residential - GPB LATAM', 'BAC Florida Bank', 'L41', '022', '139', '037019970', '037020080', '027', '067009044', '16236', '001-113014', '113014', '7500-000', '44L41', 'n/a', 'n/a', '21102', '001-116037', '7500-000', '02910', 'n/a', 'n/a', '16300', '001-442041', '7500-000', '21140', '001-113052', '7500-000', NULL, NULL, NULL, '21160', '001-440039', '7500-000', '21180', '001-113053', '7500-000', NULL, NULL, '21171', '001-440035', '7500-000', NULL, '21188', '001-113019', '7500-000', '21120', '001-440042', '7500-000', '21148', '001-113018', '7500-000', '21113', '001-440041', '7500-000', '21188', '001-113019', '7500-000', '29401', '001-551021', '7500-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Port. Residential - GPB Brazil', 'BAC Florida Bank', 'L41', '023', '139', '037019970', '037020080', '027', '067009044', '16237', '001-113014', '113014', '7505-000', '44L41', 'n/a', 'n/a', '21103', '001-116037', '7505-000', '02910', 'n/a', 'n/a', '21130', '001-442041', '7505-000', '21141', '001-113052', '7505-000', NULL, NULL, NULL, '21161', '001-440039', '7505-000', '21181', '001-113053', '7505-000', NULL, NULL, '21172', '001-440035', '7505-000', NULL, '21189', '001-113019', '7505-000', '21121', '001-440042', '7505-000', '21149', '001-113018', '7505-000', '21114', '001-440041', '7505-000', '21189', '001-113019', '7505-000', '29402', '001-551021', '7505-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Port. Residential - Family Office', 'BAC Florida Bank', 'L41', '024', '139', '037019970', '037020080', '027', '067009044', '16238', '001-113014', '113014', '7515-000', '44L41', 'n/a', 'n/a', '21104', '001-116037', '7515-000', '02910', 'n/a', 'n/a', '21131', '001-442041', '7515-000', '21142', '001-113052', '7515-000', NULL, NULL, NULL, '21162', '001-440039', '7515-000', '21182', '001-113053', '7515-000', NULL, NULL, '21173', '001-440035', '7515-000', NULL, '21190', '001-113019', '7515-000', '21122', '001-440042', '7515-000', '21150', '001-113018', '7515-000', '21115', '001-440041', '7515-000', '21190', '001-113019', '7515-000', '29403', '001-551021', '7515-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Port. Residential - Domestic', 'BAC Florida Bank', 'L41', '025', '139', '037019970', '037020080', '027', '067009044', '16239', '001-113014', '113014', '7520-000', '44L41', 'n/a', 'n/a', '21105', '001-116037', '7520-000', '02910', 'n/a', 'n/a', '21132', '001-442041', '7520-000', '21143', '001-113052', '7520-000', NULL, NULL, NULL, '21163', '001-440039', '7520-000', '21183', '001-113053', '7520-000', NULL, NULL, '21174', '001-440035', '7520-000', NULL, '21191', '001-113019', '7520-000', '21123', '001-440042', '7520-000', '21151', '001-113018', '7520-000', '21116', '001-440041', '7520-000', '21191', '001-113019', '7520-000', '29404', '001-551021', '7520-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Port. Residential - Premium Banking', 'BAC Florida Bank', 'L41', '026', '139', '037019970', '037020080', '027', '067009044', '16240', '001-113014', '113014', '7550-000', '44L41', 'n/a', 'n/a', '21106', '001-116037', '7550-000', '02910', 'n/a', 'n/a', '21133', '001-442041', '7550-000', '21144', '001-113052', '7550-000', NULL, NULL, NULL, '21164', '001-440039', '7550-000', '21184', '001-113053', '7550-000', NULL, NULL, '21175', '001-440035', '7550-000', NULL, '21192', '001-113019', '7550-000', '21124', '001-440042', '7550-000', '21152', '001-113018', '7550-000', '21117', '001-440041', '7550-000', '21192', '001-113019', '7550-000', '29405', '001-551021', '7550-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Port. Residential - Prime', 'BAC Florida Bank', 'L41', '027', '139', '037019970', '037020080', '027', '067009044', '16229', '001-113014', '113014', '7560-000', '44L41', 'n/a', 'n/a', '21107', '001-116037', '7560-000', '02910', 'n/a', 'n/a', '21134', '001-442041', '7560-000', '21145', '001-113052', '7560-000', NULL, NULL, NULL, '21165', '001-440039', '7560-000', '21185', '001-113053', '7560-000', NULL, NULL, '21176', '001-440035', '7560-000', NULL, '21193', '001-113019', '7560-000', '21125', '001-440042', '7560-000', '21153', '001-113018', '7560-000', '21118', '001-440041', '7560-000', '21193', '001-113019', '7560-000', '29406', '001-551021', '7560-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Port. Residential - Digital Banking', 'BAC Florida Bank', 'L41', '028', '139', '037019970', '037020080', '027', '067009044', '16245', '001-113014', '113014', '7540-000', '44L41', 'n/a', 'n/a', '21108', '001-116037', '7540-000', '02910', 'n/a', 'n/a', '21135', '001-442041', '7540-000', '21146', '001-113052', '7540-000', NULL, NULL, NULL, '21166', '001-440039', '7540-000', '21186', '001-113053', '7540-000', NULL, NULL, '21177', '001-440035', '7540-000', NULL, '21194', '001-113019', '7540-000', '21126', '001-440042', '7540-000', '21154', '001-113018', '7540-000', '21119', '001-440041', '7540-000', '21194', '001-113019', '7540-000', '29407', '001-551021', '7540-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Port Residential  - Texas - GPB Brazil', 'BAC Florida Bank', 'L41', '029', '139', '037019970', '037020080', '027', '067009044', '16237', '001-113014', '113014', '7505-000', '44L41', 'n/a', 'n/a', '21103', '001-116037', '7505-000', '02910', 'n/a', 'n/a', '21130', '001-442041', '7505-000', '21141', '001-113052', '7505-000', NULL, NULL, NULL, '21161', '001-440039', '7505-000', '21181', '001-113053', '7505-000', NULL, NULL, '21172', '001-440035', '7505-000', NULL, '21189', '001-113019', '7505-000', '21121', '001-440042', '7505-000', '21149', '001-113018', '7505-000', '21114', '001-440041', '7505-000', '21189', '001-113019', '7505-000', '29402', '001-551021', '7505-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Port Residential  - Texas - GPB Brazil', 'BAC Florida Bank', 'L41', '030', '139', '037019970', '037020080', '027', '067009044', '16237', '001-113014', '113014', '7505-000', '44L41', 'n/a', 'n/a', '21103', '001-116037', '7505-000', '02910', 'n/a', 'n/a', '21130', '001-442041', '7505-000', '21141', '001-113052', '7505-000', NULL, NULL, NULL, '21161', '001-440039', '7505-000', '21181', '001-113053', '7505-000', NULL, NULL, '21172', '001-440035', '7505-000', NULL, '21189', '001-113019', '7505-000', '21121', '001-440042', '7505-000', '21149', '001-113018', '7505-000', '21114', '001-440041', '7505-000', '21189', '001-113019', '7505-000', '29402', '001-551021', '7505-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Modified Commercial - GPB Brazil', 'BAC Florida Bank', 'L41', '031', '139', '037019970', '037020080', '027', '067009044', '16246', '001-113015', '113015', '7505-000', '44L41', 'n/a', 'n/a', '21109', '001-116038', '7505-000', '02910', 'n/a', 'n/a', '21130', '001-442041', '7505-000', '21147', '001-113054', '7505-000', NULL, NULL, NULL, '21167', '001-440040', '7505-000', '21187', '001-113056', '7505-000', NULL, NULL, '21172', '001-440035', '7505-000', NULL, '21195', '001-113021', '7505-000', '21121', '001-440042', '7505-000', '21155', '001-113020', '7505-000', '21114', '001-440041', '7505-000', '21195', '001-113021', '7505-000', '29402', '001-551021', '7505-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('New York Loans - GPB Brazil', 'BAC Florida Bank', 'L41', '032', '139', '037019970', '037020080', '027', '067009044', '16247', '001-113026', '113026', '7505-000', '44L41', 'n/a', 'n/a', '21110', '001-116046', '7505-000', '02910', 'n/a', 'n/a', '21130', '001-442041', '7505-000', '21141', '001-113052', '7505-000', NULL, NULL, NULL, '21168', '001-440046', '7505-000', '21181', '001-113053', '7505-000', NULL, NULL, '21178', '001-440047', '7505-000', NULL, '21196', '001-113028', '7505-000', '21127', '001-440049', '7505-000', '21156', '001-113027', '7505-000', '21136', '001-440048', '7505-000', '21196', '001-113028', '7505-000', '29408', '001-551022', '7505-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('New York Loans - Family Office', 'BAC Florida Bank', 'L41', '033', '139', '037019970', '037020080', '027', '067009044', '16248', '001-113026', '113026', '7515-000', '44L41', 'n/a', 'n/a', '21111', '001-116046', '7515-000', '02910', 'n/a', 'n/a', '21131', '001-442041', '7515-000', '21142', '001-113052', '7515-000', NULL, NULL, NULL, '21169', '001-440046', '7515-000', '21182', '001-113053', '7515-000', NULL, NULL, '21179', '001-440047', '7515-000', NULL, '21197', '001-113028', '7515-000', '21128', '001-440049', '7515-000', '21157', '001-113027', '7515-000', '21137', '001-440048', '7515-000', '21197', '001-113028', '7515-000', '29409', '001-551022', '7515-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('New York Loans - Prime', 'BAC Florida Bank', 'L41', '034', '139', '037019970', '037020080', '027', '067009044', '16249', '001-113026', '113026', '7560-000', '44L41', 'n/a', 'n/a', '21112', '001-116046', '7560-000', '02910', 'n/a', 'n/a', '21134', '001-442041', '7560-000', '21145', '001-113052', '7560-000', NULL, NULL, NULL, '21170', '001-440046', '7560-000', '21185', '001-113053', '7560-000', NULL, NULL, '21159', '001-440047', '7560-000', NULL, '21198', '001-113028', '7560-000', '21129', '001-440049', '7560-000', '21158', '001-113027', '7560-000', '21139', '001-440048', '7560-000', '21198', '001-113028', '7560-000', '29410', '001-551022', '7560-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Residential Debt Restructure', 'BAC Florida Bank', 'L41', '201', '139', '037019970', '037020080', '027', '067009044', '16250', '001-113014', '113014', '7400-000', '44L41', 'n/a', 'n/a', '16252', '001-116037', '7400-000', '02910', 'n/a', 'n/a', '16254', '001-442041', '7400-000', '16256', '001-113052', '7400-000', NULL, NULL, NULL, '16258', '001-440039', '7400-000', '16260', '001-113053', '7400-000', NULL, NULL, '16262', '001-440035', '7400-000', NULL, '16268', '001-113019', '7400-000', '16270', '001-440042', '7400-000', '16264', '001-113018', '7400-000', '16266', '001-440041', '7400-000', '16268', '001-113019', '7400-000', '16244', '001-551021', '7400-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Commercial Debt Restructure', 'BAC Florida Bank', 'L41', '202', '139', '037019970', '037020080', '027', '067009044', '16251', '001-113015', '113015', '7400-000', '44L41', 'n/a', 'n/a', '16253', '001-116038', '7400-000', '02910', 'n/a', 'n/a', '16255', '001-442041', '7400-000', '16257', '001-113054', '7400-000', NULL, NULL, NULL, '16259', '001-440040', '7400-000', '16261', '001-113056', '7400-000', NULL, NULL, '16263', '001-440035', '7400-000', NULL, '16269', '001-113021', '7400-000', '16271', '001-440042', '7400-000', '16265', '001-113020', '7400-000', '16267', '001-440041', '7400-000', '16269', '001-113021', '7400-000', '16244', '001-551021', '7400-000', '16241', '001-228097', '7400-000', '16243', '001-440040', '7400-000', NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Residential Held to maturity', 'BAC Florida Bank', 'L41', '500', '139', '037019970', '037020080', '027', '067009044', '16250', '001-113014', '113014', '7400-000', '44L41', 'n/a', 'n/a', '16252', '001-116037', '7400-000', '02910', 'n/a', 'n/a', '16254', '001-442041', '7400-000', '16256', '001-113052', '7400-000', NULL, NULL, NULL, '16258', '001-440039', '7400-000', '16260', '001-113053', '7400-000', NULL, NULL, '16262', '001-440035', '7400-000', NULL, '16268', '001-113019', '7400-000', '16270', '001-440042', '7400-000', '16264', '001-113018', '7400-000', '16266', '001-440041', '7400-000', '16268', '001-113019', '7400-000', '16244', '001-551021', '7400-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('Participation', 'Sofisa Bank 20%/BAC 80%', 'L89', '001', 'PAR', '037019970', '037020080', '027', '067009044', '16251', '001-113015', '113015', '7400-000', '44L41', 'n/a', 'n/a', '16253', '001-116038', '7400-000', '02910', 'n/a', 'n/a', '16255', '001-442041', '7400-000', '16257', '001-113054', '7400-000', '43L95', 'n/a', 'n/a', '16259', '001-440040', '7400-000', '16261', '001-113056', '7400-000', NULL, NULL, NULL, NULL, NULL, NULL, '16269', '001-113021', '7400-000', '16271', '001-440042', '7400-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('VIP Loans', 'BAC Florida Bank', 'L42', '500', '139', '037019970', '037020080', '027', '067009044', '16237', '001-113014', '113014', '7505-000', '44L41', 'n/a', 'n/a', '21103', '001-116037', '7505-000', '02910', 'n/a', 'n/a', '21130', '001-442041', '7505-000', '16256', '001-113052', '7400-000', NULL, NULL, NULL, '21161', '001-440039', '7505-000', '16260', '001-113053', '7400-000', NULL, NULL, '21172', '001-440035', '7505-000', NULL, '21189', '001-113019', '7505-000', '21121', '001-440042', '7505-000', '21149', '001-113018', '7505-000', '21114', '001-440041', '7505-000', '21189', '001-113019', '7505-000', '29402', '001-551021', '7505-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('VIP Loans', 'BAC Florida Bank', 'L42', '501', '139', '037019970', '037020080', '027', '067009044', '16237', '001-113014', '113014', '7505-000', '44L41', 'n/a', 'n/a', '21103', '001-116037', '7505-000', '02910', 'n/a', 'n/a', '21130', '001-442041', '7505-000', '16256', '001-113052', '7400-000', NULL, NULL, NULL, '21161', '001-440039', '7505-000', '16260', '001-113053', '7400-000', NULL, NULL, '21172', '001-440035', '7505-000', NULL, '21189', '001-113019', '7505-000', '21121', '001-440042', '7505-000', '21149', '001-113018', '7505-000', '21114', '001-440041', '7505-000', '21189', '001-113019', '7505-000', '29402', '001-551021', '7505-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('VIP Loans - GPB LATAM', 'BAC Florida Bank', 'L42', '502', '139', '037019970', '037020080', '027', '067009044', '16236', '001-113014', '113014', '7500-000', '44L41', 'n/a', 'n/a', '21102', '001-116037', '7500-000', '02910', 'n/a', 'n/a', '16300', '001-442041', '7500-000', '21140', '001-113052', '7500-000', NULL, NULL, NULL, '21160', '001-440039', '7500-000', '21180', '001-113053', '7500-000', NULL, NULL, '21171', '001-440035', '7500-000', NULL, '21188', '001-113019', '7500-000', '21120', '001-440042', '7500-000', '21148', '001-113018', '7500-000', '21113', '001-440041', '7500-000', '21188', '001-113019', '7500-000', '29401', '001-551021', '7500-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('VIP Loans - DOUBLE Estate', 'BAC Florida Bank', 'L42', '503', '139', '037019970', '037020080', '027', '067009044', '16250', '001-113014', '113014', '7400-000', '44L41', 'n/a', 'n/a', '16252', '001-116037', '7400-000', '02910', 'n/a', 'n/a', '16254', '001-442041', '7400-000', '16256', '001-113052', '7400-000', NULL, NULL, NULL, '16258', '001-440039', '7400-000', '16260', '001-113053', '7400-000', NULL, NULL, '16262', '001-440035', '7400-000', NULL, '16268', '001-113019', '7400-000', '16270', '001-440042', '7400-000', '16264', '001-113018', '7400-000', '16266', '001-440041', '7400-000', '16268', '001-113019', '7400-000', '16244', '001-551021', '7400-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('VIP Loans - Family Office', 'BAC Florida Bank', 'L42', '504', '139', '037019970', '037020080', '027', '067009044', '16238', '001-113014', '113014', '7515-000', '44L41', 'n/a', 'n/a', '21104', '001-116037', '7515-000', '02910', 'n/a', 'n/a', '21131', '001-442041', '7515-000', '21142', '001-113052', '7515-000', NULL, NULL, NULL, '21162', '001-440039', '7515-000', '21182', '001-113053', '7515-000', NULL, NULL, '21173', '001-440035', '7515-000', NULL, '21190', '001-113019', '7515-000', '21122', '001-440042', '7515-000', '21150', '001-113018', '7515-000', '21115', '001-440041', '7515-000', '21190', '001-113019', '7515-000', '29403', '001-551021', '7515-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('VIP Loans - Domestic', 'BAC Florida Bank', 'L42', '505', '139', '037019970', '037020080', '027', '067009044', '16239', '001-113014', '113014', '7520-000', '44L41', 'n/a', 'n/a', '21105', '001-116037', '7520-000', '02910', 'n/a', 'n/a', '21132', '001-442041', '7520-000', '21143', '001-113052', '7520-000', NULL, NULL, NULL, '21163', '001-440039', '7520-000', '21183', '001-113053', '7520-000', NULL, NULL, '21174', '001-440035', '7520-000', NULL, '21191', '001-113019', '7520-000', '21123', '001-440042', '7520-000', '21151', '001-113018', '7520-000', '21116', '001-440041', '7520-000', '21191', '001-113019', '7520-000', '29404', '001-551021', '7520-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('VIP Loans - Premium Banking', 'BAC Florida Bank', 'L42', '506', '139', '037019970', '037020080', '027', '067009044', '16240', '001-113014', '113014', '7550-000', '44L41', 'n/a', 'n/a', '21106', '001-116037', '7550-000', '02910', 'n/a', 'n/a', '21133', '001-442041', '7550-000', '21144', '001-113052', '7550-000', NULL, NULL, NULL, '21164', '001-440039', '7550-000', '21184', '001-113053', '7550-000', NULL, NULL, '21175', '001-440035', '7550-000', NULL, '21192', '001-113019', '7550-000', '21124', '001-440042', '7550-000', '21152', '001-113018', '7550-000', '21117', '001-440041', '7550-000', '21192', '001-113019', '7550-000', '29405', '001-551021', '7550-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('VIP Loans - Prime', 'BAC Florida Bank', 'L42', '507', '139', '037019970', '037020080', '027', '067009044', '16229', '001-113014', '113014', '7560-000', '44L41', 'n/a', 'n/a', '21107', '001-116037', '7560-000', '02910', 'n/a', 'n/a', '21134', '001-442041', '7560-000', '21145', '001-113052', '7560-000', NULL, NULL, NULL, '21165', '001-440039', '7560-000', '21185', '001-113053', '7560-000', NULL, NULL, '21176', '001-440035', '7560-000', NULL, '21193', '001-113019', '7560-000', '21125', '001-440042', '7560-000', '21153', '001-113018', '7560-000', '21118', '001-440041', '7560-000', '21193', '001-113019', '7560-000', '29406', '001-551021', '7560-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	    ('VIP Loans - Digital Banking', 'BAC Florida Bank', 'L42', '508', '139', '037019970', '037020080', '027', '067009044', '16245', '001-113014', '113014', '7540-000', '44L41', 'n/a', 'n/a', '21108', '001-116037', '7540-000', '02910', 'n/a', 'n/a', '21135', '001-442041', '7540-000', '21146', '001-113052', '7540-000', NULL, NULL, NULL, '21166', '001-440039', '7540-000', '21186', '001-113053', '7540-000', NULL, NULL, '21177', '001-440035', '7540-000', NULL, '21194', '001-113019', '7540-000', '21126', '001-440042', '7540-000', '21154', '001-113018', '7540-000', '21119', '001-440041', '7540-000', '21194', '001-113019', '7540-000', '29407', '001-551021', '7540-000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+	) v (col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12, col13, col14, col15, col16, col17, col18, col19, col20, col21, col22, col23, col24, col25, col26, col27, col28, col29, col30, col31, col32, col33, col34, col35, col36, col37, col38, col39, col40, col41, col42, col43, col44, col45, col46, col47, col48, col49, col50, col51, col52, col53, col54, col55, col56, col57, col58, col59, col60, col61, col62, col63, col64, col65, col66, col67, col68, col69, col70, col71, col72, col73)
+	)
+
+SELECT
+	*,
+	CAST('2026-05-01' AS DATE) AS Effective_Date,
+	current_timestamp() AS LOADED_AT
+FROM cte_data;
+
+-- From bronze-dmi.dbx.sql
+-- Source model: bronze_dmi_non_cash
+CREATE OR REPLACE TABLE bronze.default.bronze_dmi_non_cash AS
+-- NAME: BRONZE_DMI_NON_CASH
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: MARCH 16, 2026
+
+
+
+WITH cte_bronze_dmi_non_cash AS (
+SELECT
+    LOAN_NUMBER
+    ,INVESTOR_NUMBER
+    ,CATEGORY_CODE
+    ,NC_TRANSACTION_CODE
+    ,NC_TRANSACTION_DATE
+    ,NC_AMOUNT
+    ,NC_PRINCIPAL_AMOUNT
+    ,NC_INTEREST_AMOUNT
+    ,MSP_LAST_RUN_DATE
+    ,FILE_NAME_DMI
+FROM  dmi.default.dmi_noncash
+WHERE MSP_LAST_RUN_DATE IS NOT NULL -- Validate for not null DATE OF LOAD
+ ),
+
+bronze_data as (
+
+SELECT
+    LOAN_NUMBER
+    ,INVESTOR_NUMBER
+    ,CATEGORY_CODE
+    ,NC_TRANSACTION_CODE
+    ,NC_TRANSACTION_DATE
+    ,NC_AMOUNT
+    ,NC_PRINCIPAL_AMOUNT
+    ,NC_INTEREST_AMOUNT
+    ,MSP_LAST_RUN_DATE
+    ,FILE_NAME_DMI
+
+FROM  cte_bronze_dmi_non_cash
+    
+    
+      
+)
+
+
+
+    
+
+
+SELECT *, current_timestamp() AS LOADED_AT FROM bronze_data;
+
+-- From bronze-dmi.dbx.sql
+-- Source model: bronze_dmi_p110
+CREATE OR REPLACE TABLE bronze.default.bronze_dmi_p110 AS
+-- NAME: BRONZE_DMI_P110
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: May 19, 2026
+
+
+
+WITH cte_dmi_P110 AS (
+    SELECT
+         LoanNumber
+        ,BankCode
+        ,LoanCategory
+        ,LoanType
+        ,InterestRate
+        ,ServiceRate
+        ,ManCode
+        ,ShortName
+        ,InvestorLoanNumber
+        ,SubCode
+        ,HITY
+        ,InterestPaidToDate
+        ,SegmentNumber
+        ,EscrowBalance
+        ,SuspenseBalance
+        ,HUDBalance
+        ,PrincipalPaid
+        ,InterestPaid
+        ,ServiceFee
+        ,Penalty
+        ,PenaltySerFee
+        ,FHAPenalty
+        ,EscrowPaid
+        ,SuspensePaid
+        ,RestEscPaid
+        ,AdvanceBalance
+        ,RestEsc
+        ,RepRsv
+        ,PrinReductAmt
+        ,DedCode
+        ,PrinFBAmt
+        ,P443FundingInterestRate
+        ,P443FundingServiceFee
+        ,FILE_NAME_DMI
+    FROM dmi.default.dmi_p110
+        
+        
+)
+
+
+    
+
+
+SELECT *,current_timestamp() AS LOADED_AT FROM cte_dmi_P110;
+
+-- From bronze-dmi.dbx.sql
+-- Source model: bronze_dmi_p132
+CREATE OR REPLACE TABLE bronze.default.bronze_dmi_p132 AS
+-- NAME: BRONZE_DMI_P132
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: May 19, 2026
+
+
+
+WITH cte_dmi_P132 AS (
+	SELECT
+		 ReportID
+		,ReportDate
+		,LoanNumber
+		,InvestorCode
+		,CAT
+		,TRN
+		,DUE_DATE
+		,TP
+		,CLOSING
+		,AM_CD
+		,AM_CD_MO
+		,ORIGINAL_DISC
+		,DISC_BALANCE
+		,DISC_DECREASE
+		,DISC_INCREASE
+		,DISC_PTS_FLG
+		,PTS_PD_BORR
+		,PTS_PD_BORR_YR
+		,PPBB_FLG
+		,DEDUCTIBLE_MI
+		,DEDUCTIBLE_MI_YR
+		,FILE_NAME_DMI
+	FROM dmi.default.dmi_p132
+    	
+    	
+)
+
+
+    
+
+
+SELECT *,current_timestamp() AS LOADED_AT FROM cte_dmi_P132;
+
+-- From bronze-dmi.dbx.sql
+-- Source model: bronze_dmi_pmt
+CREATE OR REPLACE TABLE bronze.default.bronze_dmi_pmt AS
+-- NAME: BRONZE_DMI_PMT
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: MARCH 16, 2026
+
+
+
+
+WITH cte_bronze_dmi_pmt AS (
+	SELECT
+		 LOAN_NUMBER
+		,INVESTOR_NUMBER
+		,CATEGORY_CODE
+		,PMT_TRANSACTION_DATE
+		,PMT_TRANSACTION_CODE
+		,PMT_PRINCIPAL_AMOUNT
+		,PMT_INTEREST_AMOUNT
+		,PMT_ESCROW_AMOUNT
+		,PMT_TOTAL_AMOUNT
+		,PMT_FEE_AMOUNT
+		,PMT_FEE_CODE
+		,PMT_SUSPENSE_AMOUNT
+		,PMT_A_H_INSURANCE_AMOUNT
+		,PMT_LIFE_INSURANCE_AMOUNT
+		,PMT_RESTRICTED_ESC_AMOUNT
+		,PMT_REPLACEMENT_RES
+		,PMT_MISC_AMOUNT
+		,PMT_HUD_AMOUNT
+		,PMT_EFFECTIVE_DATE
+		,PMT_BATCH_NUMBER
+		,MSP_LAST_RUN_DATE
+		,FILE_NAME_DMI
+	FROM  dmi.default.dmi_pmt
+	WHERE MSP_LAST_RUN_DATE IS NOT NULL
+),
+
+bronze_data as (
+
+SELECT
+	LOAN_NUMBER
+	,INVESTOR_NUMBER
+	,CATEGORY_CODE
+	,PMT_TRANSACTION_DATE
+	,PMT_TRANSACTION_CODE
+	,PMT_PRINCIPAL_AMOUNT
+	,PMT_INTEREST_AMOUNT
+	,PMT_ESCROW_AMOUNT
+	,PMT_TOTAL_AMOUNT
+	,PMT_FEE_AMOUNT
+	,PMT_FEE_CODE
+	,PMT_SUSPENSE_AMOUNT
+	,PMT_A_H_INSURANCE_AMOUNT
+	,PMT_LIFE_INSURANCE_AMOUNT
+	,PMT_RESTRICTED_ESC_AMOUNT
+	,PMT_REPLACEMENT_RES
+	,PMT_MISC_AMOUNT
+	,PMT_HUD_AMOUNT
+	,PMT_EFFECTIVE_DATE
+	,PMT_BATCH_NUMBER
+	,MSP_LAST_RUN_DATE
+	,FILE_NAME_DMI
+
+FROM  cte_bronze_dmi_pmt A
+    
+    
+      
+)
+
+
+    
+
+
+SELECT *, current_timestamp() AS LOADED_AT FROM bronze_data;
+
+-- From bronze-dmi.dbx.sql
+-- Source model: bronze_dmi_s2tt
+CREATE OR REPLACE TABLE bronze.default.bronze_dmi_s2tt AS
+-- NAME: BRONZE_DMI_S2TT
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: MARCH 16, 2026
+
+
+
+
+WITH cte_bronze_dmi_s2tt AS(
+	SELECT
+		 AccrualEntityCode
+		,HeaderInvestorCode
+		,LoanNumber
+		,PSCode
+		,BeginningIRBalance
+		,PeriodIncome
+		,AccrualAdjust
+		,InterestCollected
+		,EndIRBalance
+		,AmortizedPrincipalBalance
+		,InterestRate
+		,DueOrEffectiveDate
+		,PandIConstant
+		,InvestorCode
+		,CategoryCode
+		,PCCode
+		,Percent__CS
+		,PTCode
+		,ForecastedIncome
+		,ForecastedIRBalance
+		,FirstPrincipalBalance
+		,IntlInd
+		,LoanTypeCode
+		,SLCode
+		,PtFq
+		,AI
+		,ARMPrimeRate
+		,AFCode
+		,Delq
+		,SDCode
+		,ASDDifference
+		,ASDIR
+		,ExceptionCodes1
+		,ExceptionsCodesDateLine1
+		,NumberOfDays
+		,PerDiem
+		,Sum__CS
+		,ClientCode
+		,ExceptionCodes2
+		,ExceptionsCodesDateLine2
+		,NumberOfDays2
+		,PerDiem2
+		,Sum2
+		,FILE_NAME_DMI
+	FROM  dmi.default.dmi_s2tt
+),
+
+bronze_data as (
+	SELECT
+		AccrualEntityCode
+		,HeaderInvestorCode
+		,LoanNumber
+		,PSCode
+		,BeginningIRBalance
+		,PeriodIncome
+		,AccrualAdjust
+		,InterestCollected
+		,EndIRBalance
+		,AmortizedPrincipalBalance
+		,InterestRate
+		,DueOrEffectiveDate
+		,PandIConstant
+		,InvestorCode
+		,CategoryCode
+		,PCCode
+		,Percent__CS
+		,PTCode
+		,ForecastedIncome
+		,ForecastedIRBalance
+		,FirstPrincipalBalance
+		,IntlInd
+		,LoanTypeCode
+		,SLCode
+		,PtFq
+		,AI
+		,ARMPrimeRate
+		,AFCode
+		,Delq
+		,SDCode
+		,ASDDifference
+		,ASDIR
+		,ExceptionCodes1
+		,ExceptionsCodesDateLine1
+		,NumberOfDays
+		,PerDiem
+		,Sum__CS
+		,ClientCode
+		,ExceptionCodes2
+		,ExceptionsCodesDateLine2
+		,NumberOfDays2
+		,PerDiem2
+		,Sum2
+		,FILE_NAME_DMI
+	FROM  cte_bronze_dmi_s2tt
+	    
+	    
+)
+
+
+    
+
+
+SELECT *, current_timestamp() AS LOADED_AT FROM bronze_data;
+
+-- From bronze-dmi.dbx.sql
+-- Source model: bronze_dmi_s2tv
+CREATE OR REPLACE TABLE bronze.default.bronze_dmi_s2tv AS
+-- NAME: BRONZE_DMI_S2TV
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: MARCH 16, 2026
+
+
+
+WITH cte_bronze_dmi_s2tv AS (
+	SELECT
+		 ExceptionDescription
+		,LoanNumber
+		,BeginningIRBalance
+		,PeriodIncome
+		,AccrualAdjust
+		,InterestCollected
+		,EndIRBalance
+		,FirstPrinBalance
+		,InterestRate
+		,DueEffDate
+		,PNIConstant
+		,AccrualEntityCode
+		,InvestorCode
+		,CategoryCode
+		,PartCode
+		,PostingType
+		,VariableBeforeAfter
+		--,CAST(REPLACE(REPLACE(REPLACE(TRIM(VariableBeforeAfter), ',', ''), '(',''),')','') AS DECIMAL(12,2))	AS VariableBeforeAfter
+		,`Date`
+		,ExceptionCodes
+		,LoanType
+		,SLCode1
+		,PTFQCode
+		,AICode
+		,ArmPrmRt
+		,AFCode
+		,DelqCode
+		,SDCode
+		,PPDCode1
+		,ASDDiff
+		,ASDIR
+		,AmortPrinBalance
+		,FILE_NAME_DMI
+	FROM  dmi.default.dmi_s2tv
+),
+
+bronze_data as (
+	SELECT
+		 ExceptionDescription
+		,LoanNumber
+		,BeginningIRBalance
+		,PeriodIncome
+		,AccrualAdjust
+		,InterestCollected
+		,EndIRBalance
+		,FirstPrinBalance
+		,InterestRate
+		,DueEffDate
+		,PNIConstant
+		,AccrualEntityCode
+		,InvestorCode
+		,CategoryCode
+		,PartCode
+		,PostingType
+		,VariableBeforeAfter
+		,`Date`
+		,ExceptionCodes
+		,LoanType
+		,SLCode1
+		,PTFQCode
+		,AICode
+		,ArmPrmRt
+		,AFCode
+		,DelqCode
+		,SDCode
+		,PPDCode1
+		,ASDDiff
+		,ASDIR
+		,AmortPrinBalance
+		,FILE_NAME_DMI
+	FROM  cte_bronze_dmi_s2tv
+	    
+	    
+)
+
+
+
+    
+
+
+SELECT *, current_timestamp() AS LOADED_AT FROM bronze_data;
+
+-- From bronze-dmi.dbx.sql
+-- Source model: bronze_dmi_s5az
+CREATE OR REPLACE TABLE bronze.default.bronze_dmi_s5az AS
+-- NAME: BRONZE_DMI_S5AZ
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: May 19, 2026
+
+
+
+WITH cte_dmi_S5AZ AS (
+    SELECT
+         Frequency
+        ,RefinanceDescription
+        ,LoanNumber
+        ,InvestorCode2
+        ,CategoryCode2
+        ,HICode
+        ,DueDate
+        ,PrincipalBalance
+        ,InterestRate
+        ,Yield
+        ,FeeCost1
+        ,FeeCost2
+        ,FeeCost3
+        ,FeeCost4
+        ,FeeCost5
+        ,FeeCost6
+        ,FeeCost7
+        ,FeeCost8
+        ,Action
+        ,FILE_NAME_DMI
+    FROM dmi.default.dmi_s5az
+        
+        
+)
+
+
+    
+
+
+SELECT *,current_timestamp() AS LOADED_AT FROM cte_dmi_S5AZ;
+
+-- From bronze-dmi.dbx.sql
+-- Source model: bronze_dmi_t69w
+CREATE OR REPLACE TABLE bronze.default.bronze_dmi_t69w AS
+-- NAME: BRONZE_DMI_T69W
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: MARCH 16, 2026
+
+
+
+WITH cte_bronze_dmi_t69w AS (
+	SELECT
+		 CorpCode
+		,AccountNumber
+		,CostCenterCode
+		,PayeeCode
+		,TypeOfFunds
+		,InvestorCode
+		,CategoryCode
+		,RptCode
+		,TrnCode
+		,CollectionsDebit
+		,CollectionsCredit
+		,InvestorDebit
+		,InvestorCredit
+		,CorporateDebit
+		,CorporateCredit
+		,TypeCode
+		,ClientCode
+		,ClientName
+		,ReportDate
+		,ReportNumber
+		,FILE_NAME_DMI
+	FROM  dmi.default.dmi_t69w
+),
+
+bronze_data as (
+	SELECT
+		 CorpCode
+		,AccountNumber
+		,CostCenterCode
+		,PayeeCode
+		,TypeOfFunds
+		,InvestorCode
+		,CategoryCode
+		,RptCode
+		,TrnCode
+		,CollectionsDebit
+		,CollectionsCredit
+		,InvestorDebit
+		,InvestorCredit
+		,CorporateDebit
+		,CorporateCredit
+		,TypeCode
+		,ClientCode
+		,ClientName
+		,ReportDate
+		,ReportNumber
+		,FILE_NAME_DMI
+	FROM  cte_bronze_dmi_t69w
+	    
+	    
+)
+
+
+
+    
+
+
+SELECT *, current_timestamp() AS LOADED_AT FROM bronze_data;
+
+-- From bronze-dmi.dbx.sql
+-- Source model: bronze_dmi_transaction_codes_mapping
+CREATE OR REPLACE TABLE bronze.default.bronze_dmi_transaction_codes_mapping AS
+-- NAME: BRONZE_DMI_TRANSACTION_CODES_MAPPING
+-- CATEGORY: MODEL
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY
+-- LOAD TYPE: FULL LOAD
+-- TYPE: SOURCE
+-- DATE: March 26, 2026
+
+
+
+WITH static_dmi_transaction_codes AS (
+    SELECT * FROM (
+            VALUES
+                ('Payee Transactions','032','General','Late Charge Adjustment'),
+                ('Payee Transactions','052','General','Late Charge Assessed'),
+                ('Payee Transactions','066','General','Special Escrow Deposit'),
+                ('Payee Transactions','146','Cash','NSF Reversal/Stop Payment'),
+                ('Payee Transactions','147','Cash','Misapplied Reversal'),
+                ('Payee Transactions','148','Cash','NSF Reversal/Stop Payment'),
+                ('Payee Transactions','156','Cash','Transfer Out'),
+                ('Payee Transactions','160','Cash','Escrow Interest'),
+                ('Payee Transactions','161','Cash','Escrow Advance'),
+                ('Payee Transactions','162','Cash','Loan Guaranty Refund'),
+                ('Payee Transactions','163','Cash','Hazard Insurance Refund'),
+                ('Payee Transactions','164','Cash','Tax Refund'),
+                ('Payee Transactions','165','Cash','Lien Refund'),
+                ('Payee Transactions','166','Cash','Special Escrow Deposit'),
+                ('Payee Transactions','167','Cash','Other Deposit (HUD) Subsidy Funds'),
+                ('Payee Transactions','168','Cash','Escrow Advance Repayment'),
+                ('Payee Transactions','169','Cash','Restricted Escrow Deposit'),
+                ('Payee Transactions','170','Cash','Initial Interest/Escrow Deposit'),
+                ('Payee Transactions','171','Cash','Lock Box Payment with Coupon'),
+                ('Payee Transactions','172','Cash','Payments (Lock Box or In-House Ck Batch)'),
+                ('Payee Transactions','173','Cash','Multiple Payments (Auto Draft)'),
+                ('Payee Transactions','174','Cash','Irregular Payments (In-House Cash Sheet)'),
+                ('Payee Transactions','175','Cash','Principal Curtailment'),
+                ('Payee Transactions','179','Cash','Special Optional Insurance Payment'),
+                ('Payee Transactions','181','Cash','Paid in Full (181 w/pif 2 is FC Transcode)'),
+                ('Payee Transactions','182','Cash','Paid in Full'),
+                ('Payee Transactions','110','Cash','Attorney Advance Repayment'),
+                ('Payee Transactions','111','Cash','Property Preservation Repayment'),
+                ('Payee Transactions','112','Cash','Statutory Expense Repayment'),
+                ('Payee Transactions','113','Cash','Miscellaneous Repayment'),
+                ('Payee Transactions','114','Cash','Inventory Advance Deposit'),
+                ('Payee Transactions','142','Cash','Initial Principal Balance'),
+                ('Payee Transactions','143','Cash','Non-Cash Transaction/Advance Due Date'),
+                ('Payee Transactions','153','Cash','Interest Rate Change on Non-ARM Loan (Non-Cash)'),
+                ('Payee Transactions','183','Cash','Interest Adjustment'),
+                ('Payee Transactions','185','Cash','Payment in Full with Delinquent Payments (Cash Payoff)'),
+                ('Payee Transactions','186','Cash','Full Settlement on Foreclosed Loans'),
+                ('Payee Transactions','301','Disbursements','Miscellaneous'),
+                ('Payee Transactions','302','Disbursements','HUD Refund'),
+                ('Payee Transactions','303','Disbursements','Replacement Reserve'),
+                ('Payee Transactions','304','Lien/Assessment Disbursements','Disb if Already Made, Disb if Not Collecting'),
+                ('Payee Transactions','304','Disbursements','Restricted Escrow Insurance'),
+                ('Payee Transactions','305','Disbursements','Escrow Refund to Homeowner'),
+                ('Payee Transactions','306','Disbursements','Excess Escrow/Refund'),
+                ('Payee Transactions','307','Disbursements','Escrow to Mortgagor/Reimbursement'),
+                ('Payee Transactions','310','Disbursements','MIP/FHA Disbursement'),
+                ('Payee Transactions','311','Disbursements','School Tax Disb'),
+                ('Payee Transactions','312','Disbursements','County Tax Disb'),
+                ('Payee Transactions','313','Disbursements','City Tax Disb'),
+                ('Payee Transactions','314','Disbursements','Lien Assessment Disb'),
+                ('Payee Transactions','315-329','Disbursements','Other Tax'),
+                ('Payee Transactions','351','Disbursements','Hazard Insurance Disb'),
+                ('Payee Transactions','352','Disbursements','Flood Insurance Disb'),
+                ('Payee Transactions','353','Disbursements','Insurance on 2nd Dwelling, Liability, Windstorm'),
+                ('Payee Transactions','354','Disbursements','Earthquake'),
+                ('Payee Transactions','355','Disbursements','Liability, Windstorm, Condo (Contents)'),
+                ('Payee Transactions','326','Lien/Assessment Disbursements','Duplicate Bill Fee'),
+                ('Payee Transactions','327','Lien/Assessment Disbursements','Tax Collector Processing Fee'),
+                ('Payee Transactions','328','Lien/Assessment Disbursements','Tax Penalty'),
+                ('Payee Transactions','330','Lien/Assessment Disbursements','Attorney Advance'),
+                ('Payee Transactions','331','Lien/Assessment Disbursements','Property Preservation'),
+                ('Payee Transactions','332','Lien/Assessment Disbursements','Statutory Expense'),
+                ('Payee Transactions','333','Lien/Assessment Disbursements','Miscellaneous Expenses'),
+                ('Payee Transactions','493','Lien/Assessment Disbursements','ARM Interest Rate Adjustment'),
+                ('Payee Transactions','55','Lien/Assessment Disbursements','Repurchase'),
+                ('Payee Transactions','714','Lien/Assessment Disbursements','Foreclosure Investor Repayment'),
+                ('Payee Transactions','601','Corporate Advances','Misc. Corporate Advance'),
+                ('Payee Transactions','630','Corporate Advances','Corporate Advance for Attorney Fees'),
+                ('Payee Transactions','631','Corporate Advances','Corporate Advance for Property Preservation'),
+                ('Payee Transactions','632','Corporate Advances','Corporate Advance for Statutory Expenses'),
+                ('Payee Transactions','633','Corporate Advances','Corporate Advance Misc. Expenses'),
+                ('Loan Types','11','Loan Types','FHA'),
+                ('Loan Types','12','Loan Types','VA'),
+                ('Loan Types','13','Loan Types','CONV with No PMI'),
+                ('Loan Types','14','Loan Types','Commercial'),
+                ('Loan Types','15','Loan Types','FHA Commercial'),
+                ('Loan Types','16','Loan Types','CONV with PMI'),
+                ('Loan Types','17','Loan Types','HUD 235/265'),
+                ('Loan Types','18','Loan Types','Other'),
+                ('Loan Types','19','Loan Types','Farm'),
+                ('Hazard Coverages','351','F','Fire, Rental Dwelling'),
+                ('Hazard Coverages','351','H','Homeowners'),
+                ('Hazard Coverages','352','W','Flood'),
+                ('Hazard Coverages','354','Q','Earthquake Only'),
+                ('Hazard Coverages','351','C','Condominium (Master)'),
+                ('Hazard Coverages','355','H','Contents'),
+                ('Hazard Coverages','353/355','L','Liability'),
+                ('Hazard Coverages','353/355','S','Windstorm, Hurricane'),
+                ('Hazard Coverages','351','M','Mobile Home'),
+                ('Overrides','1','Overrides','Foreclosure'),
+                ('Overrides','2','Overrides','PIF, Disb Stops'),
+                ('Overrides','3','Overrides','PIF, Foreclosure, Disb'),
+                ('Overrides','4','Overrides','Disb Stop - Cust Serv'),
+                ('Overrides','C','Overrides','Overdrawn Escrow'),
+                ('Overrides','D','Overrides','Overdrawn Escrow'),
+                ('Overrides','F','Overrides','Disb if Not Collecting / Disb if Not Already Made'),
+                ('Overrides','M','Overrides','Overrides Everything (Supervisor Required)'),
+                ('Overrides','N','Overrides','Overdrawn Escrow Foreclosure Stops'),
+                ('Lower Insurance States','CA','Lower Insurance States','States Accepting Lower Insurance Coverage'),
+                ('Lower Insurance States','MD','Lower Insurance States','States Accepting Lower Insurance Coverage'),
+                ('Lower Insurance States','VA','Lower Insurance States','States Accepting Lower Insurance Coverage'),
+                ('Lower Insurance States','WA','Lower Insurance States','States Accepting Lower Insurance Coverage'),
+                ('Lower Insurance States','PA','Lower Insurance States','States Accepting Lower Insurance Coverage'),
+                ('Lower Insurance States','MA','Lower Insurance States','States Accepting Lower Insurance Coverage'),
+                ('Lower Insurance States','NY','Lower Insurance States','States Accepting Lower Insurance Coverage')
+        ) AS t (
+            `SHEET`,
+            `TRAN_CODE`,
+            `CATEGORY`,
+            `DESCRIPTION`
+        )        
+),
+
+casted_dmi_transaction_codes AS (
+    SELECT
+        CAST(`SHEET` AS STRING) AS SHEET,
+        CAST(`TRAN_CODE` AS STRING) AS TRAN_CODE,
+        CAST(`CATEGORY` AS STRING) AS CATEGORY,
+        CAST(`DESCRIPTION` AS STRING) AS `DESCRIPTION`
+    FROM static_dmi_transaction_codes
+)
+
+SELECT *, current_timestamp() AS LOADED_AT FROM casted_dmi_transaction_codes;
+
+-- From bronze-fis.dbx.sql
+-- Source model: bronze_fis_cd300
+CREATE OR REPLACE TABLE bronze.default.bronze_fis_cd300 AS
+-- NAME: BRONZE_FIS_CD300
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: January 27, 2026
+
+
+
+WITH landing_data AS (
+    SELECT
+        future_use_1_4,
+        corp_id_5_6,
+        TRY_CAST(acct_num_7_22_masked AS bigint) AS acct_num_7_22_masked,
+        TRY_CAST(crdt_lmt_23_35 AS DOUBLE) AS crdt_lmt_23_35,
+        TRY_CAST(curr_bal_36_48 AS DOUBLE) AS curr_bal_36_48,
+        TRY_CAST(avail_credit_49_61 AS DOUBLE) AS avail_credit_49_61,
+        TRY_CAST(outstanding_auth_amt_62_74 AS DOUBLE) AS outstanding_auth_amt_62_74,
+        TRY_CAST(outstanding_auth_num_75_77 AS int) AS outstanding_auth_num_75_77,
+        block_code_78_78,
+        reclass_code_79_79,
+        TRY_CAST(rltnshp_acct_80_95 AS bigint) AS rltnshp_acct_80_95,
+        TRY_CAST(ltd_num_mnths_pst_due_96_98 AS int) AS ltd_num_mnths_pst_due_96_98,
+        primary_nm_99_124,
+        TRY_CAST(mnth_to_dt_pymnt_125_137 AS DOUBLE) AS mnth_to_dt_pymnt_125_137,
+        TRY_CAST(lst_stmnt_bal_138_150 AS DOUBLE) AS lst_stmnt_bal_138_150,
+        TRY_CAST(amt_of_lst_pymnt_151_163 AS DOUBLE) AS amt_of_lst_pymnt_151_163,
+        TRY_CAST(dt_of_lst_pymnt_164_171 AS int) AS dt_of_lst_pymnt_164_171,
+        TRY_CAST(dt_lst_purch_172_179 AS int) AS dt_lst_purch_172_179,
+        TRY_CAST(dt_lst_csh_advnc_180_187 AS int) AS dt_lst_csh_advnc_180_187,
+        TRY_CAST(dlnqntamt_188_200 AS int) AS dlnqntamt_188_200,
+        TRY_CAST(pymnt_due_201_213 AS DOUBLE) AS pymnt_due_201_213,
+        TRY_CAST(dt_pymnt_due_214_221 AS int) AS dt_pymnt_due_214_221,
+        TRY_CAST(exprtn_dt_222_227 AS int) AS exprtn_dt_222_227,
+        pst_due_hstry_12_01_228_239,
+        ssn_prmry_240_252,
+        ssn_scndry_253_265,
+        TRY_CAST(visa_plstc_out_266_267 AS int) AS visa_plstc_out_266_267,
+        TRY_CAST(mc_pstc_out_268_269 AS int) AS mc_pstc_out_268_269,
+        cycle_dy_chng_270_271,
+        typ_plstc_1_272_272,
+        typ_plstc_273_273,
+        rss_dnl_code_274_275,
+        spcl_sttmnt_grp_cd_276_276,
+        pymn_cd_277_277,
+        crd_fee_indctr_278_278,
+        crd_lf_cd_279_279,
+        auto_py_ac_typ_280_280,
+        TRY_CAST(bill_day_281_282 AS int) AS bill_day_281_282,
+        TRY_CAST(tot_bal_fwd_csh_283_295 AS DOUBLE) AS tot_bal_fwd_csh_283_295,
+        curr_bill_cd_296_303,
+        TRY_CAST(curr_bill_dt_304_311 AS int) AS curr_bill_dt_304_311,
+        TRY_CAST(crss_ref_num_312_327 AS bigint) AS crss_ref_num_312_327,
+        TRY_CAST(curr_pymnt_fxd_328_340 AS DOUBLE) AS curr_pymnt_fxd_328_340,
+        TRY_CAST(dt_lst_fee_chrgd_341_348 AS int) AS dt_lst_fee_chrgd_341_348,
+        TRY_CAST(crd_lmt_chng_dt_1_349_356 AS int) AS crd_lmt_chng_dt_1_349_356,
+        TRY_CAST(dda_acct_num_357_373 AS bigint) AS dda_acct_num_357_373,
+        TRY_CAST(prev_bllng_dt_374_381 AS int) AS prev_bllng_dt_374_381,
+        TRY_CAST(frst_us_dt_382_389 AS int) AS frst_us_dt_382_389,
+        TRY_CAST(lf_hgh_bal_amt_390_402 AS DOUBLE) AS lf_hgh_bal_amt_390_402,
+        TRY_CAST(lst_addrss_chng_dt_403_410 AS int) AS lst_addrss_chng_dt_403_410,
+        TRY_CAST(dspt_amt_411_423 AS DOUBLE) AS dspt_amt_411_423,
+        TRY_CAST(lst_blckd_dt_424_431 AS int) AS lst_blckd_dt_424_431,
+        prdct_cd_432_434,
+        TRY_CAST(sub_prdct_cd_432_434 AS int) AS sub_prdct_cd_432_434,
+        TRY_CAST(`_005_dys_dlnqnt_438_450` AS int) AS _005_dys_dlnqnt_438_450,
+        TRY_CAST(`_030_dys_dlnqnt_451_463` AS int) AS _030_dys_dlnqnt_451_463,
+        TRY_CAST(`_060_dys_dlnqnt_464_476` AS int) AS _060_dys_dlnqnt_464_476,
+        TRY_CAST(`_090_dys_dlnqnt_477_489` AS int) AS _090_dys_dlnqnt_477_489,
+        TRY_CAST(`_120_dys_dlnqnt_490_502` AS int) AS _120_dys_dlnqnt_490_502,
+        TRY_CAST(`_150_dys_dlnqnt_503_515` AS int) AS _150_dys_dlnqnt_503_515,
+        TRY_CAST(`_180_dys_dlnqnt_516_528` AS int) AS _180_dys_dlnqnt_516_528,
+        TRY_CAST(`_210_dys_dlnqnt_529_541` AS int) AS _210_dys_dlnqnt_529_541,
+        TRY_CAST(chrg_off_cd_542_542 AS int) AS chrg_off_cd_542_542,
+        TRY_CAST(secr_crd_crr_bal_543_555 AS DOUBLE) AS secr_crd_crr_bal_543_555,
+        TRY_CAST(usr_fld_1_556_558 AS int) AS usr_fld_1_556_558,
+        usr_fld_2_559_561,
+        usr_fld_3_562_564,
+        usr_fld_4_565_567,
+        usr_fld_5_568_570,
+        usr_fld_6_571_573,
+        urs_fld_7_574_576,
+        usr_fld_8_577_579,
+        TRY_CAST(tms_5_dys_dlnqnt_580_582 AS int) AS tms_5_dys_dlnqnt_580_582,
+        TRY_CAST(tms_30_dys_dlnqnt_583_585 AS int) AS tms_30_dys_dlnqnt_583_585,
+        TRY_CAST(tms_60_dys_dlnqnt_586_588 AS int) AS tms_60_dys_dlnqnt_586_588,
+        TRY_CAST(tms_90_dys_dlnqnt_589_591 AS int) AS tms_90_dys_dlnqnt_589_591,
+        TRY_CAST(tms_120_dys_dlnqnt_592_594 AS int) AS tms_120_dys_dlnqnt_592_594,
+        TRY_CAST(tms_150_dys_dlnqnt_595_597 AS int) AS tms_150_dys_dlnqnt_595_597,
+        TRY_CAST(tms_180_dys_dlnqnt_598_600 AS int) AS tms_180_dys_dlnqnt_598_600,
+        TRY_CAST(tms_210_dys_dlnqnt_601_603 AS int) AS tms_210_dys_dlnqnt_601_603,
+        clnt_crd_scr_604_606,
+        prev_crd_scr_607_609,
+        addrss_ln_1_610_634,
+        addrss_ln_2_635_659,
+        addrss_ln_3_660_684,
+        city_685_709,
+        state_710_712,
+        zp_code_9_713_721,
+        TRY_CAST(zp_walk_cd_722_723 AS int) AS zp_walk_cd_722_723,
+        TRY_CAST(phone_724_733 AS bigint) AS phone_724_733,
+        TRY_CAST(bsnss_phn_734_743 AS bigint) AS bsnss_phn_734_743,
+        TRY_CAST(tot_bal_frwrd_744_756 AS DOUBLE) AS tot_bal_frwrd_744_756,
+        TRY_CAST(nm_1_brth_dt_757_764 AS int) AS nm_1_brth_dt_757_764,
+        TRY_CAST(nm_2_brth_dt_765_772 AS int) AS nm_2_brth_dt_765_772,
+        TRY_CAST(nm_1_crdt_assctn_773_773 AS int) AS nm_1_crdt_assctn_773_773,
+        TRY_CAST(nm_2_crdt_assctn_774_774 AS int) AS nm_2_crdt_assctn_774_774,
+        TRY_CAST(crdt_lf_prem_775_787 AS DOUBLE) AS crdt_lf_prem_775_787,
+        TRY_CAST(dt_lst_fin_actvty_788_795 AS int) AS dt_lst_fin_actvty_788_795,
+        TRY_CAST(ltd_mnths_ovrlmt_796_798 AS int) AS ltd_mnths_ovrlmt_796_798,
+        crd_actvtn_status_799_799,
+        TRY_CAST(vs_plstcs_iss_dt_800_807 AS int) AS vs_plstcs_iss_dt_800_807,
+        TRY_CAST(mc_plstcs_iss_dt_808_815 AS int) AS mc_plstcs_iss_dt_808_815,
+        TRY_CAST(ltd_num_rtrnd_chks_816_818 AS int) AS ltd_num_rtrnd_chks_816_818,
+        TRY_CAST(lst_nsf_dt_819_826 AS int) AS lst_nsf_dt_819_826,
+        TRY_CAST(lst_nsf_amt_827_839 AS DOUBLE) AS lst_nsf_amt_827_839,
+        TRY_CAST(amt_lst_lt_chrg_840_852 AS DOUBLE) AS amt_lst_lt_chrg_840_852,
+        TRY_CAST(dt_acct_opnd_853_860 AS int) AS dt_acct_opnd_853_860,
+        TRY_CAST(curr_tot_due_861_873 AS DOUBLE) AS curr_tot_due_861_873,
+        embssng_ln_4_874_898,
+        TRY_CAST(tot_ytd_fin_chrg_pd_899_911 AS DOUBLE) AS tot_ytd_fin_chrg_pd_899_911,
+        TRY_CAST(ytd_purch_amt_912_924 AS DOUBLE) AS ytd_purch_amt_912_924,
+        TRY_CAST(ytd_purch_num_925_929 AS int) AS ytd_purch_num_925_929,
+        TRY_CAST(ytd_lt_fee_pd_fees_930_942 AS DOUBLE) AS ytd_lt_fee_pd_fees_930_942,
+        TRY_CAST(ctd_amnt_csh_adv_fee_943_955 AS DOUBLE) AS ctd_amnt_csh_adv_fee_943_955,
+        TRY_CAST(ctd_misc_fee_956_968 AS DOUBLE) AS ctd_misc_fee_956_968,
+        TRY_CAST(ytd_fees_chrgd_969_981 AS DOUBLE) AS ytd_fees_chrgd_969_981,
+        TRY_CAST(typ_prcssng_982_983 AS int) AS typ_prcssng_982_983,
+        TRY_CAST(ltd_lt_chrg_amt_984_996 AS DOUBLE) AS ltd_lt_chrg_amt_984_996,
+        TRY_CAST(lt_chrg_ytd_997_1009 AS DOUBLE) AS lt_chrg_ytd_997_1009,
+        TRY_CAST(lftm_purch_num_1010_1014 AS int) AS lftm_purch_num_1010_1014,
+        TRY_CAST(lftm_purch_amt_1015_1027 AS bigint) AS lftm_purch_amt_1015_1027,
+        TRY_CAST(filler_1028_1040 AS int) AS filler_1028_1040,
+        TRY_CAST(fin_chrg_ytd_1041_1053 AS DOUBLE) AS fin_chrg_ytd_1041_1053,
+        TRY_CAST(lst_sttmnt_dt_1054_1061 AS int) AS lst_sttmnt_dt_1054_1061,
+        name_2_1062_1087,
+        TRY_CAST(nxt_annl_rnwl_dt_1088_1094 AS int) AS nxt_annl_rnwl_dt_1088_1094,
+        TRY_CAST(intrst_pd_lst_yr_1095_1107 AS DOUBLE) AS intrst_pd_lst_yr_1095_1107,
+        TRY_CAST(ach_py_amt_1108_1120 AS DOUBLE) AS ach_py_amt_1108_1120,
+        TRY_CAST(ach_effctv_dt_1121_1128 AS int) AS ach_effctv_dt_1121_1128,
+        nm_3_1129_1154,
+        nm_3_ss_num_1155_1167,
+        TRY_CAST(nm_3_crdt_assctn_1168_1168 AS int) AS nm_3_crdt_assctn_1168_1168,
+        TRY_CAST(nm_3_brth_dt_1169_1176 AS int) AS nm_3_brth_dt_1169_1176,
+        nm_4_1117_1215,
+        nm_4_ss_num_1203_1215,
+        TRY_CAST(nm_4_crdt_assctn_1216_1261 AS int) AS nm_4_crdt_assctn_1216_1261,
+        TRY_CAST(nm_4_brth_dt_1217_1224 AS int) AS nm_4_brth_dt_1217_1224,
+        prmry_addrss_cntry_cd_1225_1227,
+        prmry_addrss_frgn_indctr_1228_1228,
+        sttmnt_ml_addrss_ln_1_1229_1258,
+        sttmnt_ml_addrss_ln_2_1259_1288,
+        sttmnt_ml_addrss_ln_3_1289_1318,
+        sttmnt_ml_addrss_cty_1319_1348,
+        sttmnt_ml_addrss_st_1349_1351,
+        sttmnt_ml_addrss_zip_code_1352_1360,
+        eml_addrss_1361_1430,
+        free_frm_memo_1431_1460,
+        TRY_CAST(phn_3_1461_1476 AS bigint) AS phn_3_1461_1476,
+        phn_3_indctr_1477_1477,
+        TRY_CAST(phn_4_1478_1493 AS bigint) AS phn_4_1478_1493,
+        phn_4_indctr_1494_1494,
+        TRY_CAST(phn_1495_1510 AS bigint) AS phn_1495_1510,
+        phn_5_indctr_1511_1511,
+        prsnl_crp_rep_1512_1521,
+        rltnshp_mngr_1522_1528,
+        TRY_CAST(usr_num_1_1529_1536 AS int) AS usr_num_1_1529_1536,
+        TRY_CAST(usr_num_2_1537_1544 AS int) AS usr_num_2_1537_1544,
+        usr_fld_9_1545_1564,
+        usr_fld_10_1565_1584,
+        usr_fld_11_1585_1609,
+        usr_fld_12_1610_1612,
+        usr_fld_13_1613_1615,
+        usr_fld_14_1616_1618,
+        usr_fld_15_1619_1621,
+        usr_fld_16_1622_1624,
+        usr_fld_17_1625_1627,
+        usr_fld_18_1628_1630,
+        usr_fld_19_1631_1633,
+        usr_fld_20_1634_1635,
+        usr_fld_21_1636_1637,
+        usr_fld_22_1638_1639,
+        usr_fld_23_1640_1641,
+        TRY_CAST(ytd_num_rtrnd_chks_1642_1644 AS int) AS ytd_num_rtrnd_chks_1642_1644,
+        TRY_CAST(dt_into_cllctns_1645_1652 AS int) AS dt_into_cllctns_1645_1652,
+        in_cllctns_indctr_1653_1653,
+        TRY_CAST(lst_annl_fee_amt_1654_1666 AS DOUBLE) AS lst_annl_fee_amt_1654_1666,
+        TRY_CAST(dt_lst_annl_fee_chrgd_1667_1674 AS int) AS dt_lst_annl_fee_chrgd_1667_1674,
+        TRY_CAST(dt_lst_crdt_chng_1675_1682 AS int) AS dt_lst_crdt_chng_1675_1682,
+        TRY_CAST(amt_lst_crdt_chng_1683_1691 AS int) AS amt_lst_crdt_chng_1683_1691,
+        TRY_CAST(dt_lst_csh_lmt_chng_1692_1699 AS int) AS dt_lst_csh_lmt_chng_1692_1699,
+        TRY_CAST(tmp_crdt_lmt_1700_1712 AS DOUBLE) AS tmp_crdt_lmt_1700_1712,
+        TRY_CAST(dt_lst_tmp_crd_lmt_1713_1720 AS int) AS dt_lst_tmp_crd_lmt_1713_1720,
+        TRY_CAST(orgnl_crd_lmt_1721_1733 AS DOUBLE) AS orgnl_crd_lmt_1721_1733,
+        TRY_CAST(crd_actvtn_dt_1734_1741 AS int) AS crd_actvtn_dt_1734_1741,
+        TRY_CAST(dt_lst_dlnqncy_1742_1749 AS int) AS dt_lst_dlnqncy_1742_1749,
+        dlnqncy_hstry_flgs_24_13_1750_1761,
+        fin_chr_indctr_1762_1762,
+        ezcrd_enrllmnt_indctr_1763_1763,
+        prvs_bill_cd_1764_1771,
+        TRY_CAST(prvs_bill_day_1772_1779 AS int) AS prvs_bill_day_1772_1779,
+        TRY_CAST(lst_trnsfr_bal_dt_1780_1787 AS int) AS lst_trnsfr_bal_dt_1780_1787,
+        TRY_CAST(ovrlm_hstry_24_01_1788_1811 AS DOUBLE) AS ovrlm_hstry_24_01_1788_1811,
+        TRY_CAST(auto_py_dy_1812_1813 AS int) AS auto_py_dy_1812_1813,
+        TRY_CAST(auto_py_amt_1814_1826 AS DOUBLE) AS auto_py_amt_1814_1826,
+        TRY_CAST(auto_py_prcnt_1827_1829 AS int) AS auto_py_prcnt_1827_1829,
+        TRY_CAST(aba_rtng_num_1830_1838 AS int) AS aba_rtng_num_1830_1838,
+        TRY_CAST(lst_auto_re_age_1839_1846 AS int) AS lst_auto_re_age_1839_1846,
+        TRY_CAST(tms_auto_re_aged_1847_1848 AS int) AS tms_auto_re_aged_1847_1848,
+        TRY_CAST(lst_manl_re_age_1849_1856 AS int) AS lst_manl_re_age_1849_1856,
+        TRY_CAST(tms_manl_re_aged_1857_1858 AS int) AS tms_manl_re_aged_1857_1858,
+        TRY_CAST(new_bal_purch_1859_1871 AS DOUBLE) AS new_bal_purch_1859_1871,
+        TRY_CAST(new_bal_csh_1872_1884 AS DOUBLE) AS new_bal_csh_1872_1884,
+        TRY_CAST(new_bal_specl_1885_1897 AS DOUBLE) AS new_bal_specl_1885_1897,
+        TRY_CAST(csh_adv_lmt_1898_1910 AS DOUBLE) AS csh_adv_lmt_1898_1910,
+        TRY_CAST(csh_adv_avail_1911_1923 AS DOUBLE) AS csh_adv_avail_1911_1923,
+        TRY_CAST(ctd_prncpl_purch_1924_1936 AS DOUBLE) AS ctd_prncpl_purch_1924_1936,
+        TRY_CAST(ctd_prncpl_csh_1937_1949 AS DOUBLE) AS ctd_prncpl_csh_1937_1949,
+        TRY_CAST(ctd_prncpl_spcl_1950_1962 AS DOUBLE) AS ctd_prncpl_spcl_1950_1962,
+        TRY_CAST(ctd_pymnt_1963_1975 AS DOUBLE) AS ctd_pymnt_1963_1975,
+        TRY_CAST(inst_id_1976_1984 AS int) AS inst_id_1976_1984,
+        corp_rtl_indctr_1985_1985,
+        TRY_CAST(assctd_acct_num_1986_2001 AS bigint) AS assctd_acct_num_1986_2001,
+        cnsldtd_acct_typ_2002_2002,
+        TRY_CAST(comm_crd_cmpny_id_2003_2010 AS int) AS comm_crd_cmpny_id_2003_2010,
+        TRY_CAST(comm_crd_sub_lvl_2011_2018 AS int) AS comm_crd_sub_lvl_2011_2018,
+        bus_crd_indctr_2019_2019,
+        TRY_CAST(pvs_acct_num_2020_2035 AS bigint) AS pvs_acct_num_2020_2035,
+        TRY_CAST(lst_bcn_scr_2036_2038 AS int) AS lst_bcn_scr_2036_2038,
+        TRY_CAST(orgnl_bnkrptcy_scr_2039_2041 AS int) AS orgnl_bnkrptcy_scr_2039_2041,
+        TRY_CAST(lst_bnkrptcy_scr_2042_2044 AS int) AS lst_bnkrptcy_scr_2042_2044,
+        TRY_CAST(orgnl_bcn_scr_2045_2047 AS int) AS orgnl_bcn_scr_2045_2047,
+        TRY_CAST(src_2048_2053 AS int) AS src_2048_2053,
+        TRY_CAST(chrg_off_amt_2054_2066 AS DOUBLE) AS chrg_off_amt_2054_2066,
+        TRY_CAST(chrg_off_dt_2067_2074 AS int) AS chrg_off_dt_2067_2074,
+        TRY_CAST(lst_crdt_scr_dt_2075_2082 AS int) AS lst_crdt_scr_dt_2075_2082,
+        cnsldtd_pst_optn_2083_2083,
+        TRY_CAST(triad_sp_id_2084_2085 AS int) AS triad_sp_id_2084_2085,
+        TRY_CAST(triad_tst_dgts_2086_2087 AS int) AS triad_tst_dgts_2086_2087,
+        TRY_CAST(triad_cllctn_scnr_id_2088_2090 AS int) AS triad_cllctn_scnr_id_2088_2090,
+        triad_cllctn_scnr_id_2091_2095,
+        TRY_CAST(triad_algnd_scr_2096_2099 AS int) AS triad_algnd_scr_2096_2099,
+        TRY_CAST(triad_scr_typ_2100_2100 AS int) AS triad_scr_typ_2100_2100,
+        TRY_CAST(triad_cllctn_indctr_2101_2103 AS int) AS triad_cllctn_indctr_2101_2103,
+        TRY_CAST(triad_blnc_at_rsk_2104_2112 AS int) AS triad_blnc_at_rsk_2104_2112,
+        TRY_CAST(cnvrtd_acct_num_2113_2128 AS int) AS cnvrtd_acct_num_2113_2128,
+        TRY_CAST(usr_ltd_defrrd_intrst_2129_2141 AS int) AS usr_ltd_defrrd_intrst_2129_2141,
+        TRY_CAST(unpd_prncpl_2142_2154 AS int) AS unpd_prncpl_2142_2154,
+        TRY_CAST(unpd_fnnc_chrg_2155_2167 AS int) AS unpd_fnnc_chrg_2155_2167,
+        TRY_CAST(unpd_annl_fee_2168_2180 AS int) AS unpd_annl_fee_2168_2180,
+        TRY_CAST(unpd_othr_fee_2181_2193 AS int) AS unpd_othr_fee_2181_2193,
+        TRY_CAST(unpd_insrnc_2194_2206 AS int) AS unpd_insrnc_2194_2206,
+        acct_trm_id_2207_2214,
+        TRY_CAST(acct_trms_id_chng_dt_2215_2222 AS int) AS acct_trms_id_chng_dt_2215_2222,
+        TRY_CAST(dt_pymnt_due_alt_2223_2230 AS int) AS dt_pymnt_due_alt_2223_2230,
+        TRY_CAST(num_mnths_pst_due_2231_2231 AS int) AS num_mnths_pst_due_2231_2231,
+        nm_1_mddl_intl_2232_2232,
+        nm_1_sffx_2233_2236,
+        nm_2_mddl_intl_2237_2237,
+        nm_2_sffx_2238_2241,
+        nm_3_mddl_intl_2242_2242,
+        nm_3_sffx_2243_2246,
+        nm_4_mddl_intl_2247_2247,
+        nm_4_sffx_2248_2251,
+        TRY_CAST(num_dlnqnt_dys_2252_2254 AS int) AS num_dlnqnt_dys_2252_2254,
+        insrnc_cd_2255_2255,
+        TRY_CAST(oldst_mssd_pymnt_dlnqnt_dt_2256_2263 AS int) AS oldst_mssd_pymnt_dlnqnt_dt_2256_2263,
+        TRY_CAST(ctd_dvrtd_amt_2264_2276 AS int) AS ctd_dvrtd_amt_2264_2276,
+        TRY_CAST(ovrlmt_amt_2277_2289 AS DOUBLE) AS ovrlmt_amt_2277_2289,
+        TRY_CAST(tot_pst_due_amt_2290_2302 AS DOUBLE) AS tot_pst_due_amt_2290_2302,
+        TRY_CAST(tot_clcltd_pymnt_due_2303_2315 AS DOUBLE) AS tot_clcltd_pymnt_due_2303_2315,
+        ccpi_sngl_mlt_indctr_2316_2316,
+        nm_1_mil_indctr_2317_2317,
+        nm_2_mil_indctr_2318_2318,
+        nm_3_mil_indctr_2319_2319,
+        nm_4_mil_indctr_2320_2320,
+        TRY_CAST(num_mnths_w_crdt_bal_2321_2323 AS int) AS num_mnths_w_crdt_bal_2321_2323,
+        TRY_CAST(triad_strtgc_prtfl_id_num_2324_2326 AS int) AS triad_strtgc_prtfl_id_num_2324_2326,
+        TRY_CAST(triad_rndm_dgt_1_2327_2330 AS int) AS triad_rndm_dgt_1_2327_2330,
+        TRY_CAST(triad_rndm_dgt_2_2331_2334 AS int) AS triad_rndm_dgt_2_2331_2334,
+        TRY_CAST(triad_rndm_dgt_3_2335_2338 AS int) AS triad_rndm_dgt_3_2335_2338,
+        TRY_CAST(triad_rndm_dgt_4_2339_2342 AS int) AS triad_rndm_dgt_4_2339_2342,
+        TRY_CAST(triad_cllctn_scnr_id_2343_2346 AS int) AS triad_cllctn_scnr_id_2343_2346,
+        TRY_CAST(bnkrptcy_dt_2347_2354 AS int) AS bnkrptcy_dt_2347_2354,
+        nm_1_img_id_2355_2376,
+        nm_2_img_id_2377_2398,
+        nm_3_img_id_2399_2420,
+        nm_4_img_id_2421_2442,
+        TRY_CAST(prvs_mnl_re_age_dt_2443_2450 AS int) AS prvs_mnl_re_age_dt_2443_2450,
+        co_brwr_indctr_2451_2451,
+        co_brwr_addrs_ln_1_2452_2481,
+        co_brwr_addrs_ln_2_2482_2511,
+        co_brwr_addrs_ln_3_2512_2541,
+        co_brwr_cty_2542_2571,
+        co_brwr_st_2572_2574,
+        co_brwr_curr_zip_2575_2583,
+        co_brwr_addrs_frgn_indctr_2584_2584,
+        co_brwr_cntry_cd_2585_2587,
+        TRY_CAST(filler_2588_2600 AS int) AS filler_2588_2600,
+        created_dt,
+        updated_dt,
+        COALESCE(updated_dt,created_dt) AS LAST_UPDATED_DATA,
+        current_date() AS DATE_OF_DATA,
+        CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH,
+        TRY_CAST(LOADED_AT AS TIMESTAMP) AS LOADED_AT
+    FROM
+        fis.default.fis_cd300
+),
+
+bronze_data AS(
+    SELECT
+        future_use_1_4
+        ,corp_id_5_6
+        ,acct_num_7_22_masked
+        ,crdt_lmt_23_35
+        ,curr_bal_36_48
+        ,avail_credit_49_61
+        ,outstanding_auth_amt_62_74
+        ,outstanding_auth_num_75_77
+        ,block_code_78_78
+        ,reclass_code_79_79
+        ,rltnshp_acct_80_95
+        ,ltd_num_mnths_pst_due_96_98
+        ,primary_nm_99_124
+        ,mnth_to_dt_pymnt_125_137
+        ,lst_stmnt_bal_138_150
+        ,amt_of_lst_pymnt_151_163
+        ,dt_of_lst_pymnt_164_171
+        ,dt_lst_purch_172_179
+        ,dt_lst_csh_advnc_180_187
+        ,dlnqntamt_188_200
+        ,pymnt_due_201_213
+        ,dt_pymnt_due_214_221
+        ,exprtn_dt_222_227
+        ,pst_due_hstry_12_01_228_239
+        ,ssn_prmry_240_252
+        ,ssn_scndry_253_265
+        ,visa_plstc_out_266_267
+        ,mc_pstc_out_268_269
+        ,cycle_dy_chng_270_271
+        ,typ_plstc_1_272_272
+        ,typ_plstc_273_273
+        ,rss_dnl_code_274_275
+        ,spcl_sttmnt_grp_cd_276_276
+        ,pymn_cd_277_277
+        ,crd_fee_indctr_278_278
+        ,crd_lf_cd_279_279
+        ,auto_py_ac_typ_280_280
+        ,bill_day_281_282
+        ,tot_bal_fwd_csh_283_295
+        ,curr_bill_cd_296_303
+        ,curr_bill_dt_304_311
+        ,crss_ref_num_312_327
+        ,curr_pymnt_fxd_328_340
+        ,dt_lst_fee_chrgd_341_348
+        ,crd_lmt_chng_dt_1_349_356
+        ,dda_acct_num_357_373
+        ,prev_bllng_dt_374_381
+        ,frst_us_dt_382_389
+        ,lf_hgh_bal_amt_390_402
+        ,lst_addrss_chng_dt_403_410
+        ,dspt_amt_411_423
+        ,lst_blckd_dt_424_431
+        ,prdct_cd_432_434
+        ,sub_prdct_cd_432_434
+        ,_005_dys_dlnqnt_438_450
+        ,_030_dys_dlnqnt_451_463
+        ,_060_dys_dlnqnt_464_476
+        ,_090_dys_dlnqnt_477_489
+        ,_120_dys_dlnqnt_490_502
+        ,_150_dys_dlnqnt_503_515
+        ,_180_dys_dlnqnt_516_528
+        ,_210_dys_dlnqnt_529_541
+        ,chrg_off_cd_542_542
+        ,secr_crd_crr_bal_543_555
+        ,usr_fld_1_556_558
+        ,usr_fld_2_559_561
+        ,usr_fld_3_562_564
+        ,usr_fld_4_565_567
+        ,usr_fld_5_568_570
+        ,usr_fld_6_571_573
+        ,urs_fld_7_574_576
+        ,usr_fld_8_577_579
+        ,tms_5_dys_dlnqnt_580_582
+        ,tms_30_dys_dlnqnt_583_585
+        ,tms_60_dys_dlnqnt_586_588
+        ,tms_90_dys_dlnqnt_589_591
+        ,tms_120_dys_dlnqnt_592_594
+        ,tms_150_dys_dlnqnt_595_597
+        ,tms_180_dys_dlnqnt_598_600
+        ,tms_210_dys_dlnqnt_601_603
+        ,clnt_crd_scr_604_606
+        ,prev_crd_scr_607_609
+        ,addrss_ln_1_610_634
+        ,addrss_ln_2_635_659
+        ,addrss_ln_3_660_684
+        ,city_685_709
+        ,state_710_712
+        ,zp_code_9_713_721
+        ,zp_walk_cd_722_723
+        ,phone_724_733
+        ,bsnss_phn_734_743
+        ,tot_bal_frwrd_744_756
+        ,nm_1_brth_dt_757_764
+        ,nm_2_brth_dt_765_772
+        ,nm_1_crdt_assctn_773_773
+        ,nm_2_crdt_assctn_774_774
+        ,crdt_lf_prem_775_787
+        ,dt_lst_fin_actvty_788_795
+        ,ltd_mnths_ovrlmt_796_798
+        ,crd_actvtn_status_799_799
+        ,vs_plstcs_iss_dt_800_807
+        ,mc_plstcs_iss_dt_808_815
+        ,ltd_num_rtrnd_chks_816_818
+        ,lst_nsf_dt_819_826
+        ,lst_nsf_amt_827_839
+        ,amt_lst_lt_chrg_840_852
+        ,dt_acct_opnd_853_860
+        ,curr_tot_due_861_873
+        ,embssng_ln_4_874_898
+        ,tot_ytd_fin_chrg_pd_899_911
+        ,ytd_purch_amt_912_924
+        ,ytd_purch_num_925_929
+        ,ytd_lt_fee_pd_fees_930_942
+        ,ctd_amnt_csh_adv_fee_943_955
+        ,ctd_misc_fee_956_968
+        ,ytd_fees_chrgd_969_981
+        ,typ_prcssng_982_983
+        ,ltd_lt_chrg_amt_984_996
+        ,lt_chrg_ytd_997_1009
+        ,lftm_purch_num_1010_1014
+        ,lftm_purch_amt_1015_1027
+        ,filler_1028_1040
+        ,fin_chrg_ytd_1041_1053
+        ,lst_sttmnt_dt_1054_1061
+        ,name_2_1062_1087
+        ,nxt_annl_rnwl_dt_1088_1094
+        ,intrst_pd_lst_yr_1095_1107
+        ,ach_py_amt_1108_1120
+        ,ach_effctv_dt_1121_1128
+        ,nm_3_1129_1154
+        ,nm_3_ss_num_1155_1167
+        ,nm_3_crdt_assctn_1168_1168
+        ,nm_3_brth_dt_1169_1176
+        ,nm_4_1117_1215
+        ,nm_4_ss_num_1203_1215
+        ,nm_4_crdt_assctn_1216_1261
+        ,nm_4_brth_dt_1217_1224
+        ,prmry_addrss_cntry_cd_1225_1227
+        ,prmry_addrss_frgn_indctr_1228_1228
+        ,sttmnt_ml_addrss_ln_1_1229_1258
+        ,sttmnt_ml_addrss_ln_2_1259_1288
+        ,sttmnt_ml_addrss_ln_3_1289_1318
+        ,sttmnt_ml_addrss_cty_1319_1348
+        ,sttmnt_ml_addrss_st_1349_1351
+        ,sttmnt_ml_addrss_zip_code_1352_1360
+        ,eml_addrss_1361_1430
+        ,free_frm_memo_1431_1460
+        ,phn_3_1461_1476
+        ,phn_3_indctr_1477_1477
+        ,phn_4_1478_1493
+        ,phn_4_indctr_1494_1494
+        ,phn_1495_1510
+        ,phn_5_indctr_1511_1511
+        ,prsnl_crp_rep_1512_1521
+        ,rltnshp_mngr_1522_1528
+        ,usr_num_1_1529_1536
+        ,usr_num_2_1537_1544
+        ,usr_fld_9_1545_1564
+        ,usr_fld_10_1565_1584
+        ,usr_fld_11_1585_1609
+        ,usr_fld_12_1610_1612
+        ,usr_fld_13_1613_1615
+        ,usr_fld_14_1616_1618
+        ,usr_fld_15_1619_1621
+        ,usr_fld_16_1622_1624
+        ,usr_fld_17_1625_1627
+        ,usr_fld_18_1628_1630
+        ,usr_fld_19_1631_1633
+        ,usr_fld_20_1634_1635
+        ,usr_fld_21_1636_1637
+        ,usr_fld_22_1638_1639
+        ,usr_fld_23_1640_1641
+        ,ytd_num_rtrnd_chks_1642_1644
+        ,dt_into_cllctns_1645_1652
+        ,in_cllctns_indctr_1653_1653
+        ,lst_annl_fee_amt_1654_1666
+        ,dt_lst_annl_fee_chrgd_1667_1674
+        ,dt_lst_crdt_chng_1675_1682
+        ,amt_lst_crdt_chng_1683_1691
+        ,dt_lst_csh_lmt_chng_1692_1699
+        ,tmp_crdt_lmt_1700_1712
+        ,dt_lst_tmp_crd_lmt_1713_1720
+        ,orgnl_crd_lmt_1721_1733
+        ,crd_actvtn_dt_1734_1741
+        ,dt_lst_dlnqncy_1742_1749
+        ,dlnqncy_hstry_flgs_24_13_1750_1761
+        ,fin_chr_indctr_1762_1762
+        ,ezcrd_enrllmnt_indctr_1763_1763
+        ,prvs_bill_cd_1764_1771
+        ,prvs_bill_day_1772_1779
+        ,lst_trnsfr_bal_dt_1780_1787
+        ,ovrlm_hstry_24_01_1788_1811
+        ,auto_py_dy_1812_1813
+        ,auto_py_amt_1814_1826
+        ,auto_py_prcnt_1827_1829
+        ,aba_rtng_num_1830_1838
+        ,lst_auto_re_age_1839_1846
+        ,tms_auto_re_aged_1847_1848
+        ,lst_manl_re_age_1849_1856
+        ,tms_manl_re_aged_1857_1858
+        ,new_bal_purch_1859_1871
+        ,new_bal_csh_1872_1884
+        ,new_bal_specl_1885_1897
+        ,csh_adv_lmt_1898_1910
+        ,csh_adv_avail_1911_1923
+        ,ctd_prncpl_purch_1924_1936
+        ,ctd_prncpl_csh_1937_1949
+        ,ctd_prncpl_spcl_1950_1962
+        ,ctd_pymnt_1963_1975
+        ,inst_id_1976_1984
+        ,corp_rtl_indctr_1985_1985
+        ,assctd_acct_num_1986_2001
+        ,cnsldtd_acct_typ_2002_2002
+        ,comm_crd_cmpny_id_2003_2010
+        ,comm_crd_sub_lvl_2011_2018
+        ,bus_crd_indctr_2019_2019
+        ,pvs_acct_num_2020_2035
+        ,lst_bcn_scr_2036_2038
+        ,orgnl_bnkrptcy_scr_2039_2041
+        ,lst_bnkrptcy_scr_2042_2044
+        ,orgnl_bcn_scr_2045_2047
+        ,src_2048_2053
+        ,chrg_off_amt_2054_2066
+        ,chrg_off_dt_2067_2074
+        ,lst_crdt_scr_dt_2075_2082
+        ,cnsldtd_pst_optn_2083_2083
+        ,triad_sp_id_2084_2085
+        ,triad_tst_dgts_2086_2087
+        ,triad_cllctn_scnr_id_2088_2090
+        ,triad_cllctn_scnr_id_2091_2095
+        ,triad_algnd_scr_2096_2099
+        ,triad_scr_typ_2100_2100
+        ,triad_cllctn_indctr_2101_2103
+        ,triad_blnc_at_rsk_2104_2112
+        ,cnvrtd_acct_num_2113_2128
+        ,usr_ltd_defrrd_intrst_2129_2141
+        ,unpd_prncpl_2142_2154
+        ,unpd_fnnc_chrg_2155_2167
+        ,unpd_annl_fee_2168_2180
+        ,unpd_othr_fee_2181_2193
+        ,unpd_insrnc_2194_2206
+        ,acct_trm_id_2207_2214
+        ,acct_trms_id_chng_dt_2215_2222
+        ,dt_pymnt_due_alt_2223_2230
+        ,num_mnths_pst_due_2231_2231
+        ,nm_1_mddl_intl_2232_2232
+        ,nm_1_sffx_2233_2236
+        ,nm_2_mddl_intl_2237_2237
+        ,nm_2_sffx_2238_2241
+        ,nm_3_mddl_intl_2242_2242
+        ,nm_3_sffx_2243_2246
+        ,nm_4_mddl_intl_2247_2247
+        ,nm_4_sffx_2248_2251
+        ,num_dlnqnt_dys_2252_2254
+        ,insrnc_cd_2255_2255
+        ,oldst_mssd_pymnt_dlnqnt_dt_2256_2263
+        ,ctd_dvrtd_amt_2264_2276
+        ,ovrlmt_amt_2277_2289
+        ,tot_pst_due_amt_2290_2302
+        ,tot_clcltd_pymnt_due_2303_2315
+        ,ccpi_sngl_mlt_indctr_2316_2316
+        ,nm_1_mil_indctr_2317_2317
+        ,nm_2_mil_indctr_2318_2318
+        ,nm_3_mil_indctr_2319_2319
+        ,nm_4_mil_indctr_2320_2320
+        ,num_mnths_w_crdt_bal_2321_2323
+        ,triad_strtgc_prtfl_id_num_2324_2326
+        ,triad_rndm_dgt_1_2327_2330
+        ,triad_rndm_dgt_2_2331_2334
+        ,triad_rndm_dgt_3_2335_2338
+        ,triad_rndm_dgt_4_2339_2342
+        ,triad_cllctn_scnr_id_2343_2346
+        ,bnkrptcy_dt_2347_2354
+        ,nm_1_img_id_2355_2376
+        ,nm_2_img_id_2377_2398
+        ,nm_3_img_id_2399_2420
+        ,nm_4_img_id_2421_2442
+        ,prvs_mnl_re_age_dt_2443_2450
+        ,co_brwr_indctr_2451_2451
+        ,co_brwr_addrs_ln_1_2452_2481
+        ,co_brwr_addrs_ln_2_2482_2511
+        ,co_brwr_addrs_ln_3_2512_2541
+        ,co_brwr_cty_2542_2571
+        ,co_brwr_st_2572_2574
+        ,co_brwr_curr_zip_2575_2583
+        ,co_brwr_addrs_frgn_indctr_2584_2584
+        ,co_brwr_cntry_cd_2585_2587
+        ,filler_2588_2600
+        ,created_dt
+        ,updated_dt
+        ,LAST_UPDATED_DATA
+        ,DATE_OF_DATA
+        ,YEARMONTH
+    FROM landing_data
+    
+    
+)
+
+
+
+
+
+SELECT bd.*, current_timestamp() AS LOADED_AT FROM bronze_data bd;
+
+-- From bronze-fis.dbx.sql
+-- Source model: bronze_fis_ethos_interchange_fee_data
+CREATE OR REPLACE TABLE bronze.default.bronze_fis_ethos_interchange_fee_data AS
+-- NAME: FIS_ETHOS_INTERCHANGE_FEE_DATA
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: FULL LOAD
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+WITH landing_data AS (
+    SELECT
+        Index__CS
+        ,Account_Number
+        ,Customer_Number
+        ,BIN
+        ,Product
+        ,Block_Reclass_Desc
+        ,Transaction_Code
+        ,Trans_Reason_Code
+        ,Trans_Reason_Desc
+        ,Sub_Product
+        ,Interchange_Fee
+        ,Transaction_Amount
+        ,Merchant_Name
+        ,Merchant_Country_Code
+        ,Transaction_Date
+        ,Posting_Date
+        ,SIC_4_Code
+        ,SIC_Description
+        ,Posting_Date AS DATE_OF_DATA
+        ,CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
+        ,LOADED_AT
+    FROM
+    fis.default.fis_ethos_interchange_fee_data
+),
+
+bronze_data AS(
+    SELECT
+         Index__CS
+        ,Account_Number
+        ,Customer_Number
+        ,BIN
+        ,Product
+        ,Block_Reclass_Desc
+        ,Transaction_Code
+        ,Trans_Reason_Code
+        ,Trans_Reason_Desc
+        ,Sub_Product
+        ,Interchange_Fee
+        ,Transaction_Amount
+        ,Merchant_Name
+        ,Merchant_Country_Code
+        ,Transaction_Date
+        ,Posting_Date
+        ,SIC_4_Code
+        ,SIC_Description
+        ,DATE_OF_DATA
+        ,YEARMONTH
+        ,LOADED_AT as LOADED_AT_NIFI_BASE
+    FROM landing_data
+)
+
+
+
+
+
+SELECT *,current_timestamp() AS LOADED_AT FROM bronze_data;
+
+-- From bronze-fis.dbx.sql
+-- Source model: bronze_fis_lp_510
+CREATE OR REPLACE TABLE bronze.default.bronze_fis_lp_510 AS
+-- NAME: BRONZE_FIS_LP_510
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY - 4TH BUSINESS DAY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: February 25, 2026
+
+
+
+WITH landing_data AS (
+    SELECT
+        acct_num,
+        `status`,
+        pt,
+        CAST(beg_bal AS INT) AS beg_bal,
+        CAST(base_pts AS INT) AS base_pts,
+        CAST(promo_pts_earned AS INT) AS promo_pts_earned,
+        CAST(scoremore_pts_earned AS INT) AS scoremore_pts_earned,
+        CAST(relation_pts_earned AS INT) AS relation_pts_earned,
+        CAST(curr_adjusted AS INT) AS curr_adjusted,
+        CAST(curr_redeemed AS INT) AS curr_redeemed,
+        CAST(curr_exp AS INT) AS curr_exp,
+        CAST(curr_avail AS INT) AS curr_avail,
+        CAST(anticipated_to_exp AS INT) AS anticipated_to_exp,
+        non_statused_acct_to,
+        grand_tot,
+        CAST(processed_at AS DATE) as processed_at,
+        CAST(data_date AS DATE) AS DATE_OF_DATA,
+        CAST(date_format(CAST(data_date AS DATE), 'yyyyMM') AS INT) AS YEARMONTH
+    FROM
+        fis.default.fis_lp_510
+    
+    
+)
+
+
+
+
+
+SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
+
+-- From bronze-ibkr.dbx.sql
+-- Source model: bronze_bcp_ibkr_account
+CREATE OR REPLACE TABLE bronze.default.bronze_bcp_ibkr_account AS
+-- NAME: BRONZE_BCP_IBKR_ACCOUNT
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+WITH landing_data AS (
+    SELECT
+         ID
+        ,ACCT_NO
+        ,BRADESCO_AGENCY
+        ,BRADESCO_ACCOUNT
+        ,ACCT_OPENED_AT
+        ,BBDID
+        ,ACCT_STATUS
+        ,TRANSACT_STATUS
+        ,BCP_ACCT_ID
+        ,BCP_CUST_ID
+        ,BALANCE
+        ,CREATED_AT
+        ,USER_ID
+        ,APP_REF
+        ,RIA_ID
+        ,CUSTOMER_ID
+        ,SELLER_ID
+        ,SEGMENTO
+        ,CBLC
+        ,STATUS_MSG
+        ,MODIFY_DT
+        ,PORTFOLIO
+        ,(SELECT CAST(POSTD7 AS DATE) FROM ibkr.default.jh_ddpar1) as AsOfDate
+        ,CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
+        ,LOADED_AT
+    FROM
+    ibkr.default.bcp_ibkr_account
+),
+
+bronze_data AS(
+    SELECT
+        ID
+        ,ACCT_NO
+        ,BRADESCO_AGENCY
+        ,BRADESCO_ACCOUNT
+        ,ACCT_OPENED_AT
+        ,BBDID
+        ,ACCT_STATUS
+        ,TRANSACT_STATUS
+        ,BCP_ACCT_ID
+        ,BCP_CUST_ID
+        ,BALANCE
+        ,CREATED_AT
+        ,USER_ID
+        ,APP_REF
+        ,RIA_ID
+        ,CUSTOMER_ID
+        ,SELLER_ID
+        ,SEGMENTO
+        ,CBLC
+        ,STATUS_MSG
+        ,MODIFY_DT
+        ,PORTFOLIO
+        ,AsOfDate
+        ,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-ibkr.dbx.sql
+-- Source model: bronze_bcp_ibkr_acct_holder
+CREATE OR REPLACE TABLE bronze.default.bronze_bcp_ibkr_acct_holder AS
+-- NAME: BRONZE_BCP_IBKR_ACCT_HOLDER
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+
+WITH landing_data AS (
+    SELECT
+        ID
+        ,ACCT_ID
+        ,ACCOUNT_RELATION
+        ,EMAIL
+        ,FNAME
+        ,LNAME
+        ,GENDER
+        ,DOB
+        ,MARITAL_STATUS
+        ,PHONE_NUMBER
+        ,ADDRESS_LINE
+        ,`STATE`
+        ,CITY
+        ,COUNTRY
+        ,ZIP_CODE
+        ,CITIZENSHIP
+        ,COUNTRY_OF_BIRTH
+        ,EMPLOYER_BUSINESS
+        ,EMPLOYER_COMPANY
+        ,EMPLOYER_PRIMARY_ADDRESS_LINE
+        ,EMPLOYER_CITY
+        ,EMPLOYER_STATE_PROVINCE
+        ,EMPLOYER_ZIP_CODE
+        ,EMPLOYER_COUNTRY
+        ,EMPLOYMENT_POSITION
+        ,EMPLOYMENT_STATUS
+        ,ANNUAL_INCOMES
+        ,NETWORTH_LIQUID
+        ,NETWORTH_TOTAL
+        ,INVESTMENT_EXPERIENCES
+        ,WITHDRAW
+        ,CONCERNED
+        ,STOCK_MARKET
+        ,INVESTMENT_OBJETIVES
+        ,POLITICALLY_EXPOSED
+        ,FOREIGN_TAX_ID
+        ,ID_NUMBER
+        ,EWF_PROCESSED
+        ,CIF
+        ,IBAN_NUMBER
+        ,RECEIVE_OFFERS
+        ,MONTHLY_HOUSING_PAYMENTS
+        ,OTHER_MONTHLY_EXPENSES
+        ,ELIGIBILITY_DATE
+        ,ACK_SIGNED_WHEN
+        ,ID_TYPE
+        ,ID_EXPIRATION_DATE
+        ,ACCOUNT_TYPE
+        ,ACCOUNT_STATUS
+        ,OWNERSHIP_TYPE
+        ,ADVISOR
+        ,`LANGUAGE`
+        ,DEPENDENTS
+        ,ACK_SIGNED_BY
+        ,AFFILIATION
+        ,AFFILIATION_NAME
+        ,AFFILIATION_RELATIONSHIP
+        ,AFFILIATION_COMPANY
+        ,AFFILIATION_ADDRESS
+        ,AFFILIATION_COUNTRY
+        ,AFFILIATION_STATE
+        ,AFFILIATION_CITY
+        ,AFFILIATION_POSTAL_CODE
+        ,LITIGATION
+        ,LITIGATION_DETAILS
+        ,EXCHANGEMEMBERSHIP
+        ,MEMBERSHIP_EXCHANGES
+        ,MEMBERSHIP_ORGANIZATIONS
+        ,INVESTIGATION
+        ,INVESTIGATION_DETAILS
+        ,REGULATORY_CONTROL
+        ,REGULATORY_CONTROL_DETAILS
+        ,CUSTOMER_AGENT_GROUP
+        ,CUSTOMER_AGENT_GROUP_ID
+        ,EMPLCOUNTRY_RESCOUNTRY_DETAILS
+        ,INITIAL_DEPOSIT_INFORMED
+        ,CLIENT_DOCUMENTS
+        ,ACK_TAX_ID_WHEN
+        ,CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
+        ,LOADED_AT
+    FROM
+    ibkr.default.bcp_ibkr_acct_holder
+),
+
+bronze_data AS(
+    SELECT
+        ID
+        ,ACCT_ID
+        ,ACCOUNT_RELATION
+        ,EMAIL
+        ,FNAME
+        ,LNAME
+        ,GENDER
+        ,DOB
+        ,MARITAL_STATUS
+        ,PHONE_NUMBER
+        ,ADDRESS_LINE
+        ,`STATE`
+        ,CITY
+        ,COUNTRY
+        ,ZIP_CODE
+        ,CITIZENSHIP
+        ,COUNTRY_OF_BIRTH
+        ,EMPLOYER_BUSINESS
+        ,EMPLOYER_COMPANY
+        ,EMPLOYER_PRIMARY_ADDRESS_LINE
+        ,EMPLOYER_CITY
+        ,EMPLOYER_STATE_PROVINCE
+        ,EMPLOYER_ZIP_CODE
+        ,EMPLOYER_COUNTRY
+        ,EMPLOYMENT_POSITION
+        ,EMPLOYMENT_STATUS
+        ,ANNUAL_INCOMES
+        ,NETWORTH_LIQUID
+        ,NETWORTH_TOTAL
+        ,INVESTMENT_EXPERIENCES
+        ,WITHDRAW
+        ,CONCERNED
+        ,STOCK_MARKET
+        ,INVESTMENT_OBJETIVES
+        ,POLITICALLY_EXPOSED
+        ,FOREIGN_TAX_ID
+        ,ID_NUMBER
+        ,EWF_PROCESSED
+        ,CIF
+        ,IBAN_NUMBER
+        ,RECEIVE_OFFERS
+        ,MONTHLY_HOUSING_PAYMENTS
+        ,OTHER_MONTHLY_EXPENSES
+        ,ELIGIBILITY_DATE
+        ,ACK_SIGNED_WHEN
+        ,ID_TYPE
+        ,ID_EXPIRATION_DATE
+        ,ACCOUNT_TYPE
+        ,ACCOUNT_STATUS
+        ,OWNERSHIP_TYPE
+        ,ADVISOR
+        ,`LANGUAGE`
+        ,DEPENDENTS
+        ,ACK_SIGNED_BY
+        ,AFFILIATION
+        ,AFFILIATION_NAME
+        ,AFFILIATION_RELATIONSHIP
+        ,AFFILIATION_COMPANY
+        ,AFFILIATION_ADDRESS
+        ,AFFILIATION_COUNTRY
+        ,AFFILIATION_STATE
+        ,AFFILIATION_CITY
+        ,AFFILIATION_POSTAL_CODE
+        ,LITIGATION
+        ,LITIGATION_DETAILS
+        ,EXCHANGEMEMBERSHIP
+        ,MEMBERSHIP_EXCHANGES
+        ,MEMBERSHIP_ORGANIZATIONS
+        ,INVESTIGATION
+        ,INVESTIGATION_DETAILS
+        ,REGULATORY_CONTROL
+        ,REGULATORY_CONTROL_DETAILS
+        ,CUSTOMER_AGENT_GROUP
+        ,CUSTOMER_AGENT_GROUP_ID
+        ,EMPLCOUNTRY_RESCOUNTRY_DETAILS
+        ,INITIAL_DEPOSIT_INFORMED
+        ,CLIENT_DOCUMENTS
+        ,ACK_TAX_ID_WHEN
+        ,YEARMONTH
+        ,current_timestamp() LOADED_AT
+    FROM landing_data
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-ibkr.dbx.sql
+-- Source model: bronze_bcp_ibkr_balance_history
+CREATE OR REPLACE TABLE bronze.default.bronze_bcp_ibkr_balance_history AS
+-- NAME: BCP_IBKR_BALANCE_HISTORY
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 30, 2024
+
+
+
+WITH landing_data AS (
+    SELECT
+	    ID
+        ,ACCT_ID
+        ,BALANCE
+        ,CREATED_AT
+        ,CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
+        ,LOADED_AT
+    FROM
+      ibkr.default.bcp_ibkr_balance_history
+),
+
+bronze_data AS (
+    SELECT
+        ID
+        ,ACCT_ID
+        ,BALANCE
+        ,CREATED_AT
+        ,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-invoice.dbx.sql
+-- Source model: bronze_file_invoice_requests
+CREATE OR REPLACE TABLE bronze.default.bronze_file_invoice_requests AS
+-- NAME: BRONZE_FILE_INVOICE_REQUESTS
+-- CATEGORY: MODEL
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: April 29, 2026
+
+
+
+WITH landing_data AS (
+	SELECT 
+        INVOICE_NAME,
+        EMPLOYEE_NAME,
+        VENDOR_NAME,
+        INVOICE_RECEIVED,
+        ORIGIN_SOURCE,
+        APPROVAL_STATUS,
+        PAYMENT_STATUS,
+        REQUEST_TOTAL,
+        REQUEST_KEY,
+        CHECK_NUMBER,
+        CREATE_DATE,
+        `DESCRIPTION`,
+        INVOICE_AMOUNT,
+        INVOICE_DATE,
+        PAYMENT_AMOUNT,
+        PAYMENT_DUE_DATE,
+        INVOICE_NUMBER,
+        PAYMENT_STATUS_DATE,
+        CUSTOM_01_COST_CENTER,
+        CUSTOM_02_ENTITY,
+        CUSTOM_7_COST_CENTER,
+        CUSTOM_6_ENTITY,
+        PAYMENT_METHOD_TYPE,
+        CLOSED_DATE,
+        SEND_DATE,
+        FUNDING_DATE,
+		DATE_OF_DATA,
+		YEARMONTH
+	FROM  
+        invoice.default.file_invoice_requests
+    
+    
+)
+
+
+
+
+
+SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
+
+-- From bronze-manual.dbx.sql
+-- Source model: bronze_file_apex_monthly_accounts
+CREATE OR REPLACE TABLE bronze.default.bronze_file_apex_monthly_accounts AS
+-- NAME: BRONZE_FILE_APEX_MONTHLY_ACCOUNTS
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY - 4TH BUSINESS DAY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: October 07, 2025
+
+
+
+WITH landing_data AS (
+	SELECT
+        CLIENT_CODE
+        ,CORRESPONDENT_CODE
+        ,ACCOUNT_GROUP_CODE
+        ,ACCOUNT_NUMBER
+        ,BILLING_CALENDAR_MONTH
+        ,BILLING_CALENDAR_YEAR
+        ,BILLING_TRANSACTION_ID
+        ,BILLING_SECTION
+        ,BILLING_CATEGORY
+        ,BILLING_SUB_CATEGORY
+        ,BILLING_NAME_RATE
+        ,CAST(BILLING_RATE AS DECIMAL(4,2)) AS BILLING_RATE
+        ,PROCESS_START_DATE
+        ,PROCESS_END_DATE
+        ,FUNDED_START_DATE
+        ,FUNDED_END_DATE
+        ,CAST(AVG_MONTHLY_EQUITY AS DECIMAL(30,14)) AS AVG_MONTHLY_EQUITY
+        ,DATE_OF_DATA
+		,YEARMONTH
+		,LOADED_AT
+	FROM
+		manual.default.file_apex_monthly_accounts
+),
+
+bronze_data AS (
+	SELECT
+        CLIENT_CODE
+        ,CORRESPONDENT_CODE
+        ,ACCOUNT_GROUP_CODE
+        ,ACCOUNT_NUMBER
+        ,BILLING_CALENDAR_MONTH
+        ,BILLING_CALENDAR_YEAR
+        ,BILLING_TRANSACTION_ID
+        ,BILLING_SECTION
+        ,BILLING_CATEGORY
+        ,BILLING_SUB_CATEGORY
+        ,BILLING_NAME_RATE
+        ,BILLING_RATE
+        ,PROCESS_START_DATE
+        ,PROCESS_END_DATE
+        ,FUNDED_START_DATE
+        ,FUNDED_END_DATE
+        ,AVG_MONTHLY_EQUITY
+        ,DATE_OF_DATA
+		,YEARMONTH
+		,current_timestamp() AS LOADED_AT
+	FROM landing_data A
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-manual.dbx.sql
+-- Source model: bronze_file_apex_monthly_credit
+CREATE OR REPLACE TABLE bronze.default.bronze_file_apex_monthly_credit AS
+-- NAME: BRONZE_FILE_APEX_MONTHLY_CREDIT
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY - 4TH BUSINESS DAY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: October 07, 2025
+
+
+
+WITH landing_data AS (
+	SELECT
+        CLIENT_CODE
+        ,CORRESPONDENT_CODE
+        ,ACCOUNT_GROUP_CODE
+        ,ACCOUNT_NUMBER
+        ,BILLING_CALENDAR_MONTH
+        ,BILLING_CALENDAR_YEAR
+        ,BILLING_TRANSACTION_ID
+        ,BILLING_SECTION
+        ,BILLING_CATEGORY
+        ,BILLING_SUB_CATEGORY
+        ,BILLING_NAME_RATE
+        ,CAST(CAST(RATE_PERCENT AS DOUBLE) AS NUMERIC(30,25)) AS RATE_PERCENT
+        ,CASH_SETTLE_BALANCE
+        ,CASE
+            WHEN RTRIM(LTRIM(BILLING_RATE)) LIKE '%E%'
+                THEN CAST(CAST(BILLING_RATE AS DOUBLE) AS DECIMAL(30,25))
+    	    ELSE CAST(BILLING_RATE AS DECIMAL(30,25))
+    	END AS BILLING_RATE
+        ,PROCESS_START_DATE
+        ,PROCESS_END_DATE
+        ,DATE_OF_DATA
+		,YEARMONTH
+		,LOADED_AT
+	FROM
+		manual.default.file_apex_monthly_credit
+),
+
+bronze_data AS (
+	SELECT
+        CLIENT_CODE
+        ,CORRESPONDENT_CODE
+        ,ACCOUNT_GROUP_CODE
+        ,ACCOUNT_NUMBER
+        ,BILLING_CALENDAR_MONTH
+        ,BILLING_CALENDAR_YEAR
+        ,BILLING_TRANSACTION_ID
+        ,BILLING_SECTION
+        ,BILLING_CATEGORY
+        ,BILLING_SUB_CATEGORY
+        ,BILLING_NAME_RATE
+        ,RATE_PERCENT
+        ,CASH_SETTLE_BALANCE
+        ,BILLING_RATE
+        ,PROCESS_START_DATE
+        ,PROCESS_END_DATE
+        ,DATE_OF_DATA
+		,YEARMONTH
+		,current_timestamp() AS LOADED_AT
+	FROM landing_data A
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-manual.dbx.sql
+-- Source model: bronze_file_apex_monthly_execution
+CREATE OR REPLACE TABLE bronze.default.bronze_file_apex_monthly_execution AS
+-- NAME: BRONZE_FILE_APEX_MONTHLY_EXECUTION
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY - 4TH BUSINESS DAY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: October 08, 2025
+
+
+
+WITH landing_data AS (
+	SELECT
+        BILLINGPERIOD
+        ,CLEARINGACCOUNT
+        ,INSTRUMENTTYPE
+        ,CUSTOMER_VENUE
+        ,APEXROUTE
+        ,`DESCRIPTION`
+        ,EXCH
+        ,ORDERS
+        ,FILLS
+        ,CAST(CAST(NOTIONAL AS DOUBLE) AS NUMERIC(30,25)) AS NOTIONAL
+        ,QUANTITY
+        ,CUSTOMERPASSTHRUFEE
+        ,EXECUTION_FEE
+        ,CAST(CAST(CUSTOMER_PFOF AS DOUBLE) AS NUMERIC(30,25)) AS CUSTOMER_PFOF
+        ,CUSTOMER_INDEX_SURCHARGE
+        ,CAST(CAST(CATHISTORICALFEE AS DOUBLE) AS NUMERIC(30,25)) AS CATHISTORICALFEE
+        ,CAST(CAST(CATONGOINGFEE AS DOUBLE) AS NUMERIC(30,25)) AS CATONGOINGFEE
+        ,DATE_OF_DATA
+		,YEARMONTH
+		,LOADED_AT
+	FROM
+		manual.default.file_apex_monthly_execution
+),
+
+bronze_data AS (
+	SELECT
+        BILLINGPERIOD
+        ,CLEARINGACCOUNT
+        ,INSTRUMENTTYPE
+        ,CUSTOMER_VENUE
+        ,APEXROUTE
+        ,`DESCRIPTION`
+        ,EXCH
+        ,ORDERS
+        ,FILLS
+        ,NOTIONAL
+        ,QUANTITY
+        ,CUSTOMERPASSTHRUFEE
+        ,EXECUTION_FEE
+        ,CUSTOMER_PFOF
+        ,CUSTOMER_INDEX_SURCHARGE
+        ,CATHISTORICALFEE
+        ,CATONGOINGFEE
+        ,DATE_OF_DATA
+		,YEARMONTH
+		,current_timestamp() AS LOADED_AT
+	FROM landing_data A
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-manual.dbx.sql
+-- Source model: bronze_file_apex_monthly_fdic
+CREATE OR REPLACE TABLE bronze.default.bronze_file_apex_monthly_fdic AS
+-- NAME: BRONZE_FILE_APEX_MONTHLY_FDIC
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY - 4TH BUSINESS DAY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: October 08, 2025
+
+
+
+WITH landing_data AS (
+	SELECT
+        CORRESPONDENT_CODE
+        ,ACCOUNT_NUMBER
+        ,ACCOUNT_ID
+        ,FDIC_ASSET_SYMBOL
+        ,BALANCE_DATE
+        ,CAST(PRINCIPAL_BALANCE AS DECIMAL(10,4)) AS PRINCIPAL_BALANCE
+        ,CAST(ACCRUED_INTEREST AS DECIMAL(5,3)) AS ACCRUED_INTEREST
+        ,CAST(CAST(EFF AS DOUBLE) AS NUMERIC(30,25)) AS EFF
+        ,CAST(CAST(CORRESPONDENT_REBATE AS DOUBLE) AS NUMERIC(30,25)) AS CORRESPONDENT_REBATE
+        ,DATE_OF_DATA
+		,YEARMONTH
+		,LOADED_AT
+	FROM
+		manual.default.file_apex_monthly_fdic
+),
+
+bronze_data AS (
+	SELECT
+        CORRESPONDENT_CODE
+        ,ACCOUNT_NUMBER
+        ,ACCOUNT_ID
+        ,FDIC_ASSET_SYMBOL
+        ,BALANCE_DATE
+        ,PRINCIPAL_BALANCE
+        ,ACCRUED_INTEREST
+        ,EFF
+        ,CORRESPONDENT_REBATE
+        ,DATE_OF_DATA
+		,YEARMONTH
+		,current_timestamp() AS LOADED_AT
+	FROM landing_data A
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-manual.dbx.sql
+-- Source model: bronze_file_apex_monthly_trades
+CREATE OR REPLACE TABLE bronze.default.bronze_file_apex_monthly_trades AS
+-- NAME: BRONZE_FILE_APEX_MONTHLY_TRADES
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY - 4TH BUSINESS DAY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: October 07, 2025
+
+
+
+WITH landing_data AS (
+	SELECT
+        CLIENT_CODE
+        ,CORRESPONDENT_CODE
+        ,ACCOUNT_GROUP_CODE
+        ,ACCOUNT_NUMBER
+        ,BILLING_CALENDAR_MONTH
+        ,BILLING_CALENDAR_YEAR
+        ,BILLING_TRANSACTION_ID
+        ,BILLING_SECTION
+        ,BILLING_CATEGORY
+        ,BILLING_SUB_CATEGORY
+        ,BILLING_NAME_RATE
+        ,CAST(BILLING_RATE AS DECIMAL(4,2))  AS BILLING_RATE
+        ,FUNDING_TYPE
+        ,ACTIVITY_DATE
+        ,PROCESS_DATE
+        ,SETTLE_DATE
+        ,ACTIVITY_ID
+        ,SYMBOL
+        ,CUSIP
+        ,ACTIVITY_DESCRIPTION
+        ,SIDE
+        ,EXCHANGE
+        ,ASSET_TYPE
+        ,INSTRUMENT_TYPE
+        ,INSTRUMENT_SUBTYPE
+        ,REGION_CODE
+        ,CURRENCY_CODE
+        ,CAST(QUANTITY AS DECIMAL(30,17)) AS QUANTITY
+        ,CAST(PRICE AS DECIMAL(30,17)) AS PRICE
+        ,GROSS_AMOUNT
+        ,NET_AMOUNT
+        ,FEES
+        ,COMMISSION
+        ,MARKDOWN
+        ,MARKUP
+        ,`BROKER`
+        ,`ROUTE`
+        ,EXCHANGE_TYPE
+        ,BROKER_CAPACITY
+        ,ALGO
+        ,EXTERNAL_ID
+        ,CLIENT_ORDER_ID
+        ,ORDER_ID
+        ,EXECUTION_ID
+        ,DATE_OF_DATA
+		,YEARMONTH
+		,LOADED_AT
+	FROM
+		manual.default.file_apex_monthly_trades
+),
+
+bronze_data AS (
+	SELECT
+        CLIENT_CODE
+        ,CORRESPONDENT_CODE
+        ,ACCOUNT_GROUP_CODE
+        ,ACCOUNT_NUMBER
+        ,BILLING_CALENDAR_MONTH
+        ,BILLING_CALENDAR_YEAR
+        ,BILLING_TRANSACTION_ID
+        ,BILLING_SECTION
+        ,BILLING_CATEGORY
+        ,BILLING_SUB_CATEGORY
+        ,BILLING_NAME_RATE
+        ,BILLING_RATE
+        ,FUNDING_TYPE
+        ,ACTIVITY_DATE
+        ,PROCESS_DATE
+        ,SETTLE_DATE
+        ,ACTIVITY_ID
+        ,SYMBOL
+        ,CUSIP
+        ,ACTIVITY_DESCRIPTION
+        ,SIDE
+        ,EXCHANGE
+        ,ASSET_TYPE
+        ,INSTRUMENT_TYPE
+        ,INSTRUMENT_SUBTYPE
+        ,REGION_CODE
+        ,CURRENCY_CODE
+        ,QUANTITY
+        ,PRICE
+        ,GROSS_AMOUNT
+        ,NET_AMOUNT
+        ,FEES
+        ,COMMISSION
+        ,MARKDOWN
+        ,MARKUP
+        ,`BROKER`
+        ,`ROUTE`
+        ,EXCHANGE_TYPE
+        ,BROKER_CAPACITY
+        ,ALGO
+        ,EXTERNAL_ID
+        ,CLIENT_ORDER_ID
+        ,ORDER_ID
+        ,EXECUTION_ID
+        ,DATE_OF_DATA
+		,YEARMONTH
+		,current_timestamp() AS LOADED_AT
+	FROM landing_data A
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-manual.dbx.sql
+-- Source model: bronze_file_bflcrtran
+CREATE OR REPLACE TABLE bronze.default.bronze_file_bflcrtran AS
+-- NAME: BRONZE_FILE_BFLCRTRAN
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY - 4TH BUSINESS DAY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+WITH landing_data AS (
+	SELECT
+		 TREFF6
+		,TRDAT6
+		,TRANCD
+		,DORC
+		,CAST(AMT AS decimal(16,2)) as AMT
+		,PFGLAC
+		,BATCH
+		,DDSD1
+		,DDSD2
+		,LCMACC
+		,CIFNO
+		,BRANCH
+		,GLCOST
+		,GLPROD
+		,`GROUP`
+		,TRACCT
+		,YEARMONTH
+		,LOADED_AT
+	FROM
+		manual.default.file_bflcrtran
+),
+
+bronze_data AS (
+	SELECT
+		TREFF6
+		,TRDAT6
+		,TRANCD
+		,DORC
+    	,AMT
+    	,PFGLAC
+		,BATCH
+		,DDSD1
+		,DDSD2
+		,LCMACC
+		,CIFNO
+		,BRANCH
+		,GLCOST
+		,GLPROD
+		,`GROUP`
+		,TRACCT
+		,YEARMONTH
+		,current_timestamp() AS LOADED_AT
+	FROM landing_data
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-manual.dbx.sql
+-- Source model: bronze_file_biu_activity
+CREATE OR REPLACE TABLE bronze.default.bronze_file_biu_activity AS
+-- NAME: BRONZE_FILE_BIU_ACTIVITY
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY - 4TH BUSINESS DAY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+
+WITH landing_data AS (
+	SELECT
+		 ACCOUNT_NUMBER
+		,END_AUMS
+		,MGMT_FEES
+		,IB_FEES
+		,NET_MGMT_FEE
+		,SUB_ADVISOR_FEE
+		,OUTSTANDING
+		,YEARMONTH
+		,LOADED_AT
+	FROM
+		manual.default.file_biu_activity
+),
+
+bronze_data AS (
+	SELECT
+	     ACCOUNT_NUMBER
+		,END_AUMS
+		,MGMT_FEES
+		,IB_FEES
+		,NET_MGMT_FEE
+		,SUB_ADVISOR_FEE
+		,OUTSTANDING
+		,YEARMONTH
+	    ,current_timestamp() AS LOADED_AT
+	FROM landing_data
+	
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-manual.dbx.sql
+-- Source model: bronze_file_fedlink_inc
+CREATE OR REPLACE TABLE bronze.default.bronze_file_fedlink_inc AS
+-- NAME: BRONZE_FILE_FEDLINK_INC
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY - 4TH BUSINESS DAY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+
+
+WITH landing_data AS (
+    SELECT
+        'INCOMING' as PAY_VIA
+        ,TYPE
+        ,TRACEKEY
+        ,REF
+        ,ACCOUNT
+        ,NAME
+        ,PRODCODE
+        ,SUBTYPE
+        ,LOADDATE
+        ,TIMESTAMP
+        ,SENDERABA
+        ,SENDERNAME
+        ,RECEIVERABA
+        ,RECEIVERNAME
+        ,ORG
+        ,ORGCDE
+        ,ORGACC
+        ,ORG1
+        ,ORG2
+        ,ORG3
+        ,ORGCTRY
+        ,OGB
+        ,OGBCDE
+        ,OGBACC
+        ,OGB1
+        ,OGB2
+        ,OGB3
+        ,OGBCTRY
+        ,IBK
+        ,IBKCDE
+        ,IBKACC
+        ,IBK1
+        ,IBK2
+        ,IBK3
+        ,IBKCTRY
+        ,BBK
+        ,BBKCDE
+        ,BBKACC
+        ,BBK1
+        ,BBK2
+        ,BBK3
+        ,BBKCTRY
+        ,BNF
+        ,BNFCDE
+        ,BNFACC
+        ,BNF1
+        ,BNF2
+        ,BNF3
+        ,BNFCTRY
+        ,OBI
+        ,OBI1
+        ,OBI2
+        ,OBI3
+        ,BBI
+        ,BBI1
+        ,BBI2
+        ,BBI3
+        ,BBI4
+        ,BBI5
+        ,INS
+        ,INSCDE
+        ,INSACC
+        ,INS1
+        ,INS2
+        ,INS3
+        ,INSCTRY
+        ,VERBIAGE
+        ,ORIGREF
+        ,SENDERREF
+        ,AMOUNT
+        ,FEE
+        ,DEDUCT_FEE
+        ,DEDUCT_FEE1
+        ,CHARGEBNF
+        ,OFFICER
+        ,CENTER
+        ,`FOREIGN`
+        ,BANKNUMBER
+        ,COMMENT
+        ,OFFSETACC
+        ,PROCESSOR
+        ,CURRCODE
+        ,CURRAMOUNT
+        ,OMAD
+        ,SOURCE
+        ,ORGCENTER
+        ,FXPROVIDER
+        ,CRDCURRCODE
+        ,CRDCURRAMT
+        ,FXRATE
+        ,FXCUSTRATE
+        ,FXVALDATE
+        ,FXCONTRACT
+        ,SOURCEPREP
+        ,SOURCEAUTH1
+        ,SOURCEAUTH2
+        ,EXP_96
+        ,EXP_97
+        ,EXP_98
+        ,EXP_99
+        ,EXP_100
+        ,EXP_101
+        ,EXPDATE
+        ,LOADTIME
+        ,PREPARER
+        ,PREPDATE
+        ,PREPTIME
+        ,AUTHOR1
+        ,AUTHOR2
+        ,AUTHDATE
+        ,AUTHTIME
+        ,COR
+        ,CORCDE
+        ,CORACC
+        ,COR1
+        ,COR2
+        ,COR3
+        ,CORCTRY
+        ,MTMSG
+        ,RFB
+        ,PRODCODE1
+        ,LOCALINSCD
+        ,OFACAUTH
+        ,OFACCOMM
+        ,YEARMONTH
+        ,LOADED_AT
+    FROM
+	    manual.default.file_fedlink_inc
+),
+
+bronze_data AS (
+    SELECT
+        PAY_VIA
+        ,TYPE
+        ,TRACEKEY
+        ,REF
+        ,ACCOUNT
+        ,NAME
+        ,PRODCODE
+        ,SUBTYPE
+        ,LOADDATE
+        ,TIMESTAMP
+        ,SENDERABA
+        ,SENDERNAME
+        ,RECEIVERABA
+        ,RECEIVERNAME
+        ,ORG
+        ,ORGCDE
+        ,ORGACC
+        ,ORG1
+        ,ORG2
+        ,ORG3
+        ,ORGCTRY
+        ,OGB
+        ,OGBCDE
+        ,OGBACC
+        ,OGB1
+        ,OGB2
+        ,OGB3
+        ,OGBCTRY
+        ,IBK
+        ,IBKCDE
+        ,IBKACC
+        ,IBK1
+        ,IBK2
+        ,IBK3
+        ,IBKCTRY
+        ,BBK
+        ,BBKCDE
+        ,BBKACC
+        ,BBK1
+        ,BBK2
+        ,BBK3
+        ,BBKCTRY
+        ,BNF
+        ,BNFCDE
+        ,BNFACC
+        ,BNF1
+        ,BNF2
+        ,BNF3
+        ,BNFCTRY
+        ,OBI
+        ,OBI1
+        ,OBI2
+        ,OBI3
+        ,BBI
+        ,BBI1
+        ,BBI2
+        ,BBI3
+        ,BBI4
+        ,BBI5
+        ,INS
+        ,INSCDE
+        ,INSACC
+        ,INS1
+        ,INS2
+        ,INS3
+        ,INSCTRY
+        ,VERBIAGE
+        ,ORIGREF
+        ,SENDERREF
+        ,AMOUNT
+        ,FEE
+        ,DEDUCT_FEE
+        ,DEDUCT_FEE1
+        ,CHARGEBNF
+        ,OFFICER
+        ,CENTER
+        ,`FOREIGN`
+        ,BANKNUMBER
+        ,COMMENT
+        ,OFFSETACC
+        ,PROCESSOR
+        ,CURRCODE
+        ,CURRAMOUNT
+        ,OMAD
+        ,SOURCE
+        ,ORGCENTER
+        ,FXPROVIDER
+        ,CRDCURRCODE
+        ,CRDCURRAMT
+        ,FXRATE
+        ,FXCUSTRATE
+        ,FXVALDATE
+        ,FXCONTRACT
+        ,SOURCEPREP
+        ,SOURCEAUTH1
+        ,SOURCEAUTH2
+        ,EXP_96
+        ,EXP_97
+        ,EXP_98
+        ,EXP_99
+        ,EXP_100
+        ,EXP_101
+        ,EXPDATE
+        ,LOADTIME
+        ,PREPARER
+        ,PREPDATE
+        ,PREPTIME
+        ,AUTHOR1
+        ,AUTHOR2
+        ,AUTHDATE
+        ,AUTHTIME
+        ,COR
+        ,CORCDE
+        ,CORACC
+        ,COR1
+        ,COR2
+        ,COR3
+        ,CORCTRY
+        ,MTMSG
+        ,RFB
+        ,PRODCODE1
+        ,LOCALINSCD
+        ,OFACAUTH
+        ,OFACCOMM
+        ,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-manual.dbx.sql
+-- Source model: bronze_file_fedlink_out
+CREATE OR REPLACE TABLE bronze.default.bronze_file_fedlink_out AS
+-- NAME: BRONZE_FILE_FEDLINK_OUT
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY - 4TH BUSINESS DAY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+
+
+WITH landing_data AS (
+    SELECT
+        'OUTGOING' as PAY_VIA
+        ,TYPE
+        ,TRACEKEY
+        ,REF
+        ,ACCOUNT
+        ,NAME
+        ,PRODCODE
+        ,SUBTYPE
+        ,LOADDATE
+        ,TIMESTAMP
+        ,SENDERABA
+        ,SENDERNAME
+        ,RECEIVERABA
+        ,RECEIVERNAME
+        ,ORG
+        ,ORGCDE
+        ,ORGACC
+        ,ORG1
+        ,ORG2
+        ,ORG3
+        ,ORGCTRY
+        ,OGB
+        ,OGBCDE
+        ,OGBACC
+        ,OGB1
+        ,OGB2
+        ,OGB3
+        ,OGBCTRY
+        ,IBK
+        ,IBKCDE
+        ,IBKACC
+        ,IBK1
+        ,IBK2
+        ,IBK3
+        ,IBKCTRY
+        ,BBK
+        ,BBKCDE
+        ,BBKACC
+        ,BBK1
+        ,BBK2
+        ,BBK3
+        ,BBKCTRY
+        ,BNF
+        ,BNFCDE
+        ,BNFACC
+        ,BNF1
+        ,BNF2
+        ,BNF3
+        ,BNFCTRY
+        ,OBI
+        ,OBI1
+        ,OBI2
+        ,OBI3
+        ,BBI
+        ,BBI1
+        ,BBI2
+        ,BBI3
+        ,BBI4
+        ,BBI5
+        ,INS
+        ,INSCDE
+        ,INSACC
+        ,INS1
+        ,INS2
+        ,INS3
+        ,INSCTRY
+        ,VERBIAGE
+        ,ORIGREF
+        ,SENDERREF
+        ,AMOUNT
+        ,FEE
+        ,DEDUCT_FEE
+        ,DEDUCT_FEE1
+        ,CHARGEBNF
+        ,OFFICER
+        ,CENTER
+        ,`FOREIGN`
+        ,BANKNUMBER
+        ,COMMENT
+        ,OFFSETACC
+        ,PROCESSOR
+        ,CURRCODE
+        ,CURRAMOUNT
+        ,OMAD
+        ,SOURCE
+        ,ORGCENTER
+        ,FXPROVIDER
+        ,CRDCURRCODE
+        ,CRDCURRAMT
+        ,FXRATE
+        ,FXCUSTRATE
+        ,FXVALDATE
+        ,FXCONTRACT
+        ,SOURCEPREP
+        ,SOURCEAUTH1
+        ,SOURCEAUTH2
+        ,EXP_96
+        ,EXP_97
+        ,EXP_98
+        ,EXP_99
+        ,EXP_100
+        ,EXP_101
+        ,EXPDATE
+        ,LOADTIME
+        ,PREPARER
+        ,PREPDATE
+        ,PREPTIME
+        ,AUTHOR1
+        ,AUTHOR2
+        ,AUTHDATE
+        ,AUTHTIME
+        ,COR
+        ,CORCDE
+        ,CORACC
+        ,COR1
+        ,COR2
+        ,COR3
+        ,CORCTRY
+        ,MTMSG
+        ,RFB
+        ,PRODCODE1
+        ,LOCALINSCD
+        ,OFACAUTH
+        ,OFACCOMM
+        ,YEARMONTH
+        ,LOADED_AT
+    FROM
+    	manual.default.file_fedlink_out
+),
+
+bronze_data AS (
+    SELECT
+        PAY_VIA
+        ,TYPE
+        ,TRACEKEY
+        ,REF
+        ,ACCOUNT
+        ,NAME
+        ,PRODCODE
+        ,SUBTYPE
+        ,LOADDATE
+        ,TIMESTAMP
+        ,SENDERABA
+        ,SENDERNAME
+        ,RECEIVERABA
+        ,RECEIVERNAME
+        ,ORG
+        ,ORGCDE
+        ,ORGACC
+        ,ORG1
+        ,ORG2
+        ,ORG3
+        ,ORGCTRY
+        ,OGB
+        ,OGBCDE
+        ,OGBACC
+        ,OGB1
+        ,OGB2
+        ,OGB3
+        ,OGBCTRY
+        ,IBK
+        ,IBKCDE
+        ,IBKACC
+        ,IBK1
+        ,IBK2
+        ,IBK3
+        ,IBKCTRY
+        ,BBK
+        ,BBKCDE
+        ,BBKACC
+        ,BBK1
+        ,BBK2
+        ,BBK3
+        ,BBKCTRY
+        ,BNF
+        ,BNFCDE
+        ,BNFACC
+        ,BNF1
+        ,BNF2
+        ,BNF3
+        ,BNFCTRY
+        ,OBI
+        ,OBI1
+        ,OBI2
+        ,OBI3
+        ,BBI
+        ,BBI1
+        ,BBI2
+        ,BBI3
+        ,BBI4
+        ,BBI5
+        ,INS
+        ,INSCDE
+        ,INSACC
+        ,INS1
+        ,INS2
+        ,INS3
+        ,INSCTRY
+        ,VERBIAGE
+        ,ORIGREF
+        ,SENDERREF
+        ,AMOUNT
+        ,FEE
+        ,DEDUCT_FEE
+        ,DEDUCT_FEE1
+        ,CHARGEBNF
+        ,OFFICER
+        ,CENTER
+        ,`FOREIGN`
+        ,BANKNUMBER
+        ,COMMENT
+        ,OFFSETACC
+        ,PROCESSOR
+        ,CURRCODE
+        ,CURRAMOUNT
+        ,OMAD
+        ,SOURCE
+        ,ORGCENTER
+        ,FXPROVIDER
+        ,CRDCURRCODE
+        ,CRDCURRAMT
+        ,FXRATE
+        ,FXCUSTRATE
+        ,FXVALDATE
+        ,FXCONTRACT
+        ,SOURCEPREP
+        ,SOURCEAUTH1
+        ,SOURCEAUTH2
+        ,EXP_96
+        ,EXP_97
+        ,EXP_98
+        ,EXP_99
+        ,EXP_100
+        ,EXP_101
+        ,EXPDATE
+        ,LOADTIME
+        ,PREPARER
+        ,PREPDATE
+        ,PREPTIME
+        ,AUTHOR1
+        ,AUTHOR2
+        ,AUTHDATE
+        ,AUTHTIME
+        ,COR
+        ,CORCDE
+        ,CORACC
+        ,COR1
+        ,COR2
+        ,COR3
+        ,CORCTRY
+        ,MTMSG
+        ,RFB
+        ,PRODCODE1
+        ,LOCALINSCD
+        ,OFACAUTH
+        ,OFACCOMM
+        ,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-manual.dbx.sql
+-- Source model: bronze_file_rdci
+CREATE OR REPLACE TABLE bronze.default.bronze_file_rdci AS
+-- NAME: BRONZE_FILE_RDCI
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY - 4TH BUSINESS DAY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+
+WITH landing_data AS (
+    SELECT
+         INSTRUMENT_ID
+        ,ADJUSTED_AX_INTEREST
+        ,ADJUSTED_FTP_AMOUNT
+        ,NET_INTEREST_INCOME
+        ,NON_INTEREST_INCOME
+        ,TOTAL_REVENUE
+        ,TOTAL_NONINTEREST_EXPENSE
+        ,YEARMONTH
+        ,LOADED_AT
+    FROM
+    	manual.default.file_rdci
+),
+
+bronze_data AS (
+    SELECT
+         INSTRUMENT_ID
+        ,ADJUSTED_AX_INTEREST
+        ,ADJUSTED_FTP_AMOUNT
+        ,NET_INTEREST_INCOME
+        ,NON_INTEREST_INCOME
+        ,TOTAL_REVENUE
+        ,TOTAL_NONINTEREST_EXPENSE
+        ,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-manual.dbx.sql
+-- Source model: bronze_file_trailer_fees
+CREATE OR REPLACE TABLE bronze.default.bronze_file_trailer_fees AS
+-- NAME: BRONZE_FILE_TRAILER_FEES
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY - 4TH BUSINESS DAY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+
+WITH landing_data AS (
+    SELECT
+        PERSHING_ACCOUNT
+        ,CUSIP
+        ,ISIN
+        ,AMOUNT
+        ,YEARMONTH
+        ,LOADED_AT
+    FROM
+	    manual.default.file_trailer_fees
+),
+
+bronze_data AS (
+    SELECT
+         PERSHING_ACCOUNT
+        ,CUSIP
+        ,ISIN
+        ,AMOUNT
+        ,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-manual.dbx.sql
+-- Source model: bronze_file_trailer_fees_accruals
+CREATE OR REPLACE TABLE bronze.default.bronze_file_trailer_fees_accruals AS
+-- NAME: BRONZE_FILE_TRAILER_FEES_ACCRUALS
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY - 4TH BUSINESS DAY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: MARCH 05, 2026
+
+
+
+WITH landing_data AS (
+    SELECT
+	    ACCOUNT_NO
+	    ,SHORT_NAME
+	    ,OFFICE
+	    ,IP
+	    ,SYMBOL
+	    ,CUSIP
+	    ,SEC_REGISTERED
+	    ,SECURITY_DESCRIPTION
+	    ,TRADE_DATE_QUANTITY
+	    ,TRADE_DATE_MARKET_VALUE
+	    ,PERCENTAGE_OF_GRAND_TOTAL_TRADE_DATE_MARKET_VALUE
+	    ,TOTAL_SETTLEMENT_DATE_MARKET_VALUE
+	    ,SETTLEMENT_DATE_QUANTITY
+	    ,ACCOUNT_STATUS
+	    ,ACCRUED_AMOUNT
+	    ,CLOSING_BALANCE
+	    ,REFERENCE
+	    ,MANAGEMENT_FEES_PERCENTAGE
+	    ,MANAGEMENT_FEES_AMOUNT
+	    ,FUND_FAMILY_NAME
+	    ,COST_CENTER
+	    ,TEAM
+	    ,MONTH_YEAR
+	    ,GL_ACCOUNT
+	    ,YEARMONTH
+	    ,LOADED_AT
+    FROM
+        manual.default.file_trailer_fees_accruals
+),
+
+bronze_data AS (
+    SELECT
+        ACCOUNT_NO
+        ,SHORT_NAME
+        ,OFFICE
+        ,IP
+        ,SYMBOL
+        ,CUSIP
+        ,SEC_REGISTERED
+        ,SECURITY_DESCRIPTION
+        ,try_cast(REPLACE(REPLACE(NULLIF(NULLIF(NULLIF(LTRIM(RTRIM(TRADE_DATE_QUANTITY)), ''), 'NULL'), ' - '), '"', ''), ',', '') AS DECIMAL(38, 10)) AS TRADE_DATE_QUANTITY
+        ,try_cast(REPLACE(REPLACE(NULLIF(NULLIF(NULLIF(LTRIM(RTRIM(TRADE_DATE_MARKET_VALUE)), ''), 'NULL'), ' - '), '"', ''), ',', '') AS DECIMAL(38, 10)) AS TRADE_DATE_MARKET_VALUE
+        ,try_cast(REPLACE(REPLACE(NULLIF(NULLIF(NULLIF(LTRIM(RTRIM(PERCENTAGE_OF_GRAND_TOTAL_TRADE_DATE_MARKET_VALUE)), ''), 'NULL'), ' - '), '"', ''), ',', '') AS DECIMAL(38, 10)) AS PERCENTAGE_OF_GRAND_TOTAL_TRADE_DATE_MARKET_VALUE
+        ,try_cast(REPLACE(REPLACE(NULLIF(NULLIF(NULLIF(LTRIM(RTRIM(TOTAL_SETTLEMENT_DATE_MARKET_VALUE)), ''), 'NULL'), ' - '), '"', ''), ',', '') AS DECIMAL(38, 10)) AS TOTAL_SETTLEMENT_DATE_MARKET_VALUE
+        ,try_cast(REPLACE(REPLACE(NULLIF(NULLIF(NULLIF(LTRIM(RTRIM(SETTLEMENT_DATE_QUANTITY)), ''), 'NULL'), ' - '), '"', ''), ',', '') AS DECIMAL(38, 10)) AS SETTLEMENT_DATE_QUANTITY
+        ,ACCOUNT_STATUS
+        ,try_cast(REPLACE(REPLACE(NULLIF(NULLIF(NULLIF(LTRIM(RTRIM(ACCRUED_AMOUNT)), ''), 'NULL'), ' - '), '"', ''), ',', '') AS DECIMAL(38, 10)) AS ACCRUED_AMOUNT
+        ,try_cast(REPLACE(REPLACE(NULLIF(NULLIF(NULLIF(LTRIM(RTRIM(CLOSING_BALANCE)), ''), 'NULL'), ' - '), '"', ''), ',', '') AS DECIMAL(38, 10)) AS CLOSING_BALANCE
+        ,REFERENCE
+        ,try_cast(REPLACE(REPLACE(NULLIF(NULLIF(NULLIF(LTRIM(RTRIM(MANAGEMENT_FEES_PERCENTAGE)), ''), 'NULL'), ' - '), '"', ''), ',', '') AS DECIMAL(38, 10)) AS MANAGEMENT_FEES_PERCENTAGE
+        ,try_cast(REPLACE(REPLACE(NULLIF(NULLIF(NULLIF(LTRIM(RTRIM(MANAGEMENT_FEES_AMOUNT)), ''), 'NULL'), ' - '), '"', ''), ',', '') AS DECIMAL(38, 10)) AS MANAGEMENT_FEES_AMOUNT
+        ,FUND_FAMILY_NAME
+        ,COST_CENTER
+        ,TEAM
+        ,to_date(NULLIF(NULLIF(NULLIF(LTRIM(RTRIM(MONTH_YEAR)), ''), 'NULL'), ' - '), 'MM/dd/yyyy') AS MONTH_YEAR
+        ,YEARMONTH
+        ,try_cast(NULLIF(NULLIF(NULLIF(LTRIM(RTRIM(GL_ACCOUNT)), ''), 'NULL'), ' - ') AS INT) AS GL_ACCOUNT
+    FROM landing_data A
+    
+    
+)
+
+
+
+
+
+SELECT *, current_timestamp() AS LOADED_AT FROM BRONZE_DATA;
+
+-- From bronze-mis.dbx.sql
+-- Source model: bronze_mis_pershing_officer_code
+CREATE OR REPLACE TABLE bronze.default.bronze_mis_pershing_officer_code AS
+-- NAME: BRONZE_MIS_PERSHING_OFFICER_CODE
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: December 16, 2025
+
+
+
+WITH landing_data AS (
+    SELECT
+    	IP_CODE,
+	    OFFICER_CODE,
+	    `NAME`,
+	    COST_CENTER,
+	    TEAM,
+	    DATA_OF_DATA,
+	    YEARMONTH,
+        LOADED_AT
+FROM
+    mis.default.file_mis_pershing_officer_code
+),
+
+bronze_data AS (
+    SELECT
+    	IP_CODE,
+	    OFFICER_CODE,
+	    `NAME`,
+	    COST_CENTER,
+	    TEAM,
+	    DATA_OF_DATA,
+	    YEARMONTH,
+        current_timestamp() AS LOADED_AT
+    FROM landing_data
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-mis.dbx.sql
+-- Source model: bronze_mis_team_officers_v2
+CREATE OR REPLACE TABLE bronze.default.bronze_mis_team_officers_v2 AS
+-- NAME: BRONZE_MIS_TEAM_OFFICERS_V2
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: December 16, 2025
+
+
+
+WITH landing_data AS (
+    SELECT
+        OFFICER_CODE,
+	    FULL_NAME,
+	    SHORT_NAME,
+	    TITLE,
+	    PHONE_NUMBER,
+	    EMAIL,
+	    BUSINESS_LINE,
+    	TEAM,
+	    TEAM_CODE,
+	    COST_CENTER,
+	    ACTIVEOFFICER,
+	    DATA_OF_DATA,
+	    YEARMONTH,
+	    LOADED_AT
+FROM
+    mis.default.file_mis_team_officers_v2
+),
+
+bronze_data AS (
+    SELECT
+        OFFICER_CODE,
+	    FULL_NAME,
+	    SHORT_NAME,
+	    TITLE,
+	    PHONE_NUMBER,
+	    EMAIL,
+	    BUSINESS_LINE,
+    	TEAM,
+	    TEAM_CODE,
+	    COST_CENTER,
+	    ACTIVEOFFICER,
+	    DATA_OF_DATA,
+	    YEARMONTH,
+        current_timestamp() AS LOADED_AT
+    FROM landing_data
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-mulesoft.dbx.sql
+-- Source model: bronze_mulesoft_customer_external_id
+CREATE OR REPLACE TABLE bronze.default.bronze_mulesoft_customer_external_id AS
+-- NAME: BRONZE_MULESOFT_CUSTOMER_EXTERNAL_ID
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: Daily
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: November 08, 2024
+
+
+
+
+WITH cte_bronze_mulesoft_customer_external_id as (
+SELECT
+	 id
+	,CAST(uuid AS STRING) AS uuid
+	,tenant_id
+	,customer_id
+	,`type`
+	,source_system
+	,external_id
+	,sys_created_by
+	,sys_created_at_ts
+	,sys_last_modify_by
+	,sys_last_modify_at_ts
+	,CAST(CAST(current_timestamp() AS STRING) AS INT) AS yearmonth
+	,loaded_at
+FROM mulesoft.default.mulesoft_customer_external_id
+),
+
+cte_bronze_data as (
+    SELECT
+	 id
+	,uuid
+	,tenant_id
+	,customer_id
+	,`type`
+	,source_system
+	,external_id
+	,sys_created_by
+	,sys_created_at_ts
+	,sys_last_modify_by
+	,sys_last_modify_at_ts
+	,yearmonth
+	,current_timestamp() AS LOADED_AT
+    FROM cte_bronze_mulesoft_customer_external_id
+    
+    
+
+)
+
+
+
+
+
+select * from cte_bronze_data;
+
+-- From bronze-mulesoft.dbx.sql
+-- Source model: bronze_mulesoft_party
+CREATE OR REPLACE TABLE bronze.default.bronze_mulesoft_party AS
+-- NAME: BRONZE_MULESOFT_PARTY
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: Daily
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: November 08, 2024
+
+
+
+
+WITH cte_bronze_mulesoft_customer_external_id as (
+SELECT
+	 id
+	,CAST(uuid AS STRING) AS uuid
+	,tenant_id
+	,primary_id_type
+	,primary_id_country
+	,primary_id_number
+	,sys_created_by
+	,sys_created_at_ts
+	,sys_last_modify_by
+	,sys_last_modify_at_ts
+	,CAST(CAST(current_timestamp() AS STRING) AS INT) AS yearmonth
+	,loaded_at
+FROM mulesoft.default.mulesoft_party
+),
+
+cte_bronze_data as (
+	SELECT
+		 id
+		,uuid
+		,tenant_id
+		,primary_id_type
+		,primary_id_country
+		,primary_id_number
+		,sys_created_by
+		,sys_created_at_ts
+		,sys_last_modify_by
+		,sys_last_modify_at_ts
+		,yearmonth
+		,current_timestamp() LOADED_AT
+	FROM cte_bronze_mulesoft_customer_external_id
+    
+    
+
+)
+
+
+
+
+
+select * from cte_bronze_data;
+
+-- From bronze-mulesoft.dbx.sql
+-- Source model: bronze_mulesoft_prospect_external_data
+CREATE OR REPLACE TABLE bronze.default.bronze_mulesoft_prospect_external_data AS
+-- NAME: MULESOFT_PROSPECT_EXTERNAL_DATA
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: Daily
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: November 08, 2024
+
+
+
+
+WITH cte_bronze_mulesoft_prospect_external_data AS (
+SELECT
+	 id
+	,external_id
+	,primary_id_type
+	,primary_id_country
+	,primary_id_number
+	,full_name
+	,email
+	,phone_country_code
+	,phone_area_code
+	,phone_number
+	,phone_number_e164
+	,fiscal_residence_country
+	,communication_optin
+	,birthdate
+	,gender
+	,nationality
+	,mothers_name
+	,source_account_branch_number
+	,source_account_number
+	,source_account_institution_id
+	,source_account_veracity_declaration_confirmed
+	,personal_document_type
+	,personal_document_number
+	,residential_address_country
+	,residential_address_state
+	,residential_address_city
+	,residential_address_street_name
+	,residential_address_neighborhood
+	,residential_address_building_number
+	,residential_address_additional_information
+	,residential_address_postal_code
+	,residential_paperless_optin
+	,mail_address_country
+	,mail_address_state
+	,mail_address_city
+	,mail_address_street_name
+	,mail_address_neighborhood
+	,mail_address_building_number
+	,mail_address_additional_information
+	,mail_address_postal_code
+	,mail_paperless_optin
+	,income_information_annual_amount
+	,employer_information_address_state
+	,employer_information_address_city
+	,employer_information_address_country
+	,employer_information_address_street_name
+	,employer_information_address_neighborhood
+	,employer_information_address_building_number
+	,employer_information_address_additional_information
+	,employer_information_address_postal_code
+	,income_information_assets_value
+	,income_information_initial_investment_plan
+	,information_pep_status
+	,information_pep_position_of_person
+	,information_pep_date_of_service
+	,information_pep_country_operation
+	,account_usage_intentions
+	,employer_information_sector
+	,employer_information_working_time_at_company
+	,occupation
+	,employer_information_name
+	,sys_created_by
+	,sys_created_at_ts
+	,sys_last_modify_by
+	,sys_last_modify_at_ts
+	,source_account_primary_owner
+	,market_segment
+	,market_sub_segment
+	,screening_restriction_codes
+	,personal_document_expiry_date
+	,employer_information_source_of_income
+	,employer_information_source_of_income_other
+	,employer_information_position
+	,personal_document_issued_date
+	,CAST(CAST(current_timestamp() AS STRING) AS INT) AS yearmonth
+	,loaded_at
+	FROM mulesoft.default.mulesoft_prospect_external_data
+),
+
+cte_bronze_data as (
+    SELECT
+	 id
+	,external_id
+	,primary_id_type
+	,primary_id_country
+	,primary_id_number
+	,full_name
+	,email
+	,phone_country_code
+	,phone_area_code
+	,phone_number
+	,phone_number_e164
+	,fiscal_residence_country
+	,communication_optin
+	,birthdate
+	,gender
+	,nationality
+	,mothers_name
+	,source_account_branch_number
+	,source_account_number
+	,source_account_institution_id
+	,source_account_veracity_declaration_confirmed
+	,personal_document_type
+	,personal_document_number
+	,residential_address_country
+	,residential_address_state
+	,residential_address_city
+	,residential_address_street_name
+	,residential_address_neighborhood
+	,residential_address_building_number
+	,residential_address_additional_information
+	,residential_address_postal_code
+	,residential_paperless_optin
+	,mail_address_country
+	,mail_address_state
+	,mail_address_city
+	,mail_address_street_name
+	,mail_address_neighborhood
+	,mail_address_building_number
+	,mail_address_additional_information
+	,mail_address_postal_code
+	,mail_paperless_optin
+	,income_information_annual_amount
+	,employer_information_address_state
+	,employer_information_address_city
+	,employer_information_address_country
+	,employer_information_address_street_name
+	,employer_information_address_neighborhood
+	,employer_information_address_building_number
+	,employer_information_address_additional_information
+	,employer_information_address_postal_code
+	,income_information_assets_value
+	,income_information_initial_investment_plan
+	,information_pep_status
+	,information_pep_position_of_person
+	,information_pep_date_of_service
+	,information_pep_country_operation
+	,account_usage_intentions
+	,employer_information_sector
+	,employer_information_working_time_at_company
+	,occupation
+	,employer_information_name
+	,sys_created_by
+	,sys_created_at_ts
+	,sys_last_modify_by
+	,sys_last_modify_at_ts
+	,source_account_primary_owner
+	,market_segment
+	,market_sub_segment
+	,screening_restriction_codes
+	,personal_document_expiry_date
+	,employer_information_source_of_income
+	,employer_information_source_of_income_other
+	,employer_information_position
+	,personal_document_issued_date
+	,yearmonth
+	,current_timestamp()	as loaded_at
+    FROM cte_bronze_mulesoft_prospect_external_data
+	
+    
+
+)
+
+
+
+
+
+select * from cte_bronze_data;
+
+-- From bronze-promontory.dbx.sql
+-- Source model: bronze_intrafi_account_trial_balance
+CREATE OR REPLACE TABLE bronze.default.bronze_intrafi_account_trial_balance AS
+-- NAME: BRONZE_INTRAFI_ACCOUNT_TRIAL_BALANCE
+-- CATEGORY: MODEL
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: April 1, 2026
+
+
+
+WITH landing_data AS (
+    SELECT
+        INSTITUTION_TRANSACTION_ACCOUNT_NO,
+        ICS_ACCOUNT_ID,
+        SHADOW_ACCOUNT_NO,
+        ACCOUNT_TITLE,
+        PRIMARY_CUSTOMER_TAX_ID,
+        INTERNAL_CUSTOMER_ID,
+        TRY_CAST(
+            TRIM(
+                REPLACE(
+                    REPLACE(PRINCIPAL_BALANCE, '$', ''),
+                    ',', ''
+                )
+            ) AS DOUBLE
+        ) AS PRINCIPAL_BALANCE,
+        TRY_CAST(
+            TRIM(
+                REPLACE(
+                    REPLACE(ACCRUED_INTEREST, '$', ''),
+                    ',', ''
+                )
+            ) AS DOUBLE
+        ) AS ACCRUED_INTEREST,
+        TRY_CAST(
+            TRIM(
+                REPLACE(
+                    REPLACE(DAILY_ACCRUAL, '$', ''),
+                    ',', ''
+                )
+            ) AS DOUBLE
+        ) AS DAILY_ACCRUAL,
+        TRY_CAST(
+            TRIM(
+                REPLACE(
+                    REPLACE(INTEREST_PAID_TODAY, '$', ''),
+                    ',', ''
+                )
+            ) AS DOUBLE
+        ) AS INTEREST_PAID_TODAY,
+        TRY_CAST(
+            TRIM(
+                REPLACE(
+                    REPLACE(INTEREST_PAID_MTD, '$', ''),
+                    ',', ''
+                )
+            ) AS DOUBLE
+        ) AS INTEREST_PAID_MTD,
+        ICS_DEPOSIT_OPTION,
+        PROGRAM_NAME,
+        RATE_DESCRIPTION,
+        TRY_CAST(CURRENT_PROGRAM_INTEREST_RATE AS DOUBLE) AS CURRENT_PROGRAM_INTEREST_RATE,  
+        TRY_CAST(OWS_RATE AS DOUBLE) AS OWS_RATE,
+        TRY_CAST(RATE_APPLIED_TODAY AS DOUBLE) AS RATE_APPLIED_TODAY, 
+        TRY_CAST(PROGRAM_WITHDRAWALS_MTD AS INT) AS PROGRAM_WITHDRAWALS_MTD, 
+        TRY_CAST(TOTAL_PROGRAM_WITHDRAWAL_VIOLATIONS AS INT) AS TOTAL_PROGRAM_WITHDRAWAL_VIOLATIONS,
+        TRY_CAST(
+            TRIM(
+                REPLACE(
+                    REPLACE(AVERAGE_DAILY_BALANCE_MTD, '$', ''),
+                    ',', ''
+                )
+            ) AS DOUBLE
+        ) AS AVERAGE_DAILY_BALANCE_MTD,
+        TRY_CAST(
+            TRIM(
+                REPLACE(
+                    REPLACE(AVERAGE_DAILY_BALANCE_YTD, '$', ''),
+                    ',', ''
+                )
+            ) AS DOUBLE
+        ) AS AVERAGE_DAILY_BALANCE_YTD,
+        TRY_CAST(
+            TRIM(
+                REPLACE(
+                    REPLACE(AVERAGE_RECIPROCAL_DAILY_BALANCE_MTD, '$', ''),
+                    ',', ''
+                )
+            ) AS DOUBLE
+        ) AS AVERAGE_RECIPROCAL_DAILY_BALANCE_MTD,
+        TRY_CAST(
+            TRIM(
+                REPLACE(
+                    REPLACE(AVERAGE_RECIPROCAL_DAILY_BALANCE_YTD, '$', ''),
+                    ',', ''
+                )
+            ) AS DOUBLE
+        ) AS AVERAGE_RECIPROCAL_DAILY_BALANCE_YTD,
+        TRY_CAST(
+            TRIM(
+                REPLACE(
+                    REPLACE(AVERAGE_OWS_DAILY_BALANCE_MTD, '$', ''),
+                    ',', ''
+                )
+            ) AS DOUBLE
+        ) AS AVERAGE_OWS_DAILY_BALANCE_MTD,
+        TRY_CAST(
+            TRIM(
+                REPLACE(
+                    REPLACE(AVERAGE_OWS_DAILY_BALANCE_YTD, '$', ''),
+                    ',', ''
+                )
+            ) AS DOUBLE
+        ) AS AVERAGE_OWS_DAILY_BALANCE_YTD,
+        TRY_CAST(NUMBER_OF_DAYS_AS_A_RECIPROCAL_ACCOUNT_MTD AS INT) AS NUMBER_OF_DAYS_AS_A_RECIPROCAL_ACCOUNT_MTD, 
+        TRY_CAST(NUMBER_OF_DAYS_AS_A_OWS_ACCOUNT_MTD AS INT) AS NUMBER_OF_DAYS_AS_A_OWS_ACCOUNT_MTD, 
+        TRY_CAST(
+            TRIM(
+                REPLACE(
+                    REPLACE(INTEREST_PAID_YTD, '$', ''),
+                    ',', ''
+                )
+            ) AS DOUBLE
+        ) AS INTEREST_PAID_YTD,
+        TRY_CAST(
+            TRIM(
+                REPLACE(
+                    REPLACE(INTEREST_PAID_LAST_YEAR, '$', ''),
+                    ',', ''
+                )
+            ) AS DOUBLE
+        ) AS INTEREST_PAID_LAST_YEAR,
+        BRANCH_ID__NAME,
+        INSTITUTION_SALES_CONTACT,
+        to_date(DATE_ICS_ACCOUNT_OPENED, 'MM/dd/yyyy') AS DATE_ICS_ACCOUNT_OPENED,
+        to_date(DATE_LAST_TRANSACTION, 'MM/dd/yyyy') AS DATE_LAST_TRANSACTION, 
+        ACCOUNT_STATUS,
+        ACCOUNT_TYPE,
+        TRY_CAST(
+            TRIM(
+                REPLACE(
+                    REPLACE(MTD_FEE_INCOME, '$', ''),
+                    ',', ''
+                )
+            ) AS DOUBLE
+        ) AS MTD_FEE_INCOME,
+        TRY_CAST(
+            TRIM(
+                REPLACE(
+                    REPLACE(YTD_FEE_INCOME, '$', ''),
+                    ',', ''
+                )
+            ) AS DOUBLE
+        ) AS YTD_FEE_INCOME,
+        TRY_CAST(
+            TRIM(
+                REPLACE(
+                    REPLACE(MTD_FEE_EXPENSE, '$', ''),
+                    ',', ''
+                )
+            ) AS DOUBLE
+        ) AS MTD_FEE_EXPENSE,
+        TRY_CAST(
+            TRIM(
+                REPLACE(
+                    REPLACE(YTD_FEE_EXPENSE, '$', ''),
+                    ',', ''
+                )
+            ) AS DOUBLE
+        ) AS YTD_FEE_EXPENSE,
+        OWNERSHIP_RIGHT_AND_CAPACITY_CODES,
+        LIQUIDITY_COVERAGE_RATIO_LCR_CATEGORY,
+        MAIL_CUSTOMER_STATEMENTS_ON_BEHALF_OF_YOUR_INSTITUTION,
+        ICS_SAVINGS_CUSTOM_FIELD_,
+        TRY_CAST(DATE_OF_DATA AS DATE) AS DATE_OF_DATA,                                
+        TRY_CAST(LOADED_AT AS TIMESTAMP) AS LOADED_AT                  
+    FROM
+        promontory.default.intrafi_r4230
+),
+
+bronze_data AS(
+    SELECT
+        INSTITUTION_TRANSACTION_ACCOUNT_NO,
+        ICS_ACCOUNT_ID,
+        SHADOW_ACCOUNT_NO,
+        ACCOUNT_TITLE,
+        PRIMARY_CUSTOMER_TAX_ID,
+        INTERNAL_CUSTOMER_ID,
+        PRINCIPAL_BALANCE,
+        ACCRUED_INTEREST,
+        DAILY_ACCRUAL,
+        INTEREST_PAID_TODAY,
+        INTEREST_PAID_MTD,
+        ICS_DEPOSIT_OPTION,
+        PROGRAM_NAME,
+        RATE_DESCRIPTION,
+        CURRENT_PROGRAM_INTEREST_RATE,
+        OWS_RATE,
+        RATE_APPLIED_TODAY,
+        PROGRAM_WITHDRAWALS_MTD,
+        TOTAL_PROGRAM_WITHDRAWAL_VIOLATIONS,
+        AVERAGE_DAILY_BALANCE_MTD,
+        AVERAGE_DAILY_BALANCE_YTD,
+        AVERAGE_RECIPROCAL_DAILY_BALANCE_MTD,
+        AVERAGE_RECIPROCAL_DAILY_BALANCE_YTD,
+        AVERAGE_OWS_DAILY_BALANCE_MTD,
+        AVERAGE_OWS_DAILY_BALANCE_YTD,
+        NUMBER_OF_DAYS_AS_A_RECIPROCAL_ACCOUNT_MTD,
+        NUMBER_OF_DAYS_AS_A_OWS_ACCOUNT_MTD,
+        INTEREST_PAID_YTD,
+        INTEREST_PAID_LAST_YEAR,
+        BRANCH_ID__NAME,
+        INSTITUTION_SALES_CONTACT,
+        DATE_ICS_ACCOUNT_OPENED,
+        DATE_LAST_TRANSACTION,
+        ACCOUNT_STATUS,
+        ACCOUNT_TYPE,
+        MTD_FEE_INCOME,
+        YTD_FEE_INCOME,
+        MTD_FEE_EXPENSE,
+        YTD_FEE_EXPENSE,
+        OWNERSHIP_RIGHT_AND_CAPACITY_CODES,
+        LIQUIDITY_COVERAGE_RATIO_LCR_CATEGORY,
+        MAIL_CUSTOMER_STATEMENTS_ON_BEHALF_OF_YOUR_INSTITUTION,
+        ICS_SAVINGS_CUSTOM_FIELD_,
+        DATE_OF_DATA
+    FROM landing_data
+    
+    
+)
+
+
+
+
+
+SELECT bd.*, current_timestamp() AS LOADED_AT  
+FROM bronze_data bd;
+
+-- From bronze-q2.dbx.sql
+-- Source model: bronze_q2_customer
+CREATE OR REPLACE TABLE bronze.default.bronze_q2_customer AS
+-- NAME: BRONZE_Q2_CUSTOMER
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+WITH landing_data AS (
+    SELECT
+        CUSTOMER_ID
+        ,GROUP_ID
+        ,GROUP_NAME
+        ,CUSTOMER_NAME
+        ,TAX_ID
+        ,IS_COMPANY
+        ,IS_TREASURY
+        ,PRIMARY_CIF
+        ,SERVICE_CHARGE_PLAN_ID
+        ,PLAN_NAME
+        ,CHARGE_ACCOUNT
+        ,CREATE_DATE
+        ,STREET_ADDRESS1
+        ,STREET_ADDRESS2
+        ,CITY
+        ,`STATE`
+        ,POSTAL_CODE
+        ,PROVINCE
+        ,IS_INTERNATIONAL
+        ,ISO_CODE_A3
+        ,CUSTOMER_DELETED_DATE
+        ,CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
+        ,LOADED_AT
+    FROM
+        q2.default.q2_customer
+),
+
+bronze_data AS (
+    SELECT
+        CUSTOMER_ID
+        ,GROUP_ID
+        ,GROUP_NAME
+        ,CUSTOMER_NAME
+        ,TAX_ID
+        ,IS_COMPANY
+        ,IS_TREASURY
+        ,PRIMARY_CIF
+        ,SERVICE_CHARGE_PLAN_ID
+        ,PLAN_NAME
+        ,CHARGE_ACCOUNT
+        ,CREATE_DATE
+        ,STREET_ADDRESS1
+        ,STREET_ADDRESS2
+        ,CITY
+        ,`STATE`
+        ,POSTAL_CODE
+        ,PROVINCE
+        ,IS_INTERNATIONAL
+        ,ISO_CODE_A3
+        ,CUSTOMER_DELETED_DATE
+		,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-q2.dbx.sql
+-- Source model: bronze_q2_user
+CREATE OR REPLACE TABLE bronze.default.bronze_q2_user AS
+-- NAME: BRONZE_Q2_CUSTOMER
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+WITH landing_data AS (
+    SELECT
+        USER_ID
+        ,CUSTOMER_ID
+        ,USER_ROLE_ID
+        ,GROUP_ID
+        ,ACTIVE_INACTIVE
+        ,CREATED_DATE
+        ,DELETED_DATE
+        ,GROUP_NAME
+        ,GROUP_DELETED_DATES
+        ,ZONE_ID
+        ,ZONE_DESCRIPTION
+        ,AUTO_GENERATED
+        ,CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
+        ,LOADED_AT
+    FROM
+        q2.default.q2_user
+),
+
+bronze_data AS (
+    SELECT
+        USER_ID
+        ,CUSTOMER_ID
+        ,USER_ROLE_ID
+        ,GROUP_ID
+        ,ACTIVE_INACTIVE
+        ,CREATED_DATE
+        ,DELETED_DATE
+        ,GROUP_NAME
+        ,GROUP_DELETED_DATES
+        ,ZONE_ID
+        ,ZONE_DESCRIPTION
+        ,AUTO_GENERATED
+		,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-q2.dbx.sql
+-- Source model: bronze_q2_user_pii
+CREATE OR REPLACE TABLE bronze.default.bronze_q2_user_pii AS
+-- NAME: BRONZE_Q2_CUSTOMER
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+WITH landing_data AS (
+	SELECT
+		USER_ID
+		,PRIMARY_CIF
+		,LAST_NAME
+		,FIRST_NAME
+		,MIDDLE_NAME
+		,SALUTATION
+		,SUFFIX
+		,SOCIAL_SECURITY_NUMBER
+		,EMAIL_ADDRESS
+		,STREET_ADDRESS_1
+		,STREET_ADDRESS_2
+		,CITY
+		,`STATE`
+		,POSTAL_CODE
+		,PROVINCE
+		,IS_INTERNATIONAL
+		,ISO_CODE_A3
+		,CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
+		,LOADED_AT
+	FROM
+    	q2.default.q2_user_pii
+),
+
+bronze_data AS (
+	SELECT
+		USER_ID
+		,PRIMARY_CIF
+		,LAST_NAME
+		,FIRST_NAME
+		,MIDDLE_NAME
+		,SALUTATION
+		,SUFFIX
+		,SOCIAL_SECURITY_NUMBER
+		,EMAIL_ADDRESS
+		,STREET_ADDRESS_1
+		,STREET_ADDRESS_2
+		,CITY
+		,`STATE`
+		,POSTAL_CODE
+		,PROVINCE
+		,IS_INTERNATIONAL
+		,ISO_CODE_A3
+		,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-rprt.dbx.sql
+-- Source model: bronze_rprt_sharing_agreement_exception
+CREATE OR REPLACE TABLE bronze.default.bronze_rprt_sharing_agreement_exception AS
+-- NAME: BRONZE_RPRT_SHARING_AGREEMENT_EXCEPTION
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+WITH landing_data AS (
+    SELECT
+	    ID
+        ,CIF_NO
+        ,ACTIVE
+        ,CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
+        ,LOADED_AT
+    FROM
+        rprt.default.rprt_sharing_agreement_exception
+),
+
+bronze_data AS (
+    SELECT
+        ID
+        ,CIF_NO
+        ,ACTIVE
+        ,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-sblc.dbx.sql
+-- Source model: bronze_sblc_lcmaster
+CREATE OR REPLACE TABLE bronze.default.bronze_sblc_lcmaster AS
+-- NAME: BRONZE_SBLC_LCMASTER
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: November 27, 2025
+
+
+
+WITH landing_data AS (
+    SELECT
+	 LCMBRN
+	 ,LCMCCY
+	 ,LCMGLN
+	 ,LCMCCN
+	 ,LCMPRC
+	 ,LCMACN
+	 ,LCMFCY
+	 ,LCMSTS
+	 ,LCMTYP
+	 ,LCMORF
+	 ,LCMRTY
+	 ,LCMOFX
+	 ,LCMCNF
+	 ,LCMTRF
+	 ,LCMTNR
+	 ,LCMOFI
+	 ,LCMGCD
+	 ,LCMGRC
+	 ,LCMOAM
+	 ,LCMAMN
+	 ,LCMCOM
+	 ,LCMEXP
+	 ,LCMMEB
+	 ,LCMCFK
+	 ,LCMODM
+	 ,LCMODD
+	 ,LCMODY
+	 ,LCMOPJ
+	 ,LCMLAM
+	 ,LCMLAD
+	 ,LCMLAY
+	 ,LCMLAJ
+	 ,LCMEXM
+	 ,LCMEXD
+	 ,LCMEXY
+	 ,LCMEXJ
+	 ,LCMCLM
+	 ,LCMCLD
+	 ,LCMCLY
+	 ,LCMCLJ
+	 ,LCMIB1
+	 ,LCMIB2
+	 ,LCMIB3
+	 ,LCMIBA
+	 ,LCMBN1
+	 ,LCMBN2
+	 ,LCMBN3
+	 ,LCMACC
+	 ,DATE_OF_DATA
+	 ,NULL AS YEARMONTH
+	 ,LOADED_AT
+    FROM
+        sblc.default.sblc_lcmaster
+),
+
+bronze_data AS (
+    SELECT
+        CAST(LCMBRN AS DECIMAL(3,0)) AS LCMBRN
+        ,CAST(NULLIF(LCMCCY, '') AS STRING) AS LCMCCY
+        ,CAST(LCMGLN AS DECIMAL(7,0)) AS LCMGLN
+        ,CAST(LCMCCN AS DECIMAL(4,0)) AS LCMCCN
+        ,CAST(LCMPRC AS DECIMAL(3,0)) AS LCMPRC
+        ,CAST(LCMACN AS DECIMAL(16,0)) AS LCMACN
+        ,CAST(NULLIF(LCMFCY, '') AS STRING) AS LCMFCY
+        ,CAST(NULLIF(LCMSTS, '') AS STRING) AS LCMSTS
+        ,CAST(NULLIF(LCMTYP, '') AS STRING) AS LCMTYP
+        ,CAST(NULLIF(LCMORF, '') AS STRING) AS LCMORF
+        ,CAST(NULLIF(LCMRTY, '') AS STRING) AS LCMRTY
+        ,CAST(LCMOFX AS DECIMAL(17,6)) AS LCMOFX
+        ,CAST(NULLIF(LCMCNF, '') AS STRING) AS LCMCNF
+        ,CAST(NULLIF(LCMTRF, '') AS STRING) AS LCMTRF
+        ,CAST(NULLIF(LCMTNR, '') AS STRING) AS LCMTNR
+        ,CAST(NULLIF(LCMOFI, '') AS STRING) AS LCMOFI
+        ,CAST(NULLIF(LCMGCD, '') AS STRING) AS LCMGCD
+        ,CAST(NULLIF(LCMGRC, '') AS STRING) AS LCMGRC
+        ,CAST(LCMOAM AS DECIMAL(17,2)) AS LCMOAM
+        ,CAST(LCMAMN AS DECIMAL(17,2)) AS LCMAMN
+        ,CAST(LCMCOM AS DECIMAL(17,2)) AS LCMCOM
+        ,CAST(LCMEXP AS DECIMAL(17,2)) AS LCMEXP
+        ,CAST(LCMMEB AS DECIMAL(17,2)) AS LCMMEB
+        ,CAST(LCMCFK AS STRING) AS LCMCFK
+        ,CAST(LCMODM AS DECIMAL(2,0)) AS LCMODM
+        ,CAST(LCMODD AS DECIMAL(2,0)) AS LCMODD
+        ,CAST(LCMODY AS DECIMAL(2,0)) AS LCMODY
+        ,CAST(LCMOPJ AS DECIMAL(7,0)) AS LCMOPJ
+        ,CAST(LCMLAM AS DECIMAL(2,0)) AS LCMLAM
+        ,CAST(LCMLAD AS DECIMAL(2,0)) AS LCMLAD
+        ,CAST(LCMLAY AS DECIMAL(2,0)) AS LCMLAY
+        ,CAST(LCMLAJ AS DECIMAL(7,0)) AS LCMLAJ
+        ,CAST(LCMEXM AS DECIMAL(2,0)) AS LCMEXM
+        ,CAST(LCMEXD AS DECIMAL(2,0)) AS LCMEXD
+        ,CAST(LCMEXY AS DECIMAL(2,0)) AS LCMEXY
+        ,CAST(LCMEXJ AS DECIMAL(7,0)) AS LCMEXJ
+        ,CAST(LCMCLM AS DECIMAL(2,0)) AS LCMCLM
+        ,CAST(LCMCLD AS DECIMAL(2,0)) AS LCMCLD
+        ,CAST(LCMCLY AS DECIMAL(2,0)) AS LCMCLY
+        ,CAST(LCMCLJ AS DECIMAL(7,0)) AS LCMCLJ
+        ,CAST(NULLIF(LCMIB1, '') AS STRING) AS LCMIB1
+        ,CAST(NULLIF(LCMIB2, '') AS STRING) AS LCMIB2
+        ,CAST(NULLIF(LCMIB3, '') AS STRING) AS LCMIB3
+        ,CAST(LCMIBA AS DECIMAL(16,0)) AS LCMIBA
+        ,CAST(NULLIF(LCMBN1, '') AS STRING) AS LCMBN1
+        ,CAST(NULLIF(LCMBN2, '') AS STRING) AS LCMBN2
+        ,CAST(NULLIF(LCMBN3, '') AS STRING) AS LCMBN3
+        ,CAST(LCMACC AS DECIMAL(9,0)) AS LCMACC
+        ,DATE_OF_DATA
+        ,CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data
+    
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data;
+
+-- From bronze-sblc.dbx.sql
+-- Source model: bronze_sblc_lctranx
+CREATE OR REPLACE TABLE bronze.default.bronze_sblc_lctranx AS
+-- NAME: BRONZE_SBLC_LCTRANX
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: November 27, 2025
+
+
+
+with landing_data as (
+    SELECT
+	    CAST(NULLIF(TRBR, '') AS INTEGER) AS TRBR
+	    ,CAST(NULLIF(TRCOST, '') AS INTEGER) AS TRCOST
+	    ,CAST(NULLIF(TRPROD, '') AS INTEGER) AS TRPROD
+	    ,CAST(NULLIF(TRAGLN, '') AS INTEGER) AS TRAGLN
+	    ,TRACCN
+	    ,CAST(NULLIF(LCMACC, '') AS INTEGER) AS LCMACC
+	    ,CAST(NULLIF(TRCODE, '') AS INTEGER) AS TRCODE
+	    ,CAST(NULLIF(TRATYP, '') AS STRING) AS TRATYP
+	    ,DESCRI
+	    ,CAST(NULLIF(TRDORC, '') AS STRING) AS TRDORC
+	    ,CAST(NULLIF(AMOUNT, '') AS DECIMAL(20,2)) AS AMOUNT
+	    ,date_format(
+            try_cast(STUFF(STUFF(NULLIF(TRIM(TREFF6), ''), 5, 0, '/'), 3, 0, '/') AS DATE),
+            'dd-MM-yyyy') AS TREFF6
+	    ,DDMUID
+	    ,DATE_OF_DATA
+	    ,CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH
+    FROM
+        sblc.default.sblc_lctranx
+    
+    
+)
+
+
+
+
+
+SELECT *,current_timestamp() AS LOADED_AT FROM landing_data;
+
+-- Row-count verification
+SELECT 'bronze_apex_daily_accounts' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_apex_daily_accounts
+UNION ALL
+SELECT 'bronze_apex_daily_activities' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_apex_daily_activities
+UNION ALL
+SELECT 'bronze_apex_daily_overnight_balances' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_apex_daily_overnight_balances
+UNION ALL
+SELECT 'bronze_apex_daily_positions' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_apex_daily_positions
+UNION ALL
+SELECT 'bronze_apex_daily_stock_record' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_apex_daily_stock_record
+UNION ALL
+SELECT 'bronze_apex_onboarding_status' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_apex_onboarding_status
+UNION ALL
+SELECT 'bronze_assist_codfil_ref' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_assist_codfil_ref
+UNION ALL
+SELECT 'bronze_assist_customer_addl_fields' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_assist_customer_addl_fields
+UNION ALL
+SELECT 'bronze_assist_customer_class' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_assist_customer_class
+UNION ALL
+SELECT 'bronze_assist_customer_tbl' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_assist_customer_tbl
+UNION ALL
+SELECT 'bronze_assist_master_account_tbl' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_assist_master_account_tbl
+UNION ALL
+SELECT 'bronze_assist_officers_costcenter' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_assist_officers_costcenter
+UNION ALL
+SELECT 'bronze_assist_transactions_tbl' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_assist_transactions_tbl
+UNION ALL
+SELECT 'bronze_auxiliary_br_dcode' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_auxiliary_br_dcode
+UNION ALL
+SELECT 'bronze_auxiliary_jha_sei_trans_code' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_auxiliary_jha_sei_trans_code
+UNION ALL
+SELECT 'bronze_axiom_acct' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_axiom_acct
+UNION ALL
+SELECT 'bronze_axiom_cds' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_axiom_cds
+UNION ALL
+SELECT 'bronze_axiom_devops' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_axiom_devops
+UNION ALL
+SELECT 'bronze_axiom_dmi_chargeoffs' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_axiom_dmi_chargeoffs
+UNION ALL
+SELECT 'bronze_axiom_dmiloans' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_axiom_dmiloans
+UNION ALL
+SELECT 'bronze_axiom_instmodelstg' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_axiom_instmodelstg
+UNION ALL
+SELECT 'bronze_axiom_loans' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_axiom_loans
+UNION ALL
+SELECT 'bronze_axiom_ovrntdep' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_axiom_ovrntdep
+UNION ALL
+SELECT 'bronze_cos_applicant' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_cos_applicant
+UNION ALL
+SELECT 'bronze_cos_prospect' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_cos_prospect
+UNION ALL
+SELECT 'bronze_cos_td_treasury_rate' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_cos_td_treasury_rate
+UNION ALL
+SELECT 'bronze_dmi_bacmast' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_dmi_bacmast
+UNION ALL
+SELECT 'bronze_dmi_disb' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_dmi_disb
+UNION ALL
+SELECT 'bronze_dmi_e006' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_dmi_e006
+UNION ALL
+SELECT 'bronze_dmi_gl_mapping' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_dmi_gl_mapping
+UNION ALL
+SELECT 'bronze_dmi_non_cash' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_dmi_non_cash
+UNION ALL
+SELECT 'bronze_dmi_p110' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_dmi_p110
+UNION ALL
+SELECT 'bronze_dmi_p132' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_dmi_p132
+UNION ALL
+SELECT 'bronze_dmi_pmt' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_dmi_pmt
+UNION ALL
+SELECT 'bronze_dmi_s2tt' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_dmi_s2tt
+UNION ALL
+SELECT 'bronze_dmi_s2tv' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_dmi_s2tv
+UNION ALL
+SELECT 'bronze_dmi_s5az' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_dmi_s5az
+UNION ALL
+SELECT 'bronze_dmi_t69w' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_dmi_t69w
+UNION ALL
+SELECT 'bronze_dmi_transaction_codes_mapping' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_dmi_transaction_codes_mapping
+UNION ALL
+SELECT 'bronze_fis_cd300' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_fis_cd300
+UNION ALL
+SELECT 'bronze_fis_ethos_interchange_fee_data' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_fis_ethos_interchange_fee_data
+UNION ALL
+SELECT 'bronze_fis_lp_510' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_fis_lp_510
+UNION ALL
+SELECT 'bronze_bcp_ibkr_account' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_bcp_ibkr_account
+UNION ALL
+SELECT 'bronze_bcp_ibkr_acct_holder' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_bcp_ibkr_acct_holder
+UNION ALL
+SELECT 'bronze_bcp_ibkr_balance_history' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_bcp_ibkr_balance_history
+UNION ALL
+SELECT 'bronze_file_invoice_requests' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_file_invoice_requests
+UNION ALL
+SELECT 'bronze_file_apex_monthly_accounts' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_file_apex_monthly_accounts
+UNION ALL
+SELECT 'bronze_file_apex_monthly_credit' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_file_apex_monthly_credit
+UNION ALL
+SELECT 'bronze_file_apex_monthly_execution' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_file_apex_monthly_execution
+UNION ALL
+SELECT 'bronze_file_apex_monthly_fdic' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_file_apex_monthly_fdic
+UNION ALL
+SELECT 'bronze_file_apex_monthly_trades' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_file_apex_monthly_trades
+UNION ALL
+SELECT 'bronze_file_bflcrtran' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_file_bflcrtran
+UNION ALL
+SELECT 'bronze_file_biu_activity' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_file_biu_activity
+UNION ALL
+SELECT 'bronze_file_fedlink_inc' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_file_fedlink_inc
+UNION ALL
+SELECT 'bronze_file_fedlink_out' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_file_fedlink_out
+UNION ALL
+SELECT 'bronze_file_rdci' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_file_rdci
+UNION ALL
+SELECT 'bronze_file_trailer_fees' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_file_trailer_fees
+UNION ALL
+SELECT 'bronze_file_trailer_fees_accruals' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_file_trailer_fees_accruals
+UNION ALL
+SELECT 'bronze_mis_pershing_officer_code' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_mis_pershing_officer_code
+UNION ALL
+SELECT 'bronze_mis_team_officers_v2' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_mis_team_officers_v2
+UNION ALL
+SELECT 'bronze_mulesoft_customer_external_id' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_mulesoft_customer_external_id
+UNION ALL
+SELECT 'bronze_mulesoft_party' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_mulesoft_party
+UNION ALL
+SELECT 'bronze_mulesoft_prospect_external_data' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_mulesoft_prospect_external_data
+UNION ALL
+SELECT 'bronze_intrafi_account_trial_balance' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_intrafi_account_trial_balance
+UNION ALL
+SELECT 'bronze_q2_customer' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_q2_customer
+UNION ALL
+SELECT 'bronze_q2_user' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_q2_user
+UNION ALL
+SELECT 'bronze_q2_user_pii' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_q2_user_pii
+UNION ALL
+SELECT 'bronze_rprt_sharing_agreement_exception' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_rprt_sharing_agreement_exception
+UNION ALL
+SELECT 'bronze_sblc_lcmaster' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_sblc_lcmaster
+UNION ALL
+SELECT 'bronze_sblc_lctranx' AS table_name, COUNT(*) AS record_count
+FROM bronze.default.bronze_sblc_lctranx;
