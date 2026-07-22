@@ -57,6 +57,8 @@ CREATE TABLE IF NOT EXISTS axiom.default.axiom_acct (
     `DATE_OF_DATA` DATE,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE axiom.default.axiom_acct IS 
+'The table contains detailed information about various accounts used within the organization. It includes account identifiers, types, financial reporting aspects, and various metrics associated with each account. Possible use cases include financial analysis, generating reports for management, and assessing account performance across different categories. This data can help in understanding account classifications, reporting levels, and analytical metrics necessary for decision-making.';
 
 TRUNCATE TABLE axiom.default.axiom_acct;
 
@@ -229,6 +231,8 @@ CREATE TABLE IF NOT EXISTS axiom.default.axiom_cds (
     `DATE_OF_DATA` DATE,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE axiom.default.axiom_cds IS 
+'The table contains data related to certificates of deposit (CDs). It includes details such as account information, instrument types, balances, interest rates, and maturity dates. This data can be useful for analyzing trends in CD performance, managing interest rate risk, and tracking account activity over time.';
 
 TRUNCATE TABLE axiom.default.axiom_cds;
 
@@ -516,6 +520,8 @@ CREATE TABLE IF NOT EXISTS axiom.default.axiom_deposits (
     `DATE_OF_DATA` DATE,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE axiom.default.axiom_deposits IS 
+'The table contains data related to deposits and their characteristics over time. It includes information on account types, balances, interest rates, and transaction behaviors. Possible use cases include analyzing deposit performance, understanding average and current balances, assessing interest income, and tracking account activity metrics. This data can help in evaluating the financial health of different accounts and identifying trends in deposit behavior.';
 
 TRUNCATE TABLE axiom.default.axiom_deposits;
 
@@ -713,6 +719,8 @@ CREATE TABLE IF NOT EXISTS axiom.default.axiom_dmi_chargeoffs (
     `DATE_OF_DATA` DATE,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE axiom.default.axiom_dmi_chargeoffs IS 
+'The table contains information on charge-offs related to various instruments. Use cases include analyzing charge-off trends over time, assessing the financial impact of charge-offs by category, and evaluating the performance of specific products. Key details captured in the table include the amount charged off, the associated instrument and invoice IDs, and the relevant time periods.';
 
 TRUNCATE TABLE axiom.default.axiom_dmi_chargeoffs;
 
@@ -932,6 +940,8 @@ CREATE TABLE IF NOT EXISTS axiom.default.axiom_dmiloans (
     `DATE_OF_DATA` DATE,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE axiom.default.axiom_dmiloans IS 
+'The table contains detailed information about loans, including repayment terms, interest rates, and account specifics. Use cases include monitoring loan performance, analyzing payment behaviors, and assessing interest rates and repayment conditions. The data can help evaluate the financial health of loan portfolios and understand trends in customer repayment activities.';
 
 TRUNCATE TABLE axiom.default.axiom_dmiloans;
 
@@ -1178,6 +1188,8 @@ CREATE TABLE IF NOT EXISTS axiom.default.axiom_instmodelstg (
     `LEN_InstrumentID` STRING,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE axiom.default.axiom_instmodelstg IS 
+'The table contains data related to financial instruments. It includes identifiers for each instrument along with metadata such as the loading timestamp. This data can be used for tracking instrument details, analyzing instrument usage over time, and ensuring data integrity in financial modeling processes.';
 
 TRUNCATE TABLE axiom.default.axiom_instmodelstg;
 
@@ -1388,6 +1400,8 @@ CREATE TABLE IF NOT EXISTS axiom.default.axiom_loans (
     `DATE_OF_DATA` DATE,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE axiom.default.axiom_loans IS 
+'The table stores detailed information about loans, including various attributes such as loan type, balance, payment frequency, and interest rates. It can be useful for analyzing loan performance, assessing risk and compliance, and generating reports on loan status and history. Possible use cases include tracking loan origination and closure dates, evaluating maturity dates, and monitoring payments and charges associated with loans.';
 
 TRUNCATE TABLE axiom.default.axiom_loans;
 
@@ -1708,6 +1722,8 @@ CREATE TABLE IF NOT EXISTS axiom.default.axiom_ovrntdep (
     `DATE_OF_DATA` DATE,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE axiom.default.axiom_ovrntdep IS 
+'The table contains detailed information about various investment accounts and their characteristics over time. It includes data such as account balances, interest rates, payment schedules, and borrower details. This information can be utilized for analysis related to account performance, interest income calculations, and investment product characteristics. It may be particularly useful for financial reporting, trend analysis, or risk assessment tasks.';
 
 TRUNCATE TABLE axiom.default.axiom_ovrntdep;
 
