@@ -206,6 +206,8 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_bacmast (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE dmi.default.dmi_bacmast IS 
+'The table contains loan details and associated characteristics. It includes information such as loan amounts, terms, important dates, and borrower details. This data can be utilized for analyzing loan portfolios, tracking payment schedules, and understanding borrower behavior.';
 
 TRUNCATE TABLE dmi.default.dmi_bacmast;
 
@@ -455,6 +457,8 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_disb (
     `FILE_NAME_DMI` STRING,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE dmi.default.dmi_disb IS 
+'The table contains data related to disbursements associated with loans. Key attributes include loan numbers, investor numbers, transaction dates, and amounts. This can be utilized for tracking disbursement activities, analyzing funding patterns, and reconciling financial records.';
 
 TRUNCATE TABLE dmi.default.dmi_disb;
 
@@ -511,6 +515,8 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_e006 (
     `FILE_NAME_DMI` STRING,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE dmi.default.dmi_e006 IS 
+'The table contains records related to loan transactions, including details on adjustments, codes, and associated loan identifiers. Use cases include analyzing loan repayment patterns, evaluating adjustments made to loans, and tracking transaction details over time. This data can help in the assessment of financial performance and customer payment behavior.';
 
 TRUNCATE TABLE dmi.default.dmi_e006;
 
@@ -637,6 +643,8 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_gl_mapping (
     `Effective_Date` DATE,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE dmi.default.dmi_gl_mapping IS 
+'This table captures mapping information related to various investor types and their associated financial details. It includes items such as investor names, general ledger account numbers, and cost centers for different types of financial transactions and payees. Colleagues can use this data to analyze financial mappings, perform reconciliations, and track financial obligations across multiple accounts.';
 
 TRUNCATE TABLE dmi.default.dmi_gl_mapping;
 
@@ -747,6 +755,8 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_noncash (
     `FILE_NAME_DMI` STRING,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE dmi.default.dmi_noncash IS 
+'The table captures non-cash transaction details related to loans and investments. It includes information such as loan numbers, investor identifiers, transaction categories, and amounts associated with principal and interest. This data can assist in analyzing non-cash transactions, monitoring financial activities related to loans, and understanding investment patterns over time.';
 
 TRUNCATE TABLE dmi.default.dmi_noncash;
 
@@ -806,6 +816,8 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_p110 (
     `FILE_NAME_DMI` STRING,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE dmi.default.dmi_p110 IS 
+'The table contains information about loans, including various financial details associated with each loan. Use cases include analyzing loan performance, assessing interest and service fees, tracking payments made, and understanding the overall financial position of loans within different categories and types. Key data points include loan numbers, interest rates, fees, balances, and payment history.';
 
 TRUNCATE TABLE dmi.default.dmi_p110;
 
@@ -881,6 +893,8 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_p132 (
     `FILE_NAME_DMI` STRING,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE dmi.default.dmi_p132 IS 
+'The table contains data related to loan reports. It includes information such as report identifiers, loan numbers, investor codes, and various financial metrics related to discounts and balances. Possible use cases involve tracking loan performance, analyzing investor returns, and managing report deadlines. The data can be useful for financial analysis and reporting in related operations.';
 
 TRUNCATE TABLE dmi.default.dmi_p132;
 
@@ -942,6 +956,8 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_pmt (
     `FILE_NAME_DMI` STRING,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE dmi.default.dmi_pmt IS 
+'This table contains information about payment transactions related to loans. It includes data such as loan numbers, investor numbers, transaction dates, and various amounts associated with the payments like principal, interest, fees, and escrow. Potential use cases for this table involve tracking payment histories, analyzing loan performance, and reporting on financial transactions related to loan servicing.';
 
 TRUNCATE TABLE dmi.default.dmi_pmt;
 
@@ -1025,6 +1041,8 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_s2tt (
     `FILE_NAME_DMI` STRING,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE dmi.default.dmi_s2tt IS 
+'The table contains data related to loan management and interest accrual. It records various financial metrics and details for each loan, including balances, interest rates, and income forecasts. Potential use cases include analyzing loan performance, tracking interest accruals, and forecasting income related to the loans. This data can aid in financial reporting and decision-making processes.';
 
 TRUNCATE TABLE dmi.default.dmi_s2tt;
 
@@ -1122,6 +1140,8 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_s2tv (
     `FILE_NAME_DMI` STRING,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE dmi.default.dmi_s2tv IS 
+'The table contains financial data related to loans, including various metrics such as balances, income, interest rates, and associated codes for categorization. Possible use cases include tracking loan performance, analyzing interest accruals, and generating reports on loan status and exceptions. This data can assist in decision-making processes regarding loan management and financial analysis.';
 
 TRUNCATE TABLE dmi.default.dmi_s2tv;
 
@@ -1193,6 +1213,8 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_s5az (
     `FILE_NAME_DMI` STRING,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE dmi.default.dmi_s5az IS 
+'The table contains data related to loan refinancing and associated costs. It includes details such as loan number, principal balance, interest rates, fee costs, and refinancing descriptions. This data can be used to analyze refinancing patterns, calculate total costs associated with loans, and monitor due dates for payments.';
 
 TRUNCATE TABLE dmi.default.dmi_s5az;
 
@@ -1251,6 +1273,8 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_t69w (
     `FILE_NAME_DMI` STRING,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE dmi.default.dmi_t69w IS 
+'The table contains financial transaction data related to various accounts and clients. Key information includes transaction amounts for collections and investments, along with codes specifying the type of funds, payees, and clients. Use cases for this data may involve financial reporting, analyzing transaction trends, and reconciling accounts.';
 
 TRUNCATE TABLE dmi.default.dmi_t69w;
 
@@ -1293,6 +1317,8 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_transaction_codes_mapping (
     `DESCRIPTION` STRING,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE dmi.default.dmi_transaction_codes_mapping IS 
+'The table contains a mapping of transaction codes to their respective descriptions and categories. It includes information on the source sheet and the time the data was loaded. This data can be useful for understanding transaction classifications, integrating with other systems, and maintaining consistency in transaction coding across different processes';
 
 TRUNCATE TABLE dmi.default.dmi_transaction_codes_mapping;
 
