@@ -19,6 +19,8 @@ CREATE TABLE IF NOT EXISTS assist.default.assist_codfil_ref (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE assist.default.assist_codfil_ref IS 
+'This table contains reference data related to coding standards. It records various attributes associated with codes, such as type, description, grouping, and risk classification. Possible use cases include generating reports on coding patterns, validating code usage, and tracking changes over time. The table also includes a timestamp for when the data was loaded.';
 
 TRUNCATE TABLE assist.default.assist_codfil_ref;
 
@@ -56,6 +58,8 @@ CREATE TABLE IF NOT EXISTS assist.default.assist_customer_addl_fields (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE assist.default.assist_customer_addl_fields IS 
+'The table contains additional fields related to customer information. It includes data such as customer identification numbers, names, and the officer handling the account. It can be used for profiling customers, tracking customer relationships over time, and organizing customer data based on classifications and geographical details.';
 
 TRUNCATE TABLE assist.default.assist_customer_addl_fields;
 
@@ -89,6 +93,8 @@ CREATE TABLE IF NOT EXISTS assist.default.assist_customer_class (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE assist.default.assist_customer_class IS 
+'The table contains classifications for customers, detailing the class code and its description along with the year and month of the data loading timestamp. This information can be useful for analyzing customer segments, tracking trends over time, and understanding the demographic distribution of customer classes.';
 
 TRUNCATE TABLE assist.default.assist_customer_class;
 
@@ -135,6 +141,8 @@ CREATE TABLE IF NOT EXISTS assist.default.assist_customer_tbl (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE assist.default.assist_customer_tbl IS 
+'The table contains customer information relevant to the assistance department. It includes personal details such as name, date of birth, contact information, occupation, nationality, and other attributes related to the customers. This data can be useful for analyzing customer demographics, tracking customer trends, and managing communications with clients effectively.';
 
 TRUNCATE TABLE assist.default.assist_customer_tbl;
 
@@ -208,6 +216,8 @@ CREATE TABLE IF NOT EXISTS assist.default.assist_master_account_tbl (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE assist.default.assist_master_account_tbl IS 
+'The table contains information related to master accounts and their associated details. It includes historical data about account statuses, classifications, balances, and customer information. Use cases include monitoring account performance over time, analyzing customer demographics, and tracking account changes. This data can help in understanding account characteristics and trends.';
 
 TRUNCATE TABLE assist.default.assist_master_account_tbl;
 
@@ -257,6 +267,8 @@ CREATE TABLE IF NOT EXISTS assist.default.assist_officers_costcenter (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE assist.default.assist_officers_costcenter IS 
+'The table contains information about officers and their associated cost centers. It includes details such as the officer s code, first and last names, the cost center they are linked to, and the period for which the data is relevant. This data can be utilized for tracking costs by individual officers, managing budgets, and analyzing resource allocation within various cost centers over time';
 
 TRUNCATE TABLE assist.default.assist_officers_costcenter;
 
@@ -301,6 +313,8 @@ CREATE TABLE IF NOT EXISTS assist.default.assist_transaction_tbl (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE assist.default.assist_transaction_tbl IS 
+'The table contains transaction records related to various assist operations. It includes details such as transaction IDs, account information, amounts involved, currency types, and timestamps. This data can be used for financial analysis, tracking transaction flows, and auditing purposes, as well as understanding trends in transaction activities over time.';
 
 TRUNCATE TABLE assist.default.assist_transaction_tbl;
 
