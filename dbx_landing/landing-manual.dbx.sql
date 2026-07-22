@@ -1,14 +1,14 @@
 -- Databricks SQL for source: manual
 -- Generated from sqlserver/brz-manual.sql
 
-CREATE CATALOG IF NOT EXISTS manual;
-USE CATALOG manual;
+CREATE CATALOG IF NOT EXISTS landing;
+USE CATALOG landing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."FILE_APEX_MONTHLY_ACCOUNTS"
-CREATE TABLE IF NOT EXISTS manual.default.file_apex_monthly_accounts (
+CREATE TABLE IF NOT EXISTS landing.default.file_apex_monthly_accounts (
     `CLIENT_CODE` STRING,
     `CORRESPONDENT_CODE` STRING,
     `ACCOUNT_GROUP_CODE` STRING,
@@ -31,9 +31,9 @@ CREATE TABLE IF NOT EXISTS manual.default.file_apex_monthly_accounts (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE manual.default.file_apex_monthly_accounts;
+TRUNCATE TABLE landing.default.file_apex_monthly_accounts;
 
-INSERT INTO manual.default.file_apex_monthly_accounts (
+INSERT INTO landing.default.file_apex_monthly_accounts (
     `CLIENT_CODE`, `CORRESPONDENT_CODE`, `ACCOUNT_GROUP_CODE`, `ACCOUNT_NUMBER`, `BILLING_CALENDAR_MONTH`, `BILLING_CALENDAR_YEAR`,
     `BILLING_TRANSACTION_ID`, `BILLING_SECTION`, `BILLING_CATEGORY`, `BILLING_SUB_CATEGORY`, `BILLING_NAME_RATE`, `BILLING_RATE`,
     `PROCESS_START_DATE`, `PROCESS_END_DATE`, `FUNDED_START_DATE`, `FUNDED_END_DATE`, `AVG_MONTHLY_EQUITY`, `DATE_OF_DATA`,
@@ -63,7 +63,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FILE_APEX_MONTHLY_CREDIT"
-CREATE TABLE IF NOT EXISTS manual.default.file_apex_monthly_credit (
+CREATE TABLE IF NOT EXISTS landing.default.file_apex_monthly_credit (
     `CLIENT_CODE` STRING,
     `CORRESPONDENT_CODE` STRING,
     `ACCOUNT_GROUP_CODE` STRING,
@@ -85,9 +85,9 @@ CREATE TABLE IF NOT EXISTS manual.default.file_apex_monthly_credit (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE manual.default.file_apex_monthly_credit;
+TRUNCATE TABLE landing.default.file_apex_monthly_credit;
 
-INSERT INTO manual.default.file_apex_monthly_credit (
+INSERT INTO landing.default.file_apex_monthly_credit (
     `CLIENT_CODE`, `CORRESPONDENT_CODE`, `ACCOUNT_GROUP_CODE`, `ACCOUNT_NUMBER`, `BILLING_CALENDAR_MONTH`, `BILLING_CALENDAR_YEAR`,
     `BILLING_TRANSACTION_ID`, `BILLING_SECTION`, `BILLING_CATEGORY`, `BILLING_SUB_CATEGORY`, `BILLING_NAME_RATE`, `RATE_PERCENT`,
     `CASH_SETTLE_BALANCE`, `BILLING_RATE`, `PROCESS_START_DATE`, `PROCESS_END_DATE`, `DATE_OF_DATA`, `YEARMONTH`,
@@ -116,7 +116,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FILE_APEX_MONTHLY_EXECUTION"
-CREATE TABLE IF NOT EXISTS manual.default.file_apex_monthly_execution (
+CREATE TABLE IF NOT EXISTS landing.default.file_apex_monthly_execution (
     `BILLINGPERIOD` STRING,
     `CLEARINGACCOUNT` STRING,
     `INSTRUMENTTYPE` STRING,
@@ -139,9 +139,9 @@ CREATE TABLE IF NOT EXISTS manual.default.file_apex_monthly_execution (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE manual.default.file_apex_monthly_execution;
+TRUNCATE TABLE landing.default.file_apex_monthly_execution;
 
-INSERT INTO manual.default.file_apex_monthly_execution (
+INSERT INTO landing.default.file_apex_monthly_execution (
     `BILLINGPERIOD`, `CLEARINGACCOUNT`, `INSTRUMENTTYPE`, `CUSTOMER_VENUE`, `APEXROUTE`, `DESCRIPTION`,
     `EXCH`, `ORDERS`, `FILLS`, `NOTIONAL`, `QUANTITY`, `CUSTOMERPASSTHRUFEE`,
     `EXECUTION_FEE`, `CUSTOMER_PFOF`, `CUSTOMER_INDEX_SURCHARGE`, `CATHISTORICALFEE`, `CATONGOINGFEE`, `DATE_OF_DATA`,
@@ -171,7 +171,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FILE_APEX_MONTHLY_FDIC"
-CREATE TABLE IF NOT EXISTS manual.default.file_apex_monthly_fdic (
+CREATE TABLE IF NOT EXISTS landing.default.file_apex_monthly_fdic (
     `CORRESPONDENT_CODE` STRING,
     `ACCOUNT_NUMBER` STRING,
     `ACCOUNT_ID` STRING,
@@ -186,9 +186,9 @@ CREATE TABLE IF NOT EXISTS manual.default.file_apex_monthly_fdic (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE manual.default.file_apex_monthly_fdic;
+TRUNCATE TABLE landing.default.file_apex_monthly_fdic;
 
-INSERT INTO manual.default.file_apex_monthly_fdic (
+INSERT INTO landing.default.file_apex_monthly_fdic (
     `CORRESPONDENT_CODE`, `ACCOUNT_NUMBER`, `ACCOUNT_ID`, `FDIC_ASSET_SYMBOL`, `BALANCE_DATE`, `PRINCIPAL_BALANCE`,
     `ACCRUED_INTEREST`, `EFF`, `CORRESPONDENT_REBATE`, `DATE_OF_DATA`, `YEARMONTH`, `LOADED_AT`
 )
@@ -208,7 +208,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FILE_APEX_MONTHLY_TRADES"
-CREATE TABLE IF NOT EXISTS manual.default.file_apex_monthly_trades (
+CREATE TABLE IF NOT EXISTS landing.default.file_apex_monthly_trades (
     `CLIENT_CODE` STRING,
     `CORRESPONDENT_CODE` STRING,
     `ACCOUNT_GROUP_CODE` STRING,
@@ -258,9 +258,9 @@ CREATE TABLE IF NOT EXISTS manual.default.file_apex_monthly_trades (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE manual.default.file_apex_monthly_trades;
+TRUNCATE TABLE landing.default.file_apex_monthly_trades;
 
-INSERT INTO manual.default.file_apex_monthly_trades (
+INSERT INTO landing.default.file_apex_monthly_trades (
     `CLIENT_CODE`, `CORRESPONDENT_CODE`, `ACCOUNT_GROUP_CODE`, `ACCOUNT_NUMBER`, `BILLING_CALENDAR_MONTH`, `BILLING_CALENDAR_YEAR`,
     `BILLING_TRANSACTION_ID`, `BILLING_SECTION`, `BILLING_CATEGORY`, `BILLING_SUB_CATEGORY`, `BILLING_NAME_RATE`, `BILLING_RATE`,
     `FUNDING_TYPE`, `ACTIVITY_DATE`, `PROCESS_DATE`, `SETTLE_DATE`, `ACTIVITY_ID`, `SYMBOL`,
@@ -321,7 +321,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FILE_BFLCRTRAN"
-CREATE TABLE IF NOT EXISTS manual.default.file_bflcrtran (
+CREATE TABLE IF NOT EXISTS landing.default.file_bflcrtran (
     `TREFF6` STRING,
     `TRDAT6` STRING,
     `TRANCD` STRING,
@@ -342,9 +342,9 @@ CREATE TABLE IF NOT EXISTS manual.default.file_bflcrtran (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE manual.default.file_bflcrtran;
+TRUNCATE TABLE landing.default.file_bflcrtran;
 
-INSERT INTO manual.default.file_bflcrtran (
+INSERT INTO landing.default.file_bflcrtran (
     `TREFF6`, `TRDAT6`, `TRANCD`, `DORC`, `AMT`, `PFGLAC`,
     `BATCH`, `DDSD1`, `DDSD2`, `LCMACC`, `CIFNO`, `BRANCH`,
     `GLCOST`, `GLPROD`, `GROUP`, `TRACCT`, `YEARMONTH`, `LOADED_AT`
@@ -371,7 +371,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FILE_BIU_ACTIVITY"
-CREATE TABLE IF NOT EXISTS manual.default.file_biu_activity (
+CREATE TABLE IF NOT EXISTS landing.default.file_biu_activity (
     `ACCOUNT_NUMBER` STRING,
     `END_AUMS` DECIMAL(38,10),
     `MGMT_FEES` DECIMAL(38,10),
@@ -383,9 +383,9 @@ CREATE TABLE IF NOT EXISTS manual.default.file_biu_activity (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE manual.default.file_biu_activity;
+TRUNCATE TABLE landing.default.file_biu_activity;
 
-INSERT INTO manual.default.file_biu_activity (
+INSERT INTO landing.default.file_biu_activity (
     `ACCOUNT_NUMBER`, `END_AUMS`, `MGMT_FEES`, `IB_FEES`, `NET_MGMT_FEE`, `SUB_ADVISOR_FEE`,
     `OUTSTANDING`, `YEARMONTH`, `LOADED_AT`
 )
@@ -402,7 +402,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FILE_FEDLINK_INC"
-CREATE TABLE IF NOT EXISTS manual.default.file_fedlink_inc (
+CREATE TABLE IF NOT EXISTS landing.default.file_fedlink_inc (
     `PAY_VIA` STRING,
     `TYPE` STRING,
     `TRACEKEY` STRING,
@@ -531,9 +531,9 @@ CREATE TABLE IF NOT EXISTS manual.default.file_fedlink_inc (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE manual.default.file_fedlink_inc;
+TRUNCATE TABLE landing.default.file_fedlink_inc;
 
-INSERT INTO manual.default.file_fedlink_inc (
+INSERT INTO landing.default.file_fedlink_inc (
     `PAY_VIA`, `TYPE`, `TRACEKEY`, `REF`, `ACCOUNT`, `NAME`,
     `PRODCODE`, `SUBTYPE`, `LOADDATE`, `DATETIME`, `SENDERABA`, `SENDERNAME`,
     `RECEIVERABA`, `RECEIVERNAME`, `ORG`, `ORGCDE`, `ORGACC`, `ORG1`,
@@ -686,7 +686,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FILE_FEDLINK_OUT"
-CREATE TABLE IF NOT EXISTS manual.default.file_fedlink_out (
+CREATE TABLE IF NOT EXISTS landing.default.file_fedlink_out (
     `PAY_VIA` STRING,
     `TYPE` STRING,
     `TRACEKEY` STRING,
@@ -815,9 +815,9 @@ CREATE TABLE IF NOT EXISTS manual.default.file_fedlink_out (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE manual.default.file_fedlink_out;
+TRUNCATE TABLE landing.default.file_fedlink_out;
 
-INSERT INTO manual.default.file_fedlink_out (
+INSERT INTO landing.default.file_fedlink_out (
     `PAY_VIA`, `TYPE`, `TRACEKEY`, `REF`, `ACCOUNT`, `NAME`,
     `PRODCODE`, `SUBTYPE`, `LOADDATE`, `DATETIME`, `SENDERABA`, `SENDERNAME`,
     `RECEIVERABA`, `RECEIVERNAME`, `ORG`, `ORGCDE`, `ORGACC`, `ORG1`,
@@ -970,7 +970,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FILE_RDCI"
-CREATE TABLE IF NOT EXISTS manual.default.file_rdci (
+CREATE TABLE IF NOT EXISTS landing.default.file_rdci (
     `INSTRUMENT_ID` STRING,
     `ADJUSTED_AX_INTEREST` DECIMAL(38,10),
     `ADJUSTED_FTP_AMOUNT` DECIMAL(38,10),
@@ -982,9 +982,9 @@ CREATE TABLE IF NOT EXISTS manual.default.file_rdci (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE manual.default.file_rdci;
+TRUNCATE TABLE landing.default.file_rdci;
 
-INSERT INTO manual.default.file_rdci (
+INSERT INTO landing.default.file_rdci (
     `INSTRUMENT_ID`, `ADJUSTED_AX_INTEREST`, `ADJUSTED_FTP_AMOUNT`, `NET_INTEREST_INCOME`, `NON_INTEREST_INCOME`, `TOTAL_REVENUE`,
     `TOTAL_NONINTEREST_EXPENSE`, `YEARMONTH`, `LOADED_AT`
 )
@@ -1001,7 +1001,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FILE_TRAILER_FEES"
-CREATE TABLE IF NOT EXISTS manual.default.file_trailer_fees (
+CREATE TABLE IF NOT EXISTS landing.default.file_trailer_fees (
     `PERSHING_ACCOUNT` STRING,
     `CUSIP` STRING,
     `ISIN` STRING,
@@ -1010,9 +1010,9 @@ CREATE TABLE IF NOT EXISTS manual.default.file_trailer_fees (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE manual.default.file_trailer_fees;
+TRUNCATE TABLE landing.default.file_trailer_fees;
 
-INSERT INTO manual.default.file_trailer_fees (
+INSERT INTO landing.default.file_trailer_fees (
     `PERSHING_ACCOUNT`, `CUSIP`, `ISIN`, `AMOUNT`, `YEARMONTH`, `LOADED_AT`
 )
 SELECT
@@ -1025,7 +1025,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FILE_TRAILER_FEES_ACCRUALS"
-CREATE TABLE IF NOT EXISTS manual.default.file_trailer_fees_accruals (
+CREATE TABLE IF NOT EXISTS landing.default.file_trailer_fees_accruals (
     `ACCOUNT_NO` STRING,
     `SHORT_NAME` STRING,
     `OFFICE` STRING,
@@ -1054,9 +1054,9 @@ CREATE TABLE IF NOT EXISTS manual.default.file_trailer_fees_accruals (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE manual.default.file_trailer_fees_accruals;
+TRUNCATE TABLE landing.default.file_trailer_fees_accruals;
 
-INSERT INTO manual.default.file_trailer_fees_accruals (
+INSERT INTO landing.default.file_trailer_fees_accruals (
     `ACCOUNT_NO`, `SHORT_NAME`, `OFFICE`, `IP`, `SYMBOL`, `CUSIP`,
     `SEC_REGISTERED`, `SECURITY_DESCRIPTION`, `TRADE_DATE_QUANTITY`, `TRADE_DATE_MARKET_VALUE`, `PERCENTAGE_OF_GRAND_TOTAL_TRADE_DATE_MARKET_VALUE`, `TOTAL_SETTLEMENT_DATE_MARKET_VALUE`,
     `SETTLEMENT_DATE_QUANTITY`, `ACCOUNT_STATUS`, `ACCRUED_AMOUNT`, `CLOSING_BALANCE`, `REFERENCE`, `MANAGEMENT_FEES_PERCENTAGE`,
@@ -1093,37 +1093,37 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 SELECT 'file_apex_monthly_accounts' AS table_name, COUNT(*) AS record_count
-FROM manual.default.file_apex_monthly_accounts
+FROM landing.default.file_apex_monthly_accounts
 UNION ALL
 SELECT 'file_apex_monthly_credit' AS table_name, COUNT(*) AS record_count
-FROM manual.default.file_apex_monthly_credit
+FROM landing.default.file_apex_monthly_credit
 UNION ALL
 SELECT 'file_apex_monthly_execution' AS table_name, COUNT(*) AS record_count
-FROM manual.default.file_apex_monthly_execution
+FROM landing.default.file_apex_monthly_execution
 UNION ALL
 SELECT 'file_apex_monthly_fdic' AS table_name, COUNT(*) AS record_count
-FROM manual.default.file_apex_monthly_fdic
+FROM landing.default.file_apex_monthly_fdic
 UNION ALL
 SELECT 'file_apex_monthly_trades' AS table_name, COUNT(*) AS record_count
-FROM manual.default.file_apex_monthly_trades
+FROM landing.default.file_apex_monthly_trades
 UNION ALL
 SELECT 'file_bflcrtran' AS table_name, COUNT(*) AS record_count
-FROM manual.default.file_bflcrtran
+FROM landing.default.file_bflcrtran
 UNION ALL
 SELECT 'file_biu_activity' AS table_name, COUNT(*) AS record_count
-FROM manual.default.file_biu_activity
+FROM landing.default.file_biu_activity
 UNION ALL
 SELECT 'file_fedlink_inc' AS table_name, COUNT(*) AS record_count
-FROM manual.default.file_fedlink_inc
+FROM landing.default.file_fedlink_inc
 UNION ALL
 SELECT 'file_fedlink_out' AS table_name, COUNT(*) AS record_count
-FROM manual.default.file_fedlink_out
+FROM landing.default.file_fedlink_out
 UNION ALL
 SELECT 'file_rdci' AS table_name, COUNT(*) AS record_count
-FROM manual.default.file_rdci
+FROM landing.default.file_rdci
 UNION ALL
 SELECT 'file_trailer_fees' AS table_name, COUNT(*) AS record_count
-FROM manual.default.file_trailer_fees
+FROM landing.default.file_trailer_fees
 UNION ALL
 SELECT 'file_trailer_fees_accruals' AS table_name, COUNT(*) AS record_count
-FROM manual.default.file_trailer_fees_accruals;
+FROM landing.default.file_trailer_fees_accruals;

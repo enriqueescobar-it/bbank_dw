@@ -1,14 +1,14 @@
 -- Databricks SQL for source: mis
 -- Generated from sqlserver/brz-mis.sql
 
-CREATE CATALOG IF NOT EXISTS mis;
-USE CATALOG mis;
+CREATE CATALOG IF NOT EXISTS landing;
+USE CATALOG landing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."FILE_MIS_PERSHING_OFFICER_CODE"
-CREATE TABLE IF NOT EXISTS mis.default.file_mis_pershing_officer_code (
+CREATE TABLE IF NOT EXISTS landing.default.file_mis_pershing_officer_code (
     IP_CODE STRING,
     OFFICER_CODE STRING,
     NAME STRING,
@@ -19,9 +19,9 @@ CREATE TABLE IF NOT EXISTS mis.default.file_mis_pershing_officer_code (
     LOADED_AT TIMESTAMP
 );
 
-TRUNCATE TABLE mis.default.file_mis_pershing_officer_code;
+TRUNCATE TABLE landing.default.file_mis_pershing_officer_code;
 
-INSERT INTO mis.default.file_mis_pershing_officer_code (
+INSERT INTO landing.default.file_mis_pershing_officer_code (
     IP_CODE, OFFICER_CODE, NAME, COST_CENTER, TEAM, DATA_OF_DATA, YEARMONTH,
     LOADED_AT
 )
@@ -38,7 +38,7 @@ VALUES
     ('IP010', 'OC010', 'Sophia Nguyen', 'CC500', 'Operations', DATE '2026-05-31', 202605, TIMESTAMP '2026-05-31 12:00:00');
 
 -- Source: "DQP_LANDING"."dbo"."FILE_MIS_TEAM_OFFICERS_V2"
-CREATE TABLE IF NOT EXISTS mis.default.file_mis_team_officers_v2 (
+CREATE TABLE IF NOT EXISTS landing.default.file_mis_team_officers_v2 (
     OFFICER_CODE STRING,
     FULL_NAME STRING,
     SHORT_NAME STRING,
@@ -55,9 +55,9 @@ CREATE TABLE IF NOT EXISTS mis.default.file_mis_team_officers_v2 (
     LOADED_AT TIMESTAMP
 );
 
-TRUNCATE TABLE mis.default.file_mis_team_officers_v2;
+TRUNCATE TABLE landing.default.file_mis_team_officers_v2;
 
-INSERT INTO mis.default.file_mis_team_officers_v2 (
+INSERT INTO landing.default.file_mis_team_officers_v2 (
     OFFICER_CODE, FULL_NAME, SHORT_NAME, TITLE, PHONE_NUMBER, EMAIL,
     BUSINESS_LINE, TEAM, TEAM_CODE, COST_CENTER, ACTIVEOFFICER,
     DATA_OF_DATA, YEARMONTH, LOADED_AT
@@ -75,7 +75,7 @@ VALUES
     ('OC010', 'Sophia Nguyen', 'SNguyen', 'Operations Analyst', '305-555-0110', 'sophia.nguyen@example.com', 'Operations', 'Operations', 'OP01', 'CC500', 'Y', DATE '2026-05-31', 202605, TIMESTAMP '2026-05-31 12:05:00');
 
 SELECT 'file_mis_pershing_officer_code' AS table_name, COUNT(*) AS record_count
-FROM mis.default.file_mis_pershing_officer_code
+FROM landing.default.file_mis_pershing_officer_code
 UNION ALL
 SELECT 'file_mis_team_officers_v2' AS table_name, COUNT(*) AS record_count
-FROM mis.default.file_mis_team_officers_v2;
+FROM landing.default.file_mis_team_officers_v2;

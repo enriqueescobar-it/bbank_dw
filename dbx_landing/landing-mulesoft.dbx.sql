@@ -1,14 +1,14 @@
 -- Databricks SQL for source: mulesoft
 -- Generated from sqlserver/brz-mulesoft.sql
 
-CREATE CATALOG IF NOT EXISTS mulesoft;
-USE CATALOG mulesoft;
+CREATE CATALOG IF NOT EXISTS landing;
+USE CATALOG landing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."MULESOFT_CUSTOMER_EXTERNAL_ID"
-CREATE TABLE IF NOT EXISTS mulesoft.default.mulesoft_customer_external_id (
+CREATE TABLE IF NOT EXISTS landing.default.mulesoft_customer_external_id (
     id BIGINT,
     uuid STRING,
     tenant_id STRING,
@@ -24,9 +24,9 @@ CREATE TABLE IF NOT EXISTS mulesoft.default.mulesoft_customer_external_id (
     loaded_at TIMESTAMP
 );
 
-TRUNCATE TABLE mulesoft.default.mulesoft_customer_external_id;
+TRUNCATE TABLE landing.default.mulesoft_customer_external_id;
 
-INSERT INTO mulesoft.default.mulesoft_customer_external_id (
+INSERT INTO landing.default.mulesoft_customer_external_id (
     id, uuid, tenant_id, customer_id, `type`, source_system, external_id,
     sys_created_by, sys_created_at_ts, sys_last_modify_by,
     sys_last_modify_at_ts, yearmonth, loaded_at
@@ -48,7 +48,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."MULESOFT_PARTY"
-CREATE TABLE IF NOT EXISTS mulesoft.default.mulesoft_party (
+CREATE TABLE IF NOT EXISTS landing.default.mulesoft_party (
     id BIGINT,
     uuid STRING,
     tenant_id STRING,
@@ -63,9 +63,9 @@ CREATE TABLE IF NOT EXISTS mulesoft.default.mulesoft_party (
     loaded_at TIMESTAMP
 );
 
-TRUNCATE TABLE mulesoft.default.mulesoft_party;
+TRUNCATE TABLE landing.default.mulesoft_party;
 
-INSERT INTO mulesoft.default.mulesoft_party (
+INSERT INTO landing.default.mulesoft_party (
     id, uuid, tenant_id, primary_id_type, primary_id_country,
     primary_id_number, sys_created_by, sys_created_at_ts,
     sys_last_modify_by, sys_last_modify_at_ts, yearmonth, loaded_at
@@ -86,7 +86,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."MULESOFT_PROSPECT_EXTERNAL_DATA"
-CREATE TABLE IF NOT EXISTS mulesoft.default.mulesoft_prospect_external_data (
+CREATE TABLE IF NOT EXISTS landing.default.mulesoft_prospect_external_data (
     id BIGINT,
     external_id STRING,
     primary_id_type STRING,
@@ -165,9 +165,9 @@ CREATE TABLE IF NOT EXISTS mulesoft.default.mulesoft_prospect_external_data (
     loaded_at TIMESTAMP
 );
 
-TRUNCATE TABLE mulesoft.default.mulesoft_prospect_external_data;
+TRUNCATE TABLE landing.default.mulesoft_prospect_external_data;
 
-INSERT INTO mulesoft.default.mulesoft_prospect_external_data (
+INSERT INTO landing.default.mulesoft_prospect_external_data (
     id, external_id, primary_id_type, primary_id_country, primary_id_number,
     full_name, email, phone_country_code, phone_area_code, phone_number,
     phone_number_e164, fiscal_residence_country, communication_optin,
@@ -278,10 +278,10 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 SELECT 'mulesoft_customer_external_id' AS table_name, COUNT(*) AS record_count
-FROM mulesoft.default.mulesoft_customer_external_id
+FROM landing.default.mulesoft_customer_external_id
 UNION ALL
 SELECT 'mulesoft_party' AS table_name, COUNT(*) AS record_count
-FROM mulesoft.default.mulesoft_party
+FROM landing.default.mulesoft_party
 UNION ALL
 SELECT 'mulesoft_prospect_external_data' AS table_name, COUNT(*) AS record_count
-FROM mulesoft.default.mulesoft_prospect_external_data;
+FROM landing.default.mulesoft_prospect_external_data;
