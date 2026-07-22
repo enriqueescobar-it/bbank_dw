@@ -33,7 +33,7 @@ WITH landing_data as (
         ,TRY_CAST(TRY_CAST(add_months(LOADED_AT, -1) AS STRING) AS INT) AS YEARMONTH
         ,LOADED_AT
     FROM
-        assist.default.assist_codfil_ref
+        landing.default.assist_codfil_ref
 ),
 -- The SQL order of execution will run the where command first, so we are
 -- using the landing`s loaded_at on its run, this will capture new rows for us,
@@ -95,7 +95,7 @@ WITH landing_data as (
 		,TRY_CAST(TRY_CAST(add_months(LOADED_AT, -1) AS STRING) AS INT) AS YEARMONTH
         ,LOADED_AT
     FROM
-        assist.default.assist_customer_addl_fields
+        landing.default.assist_customer_addl_fields
 ),
 -- The SQL order of execution will run the where command first, so we are
 -- using the landing`s loaded_at on its run, this will capture new rows for us,
@@ -152,7 +152,7 @@ WITH landing_data as (
         ,TRY_CAST(TRY_CAST(add_months(LOADED_AT, -1) AS STRING) AS INT) AS YEARMONTH
         ,LOADED_AT
     FROM
-        assist.default.assist_customer_class
+        landing.default.assist_customer_class
 ),
 -- The SQL order of execution will run the where command first, so we are
 -- using the landing`s loaded_at on its run, this will capture new rows for us,
@@ -224,7 +224,7 @@ WITH landing_data as (
         ,TRY_CAST(TRY_CAST(add_months(LOADED_AT, -1) AS STRING) AS INT) AS YEARMONTH
         ,LOADED_AT
     FROM
-        assist.default.assist_customer_tbl
+        landing.default.assist_customer_tbl
 ),
 -- The SQL order of execution will run the where command first, so we are
 -- using the landing`s loaded_at on its run, this will capture new rows for us,
@@ -319,7 +319,7 @@ WITH landing_data as (
         ,TRY_CAST(TRY_CAST(add_months(LOADED_AT, -1) AS STRING) AS INT) AS YEARMONTH
         ,LOADED_AT
     FROM
-        assist.default.assist_master_account_tbl
+        landing.default.assist_master_account_tbl
 ),
 -- The SQL order of execution will run the where command first, so we are
 -- using the landing`s loaded_at on its run, this will capture new rows for us,
@@ -390,7 +390,7 @@ WITH landing_data as (
         ,TRY_CAST(TRY_CAST(add_months(LOADED_AT, -1) AS STRING) AS INT) AS YEARMONTH
         ,LOADED_AT
     FROM
-        assist.default.assist_officers_costcenter
+        landing.default.assist_officers_costcenter
 ),
 -- The SQL order of execution will run the where command first, so we are
 -- using the landing`s loaded_at on its run, this will capture new rows for us,
@@ -460,7 +460,7 @@ WITH landing_data as (
         ,TRY_CAST(date_format(TRY_CAST(ASTRDA AS DATE),'yyyyMM') as INTEGER) AS YEARMONTH
         ,LOADED_AT
     FROM
-        assist.default.assist_transaction_tbl
+        landing.default.assist_transaction_tbl
 ),
 -- The SQL order of execution will run the where command first, so we are
 -- using the landing`s loaded_at on its run, this will capture new rows for us,
