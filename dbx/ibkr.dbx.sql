@@ -35,6 +35,8 @@ CREATE TABLE IF NOT EXISTS ibkr.default.bcp_ibkr_account (
     `YEARMONTH` BIGINT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE ibkr.default.bcp_ibkr_account IS 
+'The table contains information about accounts associated with BCP and IBKR platforms. It includes details such as account numbers, status, balance, and related identifiers. Potential use cases include monitoring account statuses, analyzing customer activity, and tracking changes over time.';
 
 TRUNCATE TABLE ibkr.default.bcp_ibkr_account;
 
@@ -156,6 +158,8 @@ CREATE TABLE IF NOT EXISTS ibkr.default.bcp_ibkr_acct_holder (
     `YEARMONTH` BIGINT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE ibkr.default.bcp_ibkr_acct_holder IS
+'The table contains detailed information about account holders, including personal, contact, and employment details. It may also include financial data such as incomes and net worth. Use cases include assessing client profiles, analyzing demographic information, and understanding account ownership structures. This table can support compliance checks, risk assessments, and strategic planning.';
 
 TRUNCATE TABLE ibkr.default.bcp_ibkr_acct_holder;
 
@@ -267,6 +271,8 @@ CREATE TABLE IF NOT EXISTS ibkr.default.bcp_ibkr_balance_history (
     `YEARMONTH` BIGINT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE ibkr.default.bcp_ibkr_balance_history IS
+'The table contains historical balance data for accounts, recording the balance over time along with timestamps for when the data was created and loaded. Possible use cases include tracking account balance trends, generating reports on account performance, and analyzing financial activity over specific periods. This can help in understanding customer behavior and ensuring accuracy in financial records.';
 
 TRUNCATE TABLE ibkr.default.bcp_ibkr_balance_history;
 
