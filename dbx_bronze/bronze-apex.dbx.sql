@@ -106,7 +106,7 @@ with landing_data AS (
         ,loaded_at
 
     FROM
-         apex.default.apex_daily_accounts
+         landing.default.apex_daily_accounts
     
 	
 ),
@@ -810,7 +810,7 @@ FROM (
 		,TRY_CAST(DATE_OF_DATA AS DATE) AS DATE_OF_DATA
 		,TRY_CAST(LEFT(REPLACE(REPLACE(RIGHT(source_file,18),'.parquet',''),'-',''),6) AS INT) as YEARMONTH
 		,LOADED_AT
-	FROM apex.default.apex_daily_activities
+	FROM landing.default.apex_daily_activities
 	
 	
 	)ada -- convert all json fields to json sql server format
@@ -1315,7 +1315,7 @@ WITH landing_data as (
         ,TRY_CAST(DATE_OF_DATA AS DATE) AS DATE_OF_DATA
         ,TRY_CAST(LEFT(REPLACE(REPLACE(RIGHT(source_file,18),'.parquet',''),'-',''),6) AS INT)          AS YEARMONTH
         ,LOADED_AT
-    FROM apex.default.apex_daily_overnight_balances
+    FROM landing.default.apex_daily_overnight_balances
     
 	
 ),
@@ -1429,7 +1429,7 @@ WITH landing_data as (
 		,TRY_CAST(DATE_OF_DATA AS DATE) AS DATE_OF_DATA
 		,TRY_CAST(LEFT(REPLACE(REPLACE(RIGHT(source_file,18),'.parquet',''),'-',''),6) AS INT)	AS YEARMONTH
 		,LOADED_AT
-	FROM apex.default.apex_daily_positions
+	FROM landing.default.apex_daily_positions
     
 	
 
@@ -1523,7 +1523,7 @@ WITH landing_data as (
 		,TRY_CAST(DATE_OF_DATA AS DATE) AS DATE_OF_DATA
 		,TRY_CAST(LEFT(REPLACE(REPLACE(RIGHT(source_file,18),'.parquet',''),'-',''),6) AS INT) AS YEARMONTH
 		,LOADED_AT
-	from apex.default.apex_daily_stock_record
+	from landing.default.apex_daily_stock_record
 	
 	
 ),
@@ -1611,7 +1611,7 @@ WITH landing_data as (
         ,TRY_CAST(current_timestamp() AS DATE) AS AsOfDate
         ,NULL AS YEARMONTH
 	    ,loaded_at
-    FROM apex.default.apex_onboarding_status
+    FROM landing.default.apex_onboarding_status
 ),
 bronze_data as (
     SELECT
