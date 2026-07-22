@@ -1,23 +1,23 @@
 -- Databricks SQL for source: auxiliary
 -- Generated from sqlserver/brz-auxiliary.sql
 
-CREATE CATALOG IF NOT EXISTS auxiliary;
-USE CATALOG auxiliary;
+CREATE CATALOG IF NOT EXISTS landing;
+USE CATALOG landing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: static query auxiliary_br_dcode
-CREATE TABLE IF NOT EXISTS auxiliary.default.auxiliary_br_dcode (
+CREATE TABLE IF NOT EXISTS landing.default.auxiliary_br_dcode (
     `Mapping_Type` STRING,
     `Key` STRING,
     `Value` DECIMAL(38,10),
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE auxiliary.default.auxiliary_br_dcode;
+TRUNCATE TABLE landing.default.auxiliary_br_dcode;
 
-INSERT INTO auxiliary.default.auxiliary_br_dcode (
+INSERT INTO landing.default.auxiliary_br_dcode (
     `Mapping_Type`, `Key`, `Value`, `LOADED_AT`
 )
 SELECT
@@ -28,7 +28,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: static query auxiliary_jha_sei_trans_code
-CREATE TABLE IF NOT EXISTS auxiliary.default.auxiliary_jha_sei_trans_code (
+CREATE TABLE IF NOT EXISTS landing.default.auxiliary_jha_sei_trans_code (
     `TYPE` STRING,
     `CODE` STRING,
     `DEBIT_CREDIT` STRING,
@@ -41,9 +41,9 @@ CREATE TABLE IF NOT EXISTS auxiliary.default.auxiliary_jha_sei_trans_code (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE auxiliary.default.auxiliary_jha_sei_trans_code;
+TRUNCATE TABLE landing.default.auxiliary_jha_sei_trans_code;
 
-INSERT INTO auxiliary.default.auxiliary_jha_sei_trans_code (
+INSERT INTO landing.default.auxiliary_jha_sei_trans_code (
     `TYPE`, `CODE`, `DEBIT_CREDIT`, `AFFECT`, `DESCRIPTION`, `TRANSACTION_TYPE`,
     `ACCOUNT_TYPE`, `DESCRIPTION_CODE`, `TREATMENT_CODE`, `LOADED_AT`
 )
@@ -61,7 +61,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 SELECT 'auxiliary_br_dcode' AS table_name, COUNT(*) AS record_count
-FROM auxiliary.default.auxiliary_br_dcode
+FROM landing.default.auxiliary_br_dcode
 UNION ALL
 SELECT 'auxiliary_jha_sei_trans_code' AS table_name, COUNT(*) AS record_count
-FROM auxiliary.default.auxiliary_jha_sei_trans_code;
+FROM landing.default.auxiliary_jha_sei_trans_code;

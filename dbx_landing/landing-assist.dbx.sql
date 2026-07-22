@@ -1,14 +1,14 @@
 -- Databricks SQL for source: assist
 -- Generated from sqlserver/brz-assist.sql
 
-CREATE CATALOG IF NOT EXISTS assist;
-USE CATALOG assist;
+CREATE CATALOG IF NOT EXISTS landing;
+USE CATALOG landing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."ASSIST_CODFIL_REF"
-CREATE TABLE IF NOT EXISTS assist.default.assist_codfil_ref (
+CREATE TABLE IF NOT EXISTS landing.default.assist_codfil_ref (
     `COD_COD` STRING,
     `COD_TYP` STRING,
     `COD_USD` STRING,
@@ -19,12 +19,12 @@ CREATE TABLE IF NOT EXISTS assist.default.assist_codfil_ref (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE assist.default.assist_codfil_ref IS 
+COMMENT ON TABLE landing.default.assist_codfil_ref IS 
 'This table contains reference data related to coding standards. It records various attributes associated with codes, such as type, description, grouping, and risk classification. Possible use cases include generating reports on coding patterns, validating code usage, and tracking changes over time. The table also includes a timestamp for when the data was loaded.';
 
-TRUNCATE TABLE assist.default.assist_codfil_ref;
+TRUNCATE TABLE landing.default.assist_codfil_ref;
 
-INSERT INTO assist.default.assist_codfil_ref (
+INSERT INTO landing.default.assist_codfil_ref (
     `COD_COD`, `COD_TYP`, `COD_USD`, `COD_DES`, `COD_GR`, `COD_SIG`,
     `Cod_Risk`, `YEARMONTH`, `LOADED_AT`
 )
@@ -41,7 +41,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."ASSIST_CUSTOMER_ADDL_FIELDS"
-CREATE TABLE IF NOT EXISTS assist.default.assist_customer_addl_fields (
+CREATE TABLE IF NOT EXISTS landing.default.assist_customer_addl_fields (
     `cifno` STRING,
     `fullName` STRING,
     `firstName` STRING,
@@ -58,12 +58,12 @@ CREATE TABLE IF NOT EXISTS assist.default.assist_customer_addl_fields (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE assist.default.assist_customer_addl_fields IS 
+COMMENT ON TABLE landing.default.assist_customer_addl_fields IS 
 'The table contains additional fields related to customer information. It includes data such as customer identification numbers, names, and the officer handling the account. It can be used for profiling customers, tracking customer relationships over time, and organizing customer data based on classifications and geographical details.';
 
-TRUNCATE TABLE assist.default.assist_customer_addl_fields;
+TRUNCATE TABLE landing.default.assist_customer_addl_fields;
 
-INSERT INTO assist.default.assist_customer_addl_fields (
+INSERT INTO landing.default.assist_customer_addl_fields (
     `cifno`, `fullName`, `firstName`, `middleName`, `lastName`, `class`,
     `officer_code`, `cifGroupID`, `cifGroupDesc`, `residenceCountryCode`, `residenceCountryDesc`, `customerSince`,
     `date_imported`, `YEARMONTH`, `LOADED_AT`
@@ -87,18 +87,18 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."ASSIST_CUSTOMER_CLASS"
-CREATE TABLE IF NOT EXISTS assist.default.assist_customer_class (
+CREATE TABLE IF NOT EXISTS landing.default.assist_customer_class (
     `class_code` STRING,
     `class_description` STRING,
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE assist.default.assist_customer_class IS 
+COMMENT ON TABLE landing.default.assist_customer_class IS 
 'The table contains classifications for customers, detailing the class code and its description along with the year and month of the data loading timestamp. This information can be useful for analyzing customer segments, tracking trends over time, and understanding the demographic distribution of customer classes.';
 
-TRUNCATE TABLE assist.default.assist_customer_class;
+TRUNCATE TABLE landing.default.assist_customer_class;
 
-INSERT INTO assist.default.assist_customer_class (
+INSERT INTO landing.default.assist_customer_class (
     `class_code`, `class_description`, `YEARMONTH`, `LOADED_AT`
 )
 SELECT
@@ -109,7 +109,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."ASSIST_CUSTOMER_TBL"
-CREATE TABLE IF NOT EXISTS assist.default.assist_customer_tbl (
+CREATE TABLE IF NOT EXISTS landing.default.assist_customer_tbl (
     `ASCIFN` BIGINT,
     `ASCUSTYP` STRING,
     `ASFNAM` STRING,
@@ -141,12 +141,12 @@ CREATE TABLE IF NOT EXISTS assist.default.assist_customer_tbl (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE assist.default.assist_customer_tbl IS 
+COMMENT ON TABLE landing.default.assist_customer_tbl IS 
 'The table contains customer information relevant to the assistance department. It includes personal details such as name, date of birth, contact information, occupation, nationality, and other attributes related to the customers. This data can be useful for analyzing customer demographics, tracking customer trends, and managing communications with clients effectively.';
 
-TRUNCATE TABLE assist.default.assist_customer_tbl;
+TRUNCATE TABLE landing.default.assist_customer_tbl;
 
-INSERT INTO assist.default.assist_customer_tbl (
+INSERT INTO landing.default.assist_customer_tbl (
     `ASCIFN`, `ASCUSTYP`, `ASFNAM`, `ASLNAM`, `ASCODE`, `ASIDTYP`,
     `ASDTBIR`, `ASSTRDAT`, `ASOCCUP`, `ASCNTNAT`, `ASCNTDOM`, `ASCFNA2`,
     `ASCFNA3`, `ASCITDOM`, `ASSTADOM`, `ASZIPDOM`, `ASPHONE1`, `ASPHONE2`,
@@ -187,7 +187,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."ASSIST_MASTER_ACCOUNT_TBL"
-CREATE TABLE IF NOT EXISTS assist.default.assist_master_account_tbl (
+CREATE TABLE IF NOT EXISTS landing.default.assist_master_account_tbl (
     `ASACCT` BIGINT,
     `ASOFDT` DATE,
     `ASCIFN` BIGINT,
@@ -216,12 +216,12 @@ CREATE TABLE IF NOT EXISTS assist.default.assist_master_account_tbl (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE assist.default.assist_master_account_tbl IS 
+COMMENT ON TABLE landing.default.assist_master_account_tbl IS 
 'The table contains information related to master accounts and their associated details. It includes historical data about account statuses, classifications, balances, and customer information. Use cases include monitoring account performance over time, analyzing customer demographics, and tracking account changes. This data can help in understanding account characteristics and trends.';
 
-TRUNCATE TABLE assist.default.assist_master_account_tbl;
+TRUNCATE TABLE landing.default.assist_master_account_tbl;
 
-INSERT INTO assist.default.assist_master_account_tbl (
+INSERT INTO landing.default.assist_master_account_tbl (
     `ASACCT`, `ASOFDT`, `ASCIFN`, `ASBRNC`, `ASCURC`, `ASOFFI`,
     `ASCTYR`, `ASCLAS`, `ASDAOP`, `ASDACL`, `ASCODE`, `ASTYPE`,
     `ASBUST`, `ASTARGTP`, `ASCMCI`, `ASCMCO`, `ASBALA`, `ASFNAME`,
@@ -259,7 +259,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."ASSIST_OFFICERS_COSTCENTER"
-CREATE TABLE IF NOT EXISTS assist.default.assist_officers_costcenter (
+CREATE TABLE IF NOT EXISTS landing.default.assist_officers_costcenter (
     `officer_code` STRING,
     `first_name` STRING,
     `last_name` STRING,
@@ -267,12 +267,12 @@ CREATE TABLE IF NOT EXISTS assist.default.assist_officers_costcenter (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE assist.default.assist_officers_costcenter IS 
+COMMENT ON TABLE landing.default.assist_officers_costcenter IS 
 'The table contains information about officers and their associated cost centers. It includes details such as the officer s code, first and last names, the cost center they are linked to, and the period for which the data is relevant. This data can be utilized for tracking costs by individual officers, managing budgets, and analyzing resource allocation within various cost centers over time';
 
-TRUNCATE TABLE assist.default.assist_officers_costcenter;
+TRUNCATE TABLE landing.default.assist_officers_costcenter;
 
-INSERT INTO assist.default.assist_officers_costcenter (
+INSERT INTO landing.default.assist_officers_costcenter (
     `officer_code`, `first_name`, `last_name`, `cost_center`, `YEARMONTH`, `LOADED_AT`
 )
 SELECT
@@ -285,7 +285,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."ASSIST_TRANSACTION_TBL"
-CREATE TABLE IF NOT EXISTS assist.default.assist_transaction_tbl (
+CREATE TABLE IF NOT EXISTS landing.default.assist_transaction_tbl (
     `TRID` BIGINT,
     `ASTRCD` STRING,
     `ASAMTB` DECIMAL(38,10),
@@ -313,12 +313,12 @@ CREATE TABLE IF NOT EXISTS assist.default.assist_transaction_tbl (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE assist.default.assist_transaction_tbl IS 
+COMMENT ON TABLE landing.default.assist_transaction_tbl IS 
 'The table contains transaction records related to various assist operations. It includes details such as transaction IDs, account information, amounts involved, currency types, and timestamps. This data can be used for financial analysis, tracking transaction flows, and auditing purposes, as well as understanding trends in transaction activities over time.';
 
-TRUNCATE TABLE assist.default.assist_transaction_tbl;
+TRUNCATE TABLE landing.default.assist_transaction_tbl;
 
-INSERT INTO assist.default.assist_transaction_tbl (
+INSERT INTO landing.default.assist_transaction_tbl (
     `TRID`, `ASTRCD`, `ASAMTB`, `ASTRDA`, `ASACCT`, `ASDESC`,
     `ASAMTO`, `ASCURC`, `ASAPCO`, `ASTIME`, `ASORGI`, `ASTOBK`,
     `ASTIBK`, `ASTBBK`, `ASBENE`, `ASTRCO`, `ASORDE`, `ASTRDE`,
@@ -355,22 +355,22 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 SELECT 'assist_codfil_ref' AS table_name, COUNT(*) AS record_count
-FROM assist.default.assist_codfil_ref
+FROM landing.default.assist_codfil_ref
 UNION ALL
 SELECT 'assist_customer_addl_fields' AS table_name, COUNT(*) AS record_count
-FROM assist.default.assist_customer_addl_fields
+FROM landing.default.assist_customer_addl_fields
 UNION ALL
 SELECT 'assist_customer_class' AS table_name, COUNT(*) AS record_count
-FROM assist.default.assist_customer_class
+FROM landing.default.assist_customer_class
 UNION ALL
 SELECT 'assist_customer_tbl' AS table_name, COUNT(*) AS record_count
-FROM assist.default.assist_customer_tbl
+FROM landing.default.assist_customer_tbl
 UNION ALL
 SELECT 'assist_master_account_tbl' AS table_name, COUNT(*) AS record_count
-FROM assist.default.assist_master_account_tbl
+FROM landing.default.assist_master_account_tbl
 UNION ALL
 SELECT 'assist_officers_costcenter' AS table_name, COUNT(*) AS record_count
-FROM assist.default.assist_officers_costcenter
+FROM landing.default.assist_officers_costcenter
 UNION ALL
 SELECT 'assist_transaction_tbl' AS table_name, COUNT(*) AS record_count
-FROM assist.default.assist_transaction_tbl;
+FROM landing.default.assist_transaction_tbl;

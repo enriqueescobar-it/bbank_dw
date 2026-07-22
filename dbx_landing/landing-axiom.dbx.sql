@@ -1,14 +1,14 @@
 -- Databricks SQL for source: axiom
 -- Generated from sqlserver/brz-axiom.sql
 
-CREATE CATALOG IF NOT EXISTS axiom;
-USE CATALOG axiom;
+CREATE CATALOG IF NOT EXISTS landing;
+USE CATALOG landing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."AXIOM_acct"
-CREATE TABLE IF NOT EXISTS axiom.default.axiom_acct (
+CREATE TABLE IF NOT EXISTS landing.default.axiom_acct (
     `ACCT` STRING,
     `Description` STRING,
     `AX_NewACCT` STRING,
@@ -57,12 +57,12 @@ CREATE TABLE IF NOT EXISTS axiom.default.axiom_acct (
     `DATE_OF_DATA` DATE,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE axiom.default.axiom_acct IS 
+COMMENT ON TABLE landing.default.axiom_acct IS 
 'The table contains detailed information about various accounts used within the organization. It includes account identifiers, types, financial reporting aspects, and various metrics associated with each account. Possible use cases include financial analysis, generating reports for management, and assessing account performance across different categories. This data can help in understanding account classifications, reporting levels, and analytical metrics necessary for decision-making.';
 
-TRUNCATE TABLE axiom.default.axiom_acct;
+TRUNCATE TABLE landing.default.axiom_acct;
 
-INSERT INTO axiom.default.axiom_acct (
+INSERT INTO landing.default.axiom_acct (
     `ACCT`, `Description`, `AX_NewACCT`, `AX_AcctType`, `AX_DRCR`, `AX_ReportSign`,
     `AX_BSACCT`, `AX_YieldDTYPE`, `AX_Accrual_Basis`, `AX_BUDACCT`, `AX_FinStmt`, `AX_StandardReport`,
     `AX_LoanLossReserveCategory`, `AX_LoanLossReserveType`, `AX_ForecastAcct`, `RptLvl1`, `RptLvl2`, `RptLvl3`,
@@ -123,7 +123,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."AXIOM_cds"
-CREATE TABLE IF NOT EXISTS axiom.default.axiom_cds (
+CREATE TABLE IF NOT EXISTS landing.default.axiom_cds (
     `YRMO` STRING,
     `InstrumentID` BIGINT,
     `ITYPE` STRING,
@@ -231,12 +231,12 @@ CREATE TABLE IF NOT EXISTS axiom.default.axiom_cds (
     `DATE_OF_DATA` DATE,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE axiom.default.axiom_cds IS 
+COMMENT ON TABLE landing.default.axiom_cds IS 
 'The table contains data related to certificates of deposit (CDs). It includes details such as account information, instrument types, balances, interest rates, and maturity dates. This data can be useful for analyzing trends in CD performance, managing interest rate risk, and tracking account activity over time.';
 
-TRUNCATE TABLE axiom.default.axiom_cds;
+TRUNCATE TABLE landing.default.axiom_cds;
 
-INSERT INTO axiom.default.axiom_cds (
+INSERT INTO landing.default.axiom_cds (
     `YRMO`, `InstrumentID`, `ITYPE`, `ACCT`, `DEPT`, `PROD`,
     `CIFID`, `AX_AccrualBasis`, `OFFICERID`, `AX_AvgBal`, `AX_AvgBalAnnualized`, `AX_ClosedDate`,
     `AX_ClosedThisMonth`, `AX_CurBal`, `AX_DWInterest`, `AX_FTP`, `AX_FTPAnnual`, `AX_FTPRate`,
@@ -366,7 +366,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."AXIOM_deposits"
-CREATE TABLE IF NOT EXISTS axiom.default.axiom_deposits (
+CREATE TABLE IF NOT EXISTS landing.default.axiom_deposits (
     `YRMO` STRING,
     `InstrumentID` BIGINT,
     `ITYPE` STRING,
@@ -520,12 +520,12 @@ CREATE TABLE IF NOT EXISTS axiom.default.axiom_deposits (
     `DATE_OF_DATA` DATE,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE axiom.default.axiom_deposits IS 
+COMMENT ON TABLE landing.default.axiom_deposits IS 
 'The table contains data related to deposits and their characteristics over time. It includes information on account types, balances, interest rates, and transaction behaviors. Possible use cases include analyzing deposit performance, understanding average and current balances, assessing interest income, and tracking account activity metrics. This data can help in evaluating the financial health of different accounts and identifying trends in deposit behavior.';
 
-TRUNCATE TABLE axiom.default.axiom_deposits;
+TRUNCATE TABLE landing.default.axiom_deposits;
 
-INSERT INTO axiom.default.axiom_deposits (
+INSERT INTO landing.default.axiom_deposits (
     `YRMO`, `InstrumentID`, `ITYPE`, `ACCT`, `DEPT`, `PROD`,
     `CIFID`, `OFFICERID`, `AX_AccrualBasis`, `AX_AvgBal`, `AX_AvgBalAnnualized`, `AX_ClosedDate`,
     `AX_ClosedThisMonth`, `AX_CurBal`, `AX_DWInterest`, `AX_FTP`, `AX_FTPAnnual`, `AX_FTPRate`,
@@ -709,7 +709,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."AXIOM_dmi_chargeoffs"
-CREATE TABLE IF NOT EXISTS axiom.default.axiom_dmi_chargeoffs (
+CREATE TABLE IF NOT EXISTS landing.default.axiom_dmi_chargeoffs (
     `InstrumentID` BIGINT,
     `YRMO` STRING,
     `ChargeOffAmt` STRING,
@@ -719,12 +719,12 @@ CREATE TABLE IF NOT EXISTS axiom.default.axiom_dmi_chargeoffs (
     `DATE_OF_DATA` DATE,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE axiom.default.axiom_dmi_chargeoffs IS 
+COMMENT ON TABLE landing.default.axiom_dmi_chargeoffs IS 
 'The table contains information on charge-offs related to various instruments. Use cases include analyzing charge-off trends over time, assessing the financial impact of charge-offs by category, and evaluating the performance of specific products. Key details captured in the table include the amount charged off, the associated instrument and invoice IDs, and the relevant time periods.';
 
-TRUNCATE TABLE axiom.default.axiom_dmi_chargeoffs;
+TRUNCATE TABLE landing.default.axiom_dmi_chargeoffs;
 
-INSERT INTO axiom.default.axiom_dmi_chargeoffs (
+INSERT INTO landing.default.axiom_dmi_chargeoffs (
     `InstrumentID`, `YRMO`, `ChargeOffAmt`, `INVID`, `CAT`, `ProdLnCode`,
     `DATE_OF_DATA`, `LOADED_AT`
 )
@@ -740,7 +740,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."AXIOM_dmiloans"
-CREATE TABLE IF NOT EXISTS axiom.default.axiom_dmiloans (
+CREATE TABLE IF NOT EXISTS landing.default.axiom_dmiloans (
     `YRMO` STRING,
     `InstrumentID` BIGINT,
     `ACCT` STRING,
@@ -940,12 +940,12 @@ CREATE TABLE IF NOT EXISTS axiom.default.axiom_dmiloans (
     `DATE_OF_DATA` DATE,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE axiom.default.axiom_dmiloans IS 
+COMMENT ON TABLE landing.default.axiom_dmiloans IS 
 'The table contains detailed information about loans, including repayment terms, interest rates, and account specifics. Use cases include monitoring loan performance, analyzing payment behaviors, and assessing interest rates and repayment conditions. The data can help evaluate the financial health of loan portfolios and understand trends in customer repayment activities.';
 
-TRUNCATE TABLE axiom.default.axiom_dmiloans;
+TRUNCATE TABLE landing.default.axiom_dmiloans;
 
-INSERT INTO axiom.default.axiom_dmiloans (
+INSERT INTO landing.default.axiom_dmiloans (
     `YRMO`, `InstrumentID`, `ACCT`, `DEPT`, `PROD`, `CIFID`,
     `OFFICERID`, `AX_AccrualBasis`, `AX_Amortizing`, `AX_AmortTerm`, `AX_AvgBal`, `AX_CurBal`,
     `AX_CurBalEOM`, `AX_FirstRateResetCap`, `AX_FTP`, `AX_FTPAnnual`, `AX_FTPRate`, `AX_FTPRateSpread`,
@@ -1182,18 +1182,18 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."AXIOM_instmodelstg"
-CREATE TABLE IF NOT EXISTS axiom.default.axiom_instmodelstg (
+CREATE TABLE IF NOT EXISTS landing.default.axiom_instmodelstg (
     `InstrumentID` BIGINT,
     `CHARINDEX_InstrumentID` STRING,
     `LEN_InstrumentID` STRING,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE axiom.default.axiom_instmodelstg IS 
+COMMENT ON TABLE landing.default.axiom_instmodelstg IS 
 'The table contains data related to financial instruments. It includes identifiers for each instrument along with metadata such as the loading timestamp. This data can be used for tracking instrument details, analyzing instrument usage over time, and ensuring data integrity in financial modeling processes.';
 
-TRUNCATE TABLE axiom.default.axiom_instmodelstg;
+TRUNCATE TABLE landing.default.axiom_instmodelstg;
 
-INSERT INTO axiom.default.axiom_instmodelstg (
+INSERT INTO landing.default.axiom_instmodelstg (
     `InstrumentID`, `CHARINDEX_InstrumentID`, `LEN_InstrumentID`, `LOADED_AT`
 )
 SELECT
@@ -1204,7 +1204,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."AXIOM_loans"
-CREATE TABLE IF NOT EXISTS axiom.default.axiom_loans (
+CREATE TABLE IF NOT EXISTS landing.default.axiom_loans (
     `YRMO` STRING,
     `InstrumentID` BIGINT,
     `ITYPE` STRING,
@@ -1400,12 +1400,12 @@ CREATE TABLE IF NOT EXISTS axiom.default.axiom_loans (
     `DATE_OF_DATA` DATE,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE axiom.default.axiom_loans IS 
+COMMENT ON TABLE landing.default.axiom_loans IS 
 'The table stores detailed information about loans, including various attributes such as loan type, balance, payment frequency, and interest rates. It can be useful for analyzing loan performance, assessing risk and compliance, and generating reports on loan status and history. Possible use cases include tracking loan origination and closure dates, evaluating maturity dates, and monitoring payments and charges associated with loans.';
 
-TRUNCATE TABLE axiom.default.axiom_loans;
+TRUNCATE TABLE landing.default.axiom_loans;
 
-INSERT INTO axiom.default.axiom_loans (
+INSERT INTO landing.default.axiom_loans (
     `YRMO`, `InstrumentID`, `ITYPE`, `ACCT`, `DEPT`, `PROD`,
     `CIFID`, `OFFICERID`, `AX_AccrualBasis`, `AX_AmortizationStartDate`, `AX_Amortizing`, `AX_AmortTerm`,
     `AX_AvgBal`, `AX_AvgBalAnnualized`, `AX_ClosedDate`, `AX_ClosedThisMonth`, `AX_CurBal`, `AX_CurBalOrig`,
@@ -1638,7 +1638,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."AXIOM_ovrntdep"
-CREATE TABLE IF NOT EXISTS axiom.default.axiom_ovrntdep (
+CREATE TABLE IF NOT EXISTS landing.default.axiom_ovrntdep (
     `YRMO` STRING,
     `InstrumentID` BIGINT,
     `ACCT` STRING,
@@ -1722,12 +1722,12 @@ CREATE TABLE IF NOT EXISTS axiom.default.axiom_ovrntdep (
     `DATE_OF_DATA` DATE,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE axiom.default.axiom_ovrntdep IS 
+COMMENT ON TABLE landing.default.axiom_ovrntdep IS 
 'The table contains detailed information about various investment accounts and their characteristics over time. It includes data such as account balances, interest rates, payment schedules, and borrower details. This information can be utilized for analysis related to account performance, interest income calculations, and investment product characteristics. It may be particularly useful for financial reporting, trend analysis, or risk assessment tasks.';
 
-TRUNCATE TABLE axiom.default.axiom_ovrntdep;
+TRUNCATE TABLE landing.default.axiom_ovrntdep;
 
-INSERT INTO axiom.default.axiom_ovrntdep (
+INSERT INTO landing.default.axiom_ovrntdep (
     `YRMO`, `InstrumentID`, `ACCT`, `DEPT`, `PROD`, `CIFID`,
     `OFFICERID`, `AX_AccrualBasis`, `AX_Amortizing`, `AX_AmortTerm`, `AX_AvgBal`, `AX_CurBal`,
     `AX_FirstRateResetCap`, `AX_FTP`, `AX_FTPAnnual`, `AX_FTPRate`, `AX_FTPRateSpread`, `AX_FTPSpread`,
@@ -1829,25 +1829,25 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 SELECT 'axiom_acct' AS table_name, COUNT(*) AS record_count
-FROM axiom.default.axiom_acct
+FROM landing.default.axiom_acct
 UNION ALL
 SELECT 'axiom_cds' AS table_name, COUNT(*) AS record_count
-FROM axiom.default.axiom_cds
+FROM landing.default.axiom_cds
 UNION ALL
 SELECT 'axiom_deposits' AS table_name, COUNT(*) AS record_count
-FROM axiom.default.axiom_deposits
+FROM landing.default.axiom_deposits
 UNION ALL
 SELECT 'axiom_dmi_chargeoffs' AS table_name, COUNT(*) AS record_count
-FROM axiom.default.axiom_dmi_chargeoffs
+FROM landing.default.axiom_dmi_chargeoffs
 UNION ALL
 SELECT 'axiom_dmiloans' AS table_name, COUNT(*) AS record_count
-FROM axiom.default.axiom_dmiloans
+FROM landing.default.axiom_dmiloans
 UNION ALL
 SELECT 'axiom_instmodelstg' AS table_name, COUNT(*) AS record_count
-FROM axiom.default.axiom_instmodelstg
+FROM landing.default.axiom_instmodelstg
 UNION ALL
 SELECT 'axiom_loans' AS table_name, COUNT(*) AS record_count
-FROM axiom.default.axiom_loans
+FROM landing.default.axiom_loans
 UNION ALL
 SELECT 'axiom_ovrntdep' AS table_name, COUNT(*) AS record_count
-FROM axiom.default.axiom_ovrntdep;
+FROM landing.default.axiom_ovrntdep;

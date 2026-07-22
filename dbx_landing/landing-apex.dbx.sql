@@ -1,14 +1,14 @@
 -- Databricks SQL for source: apex
 -- Generated from sqlserver/brz-apex.sql
 
-CREATE CATALOG IF NOT EXISTS apex;
-USE CATALOG apex;
+CREATE CATALOG IF NOT EXISTS landing;
+USE CATALOG landing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."APEX_daily_accounts"
-CREATE TABLE IF NOT EXISTS apex.default.apex_daily_accounts (
+CREATE TABLE IF NOT EXISTS landing.default.apex_daily_accounts (
     `account_id` BIGINT,
     `account_group_code` STRING,
     `correspondent_code` STRING,
@@ -74,12 +74,12 @@ CREATE TABLE IF NOT EXISTS apex.default.apex_daily_accounts (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE apex.default.apex_daily_accounts IS 
+COMMENT ON TABLE landing.default.apex_daily_accounts IS 
 'The table contains daily records of accounts along with their various attributes. It includes details such as account types, registration, and investment profiles, which can be useful for analyzing account activity and client demographics. Possible use cases include assessing account statuses, understanding ownership types, and analyzing investment profiles based on different financial goals and risk tolerances.';
 
-TRUNCATE TABLE apex.default.apex_daily_accounts;
+TRUNCATE TABLE landing.default.apex_daily_accounts;
 
-INSERT INTO apex.default.apex_daily_accounts (
+INSERT INTO landing.default.apex_daily_accounts (
     `account_id`, `account_group_code`, `correspondent_code`, `ownership_type`, `registration_type`, `funding_type`,
     `status`, `fdid`, `cat_account_holder_type`, `title`, `created_time`, `opened_time`,
     `is_pattern_day_trader`, `accepts_issuer_direct_communication`, `primary_registered_rep_id`, `investment_profile_investment_profile_id`, `investment_profile_account_goals_investment_objective`, `investment_profile_account_goals_risk_tolerance`,
@@ -160,7 +160,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."APEX_daily_activities"
-CREATE TABLE IF NOT EXISTS apex.default.apex_daily_activities (
+CREATE TABLE IF NOT EXISTS landing.default.apex_daily_activities (
     `account_id` BIGINT,
     `activity_id` BIGINT,
     `type` STRING,
@@ -572,12 +572,12 @@ CREATE TABLE IF NOT EXISTS apex.default.apex_daily_activities (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE apex.default.apex_daily_activities IS 
+COMMENT ON TABLE landing.default.apex_daily_activities IS 
 'The table captures daily activities related to accounts and assets. It includes data on various activity types such as trades, dividends, and stock splits. This information can be useful for tracking account transactions, analyzing asset performance, and understanding corporate actions. Possible use cases include generating reports on trading activities, assessing dividend distributions, and handling corporate actions like stock splits.';
 
-TRUNCATE TABLE apex.default.apex_daily_activities;
+TRUNCATE TABLE landing.default.apex_daily_activities;
 
-INSERT INTO apex.default.apex_daily_activities (
+INSERT INTO landing.default.apex_daily_activities (
     `account_id`, `activity_id`, `type`, `sub_type`, `symbol`, `asset_type`,
     `region_code`, `asset_id`, `side`, `quantity`, `currency_code`, `currency_asset_id`,
     `price`, `gross_amount`, `net_amount`, `activity_date`, `activity_time`, `process_date`,
@@ -1062,7 +1062,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."APEX_daily_overnight_balances"
-CREATE TABLE IF NOT EXISTS apex.default.apex_daily_overnight_balances (
+CREATE TABLE IF NOT EXISTS landing.default.apex_daily_overnight_balances (
     `account_id` BIGINT,
     `firm` STRING,
     `process_date` DATE,
@@ -1126,12 +1126,12 @@ CREATE TABLE IF NOT EXISTS apex.default.apex_daily_overnight_balances (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE apex.default.apex_daily_overnight_balances IS 
+COMMENT ON TABLE landing.default.apex_daily_overnight_balances IS 
 'The table contains daily overnight balance data for accounts, covering various equity and cash metrics. Use cases include monitoring account balances, margin requirements, and buying power analysis. It can help in understanding the financial health and liquidity of accounts over time.';
 
-TRUNCATE TABLE apex.default.apex_daily_overnight_balances;
+TRUNCATE TABLE landing.default.apex_daily_overnight_balances;
 
-INSERT INTO apex.default.apex_daily_overnight_balances (
+INSERT INTO landing.default.apex_daily_overnight_balances (
     `account_id`, `firm`, `process_date`, `currency_code`, `total_equity`, `margin_equity`,
     `margin_requirement`, `margin_excess_equity`, `cash_equity`, `cash_requirement`, `cash_excess_equity`, `margin_requirement_with_concentration`,
     `margin_excess_equity_with_concentration`, `overnight_buying_power_calculated`, `overnight_buying_power_issued`, `day_trade_buying_power_issued`, `regt_buying_power_calculated`, `regt_buying_power_issued`,
@@ -1210,7 +1210,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."APEX_daily_positions"
-CREATE TABLE IF NOT EXISTS apex.default.apex_daily_positions (
+CREATE TABLE IF NOT EXISTS landing.default.apex_daily_positions (
     `account_id` BIGINT,
     `asset_id` BIGINT,
     `date` DATE,
@@ -1232,12 +1232,12 @@ CREATE TABLE IF NOT EXISTS apex.default.apex_daily_positions (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE apex.default.apex_daily_positions IS 
+COMMENT ON TABLE landing.default.apex_daily_positions IS 
 'The table contains daily position data for different accounts related to asset management. It includes information on trades, settlements, and various adjustments that may impact asset positions. Potential use cases include tracking asset performance over time, analyzing trends in trading activity, and reconciling account positions to ensure accuracy. The data can also assist in understanding the status of pending transactions.';
 
-TRUNCATE TABLE apex.default.apex_daily_positions;
+TRUNCATE TABLE landing.default.apex_daily_positions;
 
-INSERT INTO apex.default.apex_daily_positions (
+INSERT INTO landing.default.apex_daily_positions (
     `account_id`, `asset_id`, `date`, `trade`, `settled`, `last_adjusted_date`,
     `adjusted_trade`, `adjusted_settled`, `free`, `fpsl`, `pending_outgoing_acat`, `unrestricted`,
     `pending_drip`, `pending_withdrawal`, `snapshot_timestamp`, `correspondent_id`, `source_file`, `DATE_OF_DATA`,
@@ -1267,7 +1267,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."APEX_daily_stock_record"
-CREATE TABLE IF NOT EXISTS apex.default.apex_daily_stock_record (
+CREATE TABLE IF NOT EXISTS landing.default.apex_daily_stock_record (
     `Id` BIGINT,
     `business_date` DATE,
     `branch_id` BIGINT,
@@ -1310,12 +1310,12 @@ CREATE TABLE IF NOT EXISTS apex.default.apex_daily_stock_record (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE apex.default.apex_daily_stock_record IS 
+COMMENT ON TABLE landing.default.apex_daily_stock_record IS 
 'The table contains daily stock records, including details about various accounts, assets, and their financial metrics. It tracks information such as account types, asset prices, currency values, and trade positions for each business date. This data can be utilized for analyzing stock performance, assessing account health, and making informed financial decisions related to investments.';
 
-TRUNCATE TABLE apex.default.apex_daily_stock_record;
+TRUNCATE TABLE landing.default.apex_daily_stock_record;
 
-INSERT INTO apex.default.apex_daily_stock_record (
+INSERT INTO landing.default.apex_daily_stock_record (
     `Id`, `business_date`, `branch_id`, `account_id`, `account_type`, `account_class`,
     `account_class_type`, `account_name`, `account_group_id`, `asset_id`, `asset_type`, `asset_country`,
     `cusip`, `symbol`, `symbol_description`, `trade_position`, `settled_position`, `closing_price`,
@@ -1369,7 +1369,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."APEX_onboarding_status"
-CREATE TABLE IF NOT EXISTS apex.default.apex_onboarding_status (
+CREATE TABLE IF NOT EXISTS landing.default.apex_onboarding_status (
     `id` BIGINT,
     `cif` STRING,
     `partnerUserId` BIGINT,
@@ -1385,12 +1385,12 @@ CREATE TABLE IF NOT EXISTS apex.default.apex_onboarding_status (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE apex.default.apex_onboarding_status IS 
+COMMENT ON TABLE landing.default.apex_onboarding_status IS 
 'The table contains information related to the onboarding status of partners in the system. It tracks various aspects such as the current status of onboarding, timestamps for when records were created and updated, and any failure reasons that may arise during the process. This data can be useful for monitoring the progress of partner onboarding, identifying bottlenecks, and analyzing patterns in onboarding success or failure.';
 
-TRUNCATE TABLE apex.default.apex_onboarding_status;
+TRUNCATE TABLE landing.default.apex_onboarding_status;
 
-INSERT INTO apex.default.apex_onboarding_status (
+INSERT INTO landing.default.apex_onboarding_status (
     `id`, `cif`, `partnerUserId`, `status`, `partnerAccountId`, `createdAt`,
     `updatedAt`, `partnerFileUploadId`, `failureReason`, `failures`, `brokerAccountId`, `AsOfDate`,
     `YEARMONTH`, `LOADED_AT`
@@ -1413,19 +1413,19 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 SELECT 'apex_daily_accounts' AS table_name, COUNT(*) AS record_count
-FROM apex.default.apex_daily_accounts
+FROM landing.default.apex_daily_accounts
 UNION ALL
 SELECT 'apex_daily_activities' AS table_name, COUNT(*) AS record_count
-FROM apex.default.apex_daily_activities
+FROM landing.default.apex_daily_activities
 UNION ALL
 SELECT 'apex_daily_overnight_balances' AS table_name, COUNT(*) AS record_count
-FROM apex.default.apex_daily_overnight_balances
+FROM landing.default.apex_daily_overnight_balances
 UNION ALL
 SELECT 'apex_daily_positions' AS table_name, COUNT(*) AS record_count
-FROM apex.default.apex_daily_positions
+FROM landing.default.apex_daily_positions
 UNION ALL
 SELECT 'apex_daily_stock_record' AS table_name, COUNT(*) AS record_count
-FROM apex.default.apex_daily_stock_record
+FROM landing.default.apex_daily_stock_record
 UNION ALL
 SELECT 'apex_onboarding_status' AS table_name, COUNT(*) AS record_count
-FROM apex.default.apex_onboarding_status;
+FROM landing.default.apex_onboarding_status;
