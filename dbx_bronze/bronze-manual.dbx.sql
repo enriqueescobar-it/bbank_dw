@@ -44,7 +44,7 @@ WITH landing_data AS (
 		,YEARMONTH
 		,LOADED_AT
 	FROM
-		manual.default.file_apex_monthly_accounts
+		landing.default.file_apex_monthly_accounts
 ),
 
 bronze_data AS (
@@ -120,7 +120,7 @@ WITH landing_data AS (
 		,YEARMONTH
 		,LOADED_AT
 	FROM
-		manual.default.file_apex_monthly_credit
+		landing.default.file_apex_monthly_credit
 ),
 
 bronze_data AS (
@@ -192,7 +192,7 @@ WITH landing_data AS (
 		,YEARMONTH
 		,LOADED_AT
 	FROM
-		manual.default.file_apex_monthly_execution
+		landing.default.file_apex_monthly_execution
 ),
 
 bronze_data AS (
@@ -257,7 +257,7 @@ WITH landing_data AS (
 		,YEARMONTH
 		,LOADED_AT
 	FROM
-		manual.default.file_apex_monthly_fdic
+		landing.default.file_apex_monthly_fdic
 ),
 
 bronze_data AS (
@@ -349,7 +349,7 @@ WITH landing_data AS (
 		,YEARMONTH
 		,LOADED_AT
 	FROM
-		manual.default.file_apex_monthly_trades
+		landing.default.file_apex_monthly_trades
 ),
 
 bronze_data AS (
@@ -447,7 +447,7 @@ WITH landing_data AS (
 		,YEARMONTH
 		,LOADED_AT
 	FROM
-		manual.default.file_bflcrtran
+		landing.default.file_bflcrtran
 ),
 
 bronze_data AS (
@@ -508,7 +508,7 @@ WITH landing_data AS (
 		,YEARMONTH
 		,LOADED_AT
 	FROM
-		manual.default.file_biu_activity
+		landing.default.file_biu_activity
 ),
 
 bronze_data AS (
@@ -678,7 +678,7 @@ WITH landing_data AS (
         ,YEARMONTH
         ,LOADED_AT
     FROM
-	    manual.default.file_fedlink_inc
+	    landing.default.file_fedlink_inc
 ),
 
 bronze_data AS (
@@ -965,7 +965,7 @@ WITH landing_data AS (
         ,YEARMONTH
         ,LOADED_AT
     FROM
-    	manual.default.file_fedlink_out
+    	landing.default.file_fedlink_out
 ),
 
 bronze_data AS (
@@ -1134,7 +1134,7 @@ WITH landing_data AS (
         ,YEARMONTH
         ,LOADED_AT
     FROM
-    	manual.default.file_rdci
+    	landing.default.file_rdci
 ),
 
 bronze_data AS (
@@ -1183,7 +1183,7 @@ WITH landing_data AS (
         ,YEARMONTH
         ,LOADED_AT
     FROM
-	    manual.default.file_trailer_fees
+	    landing.default.file_trailer_fees
 ),
 
 bronze_data AS (
@@ -1248,7 +1248,7 @@ WITH landing_data AS (
 	    ,YEARMONTH
 	    ,LOADED_AT
     FROM
-        manual.default.file_trailer_fees_accruals
+        landing.default.file_trailer_fees_accruals
 ),
 
 bronze_data AS (

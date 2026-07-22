@@ -187,7 +187,7 @@ WITH landing_data AS (
         TRY_CAST(DATE_OF_DATA AS DATE) AS DATE_OF_DATA,                                
         TRY_CAST(LOADED_AT AS TIMESTAMP) AS LOADED_AT                  
     FROM
-        promontory.default.intrafi_r4230
+        landing.default.intrafi_r4230
 ),
 
 bronze_data AS(

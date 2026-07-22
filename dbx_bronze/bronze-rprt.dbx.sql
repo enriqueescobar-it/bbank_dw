@@ -29,7 +29,7 @@ WITH landing_data AS (
         ,TRY_CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
         ,LOADED_AT
     FROM
-        rprt.default.rprt_sharing_agreement_exception
+        landing.default.rprt_sharing_agreement_exception
 ),
 
 bronze_data AS (

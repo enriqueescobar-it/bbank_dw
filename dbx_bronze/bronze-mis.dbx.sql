@@ -32,7 +32,7 @@ WITH landing_data AS (
 	    YEARMONTH,
         LOADED_AT
 FROM
-    mis.default.file_mis_pershing_officer_code
+    landing.default.file_mis_pershing_officer_code
 ),
 
 bronze_data AS (
@@ -87,7 +87,7 @@ WITH landing_data AS (
 	    YEARMONTH,
 	    LOADED_AT
 FROM
-    mis.default.file_mis_team_officers_v2
+    landing.default.file_mis_team_officers_v2
 ),
 
 bronze_data AS (

@@ -37,7 +37,7 @@ SELECT
 	,sys_last_modify_at_ts
 	,TRY_CAST(TRY_CAST(current_timestamp() AS STRING) AS INT) AS yearmonth
 	,loaded_at
-FROM mulesoft.default.mulesoft_customer_external_id
+FROM landing.default.mulesoft_customer_external_id
 ),
 
 cte_bronze_data as (
@@ -96,7 +96,7 @@ SELECT
 	,sys_last_modify_at_ts
 	,TRY_CAST(TRY_CAST(current_timestamp() AS STRING) AS INT) AS yearmonth
 	,loaded_at
-FROM mulesoft.default.mulesoft_party
+FROM landing.default.mulesoft_party
 ),
 
 cte_bronze_data as (
@@ -218,7 +218,7 @@ SELECT
 	,personal_document_issued_date
 	,TRY_CAST(TRY_CAST(current_timestamp() AS STRING) AS INT) AS yearmonth
 	,loaded_at
-	FROM mulesoft.default.mulesoft_prospect_external_data
+	FROM landing.default.mulesoft_prospect_external_data
 ),
 
 cte_bronze_data as (
