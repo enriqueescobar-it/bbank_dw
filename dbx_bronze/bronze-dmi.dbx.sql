@@ -219,7 +219,7 @@ WITH landing_data AS (
 	    TRY_CAST(DATE_OF_DATA AS DATE) AS DATE_OF_DATA,
 	    YEARMONTH
     FROM
-        dmi.default.dmi_bacmast
+        landing.default.dmi_bacmast
     
     
 )
@@ -255,7 +255,7 @@ SELECT
 	,MSP_LAST_RUN_DATE
 	,FILE_NAME_DMI
 
-FROM  dmi.default.dmi_disb
+FROM  landing.default.dmi_disb
 WHERE MSP_LAST_RUN_DATE IS NOT NULL
 ),
 
@@ -332,7 +332,7 @@ WITH cte_bronze_dmi_e006 AS (
 		,MI1098AdjSW
 		,`Auto`
 		,FILE_NAME_DMI
-	FROM  dmi.default.dmi_e006
+	FROM  landing.default.dmi_e006
 ),
 
 bronze_data as (
@@ -556,7 +556,7 @@ SELECT
     ,NC_INTEREST_AMOUNT
     ,MSP_LAST_RUN_DATE
     ,FILE_NAME_DMI
-FROM  dmi.default.dmi_noncash
+FROM  landing.default.dmi_noncash
 WHERE MSP_LAST_RUN_DATE IS NOT NULL -- Validate for not null DATE OF LOAD
  ),
 
@@ -637,7 +637,7 @@ WITH cte_dmi_P110 AS (
         ,P443FundingInterestRate
         ,P443FundingServiceFee
         ,FILE_NAME_DMI
-    FROM dmi.default.dmi_p110
+    FROM landing.default.dmi_p110
         
         
 )
@@ -686,7 +686,7 @@ WITH cte_dmi_P132 AS (
 		,DEDUCTIBLE_MI
 		,DEDUCTIBLE_MI_YR
 		,FILE_NAME_DMI
-	FROM dmi.default.dmi_p132
+	FROM landing.default.dmi_p132
     	
     	
 )
@@ -736,7 +736,7 @@ WITH cte_bronze_dmi_pmt AS (
 		,PMT_BATCH_NUMBER
 		,MSP_LAST_RUN_DATE
 		,FILE_NAME_DMI
-	FROM  dmi.default.dmi_pmt
+	FROM  landing.default.dmi_pmt
 	WHERE MSP_LAST_RUN_DATE IS NOT NULL
 ),
 
@@ -839,7 +839,7 @@ WITH cte_bronze_dmi_s2tt AS(
 		,PerDiem2
 		,Sum2
 		,FILE_NAME_DMI
-	FROM  dmi.default.dmi_s2tt
+	FROM  landing.default.dmi_s2tt
 ),
 
 bronze_data as (
@@ -948,7 +948,7 @@ WITH cte_bronze_dmi_s2tv AS (
 		,ASDIR
 		,AmortPrinBalance
 		,FILE_NAME_DMI
-	FROM  dmi.default.dmi_s2tv
+	FROM  landing.default.dmi_s2tv
 ),
 
 bronze_data as (
@@ -1033,7 +1033,7 @@ WITH cte_dmi_S5AZ AS (
         ,FeeCost8
         ,Action
         ,FILE_NAME_DMI
-    FROM dmi.default.dmi_s5az
+    FROM landing.default.dmi_s5az
         
         
 )
@@ -1081,7 +1081,7 @@ WITH cte_bronze_dmi_t69w AS (
 		,ReportDate
 		,ReportNumber
 		,FILE_NAME_DMI
-	FROM  dmi.default.dmi_t69w
+	FROM  landing.default.dmi_t69w
 ),
 
 bronze_data as (

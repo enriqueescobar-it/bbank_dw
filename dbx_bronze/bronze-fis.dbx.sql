@@ -318,7 +318,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH,
         TRY_CAST(LOADED_AT AS TIMESTAMP) AS LOADED_AT
     FROM
-        fis.default.fis_cd300
+        landing.default.fis_cd300
 ),
 
 bronze_data AS(
@@ -665,7 +665,7 @@ WITH landing_data AS (
         ,TRY_CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
         ,LOADED_AT
     FROM
-    fis.default.fis_ethos_interchange_fee_data
+    landing.default.fis_ethos_interchange_fee_data
 ),
 
 bronze_data AS(
@@ -735,7 +735,7 @@ WITH landing_data AS (
         TRY_CAST(data_date AS DATE) AS DATE_OF_DATA,
         TRY_CAST(date_format(TRY_CAST(data_date AS DATE), 'yyyyMM') AS INT) AS YEARMONTH
     FROM
-        fis.default.fis_lp_510
+        landing.default.fis_lp_510
     
     
 )

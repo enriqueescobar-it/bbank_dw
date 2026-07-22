@@ -47,7 +47,7 @@ WITH landing_data AS (
         ,TRY_CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
         ,LOADED_AT
     FROM
-        q2.default.q2_customer
+        landing.default.q2_customer
 ),
 
 bronze_data AS (
@@ -117,7 +117,7 @@ WITH landing_data AS (
         ,TRY_CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
         ,LOADED_AT
     FROM
-        q2.default.q2_user
+        landing.default.q2_user
 ),
 
 bronze_data AS (
@@ -183,7 +183,7 @@ WITH landing_data AS (
 		,TRY_CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
 		,LOADED_AT
 	FROM
-    	q2.default.q2_user_pii
+    	landing.default.q2_user_pii
 ),
 
 bronze_data AS (

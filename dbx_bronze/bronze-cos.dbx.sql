@@ -119,7 +119,7 @@ WITH landing_data AS (
         ,TRY_CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
         ,LOADED_AT
     FROM
-        cos.default.cos_applicant
+        landing.default.cos_applicant
 ),
 
 bronze_data AS (
@@ -264,7 +264,7 @@ WITH landing_data AS (
         ,TRY_CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
         ,LOADED_AT
     FROM
-        cos.default.cos_prospect
+        landing.default.cos_prospect
 ),
 
 bronze_data AS (
@@ -324,7 +324,7 @@ WITH landing_data AS (
         ,TRY_CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
         ,LOADED_AT
     FROM
-        cos.default.cos_td_treasury_rate
+        landing.default.cos_td_treasury_rate
 ),
 
 bronze_data AS (
