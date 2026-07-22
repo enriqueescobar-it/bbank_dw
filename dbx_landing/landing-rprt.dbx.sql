@@ -1,14 +1,14 @@
 -- Databricks SQL for source: rprt
 -- Generated from sqlserver/brz-rprt.sql
 
-CREATE CATALOG IF NOT EXISTS rprt;
-USE CATALOG rprt;
+CREATE CATALOG IF NOT EXISTS landing;
+USE CATALOG landing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."RPRT_sharing_agreement_exception"
-CREATE TABLE IF NOT EXISTS rprt.default.rprt_sharing_agreement_exception (
+CREATE TABLE IF NOT EXISTS landing.default.rprt_sharing_agreement_exception (
     ID BIGINT,
     CIF_NO STRING,
     ACTIVE STRING,
@@ -16,9 +16,9 @@ CREATE TABLE IF NOT EXISTS rprt.default.rprt_sharing_agreement_exception (
     LOADED_AT TIMESTAMP
 );
 
-TRUNCATE TABLE rprt.default.rprt_sharing_agreement_exception;
+TRUNCATE TABLE landing.default.rprt_sharing_agreement_exception;
 
-INSERT INTO rprt.default.rprt_sharing_agreement_exception (
+INSERT INTO landing.default.rprt_sharing_agreement_exception (
     ID, CIF_NO, ACTIVE, YEARMONTH, LOADED_AT
 )
 VALUES
@@ -34,4 +34,4 @@ VALUES
     (10, '100000010', 'N', 202605, TIMESTAMP '2026-05-18 12:00:00');
 
 SELECT 'rprt_sharing_agreement_exception' AS table_name, COUNT(*) AS record_count
-FROM rprt.default.rprt_sharing_agreement_exception;
+FROM landing.default.rprt_sharing_agreement_exception;

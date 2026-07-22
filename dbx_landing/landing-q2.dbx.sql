@@ -1,14 +1,14 @@
 -- Databricks SQL for source: q2
 -- Generated from sqlserver/brz-q2.sql
 
-CREATE CATALOG IF NOT EXISTS q2;
-USE CATALOG q2;
+CREATE CATALOG IF NOT EXISTS landing;
+USE CATALOG landing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."Q2_CUSTOMER"
-CREATE TABLE IF NOT EXISTS q2.default.q2_customer (
+CREATE TABLE IF NOT EXISTS landing.default.q2_customer (
     CUSTOMER_ID BIGINT,
     GROUP_ID BIGINT,
     GROUP_NAME STRING,
@@ -34,9 +34,9 @@ CREATE TABLE IF NOT EXISTS q2.default.q2_customer (
     LOADED_AT TIMESTAMP
 );
 
-TRUNCATE TABLE q2.default.q2_customer;
+TRUNCATE TABLE landing.default.q2_customer;
 
-INSERT INTO q2.default.q2_customer (
+INSERT INTO landing.default.q2_customer (
     CUSTOMER_ID, GROUP_ID, GROUP_NAME, CUSTOMER_NAME, TAX_ID, IS_COMPANY,
     IS_TREASURY, PRIMARY_CIF, SERVICE_CHARGE_PLAN_ID, PLAN_NAME,
     CHARGE_ACCOUNT, CREATE_DATE, STREET_ADDRESS1, STREET_ADDRESS2, CITY,
@@ -56,7 +56,7 @@ VALUES
     (1010, 505, 'Digital Banking', 'Juniper Retail LLC', '12-3456790', 'Y', 'N', '200000010', 50, 'Digital Business', '900001010', TIMESTAMP '2026-05-18 09:00:00', '1010 Biscayne Blvd', NULL, 'Miami', 'FL', '33132', NULL, 'N', 'USA', NULL, 202605, TIMESTAMP '2026-05-18 12:00:00');
 
 -- Source: "DQP_LANDING"."dbo"."Q2_USER"
-CREATE TABLE IF NOT EXISTS q2.default.q2_user (
+CREATE TABLE IF NOT EXISTS landing.default.q2_user (
     USER_ID BIGINT,
     CUSTOMER_ID BIGINT,
     USER_ROLE_ID BIGINT,
@@ -73,9 +73,9 @@ CREATE TABLE IF NOT EXISTS q2.default.q2_user (
     LOADED_AT TIMESTAMP
 );
 
-TRUNCATE TABLE q2.default.q2_user;
+TRUNCATE TABLE landing.default.q2_user;
 
-INSERT INTO q2.default.q2_user (
+INSERT INTO landing.default.q2_user (
     USER_ID, CUSTOMER_ID, USER_ROLE_ID, GROUP_ID, ACTIVE_INACTIVE,
     CREATED_DATE, DELETED_DATE, GROUP_NAME, GROUP_DELETED_DATES, ZONE_ID,
     ZONE_DESCRIPTION, AUTO_GENERATED, YEARMONTH, LOADED_AT
@@ -93,7 +93,7 @@ VALUES
     (3010, 1010, 2, 505, 'A', TIMESTAMP '2026-05-18 10:00:00', NULL, 'Digital Banking', NULL, 5, 'Digital', 'Y', 202605, TIMESTAMP '2026-05-18 12:05:00');
 
 -- Source: "DQP_LANDING"."dbo"."Q2_USER_PII"
-CREATE TABLE IF NOT EXISTS q2.default.q2_user_pii (
+CREATE TABLE IF NOT EXISTS landing.default.q2_user_pii (
     USER_ID BIGINT,
     PRIMARY_CIF STRING,
     LAST_NAME STRING,
@@ -115,9 +115,9 @@ CREATE TABLE IF NOT EXISTS q2.default.q2_user_pii (
     LOADED_AT TIMESTAMP
 );
 
-TRUNCATE TABLE q2.default.q2_user_pii;
+TRUNCATE TABLE landing.default.q2_user_pii;
 
-INSERT INTO q2.default.q2_user_pii (
+INSERT INTO landing.default.q2_user_pii (
     USER_ID, PRIMARY_CIF, LAST_NAME, FIRST_NAME, MIDDLE_NAME, SALUTATION,
     SUFFIX, SOCIAL_SECURITY_NUMBER, EMAIL_ADDRESS, STREET_ADDRESS_1,
     STREET_ADDRESS_2, CITY, STATE, POSTAL_CODE, PROVINCE, IS_INTERNATIONAL,
@@ -136,10 +136,10 @@ VALUES
     (3010, '200000010', 'Nguyen', 'Sophia', 'L', 'Ms', NULL, '111-22-3010', 'sophia.nguyen@example.com', '1010 Biscayne Blvd', NULL, 'Miami', 'FL', '33132', NULL, 'N', 'USA', 202605, TIMESTAMP '2026-05-18 12:10:00');
 
 SELECT 'q2_customer' AS table_name, COUNT(*) AS record_count
-FROM q2.default.q2_customer
+FROM landing.default.q2_customer
 UNION ALL
 SELECT 'q2_user' AS table_name, COUNT(*) AS record_count
-FROM q2.default.q2_user
+FROM landing.default.q2_user
 UNION ALL
 SELECT 'q2_user_pii' AS table_name, COUNT(*) AS record_count
-FROM q2.default.q2_user_pii;
+FROM landing.default.q2_user_pii;

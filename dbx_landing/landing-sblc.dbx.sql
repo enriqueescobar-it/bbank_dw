@@ -1,14 +1,14 @@
 -- Databricks SQL for source: sblc
 -- Generated from sqlserver/brz-sblc.sql
 
-CREATE CATALOG IF NOT EXISTS sblc;
-USE CATALOG sblc;
+CREATE CATALOG IF NOT EXISTS landing;
+USE CATALOG landing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."SBLC_LCMASTER"
-CREATE TABLE IF NOT EXISTS sblc.default.sblc_lcmaster (
+CREATE TABLE IF NOT EXISTS landing.default.sblc_lcmaster (
     LCMBRN DECIMAL(3,0),
     LCMCCY STRING,
     LCMGLN DECIMAL(7,0),
@@ -62,9 +62,9 @@ CREATE TABLE IF NOT EXISTS sblc.default.sblc_lcmaster (
     LOADED_AT TIMESTAMP
 );
 
-TRUNCATE TABLE sblc.default.sblc_lcmaster;
+TRUNCATE TABLE landing.default.sblc_lcmaster;
 
-INSERT INTO sblc.default.sblc_lcmaster (
+INSERT INTO landing.default.sblc_lcmaster (
     LCMBRN, LCMCCY, LCMGLN, LCMCCN, LCMPRC, LCMACN, LCMFCY, LCMSTS,
     LCMTYP, LCMORF, LCMRTY, LCMOFX, LCMCNF, LCMTRF, LCMTNR, LCMOFI,
     LCMGCD, LCMGRC, LCMOAM, LCMAMN, LCMCOM, LCMEXP, LCMMEB, LCMCFK,
@@ -86,7 +86,7 @@ VALUES
     (110, 'USD', 1000010, 2010, 310, 9000000000000010, 'USD', 'A', 'S', 'ORF000000000010', 'N', 1.000000, 'N', 'TRF000000000010', '0', 'OFI010', 'G10', 'R10', 100000.00, 91000.00, 350.00, 160.00, 90.00, 'CFK0010', 5, 18, 26, 2026138, 5, 19, 26, 2026139, 3, 31, 26, 2026090, 0, 0, 0, 0, 'Intermediary Bank 10', 'Intermediary Addr 10', 'Intermediary Details 10', 7000000000000010, 'Beneficiary Bank 10', 'Beneficiary Addr 10', 'Beneficiary Details 10', 500000010, DATE '2026-05-18', 202605, TIMESTAMP '2026-05-18 12:00:00');
 
 -- Source: "DQP_LANDING"."dbo"."SBLC_LCTRANX"
-CREATE TABLE IF NOT EXISTS sblc.default.sblc_lctranx (
+CREATE TABLE IF NOT EXISTS landing.default.sblc_lctranx (
     TRBR INT,
     TRCOST INT,
     TRPROD INT,
@@ -105,9 +105,9 @@ CREATE TABLE IF NOT EXISTS sblc.default.sblc_lctranx (
     LOADED_AT TIMESTAMP
 );
 
-TRUNCATE TABLE sblc.default.sblc_lctranx;
+TRUNCATE TABLE landing.default.sblc_lctranx;
 
-INSERT INTO sblc.default.sblc_lctranx (
+INSERT INTO landing.default.sblc_lctranx (
     TRBR, TRCOST, TRPROD, TRAGLN, TRACCN, LCMACC, TRCODE, TRATYP,
     DESCRI, TRDORC, AMOUNT, TREFF6, DDMUID, DATE_OF_DATA, YEARMONTH,
     LOADED_AT
@@ -125,7 +125,7 @@ VALUES
     (110, 100, 310, 1000010, '9000000000000010', 500000010, 1010, 'ADJUST', 'Manual adjustment posted', 'D', 91000.00, '18-05-2026', 'seed_user_10', DATE '2026-05-18', 202605, TIMESTAMP '2026-05-18 12:05:00');
 
 SELECT 'sblc_lcmaster' AS table_name, COUNT(*) AS record_count
-FROM sblc.default.sblc_lcmaster
+FROM landing.default.sblc_lcmaster
 UNION ALL
 SELECT 'sblc_lctranx' AS table_name, COUNT(*) AS record_count
-FROM sblc.default.sblc_lctranx;
+FROM landing.default.sblc_lctranx;
