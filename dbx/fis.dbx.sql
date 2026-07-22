@@ -304,6 +304,8 @@ CREATE TABLE IF NOT EXISTS fis.default.fis_cd300 (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE fis.default.fis_cd300 IS 
+'The table contains data related to customer credit accounts. It includes information about account balances, payment history, outstanding authorizations, and customer demographics. This data can be utilized for analyzing credit utilization, monitoring payment behavior, assessing risk for delinquencies, and managing customer accounts more effectively. Additionally, it provides insights into credit limits and card activity history, which can inform financial decision-making.';
 
 TRUNCATE TABLE fis.default.fis_cd300;
 
@@ -680,6 +682,8 @@ CREATE TABLE IF NOT EXISTS fis.default.fis_ethos_interchange_fee_data (
     `LOADED_AT_NIFI_BASE` TIMESTAMP,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE fis.default.fis_ethos_interchange_fee_data IS 
+'The table contains data related to interchange fees associated with various transactions. It includes details such as account numbers, product types, transaction dates, and fees charged. Possible use cases involve analyzing transaction patterns, understanding revenue from interchange fees, and evaluating the performance of different merchants. This data can help in financial analysis and reporting.';
 
 TRUNCATE TABLE fis.default.fis_ethos_interchange_fee_data;
 
@@ -736,6 +740,8 @@ CREATE TABLE IF NOT EXISTS fis.default.fis_lp_510 (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE fis.default.fis_lp_510 IS 
+'The table contains data related to customer accounts and their points management. It includes information such as account status, beginning balance, total points earned, and points redeemed. This data can be used to analyze customer engagement with promotions, track points accrual and redemption trends, and assess the overall performance of the loyalty program.';
 
 TRUNCATE TABLE fis.default.fis_lp_510;
 
