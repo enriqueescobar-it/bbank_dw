@@ -1,14 +1,14 @@
 -- Databricks SQL for source: dmi
 -- Generated from sqlserver/brz-dmi.sql
 
-CREATE CATALOG IF NOT EXISTS dmi;
-USE CATALOG dmi;
+CREATE CATALOG IF NOT EXISTS landing;
+USE CATALOG landing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."DMI_BACMAST"
-CREATE TABLE IF NOT EXISTS dmi.default.dmi_bacmast (
+CREATE TABLE IF NOT EXISTS landing.default.dmi_bacmast (
     `LOAN` STRING,
     `OLDLOANNO` STRING,
     `BILLNAME` STRING,
@@ -206,12 +206,12 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_bacmast (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE dmi.default.dmi_bacmast IS 
+COMMENT ON TABLE landing.default.dmi_bacmast IS 
 'The table contains loan details and associated characteristics. It includes information such as loan amounts, terms, important dates, and borrower details. This data can be utilized for analyzing loan portfolios, tracking payment schedules, and understanding borrower behavior.';
 
-TRUNCATE TABLE dmi.default.dmi_bacmast;
+TRUNCATE TABLE landing.default.dmi_bacmast;
 
-INSERT INTO dmi.default.dmi_bacmast (
+INSERT INTO landing.default.dmi_bacmast (
     `LOAN`, `OLDLOANNO`, `BILLNAME`, `BANK`, `AGGR`, `NEXTDUE`,
     `FIRSTPB`, `ORGMTGAMT`, `LOANDATE`, `MATDATE`, `CASE`, `WHEN`,
     `THEN`, `ELSE`, `ANNUALINT`, `LOANTERM`, `REMTERM`, `PRODLINECD`,
@@ -446,7 +446,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."DMI_DISB"
-CREATE TABLE IF NOT EXISTS dmi.default.dmi_disb (
+CREATE TABLE IF NOT EXISTS landing.default.dmi_disb (
     `LOAN_NUMBER` BIGINT,
     `INVESTOR_NUMBER` BIGINT,
     `CATEGORY_CODE` STRING,
@@ -457,12 +457,12 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_disb (
     `FILE_NAME_DMI` STRING,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE dmi.default.dmi_disb IS 
+COMMENT ON TABLE landing.default.dmi_disb IS 
 'The table contains data related to disbursements associated with loans. Key attributes include loan numbers, investor numbers, transaction dates, and amounts. This can be utilized for tracking disbursement activities, analyzing funding patterns, and reconciling financial records.';
 
-TRUNCATE TABLE dmi.default.dmi_disb;
+TRUNCATE TABLE landing.default.dmi_disb;
 
-INSERT INTO dmi.default.dmi_disb (
+INSERT INTO landing.default.dmi_disb (
     `LOAN_NUMBER`, `INVESTOR_NUMBER`, `CATEGORY_CODE`, `DSB_TRANSACTION_DATE`, `DSB_TRANSACTION_CODE`, `DSB_AMOUNT`,
     `MSP_LAST_RUN_DATE`, `FILE_NAME_DMI`, `LOADED_AT`
 )
@@ -479,7 +479,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."DMI_E006"
-CREATE TABLE IF NOT EXISTS dmi.default.dmi_e006 (
+CREATE TABLE IF NOT EXISTS landing.default.dmi_e006 (
     `BatchCode` STRING,
     `SequenceNumber` BIGINT,
     `TransactionCode` STRING,
@@ -515,12 +515,12 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_e006 (
     `FILE_NAME_DMI` STRING,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE dmi.default.dmi_e006 IS 
+COMMENT ON TABLE landing.default.dmi_e006 IS 
 'The table contains records related to loan transactions, including details on adjustments, codes, and associated loan identifiers. Use cases include analyzing loan repayment patterns, evaluating adjustments made to loans, and tracking transaction details over time. This data can help in the assessment of financial performance and customer payment behavior.';
 
-TRUNCATE TABLE dmi.default.dmi_e006;
+TRUNCATE TABLE landing.default.dmi_e006;
 
-INSERT INTO dmi.default.dmi_e006 (
+INSERT INTO landing.default.dmi_e006 (
     `BatchCode`, `SequenceNumber`, `TransactionCode`, `CLTNumber`, `LoanNumber`, `HITypeCode`,
     `PrincipalAdjustment`, `InterestAdjustment`, `DiscountAdjustmentOrPercent`, `InterestDueAdjustment`, `TransactionTotal`, `DueDateAdjustment`,
     `NXNumber`, `NLOR`, `CSCode`, `DISCCode`, `DISMCode`, `ORGADJCode`,
@@ -566,7 +566,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: static query dmi_gl_mapping
-CREATE TABLE IF NOT EXISTS dmi.default.dmi_gl_mapping (
+CREATE TABLE IF NOT EXISTS landing.default.dmi_gl_mapping (
     `Investor_Type` STRING,
     `Investor_Name` STRING,
     `Perm_Inv` STRING,
@@ -643,12 +643,12 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_gl_mapping (
     `Effective_Date` DATE,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE dmi.default.dmi_gl_mapping IS 
+COMMENT ON TABLE landing.default.dmi_gl_mapping IS 
 'This table captures mapping information related to various investor types and their associated financial details. It includes items such as investor names, general ledger account numbers, and cost centers for different types of financial transactions and payees. Colleagues can use this data to analyze financial mappings, perform reconciliations, and track financial obligations across multiple accounts.';
 
-TRUNCATE TABLE dmi.default.dmi_gl_mapping;
+TRUNCATE TABLE landing.default.dmi_gl_mapping;
 
-INSERT INTO dmi.default.dmi_gl_mapping (
+INSERT INTO landing.default.dmi_gl_mapping (
     `Investor_Type`, `Investor_Name`, `Perm_Inv`, `Perm_Cat`, `Recon_Method`, `P_I_DDA_Number`,
     `T_I_DDA_Number`, `G_L_Corp_Code`, `ABA_Number`, `Principal_Payee`, `Principal_G_L_Acct_No`, `Principal_GL_Number`,
     `Principal_G_L_Cost_Center`, `Escrow_Replacement_Reserve_Payee`, `Escrow_Replacement_Reserve_G_L_Acct_No`, `Escrow_Replacement_Reserve_G_L_Cost_Center`, `Interest_Receivable_Payee`, `Interest_Receivable_G_L_Acct_No`,
@@ -742,7 +742,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."DMI_NONCASH"
-CREATE TABLE IF NOT EXISTS dmi.default.dmi_noncash (
+CREATE TABLE IF NOT EXISTS landing.default.dmi_noncash (
     `LOAN_NUMBER` BIGINT,
     `INVESTOR_NUMBER` BIGINT,
     `CATEGORY_CODE` STRING,
@@ -755,12 +755,12 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_noncash (
     `FILE_NAME_DMI` STRING,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE dmi.default.dmi_noncash IS 
+COMMENT ON TABLE landing.default.dmi_noncash IS 
 'The table captures non-cash transaction details related to loans and investments. It includes information such as loan numbers, investor identifiers, transaction categories, and amounts associated with principal and interest. This data can assist in analyzing non-cash transactions, monitoring financial activities related to loans, and understanding investment patterns over time.';
 
-TRUNCATE TABLE dmi.default.dmi_noncash;
+TRUNCATE TABLE landing.default.dmi_noncash;
 
-INSERT INTO dmi.default.dmi_noncash (
+INSERT INTO landing.default.dmi_noncash (
     `LOAN_NUMBER`, `INVESTOR_NUMBER`, `CATEGORY_CODE`, `NC_TRANSACTION_CODE`, `NC_TRANSACTION_DATE`, `NC_AMOUNT`,
     `NC_PRINCIPAL_AMOUNT`, `NC_INTEREST_AMOUNT`, `MSP_LAST_RUN_DATE`, `FILE_NAME_DMI`, `LOADED_AT`
 )
@@ -779,7 +779,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."DMI_P110"
-CREATE TABLE IF NOT EXISTS dmi.default.dmi_p110 (
+CREATE TABLE IF NOT EXISTS landing.default.dmi_p110 (
     `LoanNumber` BIGINT,
     `BankCode` STRING,
     `LoanCategory` STRING,
@@ -816,12 +816,12 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_p110 (
     `FILE_NAME_DMI` STRING,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE dmi.default.dmi_p110 IS 
+COMMENT ON TABLE landing.default.dmi_p110 IS 
 'The table contains information about loans, including various financial details associated with each loan. Use cases include analyzing loan performance, assessing interest and service fees, tracking payments made, and understanding the overall financial position of loans within different categories and types. Key data points include loan numbers, interest rates, fees, balances, and payment history.';
 
-TRUNCATE TABLE dmi.default.dmi_p110;
+TRUNCATE TABLE landing.default.dmi_p110;
 
-INSERT INTO dmi.default.dmi_p110 (
+INSERT INTO landing.default.dmi_p110 (
     `LoanNumber`, `BankCode`, `LoanCategory`, `LoanType`, `InterestRate`, `ServiceRate`,
     `ManCode`, `ShortName`, `InvestorLoanNumber`, `SubCode`, `HITY`, `InterestPaidToDate`,
     `SegmentNumber`, `EscrowBalance`, `SuspenseBalance`, `HUDBalance`, `PrincipalPaid`, `InterestPaid`,
@@ -868,7 +868,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."DMI_P132"
-CREATE TABLE IF NOT EXISTS dmi.default.dmi_p132 (
+CREATE TABLE IF NOT EXISTS landing.default.dmi_p132 (
     `ReportID` STRING,
     `ReportDate` DATE,
     `LoanNumber` BIGINT,
@@ -893,12 +893,12 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_p132 (
     `FILE_NAME_DMI` STRING,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE dmi.default.dmi_p132 IS 
+COMMENT ON TABLE landing.default.dmi_p132 IS 
 'The table contains data related to loan reports. It includes information such as report identifiers, loan numbers, investor codes, and various financial metrics related to discounts and balances. Possible use cases involve tracking loan performance, analyzing investor returns, and managing report deadlines. The data can be useful for financial analysis and reporting in related operations.';
 
-TRUNCATE TABLE dmi.default.dmi_p132;
+TRUNCATE TABLE landing.default.dmi_p132;
 
-INSERT INTO dmi.default.dmi_p132 (
+INSERT INTO landing.default.dmi_p132 (
     `ReportID`, `ReportDate`, `LoanNumber`, `InvestorCode`, `CAT`, `TRN`,
     `DUE_DATE`, `TP`, `CLOSING`, `AM_CD`, `AM_CD_MO`, `ORIGINAL_DISC`,
     `DISC_BALANCE`, `DISC_DECREASE`, `DISC_INCREASE`, `DISC_PTS_FLG`, `PTS_PD_BORR`, `PTS_PD_BORR_YR`,
@@ -931,7 +931,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."DMI_PMT"
-CREATE TABLE IF NOT EXISTS dmi.default.dmi_pmt (
+CREATE TABLE IF NOT EXISTS landing.default.dmi_pmt (
     `LOAN_NUMBER` BIGINT,
     `INVESTOR_NUMBER` BIGINT,
     `CATEGORY_CODE` STRING,
@@ -956,12 +956,12 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_pmt (
     `FILE_NAME_DMI` STRING,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE dmi.default.dmi_pmt IS 
+COMMENT ON TABLE landing.default.dmi_pmt IS 
 'This table contains information about payment transactions related to loans. It includes data such as loan numbers, investor numbers, transaction dates, and various amounts associated with the payments like principal, interest, fees, and escrow. Potential use cases for this table involve tracking payment histories, analyzing loan performance, and reporting on financial transactions related to loan servicing.';
 
-TRUNCATE TABLE dmi.default.dmi_pmt;
+TRUNCATE TABLE landing.default.dmi_pmt;
 
-INSERT INTO dmi.default.dmi_pmt (
+INSERT INTO landing.default.dmi_pmt (
     `LOAN_NUMBER`, `INVESTOR_NUMBER`, `CATEGORY_CODE`, `PMT_TRANSACTION_DATE`, `PMT_TRANSACTION_CODE`, `PMT_PRINCIPAL_AMOUNT`,
     `PMT_INTEREST_AMOUNT`, `PMT_ESCROW_AMOUNT`, `PMT_TOTAL_AMOUNT`, `PMT_FEE_AMOUNT`, `PMT_FEE_CODE`, `PMT_SUSPENSE_AMOUNT`,
     `PMT_A_H_INSURANCE_AMOUNT`, `PMT_LIFE_INSURANCE_AMOUNT`, `PMT_RESTRICTED_ESC_AMOUNT`, `PMT_REPLACEMENT_RES`, `PMT_MISC_AMOUNT`, `PMT_HUD_AMOUNT`,
@@ -994,7 +994,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."DMI_S2TT"
-CREATE TABLE IF NOT EXISTS dmi.default.dmi_s2tt (
+CREATE TABLE IF NOT EXISTS landing.default.dmi_s2tt (
     `AccrualEntityCode` STRING,
     `HeaderInvestorCode` STRING,
     `LoanNumber` BIGINT,
@@ -1041,12 +1041,12 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_s2tt (
     `FILE_NAME_DMI` STRING,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE dmi.default.dmi_s2tt IS 
+COMMENT ON TABLE landing.default.dmi_s2tt IS 
 'The table contains data related to loan management and interest accrual. It records various financial metrics and details for each loan, including balances, interest rates, and income forecasts. Potential use cases include analyzing loan performance, tracking interest accruals, and forecasting income related to the loans. This data can aid in financial reporting and decision-making processes.';
 
-TRUNCATE TABLE dmi.default.dmi_s2tt;
+TRUNCATE TABLE landing.default.dmi_s2tt;
 
-INSERT INTO dmi.default.dmi_s2tt (
+INSERT INTO landing.default.dmi_s2tt (
     `AccrualEntityCode`, `HeaderInvestorCode`, `LoanNumber`, `PSCode`, `BeginningIRBalance`, `PeriodIncome`,
     `AccrualAdjust`, `InterestCollected`, `EndIRBalance`, `AmortizedPrincipalBalance`, `InterestRate`, `DueOrEffectiveDate`,
     `PandIConstant`, `InvestorCode`, `CategoryCode`, `PCCode`, `Percent__CS`, `PTCode`,
@@ -1105,7 +1105,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."DMI_S2TV"
-CREATE TABLE IF NOT EXISTS dmi.default.dmi_s2tv (
+CREATE TABLE IF NOT EXISTS landing.default.dmi_s2tv (
     `ExceptionDescription` STRING,
     `LoanNumber` BIGINT,
     `BeginningIRBalance` DECIMAL(38,10),
@@ -1140,12 +1140,12 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_s2tv (
     `FILE_NAME_DMI` STRING,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE dmi.default.dmi_s2tv IS 
+COMMENT ON TABLE landing.default.dmi_s2tv IS 
 'The table contains financial data related to loans, including various metrics such as balances, income, interest rates, and associated codes for categorization. Possible use cases include tracking loan performance, analyzing interest accruals, and generating reports on loan status and exceptions. This data can assist in decision-making processes regarding loan management and financial analysis.';
 
-TRUNCATE TABLE dmi.default.dmi_s2tv;
+TRUNCATE TABLE landing.default.dmi_s2tv;
 
-INSERT INTO dmi.default.dmi_s2tv (
+INSERT INTO landing.default.dmi_s2tv (
     `ExceptionDescription`, `LoanNumber`, `BeginningIRBalance`, `PeriodIncome`, `AccrualAdjust`, `InterestCollected`,
     `EndIRBalance`, `FirstPrinBalance`, `InterestRate`, `DueEffDate`, `PNIConstant`, `AccrualEntityCode`,
     `InvestorCode`, `CategoryCode`, `PartCode`, `PostingType`, `VariableBeforeAfter`, `Date`,
@@ -1190,7 +1190,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."DMI_S5AZ"
-CREATE TABLE IF NOT EXISTS dmi.default.dmi_s5az (
+CREATE TABLE IF NOT EXISTS landing.default.dmi_s5az (
     `Frequency` STRING,
     `RefinanceDescription` STRING,
     `LoanNumber` BIGINT,
@@ -1213,12 +1213,12 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_s5az (
     `FILE_NAME_DMI` STRING,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE dmi.default.dmi_s5az IS 
+COMMENT ON TABLE landing.default.dmi_s5az IS 
 'The table contains data related to loan refinancing and associated costs. It includes details such as loan number, principal balance, interest rates, fee costs, and refinancing descriptions. This data can be used to analyze refinancing patterns, calculate total costs associated with loans, and monitor due dates for payments.';
 
-TRUNCATE TABLE dmi.default.dmi_s5az;
+TRUNCATE TABLE landing.default.dmi_s5az;
 
-INSERT INTO dmi.default.dmi_s5az (
+INSERT INTO landing.default.dmi_s5az (
     `Frequency`, `RefinanceDescription`, `LoanNumber`, `InvestorCode2`, `CategoryCode2`, `HICode`,
     `DueDate`, `PrincipalBalance`, `InterestRate`, `Yield`, `FeeCost1`, `FeeCost2`,
     `FeeCost3`, `FeeCost4`, `FeeCost5`, `FeeCost6`, `FeeCost7`, `FeeCost8`,
@@ -1249,7 +1249,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."DMI_T69W"
-CREATE TABLE IF NOT EXISTS dmi.default.dmi_t69w (
+CREATE TABLE IF NOT EXISTS landing.default.dmi_t69w (
     `CorpCode` STRING,
     `AccountNumber` BIGINT,
     `CostCenterCode` DECIMAL(38,10),
@@ -1273,12 +1273,12 @@ CREATE TABLE IF NOT EXISTS dmi.default.dmi_t69w (
     `FILE_NAME_DMI` STRING,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE dmi.default.dmi_t69w IS 
+COMMENT ON TABLE landing.default.dmi_t69w IS 
 'The table contains financial transaction data related to various accounts and clients. Key information includes transaction amounts for collections and investments, along with codes specifying the type of funds, payees, and clients. Use cases for this data may involve financial reporting, analyzing transaction trends, and reconciling accounts.';
 
-TRUNCATE TABLE dmi.default.dmi_t69w;
+TRUNCATE TABLE landing.default.dmi_t69w;
 
-INSERT INTO dmi.default.dmi_t69w (
+INSERT INTO landing.default.dmi_t69w (
     `CorpCode`, `AccountNumber`, `CostCenterCode`, `PayeeCode`, `TypeOfFunds`, `InvestorCode`,
     `CategoryCode`, `RptCode`, `TrnCode`, `CollectionsDebit`, `CollectionsCredit`, `InvestorDebit`,
     `InvestorCredit`, `CorporateDebit`, `CorporateCredit`, `TypeCode`, `ClientCode`, `ClientName`,
@@ -1310,19 +1310,19 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: static query dmi_transaction_codes_mapping
-CREATE TABLE IF NOT EXISTS dmi.default.dmi_transaction_codes_mapping (
+CREATE TABLE IF NOT EXISTS landing.default.dmi_transaction_codes_mapping (
     `SHEET` STRING,
     `TRAN_CODE` STRING,
     `CATEGORY` STRING,
     `DESCRIPTION` STRING,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE dmi.default.dmi_transaction_codes_mapping IS 
+COMMENT ON TABLE landing.default.dmi_transaction_codes_mapping IS 
 'The table contains a mapping of transaction codes to their respective descriptions and categories. It includes information on the source sheet and the time the data was loaded. This data can be useful for understanding transaction classifications, integrating with other systems, and maintaining consistency in transaction coding across different processes';
 
-TRUNCATE TABLE dmi.default.dmi_transaction_codes_mapping;
+TRUNCATE TABLE landing.default.dmi_transaction_codes_mapping;
 
-INSERT INTO dmi.default.dmi_transaction_codes_mapping (
+INSERT INTO landing.default.dmi_transaction_codes_mapping (
     `SHEET`, `TRAN_CODE`, `CATEGORY`, `DESCRIPTION`, `LOADED_AT`
 )
 SELECT
@@ -1334,40 +1334,40 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 SELECT 'dmi_bacmast' AS table_name, COUNT(*) AS record_count
-FROM dmi.default.dmi_bacmast
+FROM landing.default.dmi_bacmast
 UNION ALL
 SELECT 'dmi_disb' AS table_name, COUNT(*) AS record_count
-FROM dmi.default.dmi_disb
+FROM landing.default.dmi_disb
 UNION ALL
 SELECT 'dmi_e006' AS table_name, COUNT(*) AS record_count
-FROM dmi.default.dmi_e006
+FROM landing.default.dmi_e006
 UNION ALL
 SELECT 'dmi_gl_mapping' AS table_name, COUNT(*) AS record_count
-FROM dmi.default.dmi_gl_mapping
+FROM landing.default.dmi_gl_mapping
 UNION ALL
 SELECT 'dmi_noncash' AS table_name, COUNT(*) AS record_count
-FROM dmi.default.dmi_noncash
+FROM landing.default.dmi_noncash
 UNION ALL
 SELECT 'dmi_p110' AS table_name, COUNT(*) AS record_count
-FROM dmi.default.dmi_p110
+FROM landing.default.dmi_p110
 UNION ALL
 SELECT 'dmi_p132' AS table_name, COUNT(*) AS record_count
-FROM dmi.default.dmi_p132
+FROM landing.default.dmi_p132
 UNION ALL
 SELECT 'dmi_pmt' AS table_name, COUNT(*) AS record_count
-FROM dmi.default.dmi_pmt
+FROM landing.default.dmi_pmt
 UNION ALL
 SELECT 'dmi_s2tt' AS table_name, COUNT(*) AS record_count
-FROM dmi.default.dmi_s2tt
+FROM landing.default.dmi_s2tt
 UNION ALL
 SELECT 'dmi_s2tv' AS table_name, COUNT(*) AS record_count
-FROM dmi.default.dmi_s2tv
+FROM landing.default.dmi_s2tv
 UNION ALL
 SELECT 'dmi_s5az' AS table_name, COUNT(*) AS record_count
-FROM dmi.default.dmi_s5az
+FROM landing.default.dmi_s5az
 UNION ALL
 SELECT 'dmi_t69w' AS table_name, COUNT(*) AS record_count
-FROM dmi.default.dmi_t69w
+FROM landing.default.dmi_t69w
 UNION ALL
 SELECT 'dmi_transaction_codes_mapping' AS table_name, COUNT(*) AS record_count
-FROM dmi.default.dmi_transaction_codes_mapping;
+FROM landing.default.dmi_transaction_codes_mapping;

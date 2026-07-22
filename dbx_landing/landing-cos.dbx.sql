@@ -1,14 +1,14 @@
 -- Databricks SQL for source: cos
 -- Generated from sqlserver/brz-cos.sql
 
-CREATE CATALOG IF NOT EXISTS cos;
-USE CATALOG cos;
+CREATE CATALOG IF NOT EXISTS landing;
+USE CATALOG landing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."COS_APPLICANT"
-CREATE TABLE IF NOT EXISTS cos.default.cos_applicant (
+CREATE TABLE IF NOT EXISTS landing.default.cos_applicant (
     `APPLICANT_ID` BIGINT,
     `APPLICANT_INDEX` STRING,
     `CPF` STRING,
@@ -105,12 +105,12 @@ CREATE TABLE IF NOT EXISTS cos.default.cos_applicant (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE cos.default.cos_applicant IS 
+COMMENT ON TABLE landing.default.cos_applicant IS 
 'The table contains detailed information about applicants, including their personal details, contact information, and employment data. This data can be used for managing applicant records, verifying identities, and assessing applicant eligibility. Possible use cases include tracking applicant progress, analyzing demographic information, and ensuring compliance with regulatory requirements.';
 
-TRUNCATE TABLE cos.default.cos_applicant;
+TRUNCATE TABLE landing.default.cos_applicant;
 
-INSERT INTO cos.default.cos_applicant (
+INSERT INTO landing.default.cos_applicant (
     `APPLICANT_ID`, `APPLICANT_INDEX`, `CPF`, `APP_REF`, `FIRST_NM`, `LAST_NM`,
     `MIDDLE_NM`, `ADD1`, `ADD2`, `CITY_STATE_ZIP`, `HOME_PH`, `MOBILE_PH`,
     `LONG_HM_PH`, `LONG_BUS_PH`, `EMAIL`, `OCCUPATION`, `GENDER`, `BBD_ID`,
@@ -227,7 +227,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."COS_PROSPECT"
-CREATE TABLE IF NOT EXISTS cos.default.cos_prospect (
+CREATE TABLE IF NOT EXISTS landing.default.cos_prospect (
     `APP_REF` STRING,
     `REQUEST_DATA` STRING,
     `STATUS` STRING,
@@ -246,12 +246,12 @@ CREATE TABLE IF NOT EXISTS cos.default.cos_prospect (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE cos.default.cos_prospect IS 
+COMMENT ON TABLE landing.default.cos_prospect IS 
 'The table contains data related to prospects within the organization. It includes information on the creation and modification of prospect records, their status, and details about the agency and segment they belong to. Potential use cases include tracking the progress of prospects through different stages, analyzing modification trends, and monitoring the performance of users handling these prospects.';
 
-TRUNCATE TABLE cos.default.cos_prospect;
+TRUNCATE TABLE landing.default.cos_prospect;
 
-INSERT INTO cos.default.cos_prospect (
+INSERT INTO landing.default.cos_prospect (
     `APP_REF`, `REQUEST_DATA`, `STATUS`, `MODIFED_ON`, `MODIFIED_BY`, `CREATED_ON`,
     `CREATED_BY`, `CONTACORRENTE`, `AGENCIA`, `SEGMENTO`, `CBLC`, `BBDID`,
     `STAGE_PROSPECT`, `USER_WORKING`, `BBDESK_VERSION`, `YEARMONTH`, `LOADED_AT`
@@ -277,7 +277,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."COS_TD_TREASURY_RATE"
-CREATE TABLE IF NOT EXISTS cos.default.cos_td_treasury_rate (
+CREATE TABLE IF NOT EXISTS landing.default.cos_td_treasury_rate (
     `CD_Type_Code` STRING,
     `Effective_Date` DATE,
     `Base_Renewal_Rate` DECIMAL(38,10),
@@ -289,12 +289,12 @@ CREATE TABLE IF NOT EXISTS cos.default.cos_td_treasury_rate (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE cos.default.cos_td_treasury_rate IS 
+COMMENT ON TABLE landing.default.cos_td_treasury_rate IS 
 'The table contains data related to treasury rates, including various rate types and their effective dates. Use cases include analyzing trends in treasury rates, determining base and cap rates for financial products, and tracking historical changes in rates over time.';
 
-TRUNCATE TABLE cos.default.cos_td_treasury_rate;
+TRUNCATE TABLE landing.default.cos_td_treasury_rate;
 
-INSERT INTO cos.default.cos_td_treasury_rate (
+INSERT INTO landing.default.cos_td_treasury_rate (
     `CD_Type_Code`, `Effective_Date`, `Base_Renewal_Rate`, `Standard_Rate`, `Cap_Rate`, `Rate_Code`,
     `created_date`, `created_by`, `YEARMONTH`, `LOADED_AT`
 )
@@ -312,10 +312,10 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 SELECT 'cos_applicant' AS table_name, COUNT(*) AS record_count
-FROM cos.default.cos_applicant
+FROM landing.default.cos_applicant
 UNION ALL
 SELECT 'cos_prospect' AS table_name, COUNT(*) AS record_count
-FROM cos.default.cos_prospect
+FROM landing.default.cos_prospect
 UNION ALL
 SELECT 'cos_td_treasury_rate' AS table_name, COUNT(*) AS record_count
-FROM cos.default.cos_td_treasury_rate;
+FROM landing.default.cos_td_treasury_rate;

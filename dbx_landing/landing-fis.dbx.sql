@@ -1,14 +1,14 @@
 -- Databricks SQL for source: fis
 -- Generated from sqlserver/brz-fis.sql
 
-CREATE CATALOG IF NOT EXISTS fis;
-USE CATALOG fis;
+CREATE CATALOG IF NOT EXISTS landing;
+USE CATALOG landing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."FIS_CD300"
-CREATE TABLE IF NOT EXISTS fis.default.fis_cd300 (
+CREATE TABLE IF NOT EXISTS landing.default.fis_cd300 (
     `future_use_1_4` STRING,
     `corp_id_5_6` STRING,
     `acct_num_7_22_masked` STRING,
@@ -304,12 +304,12 @@ CREATE TABLE IF NOT EXISTS fis.default.fis_cd300 (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE fis.default.fis_cd300 IS 
+COMMENT ON TABLE landing.default.fis_cd300 IS 
 'The table contains data related to customer credit accounts. It includes information about account balances, payment history, outstanding authorizations, and customer demographics. This data can be utilized for analyzing credit utilization, monitoring payment behavior, assessing risk for delinquencies, and managing customer accounts more effectively. Additionally, it provides insights into credit limits and card activity history, which can inform financial decision-making.';
 
-TRUNCATE TABLE fis.default.fis_cd300;
+TRUNCATE TABLE landing.default.fis_cd300;
 
-INSERT INTO fis.default.fis_cd300 (
+INSERT INTO landing.default.fis_cd300 (
     `future_use_1_4`, `corp_id_5_6`, `acct_num_7_22_masked`, `crdt_lmt_23_35`, `curr_bal_36_48`, `avail_credit_49_61`,
     `outstanding_auth_amt_62_74`, `outstanding_auth_num_75_77`, `block_code_78_78`, `reclass_code_79_79`, `rltnshp_acct_80_95`, `ltd_num_mnths_pst_due_96_98`,
     `primary_nm_99_124`, `mnth_to_dt_pymnt_125_137`, `lst_stmnt_bal_138_150`, `amt_of_lst_pymnt_151_163`, `dt_of_lst_pymnt_164_171`, `dt_lst_purch_172_179`,
@@ -658,7 +658,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FIS_ETHOS_Interchange_FEE_Data"
-CREATE TABLE IF NOT EXISTS fis.default.fis_ethos_interchange_fee_data (
+CREATE TABLE IF NOT EXISTS landing.default.fis_ethos_interchange_fee_data (
     `Index__CS` STRING,
     `Account_Number` BIGINT,
     `Customer_Number` BIGINT,
@@ -682,12 +682,12 @@ CREATE TABLE IF NOT EXISTS fis.default.fis_ethos_interchange_fee_data (
     `LOADED_AT_NIFI_BASE` TIMESTAMP,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE fis.default.fis_ethos_interchange_fee_data IS 
+COMMENT ON TABLE landing.default.fis_ethos_interchange_fee_data IS 
 'The table contains data related to interchange fees associated with various transactions. It includes details such as account numbers, product types, transaction dates, and fees charged. Possible use cases involve analyzing transaction patterns, understanding revenue from interchange fees, and evaluating the performance of different merchants. This data can help in financial analysis and reporting.';
 
-TRUNCATE TABLE fis.default.fis_ethos_interchange_fee_data;
+TRUNCATE TABLE landing.default.fis_ethos_interchange_fee_data;
 
-INSERT INTO fis.default.fis_ethos_interchange_fee_data (
+INSERT INTO landing.default.fis_ethos_interchange_fee_data (
     `Index__CS`, `Account_Number`, `Customer_Number`, `BIN`, `Product`, `Block_Reclass_Desc`,
     `Transaction_Code`, `Trans_Reason_Code`, `Trans_Reason_Desc`, `Sub_Product`, `Interchange_Fee`, `Transaction_Amount`,
     `Merchant_Name`, `Merchant_Country_Code`, `Transaction_Date`, `Posting_Date`, `SIC_4_Code`, `SIC_Description`,
@@ -719,7 +719,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FIS_LP_510"
-CREATE TABLE IF NOT EXISTS fis.default.fis_lp_510 (
+CREATE TABLE IF NOT EXISTS landing.default.fis_lp_510 (
     `acct_num` BIGINT,
     `status` STRING,
     `pt` STRING,
@@ -740,12 +740,12 @@ CREATE TABLE IF NOT EXISTS fis.default.fis_lp_510 (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE fis.default.fis_lp_510 IS 
+COMMENT ON TABLE landing.default.fis_lp_510 IS 
 'The table contains data related to customer accounts and their points management. It includes information such as account status, beginning balance, total points earned, and points redeemed. This data can be used to analyze customer engagement with promotions, track points accrual and redemption trends, and assess the overall performance of the loyalty program.';
 
-TRUNCATE TABLE fis.default.fis_lp_510;
+TRUNCATE TABLE landing.default.fis_lp_510;
 
-INSERT INTO fis.default.fis_lp_510 (
+INSERT INTO landing.default.fis_lp_510 (
     `acct_num`, `status`, `pt`, `beg_bal`, `base_pts`, `promo_pts_earned`,
     `scoremore_pts_earned`, `relation_pts_earned`, `curr_adjusted`, `curr_redeemed`, `curr_exp`, `curr_avail`,
     `anticipated_to_exp`, `non_statused_acct_to`, `grand_tot`, `processed_at`, `DATE_OF_DATA`, `YEARMONTH`,
@@ -774,10 +774,10 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 SELECT 'fis_cd300' AS table_name, COUNT(*) AS record_count
-FROM fis.default.fis_cd300
+FROM landing.default.fis_cd300
 UNION ALL
 SELECT 'fis_ethos_interchange_fee_data' AS table_name, COUNT(*) AS record_count
-FROM fis.default.fis_ethos_interchange_fee_data
+FROM landing.default.fis_ethos_interchange_fee_data
 UNION ALL
 SELECT 'fis_lp_510' AS table_name, COUNT(*) AS record_count
-FROM fis.default.fis_lp_510;
+FROM landing.default.fis_lp_510;
