@@ -105,6 +105,8 @@ CREATE TABLE IF NOT EXISTS cos.default.cos_applicant (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE cos.default.cos_applicant IS 
+'The table contains detailed information about applicants, including their personal details, contact information, and employment data. This data can be used for managing applicant records, verifying identities, and assessing applicant eligibility. Possible use cases include tracking applicant progress, analyzing demographic information, and ensuring compliance with regulatory requirements.';
 
 TRUNCATE TABLE cos.default.cos_applicant;
 
@@ -244,6 +246,8 @@ CREATE TABLE IF NOT EXISTS cos.default.cos_prospect (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE cos.default.cos_prospect IS 
+'The table contains data related to prospects within the organization. It includes information on the creation and modification of prospect records, their status, and details about the agency and segment they belong to. Potential use cases include tracking the progress of prospects through different stages, analyzing modification trends, and monitoring the performance of users handling these prospects.';
 
 TRUNCATE TABLE cos.default.cos_prospect;
 
@@ -285,6 +289,8 @@ CREATE TABLE IF NOT EXISTS cos.default.cos_td_treasury_rate (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE cos.default.cos_td_treasury_rate IS 
+'The table contains data related to treasury rates, including various rate types and their effective dates. Use cases include analyzing trends in treasury rates, determining base and cap rates for financial products, and tracking historical changes in rates over time.';
 
 TRUNCATE TABLE cos.default.cos_td_treasury_rate;
 
