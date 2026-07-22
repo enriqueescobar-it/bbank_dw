@@ -70,7 +70,7 @@ WITH landing_data AS (
         ,FTPAcct
         ,DATE_OF_DATA
     FROM
-        axiom.default.axiom_acct
+        landing.default.axiom_acct
 )
 
 SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
@@ -197,7 +197,7 @@ WITH landing_data AS (
         AX_NextPmtDate,
         DATE_OF_DATA
     FROM
-        axiom.default.axiom_cds
+        landing.default.axiom_cds
 )
 
 SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
@@ -370,7 +370,7 @@ WITH landing_data AS (
         AccInt,
         DATE_OF_DATA
     FROM
-        axiom.default.axiom_deposits
+        landing.default.axiom_deposits
 )
 
 SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
@@ -399,7 +399,7 @@ WITH landing_data AS (
         ProdLnCode,
         DATE_OF_DATA
     FROM
-        axiom.default.axiom_dmi_chargeoffs
+        landing.default.axiom_dmi_chargeoffs
 )
 
 SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
@@ -618,7 +618,7 @@ WITH landing_data AS (
         CondoYrBuilt,
         DATE_OF_DATA
     FROM
-        axiom.default.axiom_dmiloans
+        landing.default.axiom_dmiloans
 )
 
 SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
@@ -722,7 +722,7 @@ WITH landing_data AS (
         ,DATE_OF_DATA
         ,YRMO AS YEARMONTH
     FROM
-        axiom.default.axiom_instmodelstg
+        landing.default.axiom_instmodelstg
 )
 
 SELECT *,current_timestamp() AS LOADED_AT FROM landing_data;
@@ -938,7 +938,7 @@ WITH landing_data AS (
         AccInt,
         DATE_OF_DATA
     FROM
-        axiom.default.axiom_loans
+        landing.default.axiom_loans
 )
 
 SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
@@ -1041,7 +1041,7 @@ WITH landing_data AS (
         GroupDescription,
         DATE_OF_DATA
     FROM
-        axiom.default.axiom_ovrntdep
+        landing.default.axiom_ovrntdep
 )
 
 SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
