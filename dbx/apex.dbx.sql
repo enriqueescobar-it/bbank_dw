@@ -74,6 +74,8 @@ CREATE TABLE IF NOT EXISTS apex.default.apex_daily_accounts (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE apex.default.apex_daily_accounts IS 
+'The table contains daily records of accounts along with their various attributes. It includes details such as account types, registration, and investment profiles, which can be useful for analyzing account activity and client demographics. Possible use cases include assessing account statuses, understanding ownership types, and analyzing investment profiles based on different financial goals and risk tolerances.';
 
 TRUNCATE TABLE apex.default.apex_daily_accounts;
 
@@ -570,6 +572,8 @@ CREATE TABLE IF NOT EXISTS apex.default.apex_daily_activities (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE apex.default.apex_daily_activities IS 
+'The table captures daily activities related to accounts and assets. It includes data on various activity types such as trades, dividends, and stock splits. This information can be useful for tracking account transactions, analyzing asset performance, and understanding corporate actions. Possible use cases include generating reports on trading activities, assessing dividend distributions, and handling corporate actions like stock splits.';
 
 TRUNCATE TABLE apex.default.apex_daily_activities;
 
@@ -1122,6 +1126,8 @@ CREATE TABLE IF NOT EXISTS apex.default.apex_daily_overnight_balances (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE apex.default.apex_daily_overnight_balances IS 
+'The table contains daily overnight balance data for accounts, covering various equity and cash metrics. Use cases include monitoring account balances, margin requirements, and buying power analysis. It can help in understanding the financial health and liquidity of accounts over time.';
 
 TRUNCATE TABLE apex.default.apex_daily_overnight_balances;
 
@@ -1226,6 +1232,8 @@ CREATE TABLE IF NOT EXISTS apex.default.apex_daily_positions (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE apex.default.apex_daily_positions IS 
+'The table contains daily position data for different accounts related to asset management. It includes information on trades, settlements, and various adjustments that may impact asset positions. Potential use cases include tracking asset performance over time, analyzing trends in trading activity, and reconciling account positions to ensure accuracy. The data can also assist in understanding the status of pending transactions.';
 
 TRUNCATE TABLE apex.default.apex_daily_positions;
 
@@ -1302,6 +1310,8 @@ CREATE TABLE IF NOT EXISTS apex.default.apex_daily_stock_record (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE apex.default.apex_daily_stock_record IS 
+'The table contains daily stock records, including details about various accounts, assets, and their financial metrics. It tracks information such as account types, asset prices, currency values, and trade positions for each business date. This data can be utilized for analyzing stock performance, assessing account health, and making informed financial decisions related to investments.';
 
 TRUNCATE TABLE apex.default.apex_daily_stock_record;
 
@@ -1375,6 +1385,8 @@ CREATE TABLE IF NOT EXISTS apex.default.apex_onboarding_status (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE apex.default.apex_onboarding_status IS 
+'The table contains information related to the onboarding status of partners in the system. It tracks various aspects such as the current status of onboarding, timestamps for when records were created and updated, and any failure reasons that may arise during the process. This data can be useful for monitoring the progress of partner onboarding, identifying bottlenecks, and analyzing patterns in onboarding success or failure.';
 
 TRUNCATE TABLE apex.default.apex_onboarding_status;
 
