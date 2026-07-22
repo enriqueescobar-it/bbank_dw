@@ -27,9 +27,9 @@ WITH landing_data AS (
         TRY_CAST(ACCOUNT_OPTIONAL_FIELD_ID AS INT) AS ACCOUNT_OPTIONAL_FIELD_ID,
         TRY_CAST(ACCOUNT_OPTIONAL_FIELD_VALUE AS STRING) AS ACCOUNT_OPTIONAL_FIELD_VALUE,
         TRY_CAST(ACCOUNT_ID AS INT) AS ACCOUNT_ID,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_accountoptionalfields
 ),
@@ -42,7 +42,7 @@ bronze_data AS (
         ACCOUNT_ID,
         DATE_OF_DATA,
         YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM landing_data
 )
 
@@ -209,10 +209,10 @@ WITH landing_data AS (
         TRY_CAST(ANNUAL_RMD_AMOUNT AS DECIMAL(17,3)) AS ANNUAL_RMD_AMOUNT,
         TRY_CAST(YTD_DISTRIBUTION_AMOUNT AS DECIMAL(17,3)) AS YTD_DISTRIBUTION_AMOUNT,
         TRY_CAST(RMD_REMAINING_EXCESS_AMOUNT AS DECIMAL(17,3)) AS RMD_REMAINING_EXCESS_AMOUNT,
-	    PRODUCT_ID,
-	    DATE_OF_DATA,
+        PRODUCT_ID,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_accounts
 ),
@@ -406,9 +406,9 @@ WITH landing_data AS (
         TRY_CAST(COMMIT_NOTES AS STRING) AS COMMIT_NOTES,
         TRY_CAST(PLEDGE_TO_IDENTIFIER_TYPE AS INT) AS PLEDGE_TO_IDENTIFIER_TYPE,
         TRY_CAST(PLEDGE_TO_IDENTIFIER AS STRING) AS PLEDGE_TO_IDENTIFIER,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_activeblocks
 ),
@@ -488,9 +488,9 @@ WITH landing_data AS (
         TRY_CAST(SCHEMA_LEVEL_11_VALUE AS STRING) AS SCHEMA_LEVEL_11_VALUE,
         TRY_CAST(SCHEMA_LEVEL_12_ID AS INT) AS SCHEMA_LEVEL_12_ID,
         TRY_CAST(SCHEMA_LEVEL_12_VALUE AS STRING) AS SCHEMA_LEVEL_12_VALUE,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_assetinvclas
 ),
@@ -558,9 +558,9 @@ WITH landing_data AS (
         TRY_CAST(TRD_INSTRUMENT_ID AS INT) AS TRD_INSTRUMENT_ID,
         TRY_CAST(ASSET_OPTIONAL_FIELD_ID AS INT) AS ASSET_OPTIONAL_FIELD_ID,
         TRY_CAST(ASSET_OPTIONAL_FIELD_VALUE AS STRING) AS ASSET_OPTIONAL_FIELD_VALUE,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_assetoptfields
 ),
@@ -718,9 +718,9 @@ WITH landing_data AS (
         to_date(TRY_CAST(PRICE_UPDATE_DATE AS STRING), 'yyyyMMdd') AS PRICE_UPDATE_DATE,
         to_date(TRY_CAST(PRE_REFUNDED_DATE AS STRING), 'yyyyMMdd') AS PRE_REFUNDED_DATE,
         TRY_CAST(TRADING_CURRENCY AS STRING) AS TRADING_CURRENCY,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_assets
 ),
@@ -963,9 +963,9 @@ WITH landing_data AS (
         TRY_CAST(ACCOUNT_DSR_TEAM_TAG_10 AS INT) AS ACCOUNT_DSR_TEAM_TAG_10,
         TRY_CAST(ACCOUNT_OWNERSHIP_TYPE AS INT) AS ACCOUNT_OWNERSHIP_TYPE,
         TRY_CAST(ACCOUNT_ID AS INT) AS ACCOUNT_ID,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_clientaccountlink
 ),
@@ -1195,9 +1195,9 @@ WITH landing_data AS (
         TRY_CAST(YTD_DISTRIBUTION_AMOUNT AS DECIMAL(17,3)) AS YTD_DISTRIBUTION_AMOUNT,
         TRY_CAST(RMD_REMAINING_EXCESS_AMOUNT AS DECIMAL(17,3)) AS RMD_REMAINING_EXCESS_AMOUNT,
         TRY_CAST(VULNERABLE_FLG AS STRING) AS VULNERABLE_FLG,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_clients
 ),
@@ -1366,9 +1366,9 @@ WITH landing_data AS (
         TRY_CAST(ADDRESS_STATUS AS INT) AS ADDRESS_STATUS,
         TRY_CAST(PHONE_STATUS AS INT) AS PHONE_STATUS,
         TRY_CAST(EMAIL_STATUS AS INT) AS EMAIL_STATUS,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_contactdetails
 ),
@@ -1456,9 +1456,9 @@ WITH landing_data AS (
         TRY_CAST(SETTLED_MARKET_VALUE_ASSET_CURRENCY AS DECIMAL(20,4)) AS SETTLED_MARKET_VALUE_ASSET_CURRENCY,
         TRY_CAST(TRADED_MARKET_VALUE_FIRM_CURRENCY AS DECIMAL(20,4)) AS TRADED_MARKET_VALUE_FIRM_CURRENCY,
         TRY_CAST(SETTLED_MARKET_VALUE_FIRM_CURRENCY AS DECIMAL(20,4)) AS SETTLED_MARKET_VALUE_FIRM_CURRENCY,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_custodynostropositions
 ),
@@ -1600,9 +1600,9 @@ WITH landing_data AS (
         TRY_CAST(SETTLED_BOOK_COST_LOCAL AS DECIMAL(17,3)) AS SETTLED_BOOK_COST_LOCAL,
         TRY_CAST(TRADED_BOOK_COST_BASE AS DECIMAL(17,3)) AS TRADED_BOOK_COST_BASE,
         TRY_CAST(TRADED_BOOK_COST_LOCAL AS DECIMAL(17,3)) AS TRADED_BOOK_COST_LOCAL,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_eodchangedpositions
 ),
@@ -1742,9 +1742,9 @@ WITH landing_data AS (
         TRY_CAST(ACCT_SUM_TOTAL_SETTLED_ABC_DR_CR_FLAG AS STRING) AS ACCT_SUM_TOTAL_SETTLED_ABC_DR_CR_FLAG,
         TRY_CAST(ACCT_SUM_TOTAL_TRADED_FBC_DR_CR_FLAG AS STRING) AS ACCT_SUM_TOTAL_TRADED_FBC_DR_CR_FLAG,
         TRY_CAST(ACCT_SUM_TOTAL_SETTLED_FBC_DR_CR_FLAG AS STRING) AS ACCT_SUM_TOTAL_SETTLED_FBC_DR_CR_FLAG,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_eodposvalaggr
 ),
@@ -1884,9 +1884,9 @@ WITH landing_data AS (
         TRY_CAST(SETTLED_BOOK_COST_LOCAL AS DECIMAL(17,3)) AS SETTLED_BOOK_COST_LOCAL,
         TRY_CAST(TRADED_BOOK_COST_BASE AS DECIMAL(17,3)) AS TRADED_BOOK_COST_BASE,
         TRY_CAST(TRADED_BOOK_COST_LOCAL AS DECIMAL(17,3)) AS TRADED_BOOK_COST_LOCAL,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_eodpositions
 ),
@@ -2030,9 +2030,9 @@ WITH landing_data AS (
         TRY_CAST(NOTIONAL_COST_IN_FBC AS DECIMAL(17,3)) AS NOTIONAL_COST_IN_FBC,
         TRY_CAST(NOTIONAL_VALUE_IN_FBC AS DECIMAL(17,3)) AS NOTIONAL_VALUE_IN_FBC,
         TRY_CAST(UNIT_ORIGINAL_COST_IN_FBC AS DECIMAL(17,3)) AS UNIT_ORIGINAL_COST_IN_FBC,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_eodpositionssupplemental
 ),
@@ -2129,9 +2129,9 @@ WITH landing_data AS (
         TRY_CAST(FEE_PACKAGE_PROFILE_ID AS INT) AS FEE_PACKAGE_PROFILE_ID,
         TRY_CAST(THIRD_PARTY_FEES_AMT AS DECIMAL(17,3)) AS THIRD_PARTY_FEES_AMT,
         TRY_CAST(NET_TOTAL_FEES AS DECIMAL(17,3)) AS NET_TOTAL_FEES,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_feecomputation
 ),
@@ -2210,9 +2210,9 @@ WITH landing_data AS (
         TRY_CAST(PORTFOLIO_TYPE AS STRING) AS PORTFOLIO_TYPE,
         TRY_CAST(PRIMARY_OWNER AS STRING) AS PRIMARY_OWNER,
         TRY_CAST(FEE_GROUP_MEMBER_ACCOUNT_PORTFOLIO AS STRING) AS FEE_GROUP_MEMBER_ACCOUNT_PORTFOLIO,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_feegroup
 ),
@@ -2277,9 +2277,9 @@ WITH landing_data AS (
         TRY_CAST(QUALIFIER_VALUES AS STRING) AS QUALIFIER_VALUES,
         TRY_CAST(FEE_PACKAGE_STATUS AS INT) AS FEE_PACKAGE_STATUS,
         TRY_CAST(FEE_PACKAGE_PROFILE_ID AS INT) AS FEE_PACKAGE_PROFILE_ID,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_feepackagerule
 ),
@@ -2385,9 +2385,9 @@ WITH landing_data AS (
         TRY_CAST(FEE_PACKAGE_PROFILE_ID AS INT) AS FEE_PACKAGE_PROFILE_ID,
         TRY_CAST(FEE_PACKAGE_USAGE_ID AS INT) AS FEE_PACKAGE_USAGE_ID,
         TRY_CAST(FEES_ARE_IN_ADVANCE_OR_ARREARS_FEE_PACKAGE AS STRING) AS FEES_ARE_IN_ADVANCE_OR_ARREARS_FEE_PACKAGE,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_feepackageusage
 ),
@@ -2477,9 +2477,9 @@ WITH landing_data AS (
         TRY_CAST(BROKER_ID AS INT) AS BROKER_ID,
         TRY_CAST(FUND_CUTOFF_TIME AS STRING) AS FUND_CUTOFF_TIME,
         TRY_CAST(FUND_ACCOUNT_NUMBER AS STRING) AS FUND_ACCOUNT_NUMBER,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_fundcutoff
 ),
@@ -2544,9 +2544,9 @@ WITH landing_data AS (
         TRY_CAST(DEAL_FX_RATE AS DECIMAL(17,9)) AS DEAL_FX_RATE,
         TRY_CAST(FIRM_ID AS BIGINT) AS FIRM_ID,
         TRY_CAST(SUBFIRM_ID AS BIGINT) AS SUBFIRM_ID,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_fxforward
 ),
@@ -2614,9 +2614,9 @@ WITH landing_data AS (
         TRY_CAST(PAYOUT_TYPE AS INT) AS PAYOUT_TYPE,
         to_date(TRY_CAST(RECORD_DATE AS STRING), 'yyyyMMdd') AS RECORD_DATE,
         to_date(TRY_CAST(EX_DIVIDEND_DATE AS STRING), 'yyyyMMdd') AS EX_DIVIDEND_DATE,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_interestratetypes
 ),
@@ -2683,9 +2683,9 @@ WITH landing_data AS (
         TRY_CAST(CURRENCY_SWEEP_MODEL_ID AS INT) AS CURRENCY_SWEEP_MODEL_ID,
         TRY_CAST(STYLE_ID AS INT) AS STYLE_ID,
         TRY_CAST(INV_PROD_ID AS INT) AS INV_PROD_ID,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_modelalloc
 ),
@@ -2758,9 +2758,9 @@ WITH landing_data AS (
         TRY_CAST(MODEL_LAST_MOD AS STRING) AS MODEL_LAST_MOD,
         TRY_CAST(ALLOWABLE_PROCESSING_SCH_ID AS INT) AS ALLOWABLE_PROCESSING_SCH_ID,
         --TRY_CAST(DYNAMIC_MODEL_FLG AS STRING) AS DYNAMIC_MODEL_FLG,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_modelsintext
 ),
@@ -2845,9 +2845,9 @@ WITH landing_data AS (
         TRY_CAST(BANK_STATE AS STRING) AS BANK_STATE,
         TRY_CAST(BANK_COUNTRY AS STRING) AS BANK_COUNTRY,
         TRY_CAST(BANK_POSTAL_CODE AS STRING) AS BANK_POSTAL_CODE,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_paidto
 ),
@@ -2922,9 +2922,9 @@ WITH landing_data AS (
         TRY_CAST(PARTY_OPTIONAL_FIELD_ID AS INT) AS PARTY_OPTIONAL_FIELD_ID,
         TRY_CAST(PARTY_OPTIONAL_FIELD_NAME AS STRING) AS PARTY_OPTIONAL_FIELD_NAME,
         TRY_CAST(PARTY_OPTIONAL_FIELD_VALUE AS STRING) AS PARTY_OPTIONAL_FIELD_VALUE,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_partyoptionalfields
 ),
@@ -2985,9 +2985,9 @@ WITH landing_data AS (
         TRY_CAST(ACCOUNT_ID AS INT) AS ACCOUNT_ID,
         TRY_CAST(PORTFOLIO_ID AS INT) AS PORTFOLIO_ID,
         TRY_CAST(GROUP_TYPE_ID AS INT) AS GROUP_TYPE_ID,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_portfoliogroups
 ),
@@ -3075,9 +3075,9 @@ WITH landing_data AS (
         TRY_CAST(MONTH1_CONTRIBUTION AS DECIMAL(17,3)) AS MONTH1_CONTRIBUTION,
         TRY_CAST(MONTH3_CONTRIBUTION AS DECIMAL(17,3)) AS MONTH3_CONTRIBUTION,
         TRY_CAST(MONTH12_CONTRIBUTION AS DECIMAL(17,3)) AS MONTH12_CONTRIBUTION,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_portfolioperformance
 ),
@@ -3200,9 +3200,9 @@ WITH landing_data AS (
         TRY_CAST(PAY_FOR_DETAILS AS INT) AS PAY_FOR_DETAILS,
         TRY_CAST(EXPLANATION AS STRING) AS EXPLANATION,
         TRY_CAST(ADHOC_DISTRIBUTION AS INT) AS ADHOC_DISTRIBUTION,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_reccashactivities
 ),
@@ -3299,9 +3299,9 @@ WITH landing_data AS (
         TRY_CAST(QUALIFIER_1 AS STRING) AS QUALIFIER_1,
         TRY_CAST(QUALIFIER_2 AS STRING) AS QUALIFIER_2,
         TRY_CAST(QUALIFIER_3 AS STRING) AS QUALIFIER_3,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_reference
 ),
@@ -3434,9 +3434,9 @@ WITH landing_data AS (
         TRY_CAST(PRIMARY_ENTITY_TYPE_ID AS INT) AS PRIMARY_ENTITY_TYPE_ID,
         TRY_CAST(SECONDARY_ENTITY_TYPE_ID AS INT) AS SECONDARY_ENTITY_TYPE_ID,
         TRY_CAST(SECONDARY_ENTITY_TITLE AS DECIMAL(2,0)) AS SECONDARY_ENTITY_TITLE,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_relationships
 ),
@@ -3524,9 +3524,9 @@ WITH landing_data AS (
         TRY_CAST(TARGET_TYPE AS STRING) AS TARGET_TYPE,
         TRY_CAST(ACCESS_TYPE AS STRING) AS ACCESS_TYPE,
         TRY_CAST(FUNCTION_POINT_DISPLAY_NAME AS STRING) AS FUNCTION_POINT_DISPLAY_NAME,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_roledetail
 ),
@@ -3602,9 +3602,9 @@ WITH landing_data AS (
         to_date(TRY_CAST(NEXT_RUN_AS_OF_DATE AS STRING), 'yyyyMMdd') AS NEXT_RUN_AS_OF_DATE,
         TRY_CAST(OVERRIDE_MAILING_NAME AS STRING) AS OVERRIDE_MAILING_NAME,
         TRY_CAST(MEETS_PRIMARY_OWNER_CHECK AS STRING) AS MEETS_PRIMARY_OWNER_CHECK,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_statementevents
 ),
@@ -3742,9 +3742,9 @@ WITH landing_data AS (
         TRY_CAST(SERVICING_RELATIONSHIP_ENTITY_ID5 AS INT) AS SERVICING_RELATIONSHIP_ENTITY_ID5,
         TRY_CAST(EXTERNAL_PARTY_ID AS STRING) AS EXTERNAL_PARTY_ID,
         TRY_CAST(CLIENT_ID AS INT) AS CLIENT_ID,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_statementinstance
 ),
@@ -3862,9 +3862,9 @@ WITH landing_data AS (
         TRY_CAST(DEFAULT_RECURRENCE_DAY AS INT) AS DEFAULT_RECURRENCE_DAY,
         TRY_CAST(DEFAULT_RECURENCE_MONTH AS INT) AS DEFAULT_RECURENCE_MONTH,
         TRY_CAST(APPROVAL_REQUIRED_FLG AS STRING) AS APPROVAL_REQUIRED_FLG,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_statementpackage
 ),
@@ -3949,9 +3949,9 @@ WITH landing_data AS (
         TRY_CAST(ADJ_NEW_VALUE AS STRING) AS ADJ_NEW_VALUE,
         TRY_CAST(FX_FORWARD_CONTRACT_AMT_DR_CR_FLAG AS STRING) AS FX_FORWARD_CONTRACT_AMT_DR_CR_FLAG,
         TRY_CAST(FEE_TYPE_PROFILE_ID AS INT) AS FEE_TYPE_PROFILE_ID,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_transactiondetail
 ),
@@ -4906,9 +4906,9 @@ WITH landing_data AS (
         TRY_CAST(MONEY_MOVEMENT_LIMIT AS DECIMAL(17,3)) AS MONEY_MOVEMENT_LIMIT,
         TRY_CAST(SSO_KEY AS STRING) AS SSO_KEY,
         TRY_CAST(USER_TYPE AS INT) AS USER_TYPE,
-	    DATE_OF_DATA,
+        DATE_OF_DATA,
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
-	    LOADED_AT
+        LOADED_AT
     FROM
         landing.default.sei_ovn_userdetail
 ),

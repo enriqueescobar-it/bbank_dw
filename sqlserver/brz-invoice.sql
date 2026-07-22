@@ -9,7 +9,7 @@
 
 
 WITH landing_data AS (
-	SELECT 
+    SELECT 
         INVOICE_NAME,
         EMPLOYEE_NAME,
         VENDOR_NAME,
@@ -36,9 +36,9 @@ WITH landing_data AS (
         CLOSED_DATE,
         SEND_DATE,
         FUNDING_DATE,
-		DATE_OF_DATA,
-		YEARMONTH
-	FROM  
+        DATE_OF_DATA,
+        YEARMONTH
+    FROM  
         "DQP_LANDING"."dbo"."FILE_INVOICE_REQUESTS"
     
     WHERE 

@@ -621,7 +621,7 @@ WITH landing_data AS (
         ,REPLACE(
             InstrumentID,
             SUBSTRING(
-            	InstrumentID,
+                InstrumentID,
                 CHARINDEX('_',InstrumentID),
                 LEN(InstrumentID)
             ),

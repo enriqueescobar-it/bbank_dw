@@ -23,13 +23,13 @@ CREATE OR REPLACE TABLE bronze.default.bronze_mis_pershing_officer_code AS
 
 WITH landing_data AS (
     SELECT
-    	IP_CODE,
-	    OFFICER_CODE,
-	    `NAME`,
-	    COST_CENTER,
-	    TEAM,
-	    DATA_OF_DATA,
-	    YEARMONTH,
+        IP_CODE,
+        OFFICER_CODE,
+        `NAME`,
+        COST_CENTER,
+        TEAM,
+        DATA_OF_DATA,
+        YEARMONTH,
         LOADED_AT
 FROM
     landing.default.file_mis_pershing_officer_code
@@ -37,13 +37,13 @@ FROM
 
 bronze_data AS (
     SELECT
-    	IP_CODE,
-	    OFFICER_CODE,
-	    `NAME`,
-	    COST_CENTER,
-	    TEAM,
-	    DATA_OF_DATA,
-	    YEARMONTH,
+        IP_CODE,
+        OFFICER_CODE,
+        `NAME`,
+        COST_CENTER,
+        TEAM,
+        DATA_OF_DATA,
+        YEARMONTH,
         current_timestamp() AS LOADED_AT
     FROM landing_data
     
@@ -73,19 +73,19 @@ CREATE OR REPLACE TABLE bronze.default.bronze_mis_team_officers_v2 AS
 WITH landing_data AS (
     SELECT
         OFFICER_CODE,
-	    FULL_NAME,
-	    SHORT_NAME,
-	    TITLE,
-	    PHONE_NUMBER,
-	    EMAIL,
-	    BUSINESS_LINE,
-    	TEAM,
-	    TEAM_CODE,
-	    COST_CENTER,
-	    ACTIVEOFFICER,
-	    DATA_OF_DATA,
-	    YEARMONTH,
-	    LOADED_AT
+        FULL_NAME,
+        SHORT_NAME,
+        TITLE,
+        PHONE_NUMBER,
+        EMAIL,
+        BUSINESS_LINE,
+        TEAM,
+        TEAM_CODE,
+        COST_CENTER,
+        ACTIVEOFFICER,
+        DATA_OF_DATA,
+        YEARMONTH,
+        LOADED_AT
 FROM
     landing.default.file_mis_team_officers_v2
 ),
@@ -93,18 +93,18 @@ FROM
 bronze_data AS (
     SELECT
         OFFICER_CODE,
-	    FULL_NAME,
-	    SHORT_NAME,
-	    TITLE,
-	    PHONE_NUMBER,
-	    EMAIL,
-	    BUSINESS_LINE,
-    	TEAM,
-	    TEAM_CODE,
-	    COST_CENTER,
-	    ACTIVEOFFICER,
-	    DATA_OF_DATA,
-	    YEARMONTH,
+        FULL_NAME,
+        SHORT_NAME,
+        TITLE,
+        PHONE_NUMBER,
+        EMAIL,
+        BUSINESS_LINE,
+        TEAM,
+        TEAM_CODE,
+        COST_CENTER,
+        ACTIVEOFFICER,
+        DATA_OF_DATA,
+        YEARMONTH,
         current_timestamp() AS LOADED_AT
     FROM landing_data
     

@@ -61,7 +61,7 @@ bronze_data AS (
         ,IS_INTERNATIONAL
         ,ISO_CODE_A3
         ,CUSTOMER_DELETED_DATE
-		,YEARMONTH
+        ,YEARMONTH
         ,GETUTCDATE() AS LOADED_AT
     FROM landing_data
     
@@ -122,7 +122,7 @@ bronze_data AS (
         ,ZONE_ID
         ,ZONE_DESCRIPTION
         ,AUTO_GENERATED
-		,YEARMONTH
+        ,YEARMONTH
         ,GETUTCDATE() AS LOADED_AT
     FROM landing_data
     
@@ -150,50 +150,50 @@ SELECT * FROM bronze_data
 
 
 WITH landing_data AS (
-	SELECT
-		USER_ID
-		,PRIMARY_CIF
-		,LAST_NAME
-		,FIRST_NAME
-		,MIDDLE_NAME
-		,SALUTATION
-		,SUFFIX
-		,SOCIAL_SECURITY_NUMBER
-		,EMAIL_ADDRESS
-		,STREET_ADDRESS_1
-		,STREET_ADDRESS_2
-		,CITY
-		,[STATE]
-		,POSTAL_CODE
-		,PROVINCE
-		,IS_INTERNATIONAL
-		,ISO_CODE_A3
-		,CONVERT(INT, CONVERT(nvarchar(6), LOADED_AT, 112)) AS YEARMONTH
-		,LOADED_AT
-	FROM
-    	"DQP_LANDING"."dbo"."Q2_USER_PII"
+    SELECT
+        USER_ID
+        ,PRIMARY_CIF
+        ,LAST_NAME
+        ,FIRST_NAME
+        ,MIDDLE_NAME
+        ,SALUTATION
+        ,SUFFIX
+        ,SOCIAL_SECURITY_NUMBER
+        ,EMAIL_ADDRESS
+        ,STREET_ADDRESS_1
+        ,STREET_ADDRESS_2
+        ,CITY
+        ,[STATE]
+        ,POSTAL_CODE
+        ,PROVINCE
+        ,IS_INTERNATIONAL
+        ,ISO_CODE_A3
+        ,CONVERT(INT, CONVERT(nvarchar(6), LOADED_AT, 112)) AS YEARMONTH
+        ,LOADED_AT
+    FROM
+        "DQP_LANDING"."dbo"."Q2_USER_PII"
 ),
 
 bronze_data AS (
-	SELECT
-		USER_ID
-		,PRIMARY_CIF
-		,LAST_NAME
-		,FIRST_NAME
-		,MIDDLE_NAME
-		,SALUTATION
-		,SUFFIX
-		,SOCIAL_SECURITY_NUMBER
-		,EMAIL_ADDRESS
-		,STREET_ADDRESS_1
-		,STREET_ADDRESS_2
-		,CITY
-		,[STATE]
-		,POSTAL_CODE
-		,PROVINCE
-		,IS_INTERNATIONAL
-		,ISO_CODE_A3
-		,YEARMONTH
+    SELECT
+        USER_ID
+        ,PRIMARY_CIF
+        ,LAST_NAME
+        ,FIRST_NAME
+        ,MIDDLE_NAME
+        ,SALUTATION
+        ,SUFFIX
+        ,SOCIAL_SECURITY_NUMBER
+        ,EMAIL_ADDRESS
+        ,STREET_ADDRESS_1
+        ,STREET_ADDRESS_2
+        ,CITY
+        ,[STATE]
+        ,POSTAL_CODE
+        ,PROVINCE
+        ,IS_INTERNATIONAL
+        ,ISO_CODE_A3
+        ,YEARMONTH
         ,GETUTCDATE() AS LOADED_AT
     FROM landing_data
     

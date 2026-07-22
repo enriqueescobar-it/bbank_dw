@@ -10,7 +10,7 @@
 
 
 WITH landing_data AS (
-	SELECT
+    SELECT
         CLIENT_CODE
         ,CORRESPONDENT_CODE
         ,ACCOUNT_GROUP_CODE
@@ -29,14 +29,14 @@ WITH landing_data AS (
         ,FUNDED_END_DATE
         ,CONVERT(DECIMAL(30,14),AVG_MONTHLY_EQUITY) AS AVG_MONTHLY_EQUITY
         ,DATE_OF_DATA
-		,YEARMONTH
-		,LOADED_AT
-	FROM
-		"DQP_LANDING"."dbo"."FILE_APEX_MONTHLY_ACCOUNTS"
+        ,YEARMONTH
+        ,LOADED_AT
+    FROM
+        "DQP_LANDING"."dbo"."FILE_APEX_MONTHLY_ACCOUNTS"
 ),
 
 bronze_data AS (
-	SELECT
+    SELECT
         CLIENT_CODE
         ,CORRESPONDENT_CODE
         ,ACCOUNT_GROUP_CODE
@@ -55,9 +55,9 @@ bronze_data AS (
         ,FUNDED_END_DATE
         ,AVG_MONTHLY_EQUITY
         ,DATE_OF_DATA
-		,YEARMONTH
-		,GETUTCDATE() AS LOADED_AT
-	FROM landing_data A
+        ,YEARMONTH
+        ,GETUTCDATE() AS LOADED_AT
+    FROM landing_data A
     
         WHERE A.LOADED_AT > (SELECT MAX(LOADED_AT) FROM "DQP_BRONZE"."dbo"."bronze_file_apex_monthly_accounts")
     
@@ -83,7 +83,7 @@ SELECT * FROM bronze_data
 
 
 WITH landing_data AS (
-	SELECT
+    SELECT
         CLIENT_CODE
         ,CORRESPONDENT_CODE
         ,ACCOUNT_GROUP_CODE
@@ -100,19 +100,19 @@ WITH landing_data AS (
         ,CASE
             WHEN RTRIM(LTRIM(BILLING_RATE)) LIKE '%E%'
                 THEN CONVERT(DECIMAL(30,25), CONVERT(FLOAT, BILLING_RATE))
-    	    ELSE CONVERT(DECIMAL(30,25), BILLING_RATE)
-    	END AS BILLING_RATE
+            ELSE CONVERT(DECIMAL(30,25), BILLING_RATE)
+        END AS BILLING_RATE
         ,PROCESS_START_DATE
         ,PROCESS_END_DATE
         ,DATE_OF_DATA
-		,YEARMONTH
-		,LOADED_AT
-	FROM
-		"DQP_LANDING"."dbo"."FILE_APEX_MONTHLY_CREDIT"
+        ,YEARMONTH
+        ,LOADED_AT
+    FROM
+        "DQP_LANDING"."dbo"."FILE_APEX_MONTHLY_CREDIT"
 ),
 
 bronze_data AS (
-	SELECT
+    SELECT
         CLIENT_CODE
         ,CORRESPONDENT_CODE
         ,ACCOUNT_GROUP_CODE
@@ -130,9 +130,9 @@ bronze_data AS (
         ,PROCESS_START_DATE
         ,PROCESS_END_DATE
         ,DATE_OF_DATA
-		,YEARMONTH
-		,GETUTCDATE() AS LOADED_AT
-	FROM landing_data A
+        ,YEARMONTH
+        ,GETUTCDATE() AS LOADED_AT
+    FROM landing_data A
     
         WHERE A.LOADED_AT > (SELECT MAX(LOADED_AT) FROM "DQP_BRONZE"."dbo"."bronze_file_apex_monthly_credit")
     
@@ -158,7 +158,7 @@ SELECT * FROM bronze_data
 
 
 WITH landing_data AS (
-	SELECT
+    SELECT
         BILLINGPERIOD
         ,CLEARINGACCOUNT
         ,INSTRUMENTTYPE
@@ -177,14 +177,14 @@ WITH landing_data AS (
         ,CONVERT(NUMERIC(30,25),CAST(CATHISTORICALFEE AS REAL)) AS CATHISTORICALFEE
         ,CONVERT(NUMERIC(30,25),CAST(CATONGOINGFEE AS REAL)) AS CATONGOINGFEE
         ,DATE_OF_DATA
-		,YEARMONTH
-		,LOADED_AT
-	FROM
-		"DQP_LANDING"."dbo"."FILE_APEX_MONTHLY_EXECUTION"
+        ,YEARMONTH
+        ,LOADED_AT
+    FROM
+        "DQP_LANDING"."dbo"."FILE_APEX_MONTHLY_EXECUTION"
 ),
 
 bronze_data AS (
-	SELECT
+    SELECT
         BILLINGPERIOD
         ,CLEARINGACCOUNT
         ,INSTRUMENTTYPE
@@ -203,9 +203,9 @@ bronze_data AS (
         ,CATHISTORICALFEE
         ,CATONGOINGFEE
         ,DATE_OF_DATA
-		,YEARMONTH
-		,GETUTCDATE() AS LOADED_AT
-	FROM landing_data A
+        ,YEARMONTH
+        ,GETUTCDATE() AS LOADED_AT
+    FROM landing_data A
     
         WHERE A.LOADED_AT > (SELECT MAX(LOADED_AT) FROM "DQP_BRONZE"."dbo"."bronze_file_apex_monthly_execution")
     
@@ -231,7 +231,7 @@ SELECT * FROM bronze_data
 
 
 WITH landing_data AS (
-	SELECT
+    SELECT
         CORRESPONDENT_CODE
         ,ACCOUNT_NUMBER
         ,ACCOUNT_ID
@@ -242,14 +242,14 @@ WITH landing_data AS (
         ,CONVERT(NUMERIC(30,25),CAST(EFF AS REAL)) AS EFF
         ,CONVERT(NUMERIC(30,25),CAST(CORRESPONDENT_REBATE AS REAL)) AS CORRESPONDENT_REBATE
         ,DATE_OF_DATA
-		,YEARMONTH
-		,LOADED_AT
-	FROM
-		"DQP_LANDING"."dbo"."FILE_APEX_MONTHLY_FDIC"
+        ,YEARMONTH
+        ,LOADED_AT
+    FROM
+        "DQP_LANDING"."dbo"."FILE_APEX_MONTHLY_FDIC"
 ),
 
 bronze_data AS (
-	SELECT
+    SELECT
         CORRESPONDENT_CODE
         ,ACCOUNT_NUMBER
         ,ACCOUNT_ID
@@ -260,9 +260,9 @@ bronze_data AS (
         ,EFF
         ,CORRESPONDENT_REBATE
         ,DATE_OF_DATA
-		,YEARMONTH
-		,GETUTCDATE() AS LOADED_AT
-	FROM landing_data A
+        ,YEARMONTH
+        ,GETUTCDATE() AS LOADED_AT
+    FROM landing_data A
     
         WHERE A.LOADED_AT > (SELECT MAX(LOADED_AT) FROM "DQP_BRONZE"."dbo"."bronze_file_apex_monthly_fdic")
     
@@ -288,7 +288,7 @@ SELECT * FROM bronze_data
 
 
 WITH landing_data AS (
-	SELECT
+    SELECT
         CLIENT_CODE
         ,CORRESPONDENT_CODE
         ,ACCOUNT_GROUP_CODE
@@ -334,14 +334,14 @@ WITH landing_data AS (
         ,ORDER_ID
         ,EXECUTION_ID
         ,DATE_OF_DATA
-		,YEARMONTH
-		,LOADED_AT
-	FROM
-		"DQP_LANDING"."dbo"."FILE_APEX_MONTHLY_TRADES"
+        ,YEARMONTH
+        ,LOADED_AT
+    FROM
+        "DQP_LANDING"."dbo"."FILE_APEX_MONTHLY_TRADES"
 ),
 
 bronze_data AS (
-	SELECT
+    SELECT
         CLIENT_CODE
         ,CORRESPONDENT_CODE
         ,ACCOUNT_GROUP_CODE
@@ -387,9 +387,9 @@ bronze_data AS (
         ,ORDER_ID
         ,EXECUTION_ID
         ,DATE_OF_DATA
-		,YEARMONTH
-		,GETUTCDATE() AS LOADED_AT
-	FROM landing_data A
+        ,YEARMONTH
+        ,GETUTCDATE() AS LOADED_AT
+    FROM landing_data A
     
         WHERE A.LOADED_AT > (SELECT MAX(LOADED_AT) FROM "DQP_BRONZE"."dbo"."bronze_file_apex_monthly_trades")
     
@@ -415,50 +415,50 @@ SELECT * FROM bronze_data
 
 
 WITH landing_data AS (
-	SELECT
-		 TREFF6
-		,TRDAT6
-		,TRANCD
-		,DORC
-		,convert(decimal(16,2),AMT) as AMT
-		,PFGLAC
-		,BATCH
-		,DDSD1
-		,DDSD2
-		,LCMACC
-		,CIFNO
-		,BRANCH
-		,GLCOST
-		,GLPROD
-		,[GROUP]
-		,TRACCT
-		,YEARMONTH
-		,LOADED_AT
-	FROM
-		"DQP_LANDING"."dbo"."FILE_BFLCRTRAN"
+    SELECT
+         TREFF6
+        ,TRDAT6
+        ,TRANCD
+        ,DORC
+        ,convert(decimal(16,2),AMT) as AMT
+        ,PFGLAC
+        ,BATCH
+        ,DDSD1
+        ,DDSD2
+        ,LCMACC
+        ,CIFNO
+        ,BRANCH
+        ,GLCOST
+        ,GLPROD
+        ,[GROUP]
+        ,TRACCT
+        ,YEARMONTH
+        ,LOADED_AT
+    FROM
+        "DQP_LANDING"."dbo"."FILE_BFLCRTRAN"
 ),
 
 bronze_data AS (
-	SELECT
-		TREFF6
-		,TRDAT6
-		,TRANCD
-		,DORC
-    	,AMT
-    	,PFGLAC
-		,BATCH
-		,DDSD1
-		,DDSD2
-		,LCMACC
-		,CIFNO
-		,BRANCH
-		,GLCOST
-		,GLPROD
-		,[GROUP]
-		,TRACCT
-		,YEARMONTH
-		,GETUTCDATE() AS LOADED_AT
-	FROM landing_data
+    SELECT
+        TREFF6
+        ,TRDAT6
+        ,TRANCD
+        ,DORC
+        ,AMT
+        ,PFGLAC
+        ,BATCH
+        ,DDSD1
+        ,DDSD2
+        ,LCMACC
+        ,CIFNO
+        ,BRANCH
+        ,GLCOST
+        ,GLPROD
+        ,[GROUP]
+        ,TRACCT
+        ,YEARMONTH
+        ,GETUTCDATE() AS LOADED_AT
+    FROM landing_data
     
         WHERE LOADED_AT > COALESCE((SELECT MAX(LOADED_AT) FROM "DQP_BRONZE"."dbo"."bronze_file_bflcrtran"),'1970-01-01 00:00:00.000')
     
@@ -485,33 +485,33 @@ SELECT * FROM bronze_data
 
 
 WITH landing_data AS (
-	SELECT
-		 ACCOUNT_NUMBER
-		,END_AUMS
-		,MGMT_FEES
-		,IB_FEES
-		,NET_MGMT_FEE
-		,SUB_ADVISOR_FEE
-		,OUTSTANDING
-		,YEARMONTH
-		,LOADED_AT
-	FROM
-		"DQP_LANDING"."dbo"."FILE_BIU_ACTIVITY"
+    SELECT
+         ACCOUNT_NUMBER
+        ,END_AUMS
+        ,MGMT_FEES
+        ,IB_FEES
+        ,NET_MGMT_FEE
+        ,SUB_ADVISOR_FEE
+        ,OUTSTANDING
+        ,YEARMONTH
+        ,LOADED_AT
+    FROM
+        "DQP_LANDING"."dbo"."FILE_BIU_ACTIVITY"
 ),
 
 bronze_data AS (
-	SELECT
-	     ACCOUNT_NUMBER
-		,END_AUMS
-		,MGMT_FEES
-		,IB_FEES
-		,NET_MGMT_FEE
-		,SUB_ADVISOR_FEE
-		,OUTSTANDING
-		,YEARMONTH
-	    ,GETUTCDATE() AS LOADED_AT
-	FROM landing_data
-	
+    SELECT
+         ACCOUNT_NUMBER
+        ,END_AUMS
+        ,MGMT_FEES
+        ,IB_FEES
+        ,NET_MGMT_FEE
+        ,SUB_ADVISOR_FEE
+        ,OUTSTANDING
+        ,YEARMONTH
+        ,GETUTCDATE() AS LOADED_AT
+    FROM landing_data
+    
         WHERE LOADED_AT > COALESCE((SELECT MAX(LOADED_AT) FROM "DQP_BRONZE"."dbo"."bronze_file_biu_activity"),'1970-01-01 00:00:00.000')
     
 )
@@ -666,7 +666,7 @@ WITH landing_data AS (
         ,YEARMONTH
         ,LOADED_AT
     FROM
-	    "DQP_LANDING"."dbo"."FILE_FEDLINK_INC"
+        "DQP_LANDING"."dbo"."FILE_FEDLINK_INC"
 ),
 
 bronze_data AS (
@@ -953,7 +953,7 @@ WITH landing_data AS (
         ,YEARMONTH
         ,LOADED_AT
     FROM
-    	"DQP_LANDING"."dbo"."FILE_FEDLINK_OUT"
+        "DQP_LANDING"."dbo"."FILE_FEDLINK_OUT"
 ),
 
 bronze_data AS (
@@ -1122,7 +1122,7 @@ WITH landing_data AS (
         ,YEARMONTH
         ,LOADED_AT
     FROM
-    	"DQP_LANDING"."dbo"."FILE_RDCI"
+        "DQP_LANDING"."dbo"."FILE_RDCI"
 ),
 
 bronze_data AS (
@@ -1171,7 +1171,7 @@ WITH landing_data AS (
         ,YEARMONTH
         ,LOADED_AT
     FROM
-	    "DQP_LANDING"."dbo"."FILE_TRAILER_FEES"
+        "DQP_LANDING"."dbo"."FILE_TRAILER_FEES"
 ),
 
 bronze_data AS (
@@ -1209,32 +1209,32 @@ SELECT * FROM bronze_data
 
 WITH landing_data AS (
     SELECT
-	    ACCOUNT_NO
-	    ,SHORT_NAME
-	    ,OFFICE
-	    ,IP
-	    ,SYMBOL
-	    ,CUSIP
-	    ,SEC_REGISTERED
-	    ,SECURITY_DESCRIPTION
-	    ,TRADE_DATE_QUANTITY
-	    ,TRADE_DATE_MARKET_VALUE
-	    ,PERCENTAGE_OF_GRAND_TOTAL_TRADE_DATE_MARKET_VALUE
-	    ,TOTAL_SETTLEMENT_DATE_MARKET_VALUE
-	    ,SETTLEMENT_DATE_QUANTITY
-	    ,ACCOUNT_STATUS
-	    ,ACCRUED_AMOUNT
-	    ,CLOSING_BALANCE
-	    ,REFERENCE
-	    ,MANAGEMENT_FEES_PERCENTAGE
-	    ,MANAGEMENT_FEES_AMOUNT
-	    ,FUND_FAMILY_NAME
-	    ,COST_CENTER
-	    ,TEAM
-	    ,MONTH_YEAR
-	    ,GL_ACCOUNT
-	    ,YEARMONTH
-	    ,LOADED_AT
+        ACCOUNT_NO
+        ,SHORT_NAME
+        ,OFFICE
+        ,IP
+        ,SYMBOL
+        ,CUSIP
+        ,SEC_REGISTERED
+        ,SECURITY_DESCRIPTION
+        ,TRADE_DATE_QUANTITY
+        ,TRADE_DATE_MARKET_VALUE
+        ,PERCENTAGE_OF_GRAND_TOTAL_TRADE_DATE_MARKET_VALUE
+        ,TOTAL_SETTLEMENT_DATE_MARKET_VALUE
+        ,SETTLEMENT_DATE_QUANTITY
+        ,ACCOUNT_STATUS
+        ,ACCRUED_AMOUNT
+        ,CLOSING_BALANCE
+        ,REFERENCE
+        ,MANAGEMENT_FEES_PERCENTAGE
+        ,MANAGEMENT_FEES_AMOUNT
+        ,FUND_FAMILY_NAME
+        ,COST_CENTER
+        ,TEAM
+        ,MONTH_YEAR
+        ,GL_ACCOUNT
+        ,YEARMONTH
+        ,LOADED_AT
     FROM
         "DQP_LANDING"."dbo"."FILE_TRAILER_FEES_ACCRUALS"
 ),

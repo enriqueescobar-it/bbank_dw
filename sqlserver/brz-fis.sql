@@ -726,7 +726,7 @@ WITH landing_data AS (
     FROM
         "DQP_LANDING"."dbo"."FIS_LP_510"
     
-		WHERE data_date NOT IN (SELECT DISTINCT DATE_OF_DATA FROM "DQP_BRONZE"."dbo"."bronze_fis_lp_510")
+        WHERE data_date NOT IN (SELECT DISTINCT DATE_OF_DATA FROM "DQP_BRONZE"."dbo"."bronze_fis_lp_510")
     
 )
 

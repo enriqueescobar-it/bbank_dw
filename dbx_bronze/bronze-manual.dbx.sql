@@ -22,7 +22,7 @@ CREATE OR REPLACE TABLE bronze.default.bronze_file_apex_monthly_accounts AS
 
 
 WITH landing_data AS (
-	SELECT
+    SELECT
         CLIENT_CODE
         ,CORRESPONDENT_CODE
         ,ACCOUNT_GROUP_CODE
@@ -41,14 +41,14 @@ WITH landing_data AS (
         ,FUNDED_END_DATE
         ,TRY_CAST(AVG_MONTHLY_EQUITY AS DECIMAL(30,14)) AS AVG_MONTHLY_EQUITY
         ,DATE_OF_DATA
-		,YEARMONTH
-		,LOADED_AT
-	FROM
-		landing.default.file_apex_monthly_accounts
+        ,YEARMONTH
+        ,LOADED_AT
+    FROM
+        landing.default.file_apex_monthly_accounts
 ),
 
 bronze_data AS (
-	SELECT
+    SELECT
         CLIENT_CODE
         ,CORRESPONDENT_CODE
         ,ACCOUNT_GROUP_CODE
@@ -67,9 +67,9 @@ bronze_data AS (
         ,FUNDED_END_DATE
         ,AVG_MONTHLY_EQUITY
         ,DATE_OF_DATA
-		,YEARMONTH
-		,current_timestamp() AS LOADED_AT
-	FROM landing_data A
+        ,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data A
     
     
 )
@@ -95,7 +95,7 @@ CREATE OR REPLACE TABLE bronze.default.bronze_file_apex_monthly_credit AS
 
 
 WITH landing_data AS (
-	SELECT
+    SELECT
         CLIENT_CODE
         ,CORRESPONDENT_CODE
         ,ACCOUNT_GROUP_CODE
@@ -112,19 +112,19 @@ WITH landing_data AS (
         ,CASE
             WHEN RTRIM(LTRIM(BILLING_RATE)) LIKE '%E%'
                 THEN TRY_CAST(TRY_CAST(BILLING_RATE AS DOUBLE) AS DECIMAL(30,25))
-    	    ELSE TRY_CAST(BILLING_RATE AS DECIMAL(30,25))
-    	END AS BILLING_RATE
+            ELSE TRY_CAST(BILLING_RATE AS DECIMAL(30,25))
+        END AS BILLING_RATE
         ,PROCESS_START_DATE
         ,PROCESS_END_DATE
         ,DATE_OF_DATA
-		,YEARMONTH
-		,LOADED_AT
-	FROM
-		landing.default.file_apex_monthly_credit
+        ,YEARMONTH
+        ,LOADED_AT
+    FROM
+        landing.default.file_apex_monthly_credit
 ),
 
 bronze_data AS (
-	SELECT
+    SELECT
         CLIENT_CODE
         ,CORRESPONDENT_CODE
         ,ACCOUNT_GROUP_CODE
@@ -142,9 +142,9 @@ bronze_data AS (
         ,PROCESS_START_DATE
         ,PROCESS_END_DATE
         ,DATE_OF_DATA
-		,YEARMONTH
-		,current_timestamp() AS LOADED_AT
-	FROM landing_data A
+        ,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data A
     
     
 )
@@ -170,7 +170,7 @@ CREATE OR REPLACE TABLE bronze.default.bronze_file_apex_monthly_execution AS
 
 
 WITH landing_data AS (
-	SELECT
+    SELECT
         BILLINGPERIOD
         ,CLEARINGACCOUNT
         ,INSTRUMENTTYPE
@@ -189,14 +189,14 @@ WITH landing_data AS (
         ,TRY_CAST(TRY_CAST(CATHISTORICALFEE AS DOUBLE) AS NUMERIC(30,25)) AS CATHISTORICALFEE
         ,TRY_CAST(TRY_CAST(CATONGOINGFEE AS DOUBLE) AS NUMERIC(30,25)) AS CATONGOINGFEE
         ,DATE_OF_DATA
-		,YEARMONTH
-		,LOADED_AT
-	FROM
-		landing.default.file_apex_monthly_execution
+        ,YEARMONTH
+        ,LOADED_AT
+    FROM
+        landing.default.file_apex_monthly_execution
 ),
 
 bronze_data AS (
-	SELECT
+    SELECT
         BILLINGPERIOD
         ,CLEARINGACCOUNT
         ,INSTRUMENTTYPE
@@ -215,9 +215,9 @@ bronze_data AS (
         ,CATHISTORICALFEE
         ,CATONGOINGFEE
         ,DATE_OF_DATA
-		,YEARMONTH
-		,current_timestamp() AS LOADED_AT
-	FROM landing_data A
+        ,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data A
     
     
 )
@@ -243,7 +243,7 @@ CREATE OR REPLACE TABLE bronze.default.bronze_file_apex_monthly_fdic AS
 
 
 WITH landing_data AS (
-	SELECT
+    SELECT
         CORRESPONDENT_CODE
         ,ACCOUNT_NUMBER
         ,ACCOUNT_ID
@@ -254,14 +254,14 @@ WITH landing_data AS (
         ,TRY_CAST(TRY_CAST(EFF AS DOUBLE) AS NUMERIC(30,25)) AS EFF
         ,TRY_CAST(TRY_CAST(CORRESPONDENT_REBATE AS DOUBLE) AS NUMERIC(30,25)) AS CORRESPONDENT_REBATE
         ,DATE_OF_DATA
-		,YEARMONTH
-		,LOADED_AT
-	FROM
-		landing.default.file_apex_monthly_fdic
+        ,YEARMONTH
+        ,LOADED_AT
+    FROM
+        landing.default.file_apex_monthly_fdic
 ),
 
 bronze_data AS (
-	SELECT
+    SELECT
         CORRESPONDENT_CODE
         ,ACCOUNT_NUMBER
         ,ACCOUNT_ID
@@ -272,9 +272,9 @@ bronze_data AS (
         ,EFF
         ,CORRESPONDENT_REBATE
         ,DATE_OF_DATA
-		,YEARMONTH
-		,current_timestamp() AS LOADED_AT
-	FROM landing_data A
+        ,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data A
     
     
 )
@@ -300,7 +300,7 @@ CREATE OR REPLACE TABLE bronze.default.bronze_file_apex_monthly_trades AS
 
 
 WITH landing_data AS (
-	SELECT
+    SELECT
         CLIENT_CODE
         ,CORRESPONDENT_CODE
         ,ACCOUNT_GROUP_CODE
@@ -346,14 +346,14 @@ WITH landing_data AS (
         ,ORDER_ID
         ,EXECUTION_ID
         ,DATE_OF_DATA
-		,YEARMONTH
-		,LOADED_AT
-	FROM
-		landing.default.file_apex_monthly_trades
+        ,YEARMONTH
+        ,LOADED_AT
+    FROM
+        landing.default.file_apex_monthly_trades
 ),
 
 bronze_data AS (
-	SELECT
+    SELECT
         CLIENT_CODE
         ,CORRESPONDENT_CODE
         ,ACCOUNT_GROUP_CODE
@@ -399,9 +399,9 @@ bronze_data AS (
         ,ORDER_ID
         ,EXECUTION_ID
         ,DATE_OF_DATA
-		,YEARMONTH
-		,current_timestamp() AS LOADED_AT
-	FROM landing_data A
+        ,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data A
     
     
 )
@@ -427,50 +427,50 @@ CREATE OR REPLACE TABLE bronze.default.bronze_file_bflcrtran AS
 
 
 WITH landing_data AS (
-	SELECT
-		 TREFF6
-		,TRDAT6
-		,TRANCD
-		,DORC
-		,TRY_CAST(AMT AS decimal(16,2)) as AMT
-		,PFGLAC
-		,BATCH
-		,DDSD1
-		,DDSD2
-		,LCMACC
-		,CIFNO
-		,BRANCH
-		,GLCOST
-		,GLPROD
-		,`GROUP`
-		,TRACCT
-		,YEARMONTH
-		,LOADED_AT
-	FROM
-		landing.default.file_bflcrtran
+    SELECT
+         TREFF6
+        ,TRDAT6
+        ,TRANCD
+        ,DORC
+        ,TRY_CAST(AMT AS decimal(16,2)) as AMT
+        ,PFGLAC
+        ,BATCH
+        ,DDSD1
+        ,DDSD2
+        ,LCMACC
+        ,CIFNO
+        ,BRANCH
+        ,GLCOST
+        ,GLPROD
+        ,`GROUP`
+        ,TRACCT
+        ,YEARMONTH
+        ,LOADED_AT
+    FROM
+        landing.default.file_bflcrtran
 ),
 
 bronze_data AS (
-	SELECT
-		TREFF6
-		,TRDAT6
-		,TRANCD
-		,DORC
-    	,AMT
-    	,PFGLAC
-		,BATCH
-		,DDSD1
-		,DDSD2
-		,LCMACC
-		,CIFNO
-		,BRANCH
-		,GLCOST
-		,GLPROD
-		,`GROUP`
-		,TRACCT
-		,YEARMONTH
-		,current_timestamp() AS LOADED_AT
-	FROM landing_data
+    SELECT
+        TREFF6
+        ,TRDAT6
+        ,TRANCD
+        ,DORC
+        ,AMT
+        ,PFGLAC
+        ,BATCH
+        ,DDSD1
+        ,DDSD2
+        ,LCMACC
+        ,CIFNO
+        ,BRANCH
+        ,GLCOST
+        ,GLPROD
+        ,`GROUP`
+        ,TRACCT
+        ,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data
     
     
 )
@@ -497,33 +497,33 @@ CREATE OR REPLACE TABLE bronze.default.bronze_file_biu_activity AS
 
 
 WITH landing_data AS (
-	SELECT
-		 ACCOUNT_NUMBER
-		,END_AUMS
-		,MGMT_FEES
-		,IB_FEES
-		,NET_MGMT_FEE
-		,SUB_ADVISOR_FEE
-		,OUTSTANDING
-		,YEARMONTH
-		,LOADED_AT
-	FROM
-		landing.default.file_biu_activity
+    SELECT
+         ACCOUNT_NUMBER
+        ,END_AUMS
+        ,MGMT_FEES
+        ,IB_FEES
+        ,NET_MGMT_FEE
+        ,SUB_ADVISOR_FEE
+        ,OUTSTANDING
+        ,YEARMONTH
+        ,LOADED_AT
+    FROM
+        landing.default.file_biu_activity
 ),
 
 bronze_data AS (
-	SELECT
-	     ACCOUNT_NUMBER
-		,END_AUMS
-		,MGMT_FEES
-		,IB_FEES
-		,NET_MGMT_FEE
-		,SUB_ADVISOR_FEE
-		,OUTSTANDING
-		,YEARMONTH
-	    ,current_timestamp() AS LOADED_AT
-	FROM landing_data
-	
+    SELECT
+         ACCOUNT_NUMBER
+        ,END_AUMS
+        ,MGMT_FEES
+        ,IB_FEES
+        ,NET_MGMT_FEE
+        ,SUB_ADVISOR_FEE
+        ,OUTSTANDING
+        ,YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data
+    
     
 )
 
@@ -678,7 +678,7 @@ WITH landing_data AS (
         ,YEARMONTH
         ,LOADED_AT
     FROM
-	    landing.default.file_fedlink_inc
+        landing.default.file_fedlink_inc
 ),
 
 bronze_data AS (
@@ -965,7 +965,7 @@ WITH landing_data AS (
         ,YEARMONTH
         ,LOADED_AT
     FROM
-    	landing.default.file_fedlink_out
+        landing.default.file_fedlink_out
 ),
 
 bronze_data AS (
@@ -1134,7 +1134,7 @@ WITH landing_data AS (
         ,YEARMONTH
         ,LOADED_AT
     FROM
-    	landing.default.file_rdci
+        landing.default.file_rdci
 ),
 
 bronze_data AS (
@@ -1183,7 +1183,7 @@ WITH landing_data AS (
         ,YEARMONTH
         ,LOADED_AT
     FROM
-	    landing.default.file_trailer_fees
+        landing.default.file_trailer_fees
 ),
 
 bronze_data AS (
@@ -1221,32 +1221,32 @@ CREATE OR REPLACE TABLE bronze.default.bronze_file_trailer_fees_accruals AS
 
 WITH landing_data AS (
     SELECT
-	    ACCOUNT_NO
-	    ,SHORT_NAME
-	    ,OFFICE
-	    ,IP
-	    ,SYMBOL
-	    ,CUSIP
-	    ,SEC_REGISTERED
-	    ,SECURITY_DESCRIPTION
-	    ,TRADE_DATE_QUANTITY
-	    ,TRADE_DATE_MARKET_VALUE
-	    ,PERCENTAGE_OF_GRAND_TOTAL_TRADE_DATE_MARKET_VALUE
-	    ,TOTAL_SETTLEMENT_DATE_MARKET_VALUE
-	    ,SETTLEMENT_DATE_QUANTITY
-	    ,ACCOUNT_STATUS
-	    ,ACCRUED_AMOUNT
-	    ,CLOSING_BALANCE
-	    ,REFERENCE
-	    ,MANAGEMENT_FEES_PERCENTAGE
-	    ,MANAGEMENT_FEES_AMOUNT
-	    ,FUND_FAMILY_NAME
-	    ,COST_CENTER
-	    ,TEAM
-	    ,MONTH_YEAR
-	    ,GL_ACCOUNT
-	    ,YEARMONTH
-	    ,LOADED_AT
+        ACCOUNT_NO
+        ,SHORT_NAME
+        ,OFFICE
+        ,IP
+        ,SYMBOL
+        ,CUSIP
+        ,SEC_REGISTERED
+        ,SECURITY_DESCRIPTION
+        ,TRADE_DATE_QUANTITY
+        ,TRADE_DATE_MARKET_VALUE
+        ,PERCENTAGE_OF_GRAND_TOTAL_TRADE_DATE_MARKET_VALUE
+        ,TOTAL_SETTLEMENT_DATE_MARKET_VALUE
+        ,SETTLEMENT_DATE_QUANTITY
+        ,ACCOUNT_STATUS
+        ,ACCRUED_AMOUNT
+        ,CLOSING_BALANCE
+        ,REFERENCE
+        ,MANAGEMENT_FEES_PERCENTAGE
+        ,MANAGEMENT_FEES_AMOUNT
+        ,FUND_FAMILY_NAME
+        ,COST_CENTER
+        ,TEAM
+        ,MONTH_YEAR
+        ,GL_ACCOUNT
+        ,YEARMONTH
+        ,LOADED_AT
     FROM
         landing.default.file_trailer_fees_accruals
 ),

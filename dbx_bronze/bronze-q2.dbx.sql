@@ -73,7 +73,7 @@ bronze_data AS (
         ,IS_INTERNATIONAL
         ,ISO_CODE_A3
         ,CUSTOMER_DELETED_DATE
-		,YEARMONTH
+        ,YEARMONTH
         ,current_timestamp() AS LOADED_AT
     FROM landing_data
     
@@ -134,7 +134,7 @@ bronze_data AS (
         ,ZONE_ID
         ,ZONE_DESCRIPTION
         ,AUTO_GENERATED
-		,YEARMONTH
+        ,YEARMONTH
         ,current_timestamp() AS LOADED_AT
     FROM landing_data
     
@@ -162,50 +162,50 @@ CREATE OR REPLACE TABLE bronze.default.bronze_q2_user_pii AS
 
 
 WITH landing_data AS (
-	SELECT
-		USER_ID
-		,PRIMARY_CIF
-		,LAST_NAME
-		,FIRST_NAME
-		,MIDDLE_NAME
-		,SALUTATION
-		,SUFFIX
-		,SOCIAL_SECURITY_NUMBER
-		,EMAIL_ADDRESS
-		,STREET_ADDRESS_1
-		,STREET_ADDRESS_2
-		,CITY
-		,`STATE`
-		,POSTAL_CODE
-		,PROVINCE
-		,IS_INTERNATIONAL
-		,ISO_CODE_A3
-		,TRY_CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
-		,LOADED_AT
-	FROM
-    	landing.default.q2_user_pii
+    SELECT
+        USER_ID
+        ,PRIMARY_CIF
+        ,LAST_NAME
+        ,FIRST_NAME
+        ,MIDDLE_NAME
+        ,SALUTATION
+        ,SUFFIX
+        ,SOCIAL_SECURITY_NUMBER
+        ,EMAIL_ADDRESS
+        ,STREET_ADDRESS_1
+        ,STREET_ADDRESS_2
+        ,CITY
+        ,`STATE`
+        ,POSTAL_CODE
+        ,PROVINCE
+        ,IS_INTERNATIONAL
+        ,ISO_CODE_A3
+        ,TRY_CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
+        ,LOADED_AT
+    FROM
+        landing.default.q2_user_pii
 ),
 
 bronze_data AS (
-	SELECT
-		USER_ID
-		,PRIMARY_CIF
-		,LAST_NAME
-		,FIRST_NAME
-		,MIDDLE_NAME
-		,SALUTATION
-		,SUFFIX
-		,SOCIAL_SECURITY_NUMBER
-		,EMAIL_ADDRESS
-		,STREET_ADDRESS_1
-		,STREET_ADDRESS_2
-		,CITY
-		,`STATE`
-		,POSTAL_CODE
-		,PROVINCE
-		,IS_INTERNATIONAL
-		,ISO_CODE_A3
-		,YEARMONTH
+    SELECT
+        USER_ID
+        ,PRIMARY_CIF
+        ,LAST_NAME
+        ,FIRST_NAME
+        ,MIDDLE_NAME
+        ,SALUTATION
+        ,SUFFIX
+        ,SOCIAL_SECURITY_NUMBER
+        ,EMAIL_ADDRESS
+        ,STREET_ADDRESS_1
+        ,STREET_ADDRESS_2
+        ,CITY
+        ,`STATE`
+        ,POSTAL_CODE
+        ,PROVINCE
+        ,IS_INTERNATIONAL
+        ,ISO_CODE_A3
+        ,YEARMONTH
         ,current_timestamp() AS LOADED_AT
     FROM landing_data
     

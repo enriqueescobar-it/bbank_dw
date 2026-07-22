@@ -23,57 +23,57 @@ CREATE OR REPLACE TABLE bronze.default.bronze_sblc_lcmaster AS
 
 WITH landing_data AS (
     SELECT
-	 LCMBRN
-	 ,LCMCCY
-	 ,LCMGLN
-	 ,LCMCCN
-	 ,LCMPRC
-	 ,LCMACN
-	 ,LCMFCY
-	 ,LCMSTS
-	 ,LCMTYP
-	 ,LCMORF
-	 ,LCMRTY
-	 ,LCMOFX
-	 ,LCMCNF
-	 ,LCMTRF
-	 ,LCMTNR
-	 ,LCMOFI
-	 ,LCMGCD
-	 ,LCMGRC
-	 ,LCMOAM
-	 ,LCMAMN
-	 ,LCMCOM
-	 ,LCMEXP
-	 ,LCMMEB
-	 ,LCMCFK
-	 ,LCMODM
-	 ,LCMODD
-	 ,LCMODY
-	 ,LCMOPJ
-	 ,LCMLAM
-	 ,LCMLAD
-	 ,LCMLAY
-	 ,LCMLAJ
-	 ,LCMEXM
-	 ,LCMEXD
-	 ,LCMEXY
-	 ,LCMEXJ
-	 ,LCMCLM
-	 ,LCMCLD
-	 ,LCMCLY
-	 ,LCMCLJ
-	 ,LCMIB1
-	 ,LCMIB2
-	 ,LCMIB3
-	 ,LCMIBA
-	 ,LCMBN1
-	 ,LCMBN2
-	 ,LCMBN3
-	 ,LCMACC
-	 ,DATE_OF_DATA
-	 ,NULL AS YEARMONTH
-	 ,LOADED_AT
+     LCMBRN
+     ,LCMCCY
+     ,LCMGLN
+     ,LCMCCN
+     ,LCMPRC
+     ,LCMACN
+     ,LCMFCY
+     ,LCMSTS
+     ,LCMTYP
+     ,LCMORF
+     ,LCMRTY
+     ,LCMOFX
+     ,LCMCNF
+     ,LCMTRF
+     ,LCMTNR
+     ,LCMOFI
+     ,LCMGCD
+     ,LCMGRC
+     ,LCMOAM
+     ,LCMAMN
+     ,LCMCOM
+     ,LCMEXP
+     ,LCMMEB
+     ,LCMCFK
+     ,LCMODM
+     ,LCMODD
+     ,LCMODY
+     ,LCMOPJ
+     ,LCMLAM
+     ,LCMLAD
+     ,LCMLAY
+     ,LCMLAJ
+     ,LCMEXM
+     ,LCMEXD
+     ,LCMEXY
+     ,LCMEXJ
+     ,LCMCLM
+     ,LCMCLD
+     ,LCMCLY
+     ,LCMCLJ
+     ,LCMIB1
+     ,LCMIB2
+     ,LCMIB3
+     ,LCMIBA
+     ,LCMBN1
+     ,LCMBN2
+     ,LCMBN3
+     ,LCMACC
+     ,DATE_OF_DATA
+     ,NULL AS YEARMONTH
+     ,LOADED_AT
     FROM
         landing.default.sblc_lcmaster
 ),
@@ -158,23 +158,23 @@ CREATE OR REPLACE TABLE bronze.default.bronze_sblc_lctranx AS
 
 with landing_data as (
     SELECT
-	    TRY_CAST(NULLIF(TRBR, '') AS INTEGER) AS TRBR
-	    ,TRY_CAST(NULLIF(TRCOST, '') AS INTEGER) AS TRCOST
-	    ,TRY_CAST(NULLIF(TRPROD, '') AS INTEGER) AS TRPROD
-	    ,TRY_CAST(NULLIF(TRAGLN, '') AS INTEGER) AS TRAGLN
-	    ,TRACCN
-	    ,TRY_CAST(NULLIF(LCMACC, '') AS INTEGER) AS LCMACC
-	    ,TRY_CAST(NULLIF(TRCODE, '') AS INTEGER) AS TRCODE
-	    ,TRY_CAST(NULLIF(TRATYP, '') AS STRING) AS TRATYP
-	    ,DESCRI
-	    ,TRY_CAST(NULLIF(TRDORC, '') AS STRING) AS TRDORC
-	    ,TRY_CAST(NULLIF(AMOUNT, '') AS DECIMAL(20,2)) AS AMOUNT
-	    ,date_format(
+        TRY_CAST(NULLIF(TRBR, '') AS INTEGER) AS TRBR
+        ,TRY_CAST(NULLIF(TRCOST, '') AS INTEGER) AS TRCOST
+        ,TRY_CAST(NULLIF(TRPROD, '') AS INTEGER) AS TRPROD
+        ,TRY_CAST(NULLIF(TRAGLN, '') AS INTEGER) AS TRAGLN
+        ,TRACCN
+        ,TRY_CAST(NULLIF(LCMACC, '') AS INTEGER) AS LCMACC
+        ,TRY_CAST(NULLIF(TRCODE, '') AS INTEGER) AS TRCODE
+        ,TRY_CAST(NULLIF(TRATYP, '') AS STRING) AS TRATYP
+        ,DESCRI
+        ,TRY_CAST(NULLIF(TRDORC, '') AS STRING) AS TRDORC
+        ,TRY_CAST(NULLIF(AMOUNT, '') AS DECIMAL(20,2)) AS AMOUNT
+        ,date_format(
             try_cast(STUFF(STUFF(NULLIF(TRIM(TREFF6), ''), 5, 0, '/'), 3, 0, '/') AS DATE),
             'dd-MM-yyyy') AS TREFF6
-	    ,DDMUID
-	    ,DATE_OF_DATA
-	    ,TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH
+        ,DDMUID
+        ,DATE_OF_DATA
+        ,TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH
     FROM
         landing.default.sblc_lctranx
     

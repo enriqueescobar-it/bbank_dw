@@ -67,19 +67,19 @@ SELECT * FROM bronze_data
 WITH landing_data as (
     SELECT
         cifno
-	    ,fullName
-	    ,firstName
-	    ,middleName
-	    ,lastName
-	    ,class
-	    ,officer_code
-	    ,cifGroupID
-	    ,cifGroupDesc
-	    ,residenceCountryCode
-	    ,residenceCountryDesc
-	    ,customerSince
-	    ,date_imported
-		,CONVERT(INT, CONVERT(nvarchar(6), DATEADD("m", -1, LOADED_AT), 112)) AS YEARMONTH
+        ,fullName
+        ,firstName
+        ,middleName
+        ,lastName
+        ,class
+        ,officer_code
+        ,cifGroupID
+        ,cifGroupDesc
+        ,residenceCountryCode
+        ,residenceCountryDesc
+        ,customerSince
+        ,date_imported
+        ,CONVERT(INT, CONVERT(nvarchar(6), DATEADD("m", -1, LOADED_AT), 112)) AS YEARMONTH
         ,LOADED_AT
     FROM
         "DQP_LANDING"."dbo"."ASSIST_CUSTOMER_ADDL_FIELDS"
@@ -93,19 +93,19 @@ WITH landing_data as (
 bronze_data AS (
     SELECT
         cifno
-	    ,fullName
-	    ,firstName
-	    ,middleName
-	    ,lastName
-	    ,class
-	    ,officer_code
-	    ,cifGroupID
-	    ,cifGroupDesc
-	    ,residenceCountryCode
-	    ,residenceCountryDesc
-	    ,customerSince
-	    ,date_imported
-		,YEARMONTH
+        ,fullName
+        ,firstName
+        ,middleName
+        ,lastName
+        ,class
+        ,officer_code
+        ,cifGroupID
+        ,cifGroupDesc
+        ,residenceCountryCode
+        ,residenceCountryDesc
+        ,customerSince
+        ,date_imported
+        ,YEARMONTH
         ,GETUTCDATE() AS LOADED_AT
     FROM landing_data
 

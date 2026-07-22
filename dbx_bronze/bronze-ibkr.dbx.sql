@@ -299,7 +299,7 @@ CREATE OR REPLACE TABLE bronze.default.bronze_bcp_ibkr_balance_history AS
 
 WITH landing_data AS (
     SELECT
-	    ID
+        ID
         ,ACCT_ID
         ,BALANCE
         ,CREATED_AT

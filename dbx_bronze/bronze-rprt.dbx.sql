@@ -23,7 +23,7 @@ CREATE OR REPLACE TABLE bronze.default.bronze_rprt_sharing_agreement_exception A
 
 WITH landing_data AS (
     SELECT
-	    ID
+        ID
         ,CIF_NO
         ,ACTIVE
         ,TRY_CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH

@@ -287,7 +287,7 @@ SELECT * FROM bronze_data
 
 WITH landing_data AS (
     SELECT
-	    ID
+        ID
         ,ACCT_ID
         ,BALANCE
         ,CREATED_AT

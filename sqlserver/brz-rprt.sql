@@ -11,7 +11,7 @@
 
 WITH landing_data AS (
     SELECT
-	    ID
+        ID
         ,CIF_NO
         ,ACTIVE
         ,CONVERT(INT, CONVERT(nvarchar(6), LOADED_AT, 112)) AS YEARMONTH

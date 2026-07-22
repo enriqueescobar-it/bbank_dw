@@ -643,7 +643,7 @@ WITH landing_data AS (
         ,REPLACE(
             InstrumentID,
             SUBSTRING(
-            	InstrumentID,
+                InstrumentID,
                 instr(InstrumentID, '_'),
                 length(InstrumentID)
             ),
