@@ -1,14 +1,14 @@
 -- Databricks SQL for source: invoice
 -- Generated from sqlserver/brz-invoice.sql
 
-CREATE CATALOG IF NOT EXISTS invoice;
-USE CATALOG invoice;
+CREATE CATALOG IF NOT EXISTS landing;
+USE CATALOG landing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."FILE_INVOICE_REQUESTS"
-CREATE TABLE IF NOT EXISTS invoice.default.file_invoice_requests (
+CREATE TABLE IF NOT EXISTS landing.default.file_invoice_requests (
     `INVOICE_NAME` STRING,
     `EMPLOYEE_NAME` STRING,
     `VENDOR_NAME` STRING,
@@ -40,9 +40,9 @@ CREATE TABLE IF NOT EXISTS invoice.default.file_invoice_requests (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE invoice.default.file_invoice_requests;
+TRUNCATE TABLE landing.default.file_invoice_requests;
 
-INSERT INTO invoice.default.file_invoice_requests (
+INSERT INTO landing.default.file_invoice_requests (
     `INVOICE_NAME`, `EMPLOYEE_NAME`, `VENDOR_NAME`, `INVOICE_RECEIVED`, `ORIGIN_SOURCE`, `APPROVAL_STATUS`,
     `PAYMENT_STATUS`, `REQUEST_TOTAL`, `REQUEST_KEY`, `CHECK_NUMBER`, `CREATE_DATE`, `DESCRIPTION`,
     `INVOICE_AMOUNT`, `INVOICE_DATE`, `PAYMENT_AMOUNT`, `PAYMENT_DUE_DATE`, `INVOICE_NUMBER`, `PAYMENT_STATUS_DATE`,
@@ -82,4 +82,4 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 SELECT 'file_invoice_requests' AS table_name, COUNT(*) AS record_count
-FROM invoice.default.file_invoice_requests;
+FROM landing.default.file_invoice_requests;

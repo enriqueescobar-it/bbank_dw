@@ -1,14 +1,14 @@
 -- Databricks SQL for source: ibkr
 -- Generated from sqlserver/brz-ibkr.sql
 
-CREATE CATALOG IF NOT EXISTS ibkr;
-USE CATALOG ibkr;
+CREATE CATALOG IF NOT EXISTS landing;
+USE CATALOG landing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."BCP_IBKR_ACCOUNT"
-CREATE TABLE IF NOT EXISTS ibkr.default.bcp_ibkr_account (
+CREATE TABLE IF NOT EXISTS landing.default.bcp_ibkr_account (
     `ID` BIGINT,
     `ACCT_NO` STRING,
     `BRADESCO_AGENCY` STRING,
@@ -35,12 +35,12 @@ CREATE TABLE IF NOT EXISTS ibkr.default.bcp_ibkr_account (
     `YEARMONTH` BIGINT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE ibkr.default.bcp_ibkr_account IS 
+COMMENT ON TABLE landing.default.bcp_ibkr_account IS 
 'The table contains information about accounts associated with BCP and IBKR platforms. It includes details such as account numbers, status, balance, and related identifiers. Potential use cases include monitoring account statuses, analyzing customer activity, and tracking changes over time.';
 
-TRUNCATE TABLE ibkr.default.bcp_ibkr_account;
+TRUNCATE TABLE landing.default.bcp_ibkr_account;
 
-INSERT INTO ibkr.default.bcp_ibkr_account (
+INSERT INTO landing.default.bcp_ibkr_account (
     `ID`, `ACCT_NO`, `BRADESCO_AGENCY`, `BRADESCO_ACCOUNT`, `ACCT_OPENED_AT`, `BBDID`,
     `ACCT_STATUS`, `TRANSACT_STATUS`, `BCP_ACCT_ID`, `BCP_CUST_ID`, `BALANCE`, `CREATED_AT`,
     `USER_ID`, `APP_REF`, `RIA_ID`, `CUSTOMER_ID`, `SELLER_ID`, `SEGMENTO`,
@@ -76,7 +76,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."BCP_IBKR_ACCT_HOLDER"
-CREATE TABLE IF NOT EXISTS ibkr.default.bcp_ibkr_acct_holder (
+CREATE TABLE IF NOT EXISTS landing.default.bcp_ibkr_acct_holder (
     `ID` BIGINT,
     `ACCT_ID` BIGINT,
     `ACCOUNT_RELATION` STRING,
@@ -158,12 +158,12 @@ CREATE TABLE IF NOT EXISTS ibkr.default.bcp_ibkr_acct_holder (
     `YEARMONTH` BIGINT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE ibkr.default.bcp_ibkr_acct_holder IS
+COMMENT ON TABLE landing.default.bcp_ibkr_acct_holder IS
 'The table contains detailed information about account holders, including personal, contact, and employment details. It may also include financial data such as incomes and net worth. Use cases include assessing client profiles, analyzing demographic information, and understanding account ownership structures. This table can support compliance checks, risk assessments, and strategic planning.';
 
-TRUNCATE TABLE ibkr.default.bcp_ibkr_acct_holder;
+TRUNCATE TABLE landing.default.bcp_ibkr_acct_holder;
 
-INSERT INTO ibkr.default.bcp_ibkr_acct_holder (
+INSERT INTO landing.default.bcp_ibkr_acct_holder (
     `ID`, `ACCT_ID`, `ACCOUNT_RELATION`, `EMAIL`, `FNAME`, `LNAME`,
     `GENDER`, `DOB`, `MARITAL_STATUS`, `PHONE_NUMBER`, `ADDRESS_LINE`, `STATE`,
     `CITY`, `COUNTRY`, `ZIP_CODE`, `CITIZENSHIP`, `COUNTRY_OF_BIRTH`, `EMPLOYER_BUSINESS`,
@@ -263,7 +263,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."BCP_IBKR_BALANCE_HISTORY"
-CREATE TABLE IF NOT EXISTS ibkr.default.bcp_ibkr_balance_history (
+CREATE TABLE IF NOT EXISTS landing.default.bcp_ibkr_balance_history (
     `ID` BIGINT,
     `ACCT_ID` BIGINT,
     `BALANCE` DECIMAL(38,10),
@@ -271,12 +271,12 @@ CREATE TABLE IF NOT EXISTS ibkr.default.bcp_ibkr_balance_history (
     `YEARMONTH` BIGINT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE ibkr.default.bcp_ibkr_balance_history IS
+COMMENT ON TABLE landing.default.bcp_ibkr_balance_history IS
 'The table contains historical balance data for accounts, recording the balance over time along with timestamps for when the data was created and loaded. Possible use cases include tracking account balance trends, generating reports on account performance, and analyzing financial activity over specific periods. This can help in understanding customer behavior and ensuring accuracy in financial records.';
 
-TRUNCATE TABLE ibkr.default.bcp_ibkr_balance_history;
+TRUNCATE TABLE landing.default.bcp_ibkr_balance_history;
 
-INSERT INTO ibkr.default.bcp_ibkr_balance_history (
+INSERT INTO landing.default.bcp_ibkr_balance_history (
     `ID`, `ACCT_ID`, `BALANCE`, `CREATED_AT`, `YEARMONTH`, `LOADED_AT`
 )
 SELECT
@@ -289,10 +289,10 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 SELECT 'bcp_ibkr_account' AS table_name, COUNT(*) AS record_count
-FROM ibkr.default.bcp_ibkr_account
+FROM landing.default.bcp_ibkr_account
 UNION ALL
 SELECT 'bcp_ibkr_acct_holder' AS table_name, COUNT(*) AS record_count
-FROM ibkr.default.bcp_ibkr_acct_holder
+FROM landing.default.bcp_ibkr_acct_holder
 UNION ALL
 SELECT 'bcp_ibkr_balance_history' AS table_name, COUNT(*) AS record_count
-FROM ibkr.default.bcp_ibkr_balance_history;
+FROM landing.default.bcp_ibkr_balance_history;

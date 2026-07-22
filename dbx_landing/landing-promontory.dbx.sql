@@ -1,14 +1,14 @@
 -- Databricks SQL for source: promontory
 -- Generated from sqlserver/brz-promontory.sql
 
-CREATE CATALOG IF NOT EXISTS promontory;
-USE CATALOG promontory;
+CREATE CATALOG IF NOT EXISTS landing;
+USE CATALOG landing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."INTRAFI_R4230"
-CREATE TABLE IF NOT EXISTS promontory.default.intrafi_r4230 (
+CREATE TABLE IF NOT EXISTS landing.default.intrafi_r4230 (
     INSTITUTION_TRANSACTION_ACCOUNT_NO STRING,
     ICS_ACCOUNT_ID STRING,
     SHADOW_ACCOUNT_NO STRING,
@@ -56,9 +56,9 @@ CREATE TABLE IF NOT EXISTS promontory.default.intrafi_r4230 (
     LOADED_AT TIMESTAMP
 );
 
-TRUNCATE TABLE promontory.default.intrafi_r4230;
+TRUNCATE TABLE landing.default.intrafi_r4230;
 
-INSERT INTO promontory.default.intrafi_r4230 (
+INSERT INTO landing.default.intrafi_r4230 (
     INSTITUTION_TRANSACTION_ACCOUNT_NO, ICS_ACCOUNT_ID, SHADOW_ACCOUNT_NO,
     ACCOUNT_TITLE, PRIMARY_CUSTOMER_TAX_ID, INTERNAL_CUSTOMER_ID,
     PRINCIPAL_BALANCE, ACCRUED_INTEREST, DAILY_ACCRUAL, INTEREST_PAID_TODAY,
@@ -91,4 +91,4 @@ VALUES
     ('ITA000010', 'ICS000010', 'SHA000010', 'Juniper Retail Reserve', '12-3456790', 'CIF200000010', 1250000.00, 2085.70, 171.23, 25.00, 438.60, 'Reciprocal', 'ICS', 'Digital Rate', 0.0335, 0.0318, 0.0335, 1, 0, 1210000.00, 1195000.00, 760000.00, 748000.00, 450000.00, 447000.00, 21, 10, 11025.00, 8910.00, '010 - Miami', 'Avery Brooks', DATE '2025-10-28', DATE '2026-05-18', 'Open', 'Checking', 1090.00, 4560.00, 100.00, 390.00, 'BUS', 'Stable', 'Y', 'Savings Field 10', DATE '2026-05-18', TIMESTAMP '2026-05-18 12:00:00');
 
 SELECT 'intrafi_r4230' AS table_name, COUNT(*) AS record_count
-FROM promontory.default.intrafi_r4230;
+FROM landing.default.intrafi_r4230;
