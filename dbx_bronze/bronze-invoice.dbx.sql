@@ -51,7 +51,7 @@ WITH landing_data AS (
 		DATE_OF_DATA,
 		YEARMONTH
 	FROM  
-        invoice.default.file_invoice_requests
+        landing.default.file_invoice_requests
     
     
 )

@@ -45,11 +45,11 @@ WITH landing_data AS (
         ,STATUS_MSG
         ,MODIFY_DT
         ,PORTFOLIO
-        ,(SELECT TRY_CAST(POSTD7 AS DATE) FROM ibkr.default.jh_ddpar1) as AsOfDate
+        ,(SELECT TRY_CAST(POSTD7 AS DATE) FROM landing.default.jh_ddpar1) as AsOfDate
         ,TRY_CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
         ,LOADED_AT
     FROM
-    ibkr.default.bcp_ibkr_account
+    landing.default.bcp_ibkr_account
 ),
 
 bronze_data AS(
@@ -188,7 +188,7 @@ WITH landing_data AS (
         ,TRY_CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
         ,LOADED_AT
     FROM
-    ibkr.default.bcp_ibkr_acct_holder
+    landing.default.bcp_ibkr_acct_holder
 ),
 
 bronze_data AS(
@@ -306,7 +306,7 @@ WITH landing_data AS (
         ,TRY_CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
         ,LOADED_AT
     FROM
-      ibkr.default.bcp_ibkr_balance_history
+      landing.default.bcp_ibkr_balance_history
 ),
 
 bronze_data AS (

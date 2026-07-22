@@ -75,7 +75,7 @@ WITH landing_data AS (
 	 ,NULL AS YEARMONTH
 	 ,LOADED_AT
     FROM
-        sblc.default.sblc_lcmaster
+        landing.default.sblc_lcmaster
 ),
 
 bronze_data AS (
@@ -176,7 +176,7 @@ with landing_data as (
 	    ,DATE_OF_DATA
 	    ,TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH
     FROM
-        sblc.default.sblc_lctranx
+        landing.default.sblc_lctranx
     
     
 )
