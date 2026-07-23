@@ -1576,8 +1576,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_eodchangedpositions (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_ovn_eodchangedpositions IS 
+'The table contains data related to end-of-day changed positions for accounts. It includes details about account numbers, instrument IDs, market values, currencies, and transaction specifics as of a given date. Possible use cases include analyzing changes in positions over time, calculating market values, and assessing income and cost for various holdings. This information can support reporting and compliance efforts.';
 
 TRUNCATE TABLE landing.default.sei_ovn_eodchangedpositions;
 
@@ -1725,8 +1725,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_eodposvalaggr (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_ovn_eodposvalaggr IS 
+'The table contains end-of-day position validation aggregates for firms and their accounts. It records various metrics such as daily averages and total traded and settled amounts in different currencies for each firm and account. This data can be useful for analyzing trading performance, currency exposure, and account activity over time.';
 
 TRUNCATE TABLE landing.default.sei_ovn_eodposvalaggr;
 
@@ -1858,8 +1858,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_eodpositions (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_ovn_eodpositions IS 
+'The table contains end-of-day position data for various financial instruments. It includes detailed information such as account numbers, instrument identifiers, quantities held, market values, and various currency-related metrics. This data can be utilized for portfolio management, performance analysis, and compliance reporting. Additionally, it tracks transactions and their characteristics, enabling analysis of trading activities.';
 
 TRUNCATE TABLE landing.default.sei_ovn_eodpositions;
 
@@ -2011,8 +2011,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_eodpositionssupplemental (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_ovn_eodpositionssupplemental IS 
+'This table includes supplemental end-of-day position data for financial accounts. It captures various financial metrics associated with accounts, such as current costs, market values, cash balances, and unrealized gains or losses, all recorded in the firm s base currency. Potential use cases include risk assessment, portfolio valuation analysis, and tracking position changes over time. The data can help in understanding the overall financial health of accounts as of specific reporting dates.';
 
 TRUNCATE TABLE landing.default.sei_ovn_eodpositionssupplemental;
 
@@ -2100,8 +2100,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_feecomputation (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_ovn_feecomputation IS 
+'The table contains data related to the computation of fees for various accounts. This includes details such as firm identifiers, account numbers, fee types, and amounts. It can be useful for analyzing fee calculations, adjustments based on rules, and understanding billing processes. Potential use cases include financial reporting, fee analysis, and auditing fee structures across different accounts.';
 
 TRUNCATE TABLE landing.default.sei_ovn_feecomputation;
 
