@@ -2634,8 +2634,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_modelsintext (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_ovn_modelsintext IS 
+'The table contains information about various models used in investment contexts. Key elements include model identification, status, and type, as well as relevant risk and investment metrics. This data can be utilized for tracking model performance, analyzing investment strategies, and enhancing portfolio management processes.';
 
 TRUNCATE TABLE landing.default.sei_ovn_modelsintext;
 
@@ -2706,8 +2706,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_paidto (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_ovn_paidto IS 
+'The table contains data regarding payment transactions, focusing on recipients and their associated banking details. Key information includes the account details of the payee, payment methods, and various routing numbers. This data can be useful for processes such as verifying payment information, auditing transaction history, and ensuring accurate fund transfers, as well as managing address details related to banks and recipients.';
 
 TRUNCATE TABLE landing.default.sei_ovn_paidto;
 
@@ -2776,8 +2776,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_partyoptionalfields (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_ovn_partyoptionalfields IS 
+'The table contains data regarding payment transactions, focusing on recipients and their associated banking details. Key information includes the account details of the payee, payment methods, and various routing numbers. This data can be useful for processes such as verifying payment information, auditing transaction history, and ensuring accurate fund transfers, as well as managing address details related to banks and recipients.';
 
 TRUNCATE TABLE landing.default.sei_ovn_partyoptionalfields;
 
@@ -2824,8 +2824,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_portfoliogroups (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_ovn_portfoliogroups IS 
+'The table contains information about portfolio groups, including their IDs, names, types, and statuses. It also captures details such as associated accounts, fees, and strategies. This data can be useful for analyzing portfolio group structures, monitoring their statuses, and managing related financial products and strategies.';
 
 TRUNCATE TABLE landing.default.sei_ovn_portfoliogroups;
 
@@ -2901,8 +2901,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_portfolioperformance (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_ovn_portfolioperformance IS 
+'The table tracks the performance metrics of investment portfolios over time. It includes information about performance levels, returns across various time frames (monthly, quarterly, yearly), market value, and contributions. This data can be used to analyze portfolio performance trends, assess risk through standard deviation, and monitor changes since inception. Colleagues can utilize this table for reporting, performance evaluation, and strategy development.';
 
 TRUNCATE TABLE landing.default.sei_ovn_portfolioperformance;
 
@@ -3017,8 +3017,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_reccashactivities (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_ovn_reccashactivities IS 
+'The table contains data on recurring cash activities related to customer accounts. It includes information such as account identifiers, recurrence schedules, payment details, and amounts involved in each transaction. Use cases for this table include tracking cash flow schedules, managing recurring transactions, and analyzing payment patterns for different payer profiles.';
 
 TRUNCATE TABLE landing.default.sei_ovn_reccashactivities;
 
@@ -3117,8 +3117,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_reference (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_ovn_reference IS 
+'The table contains reference data related to various types, codes, and descriptions. It includes information associated with different firms, qualifiers, and relevant dates. Potential use cases include data validation, reference lookups for categorizing or classifying data, and historical trend analysis based on the date of data.';
 
 TRUNCATE TABLE landing.default.sei_ovn_reference;
 
@@ -3150,8 +3150,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_relationship_mapping_sei_jha (
     `SWP_Role` STRING,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_relationship_mapping_sei_jha IS 
+'The table includes a mapping of various relationship types and their associated roles. It provides details such as relationship codes, short names, and descriptions. This data can be used to understand the different types of relationships within the system and to facilitate mapping and integration tasks between different systems or applications.';
 
 TRUNCATE TABLE landing.default.sei_relationship_mapping_sei_jha;
 
@@ -3224,6 +3224,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_relationships (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE landing.default.sei_ovn_relationships IS 
+'Source: DQP_LANDING.dbo.SEI_OVN_RELATIONSHIPS';
 
 TRUNCATE TABLE landing.default.sei_ovn_relationships;
 
@@ -3312,6 +3314,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_roledetail (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE landing.default.sei_ovn_roledetail IS 
+'Source: DQP_LANDING.dbo.SEI_OVN_ROLEDETAIL';
 
 TRUNCATE TABLE landing.default.sei_ovn_roledetail;
 

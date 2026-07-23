@@ -1,0 +1,190 @@
+-- Databricks SQL for bronze catalog
+-- Rebuilt from dbx/bronze.dbx.sql
+
+CREATE CATALOG IF NOT EXISTS bronze;
+USE CATALOG bronze;
+
+CREATE SCHEMA IF NOT EXISTS default;
+USE SCHEMA default;
+
+-- From bronze-sblc.dbx.sql
+-- Source model: bronze_sblc_lcmaster
+CREATE OR REPLACE TABLE bronze.default.bronze_sblc_lcmaster AS
+-- NAME: BRONZE_SBLC_LCMASTER
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: November 27, 2025
+
+
+
+WITH landing_data AS (
+    SELECT
+	 LCMBRN
+	 ,LCMCCY
+	 ,LCMGLN
+	 ,LCMCCN
+	 ,LCMPRC
+	 ,LCMACN
+	 ,LCMFCY
+	 ,LCMSTS
+	 ,LCMTYP
+	 ,LCMORF
+	 ,LCMRTY
+	 ,LCMOFX
+	 ,LCMCNF
+	 ,LCMTRF
+	 ,LCMTNR
+	 ,LCMOFI
+	 ,LCMGCD
+	 ,LCMGRC
+	 ,LCMOAM
+	 ,LCMAMN
+	 ,LCMCOM
+	 ,LCMEXP
+	 ,LCMMEB
+	 ,LCMCFK
+	 ,LCMODM
+	 ,LCMODD
+	 ,LCMODY
+	 ,LCMOPJ
+	 ,LCMLAM
+	 ,LCMLAD
+	 ,LCMLAY
+	 ,LCMLAJ
+	 ,LCMEXM
+	 ,LCMEXD
+	 ,LCMEXY
+	 ,LCMEXJ
+	 ,LCMCLM
+	 ,LCMCLD
+	 ,LCMCLY
+	 ,LCMCLJ
+	 ,LCMIB1
+	 ,LCMIB2
+	 ,LCMIB3
+	 ,LCMIBA
+	 ,LCMBN1
+	 ,LCMBN2
+	 ,LCMBN3
+	 ,LCMACC
+	 ,DATE_OF_DATA
+	 ,NULL AS YEARMONTH
+	 ,LOADED_AT
+    FROM
+        sblc.default.sblc_lcmaster
+),
+
+bronze_data AS (
+    SELECT
+        CAST(LCMBRN AS DECIMAL(3,0)) AS LCMBRN
+        ,CAST(NULLIF(LCMCCY, '') AS STRING) AS LCMCCY
+        ,CAST(LCMGLN AS DECIMAL(7,0)) AS LCMGLN
+        ,CAST(LCMCCN AS DECIMAL(4,0)) AS LCMCCN
+        ,CAST(LCMPRC AS DECIMAL(3,0)) AS LCMPRC
+        ,CAST(LCMACN AS DECIMAL(16,0)) AS LCMACN
+        ,CAST(NULLIF(LCMFCY, '') AS STRING) AS LCMFCY
+        ,CAST(NULLIF(LCMSTS, '') AS STRING) AS LCMSTS
+        ,CAST(NULLIF(LCMTYP, '') AS STRING) AS LCMTYP
+        ,CAST(NULLIF(LCMORF, '') AS STRING) AS LCMORF
+        ,CAST(NULLIF(LCMRTY, '') AS STRING) AS LCMRTY
+        ,CAST(LCMOFX AS DECIMAL(17,6)) AS LCMOFX
+        ,CAST(NULLIF(LCMCNF, '') AS STRING) AS LCMCNF
+        ,CAST(NULLIF(LCMTRF, '') AS STRING) AS LCMTRF
+        ,CAST(NULLIF(LCMTNR, '') AS STRING) AS LCMTNR
+        ,CAST(NULLIF(LCMOFI, '') AS STRING) AS LCMOFI
+        ,CAST(NULLIF(LCMGCD, '') AS STRING) AS LCMGCD
+        ,CAST(NULLIF(LCMGRC, '') AS STRING) AS LCMGRC
+        ,CAST(LCMOAM AS DECIMAL(17,2)) AS LCMOAM
+        ,CAST(LCMAMN AS DECIMAL(17,2)) AS LCMAMN
+        ,CAST(LCMCOM AS DECIMAL(17,2)) AS LCMCOM
+        ,CAST(LCMEXP AS DECIMAL(17,2)) AS LCMEXP
+        ,CAST(LCMMEB AS DECIMAL(17,2)) AS LCMMEB
+        ,CAST(LCMCFK AS STRING) AS LCMCFK
+        ,CAST(LCMODM AS DECIMAL(2,0)) AS LCMODM
+        ,CAST(LCMODD AS DECIMAL(2,0)) AS LCMODD
+        ,CAST(LCMODY AS DECIMAL(2,0)) AS LCMODY
+        ,CAST(LCMOPJ AS DECIMAL(7,0)) AS LCMOPJ
+        ,CAST(LCMLAM AS DECIMAL(2,0)) AS LCMLAM
+        ,CAST(LCMLAD AS DECIMAL(2,0)) AS LCMLAD
+        ,CAST(LCMLAY AS DECIMAL(2,0)) AS LCMLAY
+        ,CAST(LCMLAJ AS DECIMAL(7,0)) AS LCMLAJ
+        ,CAST(LCMEXM AS DECIMAL(2,0)) AS LCMEXM
+        ,CAST(LCMEXD AS DECIMAL(2,0)) AS LCMEXD
+        ,CAST(LCMEXY AS DECIMAL(2,0)) AS LCMEXY
+        ,CAST(LCMEXJ AS DECIMAL(7,0)) AS LCMEXJ
+        ,CAST(LCMCLM AS DECIMAL(2,0)) AS LCMCLM
+        ,CAST(LCMCLD AS DECIMAL(2,0)) AS LCMCLD
+        ,CAST(LCMCLY AS DECIMAL(2,0)) AS LCMCLY
+        ,CAST(LCMCLJ AS DECIMAL(7,0)) AS LCMCLJ
+        ,CAST(NULLIF(LCMIB1, '') AS STRING) AS LCMIB1
+        ,CAST(NULLIF(LCMIB2, '') AS STRING) AS LCMIB2
+        ,CAST(NULLIF(LCMIB3, '') AS STRING) AS LCMIB3
+        ,CAST(LCMIBA AS DECIMAL(16,0)) AS LCMIBA
+        ,CAST(NULLIF(LCMBN1, '') AS STRING) AS LCMBN1
+        ,CAST(NULLIF(LCMBN2, '') AS STRING) AS LCMBN2
+        ,CAST(NULLIF(LCMBN3, '') AS STRING) AS LCMBN3
+        ,CAST(LCMACC AS DECIMAL(9,0)) AS LCMACC
+        ,DATE_OF_DATA
+        ,CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH
+        ,current_timestamp() AS LOADED_AT
+    FROM landing_data
+    
+    
+)
+
+
+SELECT * FROM bronze_data;
+
+
+
+
+
+-- From bronze-sblc.dbx.sql
+-- Source model: bronze_sblc_lctranx
+CREATE OR REPLACE TABLE bronze.default.bronze_sblc_lctranx AS
+-- NAME: BRONZE_SBLC_LCTRANX
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: November 27, 2025
+
+
+
+with landing_data as (
+    SELECT
+	    try_cast(TRBR AS INTEGER) AS TRBR
+	    ,try_cast(TRCOST AS INTEGER) AS TRCOST
+	    ,try_cast(TRPROD AS INTEGER) AS TRPROD
+	    ,try_cast(TRAGLN AS INTEGER) AS TRAGLN
+	    ,TRACCN
+	    ,try_cast(LCMACC AS INTEGER) AS LCMACC
+	    ,try_cast(TRCODE AS INTEGER) AS TRCODE
+	    ,TRATYP
+	    ,DESCRI
+	    ,TRDORC
+	    ,try_cast(AMOUNT AS DECIMAL(20,2)) AS AMOUNT
+	    ,date_format(
+            try_cast(overlay(overlay(NULLIF(TRIM(TREFF6), ''), '/', 5, 0), '/', 3, 0) AS DATE),
+            'dd-MM-yyyy') AS TREFF6
+	    ,DDMUID
+	    ,DATE_OF_DATA
+	    ,CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH
+    FROM
+        sblc.default.sblc_lctranx
+    
+    
+)
+
+SELECT *,current_timestamp() AS LOADED_AT FROM landing_data;
+
+
+
+
+-- Row-count verification
