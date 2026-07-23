@@ -18,6 +18,8 @@ CREATE TABLE IF NOT EXISTS landing.default.file_mis_pershing_officer_code (
     YEARMONTH INT,
     LOADED_AT TIMESTAMP
 );
+COMMENT ON TABLE landing.default.file_mis_pershing_officer_code IS 
+'The table records information related to officers, including their identification codes, names, cost centers, and team affiliations. It also includes date information for the data and a timestamp for when the records were loaded. This data can be used for reporting on personnel structure, analyzing team compositions, and tracking changes over time.';
 
 TRUNCATE TABLE landing.default.file_mis_pershing_officer_code;
 
@@ -54,6 +56,8 @@ CREATE TABLE IF NOT EXISTS landing.default.file_mis_team_officers_v2 (
     YEARMONTH INT,
     LOADED_AT TIMESTAMP
 );
+COMMENT ON TABLE landing.default.file_mis_team_officers_v2 IS 
+'The table contains information about team officers, including their contact details and organizational roles. It can be used for managing team structures, analyzing leadership within business lines, and tracking officer changes over time. Details such as officer codes, names, titles, and contact information are included, which can assist in communication and reporting within the organization.';
 
 TRUNCATE TABLE landing.default.file_mis_team_officers_v2;
 
