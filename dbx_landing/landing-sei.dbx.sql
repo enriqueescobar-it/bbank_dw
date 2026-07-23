@@ -17,6 +17,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_accountoptionalfields (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE landing.default.sei_ovn_accountoptionalfields IS 
+'This table contains additional optional fields related to accounts. It includes details such as account numbers, optional field identifiers, values, and associated account IDs. The data can be used for enhancing account profiles, performing data enrichment, or analyzing the characteristics of accounts over time.';
 
 TRUNCATE TABLE landing.default.sei_ovn_accountoptionalfields;
 
@@ -182,6 +184,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_accounts (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE landing.default.sei_ovn_accounts IS 
+'The table contains detailed information about accounts, including their status, type, and associated portfolio details. Use cases for this data include tracking account performance, analyzing account activity over time, and understanding account classifications and investment objectives. This information can assist in compliance reviews, fee assessments, and portfolio management functions.';
 
 TRUNCATE TABLE landing.default.sei_ovn_accounts;
 
@@ -401,6 +405,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_activeblocks (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE landing.default.sei_ovn_activeblocks IS 
+'The table contains data regarding active blocks related to financial transactions. It includes information such as firm IDs, account numbers, portfolio details, and committed quantities. Use cases for this data involve analyzing commitment trends, tracking transaction activities, and understanding portfolio management strategies.';
 
 TRUNCATE TABLE landing.default.sei_ovn_activeblocks;
 
@@ -467,6 +473,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_assetinvclas (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE landing.default.sei_ovn_assetinvclas IS 
+'The table contains structured information related to asset investment classifications. It includes various schema levels that provide hierarchical categorization of assets, along with details such as the date of data and the time the data was loaded. Use cases for this table may include asset categorization analysis, investment performance tracking, and reporting based on different classification levels over time.';
 
 TRUNCATE TABLE landing.default.sei_ovn_assetinvclas;
 
@@ -525,6 +533,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_assetoptfields (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE landing.default.sei_ovn_assetoptfields IS 
+'The table contains information related to optional fields for various assets. It includes unique identifiers for assets and instruments, along with additional fields that can hold optional data values. Relevant use cases include tracking changes over time and analyzing the attributes associated with different assets. The data can also assist in understanding asset characteristics or performance across specific periods.';
 
 TRUNCATE TABLE landing.default.sei_ovn_assetoptfields;
 
@@ -668,6 +678,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_assets (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_ovn_assets;
 
@@ -925,6 +937,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_clientaccountlink (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_ovn_clientaccountlink;
 
@@ -1164,6 +1178,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_clients (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_ovn_clients;
 
@@ -1347,6 +1363,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_contactdetails (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_ovn_contactdetails;
 
@@ -1424,6 +1442,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_custodynostropositions (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_ovn_custodynostropositions;
 
@@ -1556,6 +1576,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_eodchangedpositions (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_ovn_eodchangedpositions;
 
@@ -1703,6 +1725,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_eodposvalaggr (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_ovn_eodposvalaggr;
 
@@ -1834,6 +1858,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_eodpositions (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_ovn_eodpositions;
 
@@ -1985,6 +2011,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_eodpositionssupplemental (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_ovn_eodpositionssupplemental;
 
@@ -2072,6 +2100,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_feecomputation (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_ovn_feecomputation;
 
@@ -2144,6 +2174,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_feegroup (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_ovn_feegroup;
 
@@ -2194,6 +2226,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_feepackagerule (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_ovn_feepackagerule;
 
@@ -2289,6 +2323,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_feepackageusage (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_ovn_feepackageusage;
 
@@ -2378,6 +2414,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_fundcutoff (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_ovn_fundcutoff;
 
@@ -2426,6 +2464,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_fxforward (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_ovn_fxforward;
 
@@ -2594,6 +2634,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_modelsintext (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_ovn_modelsintext;
 
@@ -2664,6 +2706,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_paidto (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_ovn_paidto;
 
@@ -2732,6 +2776,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_partyoptionalfields (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_ovn_partyoptionalfields;
 
@@ -2778,6 +2824,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_portfoliogroups (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_ovn_portfoliogroups;
 
@@ -2853,6 +2901,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_portfolioperformance (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_ovn_portfolioperformance;
 
@@ -2967,6 +3017,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_reccashactivities (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_ovn_reccashactivities;
 
@@ -3065,6 +3117,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_reference (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_ovn_reference;
 
@@ -3096,6 +3150,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_relationship_mapping_sei_jha (
     `SWP_Role` STRING,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.sei_relationship_mapping_sei_jha;
 
