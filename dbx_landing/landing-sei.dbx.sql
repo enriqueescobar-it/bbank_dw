@@ -3801,8 +3801,8 @@ CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_transactiondetailupd (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_sei.default.sei_ovn_statementevents IS 
-'';
+COMMENT ON TABLE landing_sei.default.sei_ovn_transactiondetailupd IS 
+'The table contains detailed records of financial transactions, providing insights into various transaction components, fees, and adjustments. Key information includes transaction identifiers, amounts, account details, and tax rates. This data can be used to analyze transaction flows, assess fees, evaluate custodial details, and track adjustments or overrides made to transaction records. Possible use cases include reporting on transaction activity, fee analysis, and compliance checks regarding tax treatments.';
 
 TRUNCATE TABLE landing_sei.default.sei_ovn_transactiondetailupd;
 
@@ -4011,8 +4011,8 @@ CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_transactionheader (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_sei.default.sei_ovn_statementevents IS 
-'';
+COMMENT ON TABLE landing_sei.default.sei_ovn_transactionheader IS 
+'The table contains transaction header data relevant to financial activities. It includes details such as transaction identifiers, account information, amounts in different currencies, and various flags for transaction types. This data can be used for tracking financial transactions, performing reconciliations, analyzing transactional patterns, and generating reports related to financial operations.';
 
 TRUNCATE TABLE landing_sei.default.sei_ovn_transactionheader;
 
@@ -4363,8 +4363,8 @@ CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_transactionheaderupd (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_sei.default.sei_ovn_statementevents IS 
-'';
+COMMENT ON TABLE landing_sei.default.sei_ovn_transactionheaderupd IS 
+'The table contains detailed transaction header information relevant to various financial transactions. It includes identifiers for firms, accounts, and transactions along with details such as transaction dates, amounts, currencies, and types. This data can be useful for tracking transaction histories, analyzing transaction types, and monitoring changes or adjustments made to transactions, as well as understanding the relationships between different transactions.';
 
 TRUNCATE TABLE landing_sei.default.sei_ovn_transactionheaderupd;
 
@@ -4603,7 +4603,7 @@ CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_upcomingactivities (
     `LOADED_AT` TIMESTAMP
 );
 COMMENT ON TABLE landing_sei.default.sei_ovn_statementevents IS 
-'';
+'The table contains data related to upcoming activities for specific financial accounts and portfolios. It includes fields such as projected dates, activity types, expected quantities, and cash impacts. This table can be used to track and analyze planned trading activities and their anticipated financial outcomes, facilitating effective portfolio management and trading strategy development.';
 
 TRUNCATE TABLE landing_sei.default.sei_ovn_upcomingactivities;
 
@@ -4676,8 +4676,8 @@ CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_userdetail (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_sei.default.sei_ovn_statementevents IS 
-'';
+COMMENT ON TABLE landing_sei.default.sei_ovn_userdetail IS 
+'The table contains detailed information about users in the system. It includes data points such as user identification, creation dates, last login times, and user status. Potential use cases involve tracking user activity, managing user accounts, analyzing user engagement, and monitoring access levels within the platform.';
 
 TRUNCATE TABLE landing_sei.default.sei_ovn_userdetail;
 
@@ -4715,8 +4715,8 @@ CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_userteamroledetail (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_sei.default.sei_ovn_statementevents IS 
-'';
+COMMENT ON TABLE landing_sei.default.sei_ovn_userteamroledetail IS 
+'The table contains details about user roles and teams within the organization. It includes information on employee roles, team associations, and flags indicating primary team membership. This data can be utilized for analyzing team structures, understanding role allocations, and tracking changes over time.';
 
 TRUNCATE TABLE landing_sei.default.sei_ovn_userteamroledetail;
 
