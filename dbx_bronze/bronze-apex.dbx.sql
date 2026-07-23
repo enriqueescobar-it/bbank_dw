@@ -78,6 +78,9 @@ SELECT
     `LOADED_AT`
 FROM landing.default.apex_daily_accounts;
 
+COMMENT ON TABLE bronze.default.bronze_apex_daily_accounts IS
+'Bronze Apex table sourced from landing.default.apex_daily_accounts. Contains flattened 10-row fixture data for Databricks validation and downstream processing.';
+
 -- From bronze-apex.dbx.sql
 -- Source model: bronze_apex_daily_activities
 -- Source: "DQP_LANDING"."dbo"."APEX_daily_activities"
@@ -495,6 +498,9 @@ SELECT
     `LOADED_AT`
 FROM landing.default.apex_daily_activities;
 
+COMMENT ON TABLE bronze.default.bronze_apex_daily_activities IS
+'Bronze Apex table sourced from landing.default.apex_daily_activities. Contains flattened 10-row fixture data for Databricks validation and downstream processing.';
+
 -- From bronze-apex.dbx.sql
 -- Source model: bronze_apex_daily_overnight_balances
 -- Source: "DQP_LANDING"."dbo"."APEX_daily_overnight_balances"
@@ -564,6 +570,9 @@ SELECT
     `LOADED_AT`
 FROM landing.default.apex_daily_overnight_balances;
 
+COMMENT ON TABLE bronze.default.bronze_apex_daily_overnight_balances IS
+'Bronze Apex table sourced from landing.default.apex_daily_overnight_balances. Contains flattened 10-row fixture data for Databricks validation and downstream processing.';
+
 -- From bronze-apex.dbx.sql
 -- Source model: bronze_apex_daily_positions
 -- Source: "DQP_LANDING"."dbo"."APEX_daily_positions"
@@ -590,6 +599,9 @@ SELECT
     `YEARMONTH`,
     `LOADED_AT`
 FROM landing.default.apex_daily_positions;
+
+COMMENT ON TABLE bronze.default.bronze_apex_daily_positions IS
+'Bronze Apex table sourced from landing.default.apex_daily_positions. Contains flattened 10-row fixture data for Databricks validation and downstream processing.';
 
 -- From bronze-apex.dbx.sql
 -- Source model: bronze_apex_daily_stock_record
@@ -639,6 +651,9 @@ SELECT
     `LOADED_AT`
 FROM landing.default.apex_daily_stock_record;
 
+COMMENT ON TABLE bronze.default.bronze_apex_daily_stock_record IS
+'Bronze Apex table sourced from landing.default.apex_daily_stock_record. Contains flattened 10-row fixture data for Databricks validation and downstream processing.';
+
 -- From bronze-apex.dbx.sql
 -- Source model: bronze_apex_onboarding_status
 -- Source: "DQP_LANDING"."dbo"."APEX_onboarding_status"
@@ -659,3 +674,6 @@ SELECT
     `YEARMONTH`,
     `LOADED_AT`
 FROM landing.default.apex_onboarding_status;
+
+COMMENT ON TABLE bronze.default.bronze_apex_onboarding_status IS
+'Bronze Apex table sourced from landing.default.apex_onboarding_status. Contains flattened 10-row fixture data for Databricks validation and downstream processing.';
