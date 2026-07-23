@@ -678,8 +678,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_assets (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_ovn_assets IS 
+'The table contains detailed information about various financial assets. It includes attributes such as the asset type, identifiers like ISIN and CUSIP, pricing details, and relevant dates (e.g., issue date, maturity date). Colleagues can utilize this data for asset tracking, valuation analysis, and to assess market trends. Additionally, it captures details like credit ratings and currencies, which can aid in risk analysis and investment decision-making.';
 
 TRUNCATE TABLE landing.default.sei_ovn_assets;
 
@@ -937,8 +937,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_clientaccountlink (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_ovn_clientaccountlink IS 
+'The table contains data related to the linking of client accounts. It includes information on clients, their account numbers, ownership percentages, and relationships between clients and their accounts. This data can be utilized for analyzing client-account associations, ownership structures, and performing reporting on client relationships over time';
 
 TRUNCATE TABLE landing.default.sei_ovn_clientaccountlink;
 
@@ -1178,8 +1178,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_clients (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_ovn_clients IS 
+'The table contains detailed information about clients, including personal, demographic, and financial data. It can be used for tracking client relationships, compliance with tax regulations, and risk assessment. Key data includes client identification, contact details, tax information, and financial contributions. This information will be useful for departments managing customer relations, compliance, and risk management.';
 
 TRUNCATE TABLE landing.default.sei_ovn_clients;
 
@@ -1363,8 +1363,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_contactdetails (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_ovn_contactdetails IS 
+'The table contains contact details for various entities, including addresses, phone numbers, and email addresses. It includes information such as contact types, primary flags for addresses and phone numbers, and entity statuses. This data can be used for managing and analyzing contact information, improving communication strategies, and maintaining up-to-date records of entity contact points.';
 
 TRUNCATE TABLE landing.default.sei_ovn_contactdetails;
 
@@ -1442,8 +1442,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_custodynostropositions (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_ovn_custodynostropositions IS 
+'The table contains data related to custody and trading positions for accounts. It provides details about accounts, trading partners, and associated positions, including quantities and market values in different currencies. This can be used to track asset positions over time, support reconciliation processes, and analyze trading partner relationships.';
 
 TRUNCATE TABLE landing.default.sei_ovn_custodynostropositions;
 
