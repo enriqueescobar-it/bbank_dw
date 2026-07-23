@@ -23,8 +23,8 @@ CREATE TABLE IF NOT EXISTS landing.default.mulesoft_customer_external_id (
     yearmonth INT,
     loaded_at TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.mulesoft_customer_external_id IS 
+'The table contains external identifiers related to customers, including their unique IDs and the corresponding source systems. It can be used to map customer data across different systems, track customer information changes over time, and analyze data integration efforts. Key fields include the customer ID, external ID, and timestamps for creation and modifications.';
 
 TRUNCATE TABLE landing.default.mulesoft_customer_external_id;
 
@@ -64,8 +64,8 @@ CREATE TABLE IF NOT EXISTS landing.default.mulesoft_party (
     yearmonth INT,
     loaded_at TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.mulesoft_party IS 
+'The table contains data related to parties involved in transactions, including their identification details and system metadata. It allows for tracking of changes to party records over time. Use cases include monitoring party information, analyzing trends in party data, and auditing changes made to these records.';
 
 TRUNCATE TABLE landing.default.mulesoft_party;
 
@@ -168,8 +168,8 @@ CREATE TABLE IF NOT EXISTS landing.default.mulesoft_prospect_external_data (
     yearmonth INT,
     loaded_at TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.mulesoft_prospect_external_data IS 
+'The table contains external prospect data relevant to customer profiling and onboarding. It includes comprehensive information such as personal details, contact information, income details, and employment information. Possible use cases for this data include verifying customer identities, assessing creditworthiness, understanding potential market segments, and tailoring communication strategies.';
 
 TRUNCATE TABLE landing.default.mulesoft_prospect_external_data;
 
