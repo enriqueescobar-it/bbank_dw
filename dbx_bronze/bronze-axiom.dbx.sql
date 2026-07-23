@@ -655,87 +655,8 @@ CREATE OR REPLACE TABLE bronze.default.bronze_axiom_instmodelstg AS
 WITH landing_data AS (
     SELECT
         InstrumentID
-        ,REPLACE(
-            InstrumentID,
-            SUBSTRING(
-                InstrumentID,
-                instr(InstrumentID, '_'),
-                length(InstrumentID)
-            ),
-            ''
-        ) AS InstrumentType
-        ,REPLACE(
-            InstrumentID,
-            LEFT(InstrumentID, instr(InstrumentID, '_')),
-            ''
-        ) AS InstrumentCode
-        ,ITYPE
-        ,ACCT
-        ,DEPT
-        ,PROD
-        ,CIFID
-        ,OFFICERID
-        ,AX_DQAReviewed
-        ,AX_DQAEventCode
-        ,AX_AccrualBasis
-        ,AX_AmortizationStartDate
-        ,AX_Amortizing
-        ,AX_AmortTerm
-        ,AX_APSFlag
-        ,AX_AvgBal
-        ,AX_Coupon
-        ,AX_CurBal
-        ,AX_DaysDelay
-        ,AX_FirstRateResetCap
-        ,AX_FirstRateResetDate
-        ,AX_FTP
-        ,AX_FTPEngineType
-        ,AX_FTPAnnual
-        ,AX_FTPKeyRate
-        ,AX_FTPRateSpread
-        ,AX_FTPRate
-        ,AX_FTPKeyRateName
-        ,AX_FTPSpread
-        ,AX_FTPSpreadAnnual
-        ,AX_IntRate
-        ,AX_Interest
-        ,AX_InterestAnnual
-        ,AX_IntIndex
-        ,AX_IntSpread
-        ,AX_FTPMessage
-        ,AX_IsNonMaturity
-        ,AX_IssueDate
-        ,AX_LifeRateCeiling
-        ,AX_FTPMessageCd
-        ,AX_LifeRateFloor
-        ,AX_MatDate
-        ,AX_MatTerm
-        ,AX_FTPMethod
-        ,AX_NextPmtDate
-        ,AX_NextRateResetDate
-        ,AX_NonAccrual
-        ,AX_FTPYieldCurve
-        ,AX_OrigBal
-        ,AX_OrigDate
-        ,AX_OrigPrepayRate
-        ,AX_OrigPrepayType
-        ,AX_Payment
-        ,AX_PeriodicRateResetCap
-        ,AX_PmtFreq
-        ,AX_SourceTable
-        ,AX_PmtType
-        ,AX_PrepayRate
-        ,AX_PrepayType
-        ,AX_PrevRateResetDate
-        ,AX_RateResetFreq
-        ,AX_RecCount
-        ,AX_RenewalDate
-        ,AX_IntroRateEndDate
-        ,LateChargePct
-        ,GraceDays
-        ,LateChargeCode
-        ,DATE_OF_DATA
-        ,YRMO AS YEARMONTH
+        ,CHARINDEX_InstrumentID
+        ,LEN_InstrumentID
     FROM
         landing.default.axiom_instmodelstg
 )
