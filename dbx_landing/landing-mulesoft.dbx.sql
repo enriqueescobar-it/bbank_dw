@@ -23,6 +23,8 @@ CREATE TABLE IF NOT EXISTS landing.default.mulesoft_customer_external_id (
     yearmonth INT,
     loaded_at TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.mulesoft_customer_external_id;
 
@@ -62,6 +64,8 @@ CREATE TABLE IF NOT EXISTS landing.default.mulesoft_party (
     yearmonth INT,
     loaded_at TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.mulesoft_party;
 
@@ -164,6 +168,8 @@ CREATE TABLE IF NOT EXISTS landing.default.mulesoft_prospect_external_data (
     yearmonth INT,
     loaded_at TIMESTAMP
 );
+COMMENT ON TABLE _ IS 
+'';
 
 TRUNCATE TABLE landing.default.mulesoft_prospect_external_data;
 
