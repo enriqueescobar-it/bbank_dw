@@ -3225,7 +3225,7 @@ CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_relationships (
     `LOADED_AT` TIMESTAMP
 );
 COMMENT ON TABLE landing_sei.default.sei_ovn_relationships IS 
-'Source: DQP_LANDING.dbo.SEI_OVN_RELATIONSHIPS';
+'The table contains information about relationships between different entities. It includes details on primary and secondary entities, their identifiers, types, descriptions, roles, and addresses. This table can be useful for analyzing relationships in a database, understanding entity interactions, and verifying ownership structures. Use cases may include due diligence, compliance checks, and relationship mapping.';
 
 TRUNCATE TABLE landing_sei.default.sei_ovn_relationships;
 
@@ -3315,7 +3315,7 @@ CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_roledetail (
     `LOADED_AT` TIMESTAMP
 );
 COMMENT ON TABLE landing_sei.default.sei_ovn_roledetail IS 
-'Source: DQP_LANDING.dbo.SEI_OVN_ROLEDETAIL';
+'The table contains details related to roles within the system, including role identifiers and associated access functionalities. It can be utilized to analyze role permissions, understand function categories, and track access types. This information may assist in compliance audits, security assessments, and maintenance of user access control.';
 
 TRUNCATE TABLE landing_sei.default.sei_ovn_roledetail;
 
@@ -3376,6 +3376,8 @@ CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_statementevents (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE landing_sei.default.sei_ovn_statementevents IS 
+'The table captures statement event data related to customer accounts. It includes details about statement events such as frequencies, delivery methods, and statuses. Use cases include tracking statement event occurrences, managing delivery logistics, and analyzing the performance of various processing groups. This data can help in understanding how statement events are handled and evaluating the impact on customer relationships.';
 
 TRUNCATE TABLE landing_sei.default.sei_ovn_statementevents;
 
@@ -3506,6 +3508,8 @@ CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_statementinstance (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE landing_sei.default.sei_ovn_statementinstance IS 
+'The table contains detailed information about statement event instances. It includes identifiers for statements, accounts, and delivery methods, as well as recipient details such as names and addresses. This data can be useful for tracking the status of statements, understanding client relationships, and analyzing processing timelines. Potential use cases include monitoring statement distributions, managing delivery methods, and resolving issues related to statement processing.';
 
 TRUNCATE TABLE landing_sei.default.sei_ovn_statementinstance;
 
@@ -3625,6 +3629,8 @@ CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_statementpackage (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE landing_sei.default.sei_ovn_statementpackage IS 
+'The table contains data about statement packages used in our operations. It includes details such as the package ID, name, and description, as well as attributes related to processing and scheduling. This table can be utilized for managing and tracking the status of statement packages, analyzing their purposes and types, and understanding the recurrence of statements over time. It can support audits and reporting on statement processing.';
 
 TRUNCATE TABLE landing_sei.default.sei_ovn_statementpackage;
 
@@ -3697,6 +3703,8 @@ CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_transactiondetail (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE landing_sei.default.sei_ovn_transactiondetail IS 
+'The table captures detailed information about transaction records, including aspects like transaction types, amounts, fees, and associated accounts. Possible use cases include analyzing transaction patterns, calculating fees and taxes, and understanding the financial activities of different portfolios or accounts. This data can be useful for reporting, audit trails, and financial analysis.';
 
 TRUNCATE TABLE landing_sei.default.sei_ovn_transactiondetail;
 
@@ -3793,6 +3801,8 @@ CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_transactiondetailupd (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE landing_sei.default.sei_ovn_statementevents IS 
+'';
 
 TRUNCATE TABLE landing_sei.default.sei_ovn_transactiondetailupd;
 
@@ -4001,6 +4011,8 @@ CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_transactionheader (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE landing_sei.default.sei_ovn_statementevents IS 
+'';
 
 TRUNCATE TABLE landing_sei.default.sei_ovn_transactionheader;
 
@@ -4351,6 +4363,8 @@ CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_transactionheaderupd (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE landing_sei.default.sei_ovn_statementevents IS 
+'';
 
 TRUNCATE TABLE landing_sei.default.sei_ovn_transactionheaderupd;
 
@@ -4588,6 +4602,8 @@ CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_upcomingactivities (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE landing_sei.default.sei_ovn_statementevents IS 
+'';
 
 TRUNCATE TABLE landing_sei.default.sei_ovn_upcomingactivities;
 
@@ -4660,6 +4676,8 @@ CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_userdetail (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE landing_sei.default.sei_ovn_statementevents IS 
+'';
 
 TRUNCATE TABLE landing_sei.default.sei_ovn_userdetail;
 
@@ -4697,6 +4715,8 @@ CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_userteamroledetail (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE landing_sei.default.sei_ovn_statementevents IS 
+'';
 
 TRUNCATE TABLE landing_sei.default.sei_ovn_userteamroledetail;
 
