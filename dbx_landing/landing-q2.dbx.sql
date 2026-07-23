@@ -33,6 +33,8 @@ CREATE TABLE IF NOT EXISTS landing.default.q2_customer (
     YEARMONTH INT,
     LOADED_AT TIMESTAMP
 );
+COMMENT ON TABLE landing.default.q2_customer IS 
+'The table contains detailed information about customers, including their identifiers, group associations, contact details, and tax information. This data can be used for customer segmentation, analyzing customer demographics, and understanding customer service requirements. Use cases include tracking customer activity over time, managing customer cohorts, and assessing service charge plans.';
 
 TRUNCATE TABLE landing.default.q2_customer;
 
@@ -72,6 +74,8 @@ CREATE TABLE IF NOT EXISTS landing.default.q2_user (
     YEARMONTH INT,
     LOADED_AT TIMESTAMP
 );
+COMMENT ON TABLE landing.default.q2_user IS 
+'The table captures user data for analysis related to user roles and group associations. It includes information about user status (active or inactive), creation and deletion timestamps, and group affiliations. This data can be used to manage user permissions, monitor user activity, and analyze group dynamics within the organization.';
 
 TRUNCATE TABLE landing.default.q2_user;
 
@@ -114,6 +118,8 @@ CREATE TABLE IF NOT EXISTS landing.default.q2_user_pii (
     YEARMONTH INT,
     LOADED_AT TIMESTAMP
 );
+COMMENT ON TABLE landing.default.q2_user_pii IS 
+'The table contains personally identifiable information (PII) related to users. It includes details such as names, contact information, and addresses. This data can be utilized for customer identification, verification processes, and communication activities. It is also useful for compliance purposes and ensuring data accuracy in user profiles.';
 
 TRUNCATE TABLE landing.default.q2_user_pii;
 

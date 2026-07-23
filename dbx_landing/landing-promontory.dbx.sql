@@ -55,6 +55,8 @@ CREATE TABLE IF NOT EXISTS landing.default.intrafi_r4230 (
     DATE_OF_DATA DATE,
     LOADED_AT TIMESTAMP
 );
+COMMENT ON TABLE landing.default.intrafi_r4230 IS 
+'The table contains data related to financial accounts, focusing on various metrics such as balances, interest, income, and fees for accounts participating in an institutional cash management program. It offers information about account activity, including transactions, interest accrual, and account statuses. This data can be used to analyze overall account performance, track interest activity over time, and evaluate fee income and expenses for both monthly and yearly periods.';
 
 TRUNCATE TABLE landing.default.intrafi_r4230;
 

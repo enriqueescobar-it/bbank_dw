@@ -15,6 +15,8 @@ CREATE TABLE IF NOT EXISTS landing.default.rprt_sharing_agreement_exception (
     YEARMONTH INT,
     LOADED_AT TIMESTAMP
 );
+COMMENT ON TABLE landing.default.rprt_sharing_agreement_exception IS 
+'The table contains data related to sharing agreement exceptions. It tracks specific identifiers, the status of the agreement, the time period in which the exception is active, and the timestamp of when the data was loaded. This information can support analysis of exceptions in sharing agreements, allowing for the identification of trends and anomalies over time.';
 
 TRUNCATE TABLE landing.default.rprt_sharing_agreement_exception;
 
