@@ -2174,8 +2174,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_feegroup (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_ovn_feegroup IS 
+'The table contains data related to fee groups within the organization. It includes details such as the identifiers for firms, names of fee groups, their statuses, and associated portfolio types. This information can support use cases like tracking changes in fee group configurations, managing accounts under each fee group, and analyzing the performance of different fee structures over time.';
 
 TRUNCATE TABLE landing.default.sei_ovn_feegroup;
 
@@ -2226,8 +2226,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_feepackagerule (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_ovn_feepackagerule IS 
+'The table contains information about fee packaging rules used by different organizations. It includes details such as the name and type of fee package, associated rates, and the organization implementing the rules. This data can help in analyzing fee structures, monitoring changes to fee packages, and understanding how fees are applied to various transaction types. Possible use cases include compliance checks, reporting on fee package performance, and auditing fee applications across portfolios.';
 
 TRUNCATE TABLE landing.default.sei_ovn_feepackagerule;
 
@@ -2323,8 +2323,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_feepackageusage (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_ovn_feepackageusage IS 
+'The table contains data related to fee package usage for accounts. It captures details such as fee computation dates, account identifiers, discount information, and fee statuses. Colleagues can use this data to analyze fee structures, monitor fee changes over time, understand the impact of discounts and waivers, and track account fee activity.';
 
 TRUNCATE TABLE landing.default.sei_ovn_feepackageusage;
 
@@ -2414,8 +2414,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_fundcutoff (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_ovn_fundcutoff IS 
+'The table contains information about fund cutoff times for various trading instruments. It includes details such as the identification of instruments, firms, and brokers involved, along with timestamps for cutoff times and data loading. This table can be used for tracking the timing of fund operations and managing deadlines for trades. Analysts may leverage this data to ensure compliance with cutoff schedules and enhance operational efficiency.';
 
 TRUNCATE TABLE landing.default.sei_ovn_fundcutoff;
 
@@ -2464,8 +2464,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sei_ovn_fxforward (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE _ IS 
-'';
+COMMENT ON TABLE landing.default.sei_ovn_fxforward IS 
+'The table contains information about fund cutoff times for various trading instruments. It includes details such as the identification of instruments, firms, and brokers involved, along with timestamps for cutoff times and data loading. This table can be used for tracking the timing of fund operations and managing deadlines for trades. Analysts may leverage this data to ensure compliance with cutoff schedules and enhance operational efficiency.';
 
 TRUNCATE TABLE landing.default.sei_ovn_fxforward;
 
