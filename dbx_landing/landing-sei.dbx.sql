@@ -8,7 +8,7 @@ CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_ACCOUNTOPTIONALFIELDS"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_accountoptionalfields (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_accountoptionalfields (
     `ACCOUNT_NUMBER` STRING,
     `ACCOUNT_OPTIONAL_FIELD_ID` BIGINT,
     `ACCOUNT_OPTIONAL_FIELD_VALUE` STRING,
@@ -17,12 +17,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_accountoptionalfields (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_accountoptionalfields IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_accountoptionalfields IS 
 'This table contains additional optional fields related to accounts. It includes details such as account numbers, optional field identifiers, values, and associated account IDs. The data can be used for enhancing account profiles, performing data enrichment, or analyzing the characteristics of accounts over time.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_accountoptionalfields;
+TRUNCATE TABLE landing_sei.default.sei_ovn_accountoptionalfields;
 
-INSERT INTO landing_seidefault.sei_ovn_accountoptionalfields (
+INSERT INTO landing_sei.default.sei_ovn_accountoptionalfields (
     `ACCOUNT_NUMBER`, `ACCOUNT_OPTIONAL_FIELD_ID`, `ACCOUNT_OPTIONAL_FIELD_VALUE`, `ACCOUNT_ID`,
     `DATE_OF_DATA`, `YEARMONTH`, `LOADED_AT`
 )
@@ -37,7 +37,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_ACCOUNTS"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_accounts (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_accounts (
     `ACCOUNT_NUMBER` STRING,
     `ACCOUNT_DISPLAY_NAME` STRING,
     `ACCOUNT_OPEN_DATE` DATE,
@@ -184,12 +184,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_accounts (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_accounts IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_accounts IS 
 'The table contains detailed information about accounts, including their status, type, and associated portfolio details. Use cases for this data include tracking account performance, analyzing account activity over time, and understanding account classifications and investment objectives. This information can assist in compliance reviews, fee assessments, and portfolio management functions.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_accounts;
+TRUNCATE TABLE landing_sei.default.sei_ovn_accounts;
 
-INSERT INTO landing_seidefault.sei_ovn_accounts (
+INSERT INTO landing_sei.default.sei_ovn_accounts (
     `ACCOUNT_NUMBER`, `ACCOUNT_DISPLAY_NAME`, `ACCOUNT_OPEN_DATE`, `ACCOUNT_TYPE`,
     `ACCOUNT_STATUS_CODE`, `ACCOUNT_BASE_CURRENCY`, `PORTFOLIO_ID`, `PORTFOLIO_TYPE`,
     `COUNTRY_CODE`, `LAST_TRADE_DATE`, `DATE_PORTFOLIO_OPENED`, `DATE_PORTFOLIO_CLOSED`,
@@ -383,7 +383,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_ACTIVEBLOCKS"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_activeblocks (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_activeblocks (
     `FIRM_ID` BIGINT,
     `ACCOUNT_NUMBER` STRING,
     `PORTFOLIO_ID` BIGINT,
@@ -405,12 +405,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_activeblocks (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_activeblocks IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_activeblocks IS 
 'The table contains data regarding active blocks related to financial transactions. It includes information such as firm IDs, account numbers, portfolio details, and committed quantities. Use cases for this data involve analyzing commitment trends, tracking transaction activities, and understanding portfolio management strategies.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_activeblocks;
+TRUNCATE TABLE landing_sei.default.sei_ovn_activeblocks;
 
-INSERT INTO landing_seidefault.sei_ovn_activeblocks (
+INSERT INTO landing_sei.default.sei_ovn_activeblocks (
     `FIRM_ID`, `ACCOUNT_NUMBER`, `PORTFOLIO_ID`, `PORTFOLIO_LONG_NAME`, `TRD_INSTRUMENT_ID`,
     `COMMIT_QTY_AMT`, `COMMIT_BY`, `COMMIT_TYPE`, `TRANSACTION_TYPE`, `BUSINESS_REF_TYPE`,
     `BUSINESS_REF_ID`, `START_DT`, `END_DT`, `COMMIT_REASON`, `COMMIT_NOTES`,
@@ -440,7 +440,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_ASSETINVCLAS"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_assetinvclas (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_assetinvclas (
     `SCHEMA_ID` BIGINT,
     `TRD_INSTRUMENT_ID` BIGINT,
     `ENTITY_ID` BIGINT,
@@ -473,12 +473,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_assetinvclas (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_assetinvclas IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_assetinvclas IS 
 'The table contains structured information related to asset investment classifications. It includes various schema levels that provide hierarchical categorization of assets, along with details such as the date of data and the time the data was loaded. Use cases for this table may include asset categorization analysis, investment performance tracking, and reporting based on different classification levels over time.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_assetinvclas;
+TRUNCATE TABLE landing_sei.default.sei_ovn_assetinvclas;
 
-INSERT INTO landing_seidefault.sei_ovn_assetinvclas (
+INSERT INTO landing_sei.default.sei_ovn_assetinvclas (
     `SCHEMA_ID`, `TRD_INSTRUMENT_ID`, `ENTITY_ID`, `ENTITY_TYPE`, `SCHEMA_LEVEL_1_ID`,
     `SCHEMA_LEVEL_1_VALUE`, `SCHEMA_LEVEL_2_ID`, `SCHEMA_LEVEL_2_VALUE`, `SCHEMA_LEVEL_3_ID`,
     `SCHEMA_LEVEL_3_VALUE`, `SCHEMA_LEVEL_4_ID`, `SCHEMA_LEVEL_4_VALUE`, `SCHEMA_LEVEL_5_ID`,
@@ -523,7 +523,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_ASSETOPTFIELDS"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_assetoptfields (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_assetoptfields (
     `ASSET_OPTIONAL_FIELD_DATA_ID` BIGINT,
     `INSTRUMENT_ID` BIGINT,
     `TRD_INSTRUMENT_ID` BIGINT,
@@ -533,12 +533,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_assetoptfields (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_assetoptfields IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_assetoptfields IS 
 'The table contains information related to optional fields for various assets. It includes unique identifiers for assets and instruments, along with additional fields that can hold optional data values. Relevant use cases include tracking changes over time and analyzing the attributes associated with different assets. The data can also assist in understanding asset characteristics or performance across specific periods.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_assetoptfields;
+TRUNCATE TABLE landing_sei.default.sei_ovn_assetoptfields;
 
-INSERT INTO landing_seidefault.sei_ovn_assetoptfields (
+INSERT INTO landing_sei.default.sei_ovn_assetoptfields (
     `ASSET_OPTIONAL_FIELD_DATA_ID`, `INSTRUMENT_ID`, `TRD_INSTRUMENT_ID`,
     `ASSET_OPTIONAL_FIELD_ID`, `ASSET_OPTIONAL_FIELD_VALUE`, `DATE_OF_DATA`, `YEARMONTH`,
     `LOADED_AT`
@@ -555,7 +555,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_ASSETS"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_assets (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_assets (
     `INSTRUMENT_ID` BIGINT,
     `TRD_INSTRUMENT_ID` BIGINT,
     `ASSET_TYPE` STRING,
@@ -678,12 +678,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_assets (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_assets IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_assets IS 
 'The table contains detailed information about various financial assets. It includes attributes such as the asset type, identifiers like ISIN and CUSIP, pricing details, and relevant dates (e.g., issue date, maturity date). Colleagues can utilize this data for asset tracking, valuation analysis, and to assess market trends. Additionally, it captures details like credit ratings and currencies, which can aid in risk analysis and investment decision-making.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_assets;
+TRUNCATE TABLE landing_sei.default.sei_ovn_assets;
 
-INSERT INTO landing_seidefault.sei_ovn_assets (
+INSERT INTO landing_sei.default.sei_ovn_assets (
     `INSTRUMENT_ID`, `TRD_INSTRUMENT_ID`, `ASSET_TYPE`, `ASSET_TYPE_III_LVL`, `ISIN`,
     `SEDOL_NUMBER`, `CUSIP`, `ISO_CURRENCY`, `ASSET_NAME`, `ISSUE_DATE`, `VALUE_START_DATE`,
     `MATURITY_DATE`, `EXPIRY_DATE`, `STOCK_EXCHANGE_CODE`, `MARKET_COUNTRY`, `ISSUER_COUNTRY`,
@@ -842,7 +842,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_CLIENTACCOUNTLINK"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_clientaccountlink (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_clientaccountlink (
     `CLIENT_ID` BIGINT,
     `ACCOUNT_NUMBER` STRING,
     `RELATIONSHIP` STRING,
@@ -937,12 +937,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_clientaccountlink (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_clientaccountlink IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_clientaccountlink IS 
 'The table contains data related to the linking of client accounts. It includes information on clients, their account numbers, ownership percentages, and relationships between clients and their accounts. This data can be utilized for analyzing client-account associations, ownership structures, and performing reporting on client relationships over time';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_clientaccountlink;
+TRUNCATE TABLE landing_sei.default.sei_ovn_clientaccountlink;
 
-INSERT INTO landing_seidefault.sei_ovn_clientaccountlink (
+INSERT INTO landing_sei.default.sei_ovn_clientaccountlink (
     `CLIENT_ID`, `ACCOUNT_NUMBER`, `RELATIONSHIP`, `ADDRESS_ID`, `PERCENTAGE_OWNERSHIP`, `FIRM_ID`,
     `CLIENT_SUBFIRM`, `ACCOUNT_SUBFIRM`, `CLIENT_DSR_EMP_ID_1`, `CLIENT_DSR_EMP_ID_2`,
     `CLIENT_DSR_EMP_ID_3`, `CLIENT_DSR_EMP_ID_4`, `CLIENT_DSR_EMP_ID_5`, `CLIENT_DSR_EMP_ID_6`,
@@ -1068,7 +1068,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_CLIENTS"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_clients (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_clients (
     `CLIENT_ID` BIGINT,
     `CLIENT_TYPE` BIGINT,
     `FIRST_NAME` STRING,
@@ -1178,12 +1178,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_clients (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_clients IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_clients IS 
 'The table contains detailed information about clients, including personal, demographic, and financial data. It can be used for tracking client relationships, compliance with tax regulations, and risk assessment. Key data includes client identification, contact details, tax information, and financial contributions. This information will be useful for departments managing customer relations, compliance, and risk management.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_clients;
+TRUNCATE TABLE landing_sei.default.sei_ovn_clients;
 
-INSERT INTO landing_seidefault.sei_ovn_clients (
+INSERT INTO landing_sei.default.sei_ovn_clients (
     `CLIENT_ID`, `CLIENT_TYPE`, `FIRST_NAME`, `ACCOUNT_HOLDERS_SURNAME`, `SALUTATION_FORMAL`,
     `TITLE`, `DATE_OF_BIRTH`, `NATIONALITY`, `MARITAL_STATUS`, `NATIONAL_INSURANCE_NUMBER`,
     `COUNTRY_OF_BIRTH`, `COUNTRY_OF_DOMICILE`, `COUNTRY_OF_RESIDENCE`, `COMMENCEMENT_DATE`,
@@ -1329,7 +1329,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_CONTACTDETAILS"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_contactdetails (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_contactdetails (
     `ENTITY_IDENTIFIER` DECIMAL(9,0),
     `CONTACT_TYPE` STRING,
     `CONTACT_IDENTIFIER` DECIMAL(9,0),
@@ -1363,12 +1363,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_contactdetails (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_contactdetails IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_contactdetails IS 
 'The table contains contact details for various entities, including addresses, phone numbers, and email addresses. It includes information such as contact types, primary flags for addresses and phone numbers, and entity statuses. This data can be used for managing and analyzing contact information, improving communication strategies, and maintaining up-to-date records of entity contact points.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_contactdetails;
+TRUNCATE TABLE landing_sei.default.sei_ovn_contactdetails;
 
-INSERT INTO landing_seidefault.sei_ovn_contactdetails (
+INSERT INTO landing_sei.default.sei_ovn_contactdetails (
     `ENTITY_IDENTIFIER`, `CONTACT_TYPE`, `CONTACT_IDENTIFIER`, `ADDRESS_TYPE`,
     `PRIMARY_ADDRESS_FLAG`, `ADDRESS_LINE_1`, `ADDRESS_LINE_2`, `ADDRESS_LINE_3`, `ADDRESS_LINE_4`,
     `ADDRESS_LINE_5`, `ADDRESS_CITY`, `ADDRESS_POLITICAL_SUBDIVISION`, `ADDRESS_COUNTRY_CODE`,
@@ -1413,7 +1413,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_CUSTODYNOSTROPOSITIONS"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_custodynostropositions (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_custodynostropositions (
     `ACCOUNT_NUMBER` STRING,
     `PORTFOLIO_ID` BIGINT,
     `TRADING_PARTNER_ACCOUNT_TYPE` STRING,
@@ -1442,12 +1442,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_custodynostropositions (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_custodynostropositions IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_custodynostropositions IS 
 'The table contains data related to custody and trading positions for accounts. It provides details about accounts, trading partners, and associated positions, including quantities and market values in different currencies. This can be used to track asset positions over time, support reconciliation processes, and analyze trading partner relationships.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_custodynostropositions;
+TRUNCATE TABLE landing_sei.default.sei_ovn_custodynostropositions;
 
-INSERT INTO landing_seidefault.sei_ovn_custodynostropositions (
+INSERT INTO landing_sei.default.sei_ovn_custodynostropositions (
     `ACCOUNT_NUMBER`, `PORTFOLIO_ID`, `TRADING_PARTNER_ACCOUNT_TYPE`, `OMNIBUS_FLAG`,
     `TRADING_PARTNER_ACCOUNT_NUMBER`, `TRADING_PARTNER_ACCOUNT_NAME`, `TRADING_PARTNER_ID`,
     `POSITION_AS_OF_DATE`, `INSTRUMENT_ID`, `TRD_INSTRUMENT_ID`, `ISO_3_CHARACTER_CCY`,
@@ -1488,7 +1488,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_EODCHANGEDPOSITIONS"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_eodchangedpositions (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_eodchangedpositions (
     `ACCOUNT_NUMBER` STRING,
     `TAXLOT_PORTFOLIO_ID` BIGINT,
     `INSTRUMENT_ID` BIGINT,
@@ -1576,12 +1576,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_eodchangedpositions (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_eodchangedpositions IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_eodchangedpositions IS 
 'The table contains data related to end-of-day changed positions for accounts. It includes details about account numbers, instrument IDs, market values, currencies, and transaction specifics as of a given date. Possible use cases include analyzing changes in positions over time, calculating market values, and assessing income and cost for various holdings. This information can support reporting and compliance efforts.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_eodchangedpositions;
+TRUNCATE TABLE landing_sei.default.sei_ovn_eodchangedpositions;
 
-INSERT INTO landing_seidefault.sei_ovn_eodchangedpositions (
+INSERT INTO landing_sei.default.sei_ovn_eodchangedpositions (
     `ACCOUNT_NUMBER`, `TAXLOT_PORTFOLIO_ID`, `INSTRUMENT_ID`, `TRD_INSTRUMENT_ID`, `TAXLOT_ID`,
     `ISSUER_ID`, `SEDOL`, `EXCHANGE_ID`, `QUANTITY_HELD`, `POSITION_CHANGED_AS_OF_DATE`,
     `AS_OF_DATE`, `ASSET_CURRENCY`, `ASSET_PRICE`, `MARKET_VALUE_IN_ASSET_CURRENCY`,
@@ -1698,7 +1698,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_EODPOSVALAGGR"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_eodposvalaggr (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_eodposvalaggr (
     `FIRM_ID` BIGINT,
     `FIRM_BASE_CURRENCY` STRING,
     `FIRM_DAILY_AVERAGE_TRADED_FBC` DECIMAL(20,3),
@@ -1725,12 +1725,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_eodposvalaggr (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_eodposvalaggr IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_eodposvalaggr IS 
 'The table contains end-of-day position validation aggregates for firms and their accounts. It records various metrics such as daily averages and total traded and settled amounts in different currencies for each firm and account. This data can be useful for analyzing trading performance, currency exposure, and account activity over time.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_eodposvalaggr;
+TRUNCATE TABLE landing_sei.default.sei_ovn_eodposvalaggr;
 
-INSERT INTO landing_seidefault.sei_ovn_eodposvalaggr (
+INSERT INTO landing_sei.default.sei_ovn_eodposvalaggr (
     `FIRM_ID`, `FIRM_BASE_CURRENCY`, `FIRM_DAILY_AVERAGE_TRADED_FBC`,
     `FIRM_DAILY_AVERAGE_SETTLED_FBC`, `FIRM_SUM_TOTAL_TRADED_FBC`, `FIRM_SUM_TOTAL_SETTLED_FBC`,
     `FIRM_NUMBER_OF_DAYS`, `ACCOUNT_NUMBER`, `ACCT_BASE_CURRENCY`, `ACCT_DAILY_AVERAGE_TRADED_ABC`,
@@ -1770,7 +1770,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_EODPOSITIONS"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_eodpositions (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_eodpositions (
     `ACCOUNT_NUMBER` STRING,
     `TAXLOT_PORTFOLIO_ID` BIGINT,
     `INSTRUMENT_ID` BIGINT,
@@ -1858,12 +1858,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_eodpositions (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_eodpositions IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_eodpositions IS 
 'The table contains end-of-day position data for various financial instruments. It includes detailed information such as account numbers, instrument identifiers, quantities held, market values, and various currency-related metrics. This data can be utilized for portfolio management, performance analysis, and compliance reporting. Additionally, it tracks transactions and their characteristics, enabling analysis of trading activities.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_eodpositions;
+TRUNCATE TABLE landing_sei.default.sei_ovn_eodpositions;
 
-INSERT INTO landing_seidefault.sei_ovn_eodpositions (
+INSERT INTO landing_sei.default.sei_ovn_eodpositions (
     `ACCOUNT_NUMBER`, `TAXLOT_PORTFOLIO_ID`, `INSTRUMENT_ID`, `TRD_INSTRUMENT_ID`, `TAXLOT_ID`,
     `ISSUER_ID`, `SEDOL`, `EXCHANGE_ID`, `QUANTITY_HELD`, `AS_OF_DATE`, `ASSET_CURRENCY`,
     `ASSET_PRICE`, `MARKET_VALUE_IN_ASSET_CURRENCY`, `DEBIT_CREDIT_FLAG_1`,
@@ -1980,7 +1980,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_EODPOSITIONSSUPPLEMENTAL"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_eodpositionssupplemental (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_eodpositionssupplemental (
     `ACCOUNT_NUMBER` STRING,
     `ACCOUNT_ID` BIGINT,
     `PORTFOLIO_ID` BIGINT,
@@ -2011,12 +2011,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_eodpositionssupplemental (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_eodpositionssupplemental IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_eodpositionssupplemental IS 
 'This table includes supplemental end-of-day position data for financial accounts. It captures various financial metrics associated with accounts, such as current costs, market values, cash balances, and unrealized gains or losses, all recorded in the firm s base currency. Potential use cases include risk assessment, portfolio valuation analysis, and tracking position changes over time. The data can help in understanding the overall financial health of accounts as of specific reporting dates.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_eodpositionssupplemental;
+TRUNCATE TABLE landing_sei.default.sei_ovn_eodpositionssupplemental;
 
-INSERT INTO landing_seidefault.sei_ovn_eodpositionssupplemental (
+INSERT INTO landing_sei.default.sei_ovn_eodpositionssupplemental (
     `ACCOUNT_NUMBER`, `ACCOUNT_ID`, `PORTFOLIO_ID`, `INSTRUMENT_ID`, `TRD_INSTRUMENT_ID`,
     `POSITION_AS_OF_DATE`, `POSITION_CHANGED_AS_OF_DATE`, `LOCAL_CURRENCY`, `FIRM_BASE_CURRENCY`,
     `LOCAL_TO_FIRM_EXCHANGE_RT`, `TRADED_CASH_BALANCE_IN_FBC`, `SETTLED_CASH_BALANCE_IN_FBC`,
@@ -2059,7 +2059,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_FEECOMPUTATION"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_feecomputation (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_feecomputation (
     `FIRM_IDENTIFIER` BIGINT,
     `FEE_COMPUTATION_ENTITY_TYPE` STRING,
     `ACCOUNT_NUMBER` STRING,
@@ -2100,12 +2100,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_feecomputation (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_feecomputation IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_feecomputation IS 
 'The table contains data related to the computation of fees for various accounts. This includes details such as firm identifiers, account numbers, fee types, and amounts. It can be useful for analyzing fee calculations, adjustments based on rules, and understanding billing processes. Potential use cases include financial reporting, fee analysis, and auditing fee structures across different accounts.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_feecomputation;
+TRUNCATE TABLE landing_sei.default.sei_ovn_feecomputation;
 
-INSERT INTO landing_seidefault.sei_ovn_feecomputation (
+INSERT INTO landing_sei.default.sei_ovn_feecomputation (
     `FIRM_IDENTIFIER`, `FEE_COMPUTATION_ENTITY_TYPE`, `ACCOUNT_NUMBER`, `FEE_GROUP_NAME`,
     `ACTUAL_DAYS_IN_PERIOD`, `ADJUSTMENT_FOR_RULE_MAXIMUM`, `ADJUSTMENT_FOR_RULE_MINIMUM`,
     `ADJUSTMENT_FOR_ANNUAL_MINIMUM`, `ANNUALIZED_FEE_AMOUNT`, `COMPUTATION_ACTIVITY_ID`,
@@ -2161,7 +2161,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_FEEGROUP"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_feegroup (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_feegroup (
     `FIRM_IDENTIFIER` BIGINT,
     `FEE_GROUP_NAME` STRING,
     `LAST_UPDATE_DATE` DATE,
@@ -2174,12 +2174,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_feegroup (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_feegroup IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_feegroup IS 
 'The table contains data related to fee groups within the organization. It includes details such as the identifiers for firms, names of fee groups, their statuses, and associated portfolio types. This information can support use cases like tracking changes in fee group configurations, managing accounts under each fee group, and analyzing the performance of different fee structures over time.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_feegroup;
+TRUNCATE TABLE landing_sei.default.sei_ovn_feegroup;
 
-INSERT INTO landing_seidefault.sei_ovn_feegroup (
+INSERT INTO landing_sei.default.sei_ovn_feegroup (
     `FIRM_IDENTIFIER`, `FEE_GROUP_NAME`, `LAST_UPDATE_DATE`, `FEE_GROUP_STATUS`,
     `FEE_GROUP_MEMBER_ACCOUNT`, `PORTFOLIO_TYPE`, `PRIMARY_OWNER`,
     `FEE_GROUP_MEMBER_ACCOUNT_PORTFOLIO`, `DATE_OF_DATA`, `YEARMONTH`, `LOADED_AT`
@@ -2199,7 +2199,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_FEEPACKAGERULE"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_feepackagerule (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_feepackagerule (
     `RESIDING_ORGANIZATION` STRING,
     `FEE_PACKAGE_NAME` STRING,
     `LAST_UPDATE_DATE` DATE,
@@ -2226,12 +2226,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_feepackagerule (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_feepackagerule IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_feepackagerule IS 
 'The table contains information about fee packaging rules used by different organizations. It includes details such as the name and type of fee package, associated rates, and the organization implementing the rules. This data can help in analyzing fee structures, monitoring changes to fee packages, and understanding how fees are applied to various transaction types. Possible use cases include compliance checks, reporting on fee package performance, and auditing fee applications across portfolios.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_feepackagerule;
+TRUNCATE TABLE landing_sei.default.sei_ovn_feepackagerule;
 
-INSERT INTO landing_seidefault.sei_ovn_feepackagerule (
+INSERT INTO landing_sei.default.sei_ovn_feepackagerule (
     `RESIDING_ORGANIZATION`, `FEE_PACKAGE_NAME`, `LAST_UPDATE_DATE`, `FEE_PACKAGE_TYPE`,
     `FEE_PACKAGE_OWNER`, `FEE_PACKAGE_RULE_DESCRIPTION`, `FEE_RULE_ID`, `FEE_PACKAGE_RULE_BASIS`,
     `FEE_PACKAGE_RULE_RATE_TYPE`, `FEE_RULE_CURRENCY`, `RATE`, `FEE_TYPE_DESCRIPTION`,
@@ -2269,7 +2269,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_FEEPACKAGEUSAGE"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_feepackageusage (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_feepackageusage (
     `FIRM_IDENTIFIER` BIGINT,
     `ACCOUNT_NUMBER` STRING,
     `LAST_UPDATE_DATE` DATE,
@@ -2323,12 +2323,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_feepackageusage (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_feepackageusage IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_feepackageusage IS 
 'The table contains data related to fee package usage for accounts. It captures details such as fee computation dates, account identifiers, discount information, and fee statuses. Colleagues can use this data to analyze fee structures, monitor fee changes over time, understand the impact of discounts and waivers, and track account fee activity.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_feepackageusage;
+TRUNCATE TABLE landing_sei.default.sei_ovn_feepackageusage;
 
-INSERT INTO landing_seidefault.sei_ovn_feepackageusage (
+INSERT INTO landing_sei.default.sei_ovn_feepackageusage (
     `FIRM_IDENTIFIER`, `ACCOUNT_NUMBER`, `LAST_UPDATE_DATE`, `TAKE_NO_PERIODIC_FEES`,
     `FEE_YEAR_END_DATE`, `FEES_VALUATION_METHOD`, `VAT_ELIGIBLE_ACCOUNT`,
     `EXEMPT_FROM_SHORT_TERM_REDEMPTION_FEES`, `FEES_ARE_IN_ADVANCE_OR_ARREARS`,
@@ -2403,7 +2403,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_FUNDCUTOFF"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_fundcutoff (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_fundcutoff (
     `INSTRUMENT_ID` BIGINT,
     `TRD_INSTRUMENT_ID` BIGINT,
     `FIRM_ID` BIGINT,
@@ -2414,12 +2414,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_fundcutoff (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_fundcutoff IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_fundcutoff IS 
 'The table contains information about fund cutoff times for various trading instruments. It includes details such as the identification of instruments, firms, and brokers involved, along with timestamps for cutoff times and data loading. This table can be used for tracking the timing of fund operations and managing deadlines for trades. Analysts may leverage this data to ensure compliance with cutoff schedules and enhance operational efficiency.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_fundcutoff;
+TRUNCATE TABLE landing_sei.default.sei_ovn_fundcutoff;
 
-INSERT INTO landing_seidefault.sei_ovn_fundcutoff (
+INSERT INTO landing_sei.default.sei_ovn_fundcutoff (
     `INSTRUMENT_ID`, `TRD_INSTRUMENT_ID`, `FIRM_ID`, `BROKER_ID`, `FUND_CUTOFF_TIME`,
     `FUND_ACCOUNT_NUMBER`, `DATE_OF_DATA`, `YEARMONTH`, `LOADED_AT`
 )
@@ -2436,7 +2436,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_FXFORWARD"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_fxforward (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_fxforward (
     `PROCESSING_DATE` DATE,
     `PORTFOLIO_ID` BIGINT,
     `ACCOUNT_ID` BIGINT,
@@ -2464,12 +2464,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_fxforward (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_fxforward IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_fxforward IS 
 'The table contains information about fund cutoff times for various trading instruments. It includes details such as the identification of instruments, firms, and brokers involved, along with timestamps for cutoff times and data loading. This table can be used for tracking the timing of fund operations and managing deadlines for trades. Analysts may leverage this data to ensure compliance with cutoff schedules and enhance operational efficiency.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_fxforward;
+TRUNCATE TABLE landing_sei.default.sei_ovn_fxforward;
 
-INSERT INTO landing_seidefault.sei_ovn_fxforward (
+INSERT INTO landing_sei.default.sei_ovn_fxforward (
     `PROCESSING_DATE`, `PORTFOLIO_ID`, `ACCOUNT_ID`, `SETTLEMENT_DATE`, `TRADE_DATE`,
     `FORWARD_CONTRACT_TYPE`, `DESCRIPTION`, `ORDER_SIDE`, `FX_ORDER_ID`, `ACCOUNT_BASE_CURR`,
     `BASE_CURR_REPLACE_COST`, `BASE_CURR_GAIN_LOSS_AMT`, `COUNTER_CURR`, `COUNTER_CURR_AMT`,
@@ -2507,7 +2507,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_INTERESTRATETYPES"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_interestratetypes (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_interestratetypes (
     `INSTRUMENT_ID` BIGINT,
     `INTEREST_RATE_TYPE` BIGINT,
     `INTEREST_RATE` DECIMAL(17,8),
@@ -2523,9 +2523,9 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_interestratetypes (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_interestratetypes;
+TRUNCATE TABLE landing_sei.default.sei_ovn_interestratetypes;
 
-INSERT INTO landing_seidefault.sei_ovn_interestratetypes (
+INSERT INTO landing_sei.default.sei_ovn_interestratetypes (
     `INSTRUMENT_ID`, `INTEREST_RATE_TYPE`, `INTEREST_RATE`, `INTEREST_RATE_START_DATE`,
     `INTEREST_RATE_END_DATE`, `PAYMENT_DATE`, `NEXT_PAYMENT_DATE`, `PAYOUT_TYPE`, `RECORD_DATE`,
     `EX_DIVIDEND_DATE`, `DATE_OF_DATA`, `YEARMONTH`, `LOADED_AT`
@@ -2547,7 +2547,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_MODELALLOC"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_modelalloc (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_modelalloc (
     `ALLOCATION_ID` BIGINT,
     `PARENT_ALLOCATION_ID` BIGINT,
     `MODEL_ID` BIGINT,
@@ -2575,9 +2575,9 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_modelalloc (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_modelalloc;
+TRUNCATE TABLE landing_sei.default.sei_ovn_modelalloc;
 
-INSERT INTO landing_seidefault.sei_ovn_modelalloc (
+INSERT INTO landing_sei.default.sei_ovn_modelalloc (
     `ALLOCATION_ID`, `PARENT_ALLOCATION_ID`, `MODEL_ID`, `LOWER_PCT_DIFFERENCE`, `TARGET_PCT`,
     `UPPER_PCT_DIFFERENCE`, `LEVEL_TYPE`, `INSTRUMENT_TYPE_HIRCHY_LVL_ID`, `INSTRUMENT_TYPE_CODE`,
     `INVESTMENT_GRADE_ID`, `ISO_COUNTRY`, `INST_RISK_REGION_GROUP_ID`, `INDUSTRY_HIERARCHY_LVL_ID`,
@@ -2614,7 +2614,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_MODELSINTEXT"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_modelsintext (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_modelsintext (
     `MODEL_ID` BIGINT,
     `CONTEXT_ENTITY_ID` BIGINT,
     `ENTITY_TYPE` BIGINT,
@@ -2634,12 +2634,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_modelsintext (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_modelsintext IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_modelsintext IS 
 'The table contains information about various models used in investment contexts. Key elements include model identification, status, and type, as well as relevant risk and investment metrics. This data can be utilized for tracking model performance, analyzing investment strategies, and enhancing portfolio management processes.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_modelsintext;
+TRUNCATE TABLE landing_sei.default.sei_ovn_modelsintext;
 
-INSERT INTO landing_seidefault.sei_ovn_modelsintext (
+INSERT INTO landing_sei.default.sei_ovn_modelsintext (
     `MODEL_ID`, `CONTEXT_ENTITY_ID`, `ENTITY_TYPE`, `MODEL_STATUS`, `MODEL_NAME`, `MODEL_TYPE`,
     `MODEL_SHORT_NAME`, `INVESTMENT_OBJECTIVE_ID`, `RISK_RATING_ID`, `CUSTOM_MODEL_TYPE`,
     `INSTRUMENT_TYPE_HIRCHY_LVL_ID`, `INSTRUMENT_TYPE_CODE`, `SCHEMA_LEVEL_ID`, `MODEL_LAST_MOD`,
@@ -2667,7 +2667,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_PAIDTO"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_paidto (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_paidto (
     `ACCOUNT_NUMBER` STRING,
     `ACCOUNT_DISPLAY_NAME` STRING,
     `PAY_TO_RECIPIENT_NAME` STRING,
@@ -2706,12 +2706,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_paidto (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_paidto IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_paidto IS 
 'The table contains data regarding payment transactions, focusing on recipients and their associated banking details. Key information includes the account details of the payee, payment methods, and various routing numbers. This data can be useful for processes such as verifying payment information, auditing transaction history, and ensuring accurate fund transfers, as well as managing address details related to banks and recipients.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_paidto;
+TRUNCATE TABLE landing_sei.default.sei_ovn_paidto;
 
-INSERT INTO landing_seidefault.sei_ovn_paidto (
+INSERT INTO landing_sei.default.sei_ovn_paidto (
     `ACCOUNT_NUMBER`, `ACCOUNT_DISPLAY_NAME`, `PAY_TO_RECIPIENT_NAME`, `PAY_TO_METHOD`,
     `ROUTING_NUMBER_TYPE`, `ROUTING_NUMBER`, `DESTINATION_ACCOUNT_TYPE`, `DESTINATION_ACCOUNT`,
     `IBAN`, `INTERMEDIATE_ROUTING_NUMBER_TYPE`, `INTERMEDIATE_ROUTING_NUMBER`,
@@ -2765,7 +2765,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_PARTYOPTIONALFIELDS"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_partyoptionalfields (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_partyoptionalfields (
     `PARTY_ID` BIGINT,
     `PARTY_NAME` STRING,
     `EXTERNAL_PARTY_ID` STRING,
@@ -2776,12 +2776,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_partyoptionalfields (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_partyoptionalfields IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_partyoptionalfields IS 
 'The table contains data regarding payment transactions, focusing on recipients and their associated banking details. Key information includes the account details of the payee, payment methods, and various routing numbers. This data can be useful for processes such as verifying payment information, auditing transaction history, and ensuring accurate fund transfers, as well as managing address details related to banks and recipients.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_partyoptionalfields;
+TRUNCATE TABLE landing_sei.default.sei_ovn_partyoptionalfields;
 
-INSERT INTO landing_seidefault.sei_ovn_partyoptionalfields (
+INSERT INTO landing_sei.default.sei_ovn_partyoptionalfields (
     `PARTY_ID`, `PARTY_NAME`, `EXTERNAL_PARTY_ID`, `PARTY_OPTIONAL_FIELD_ID`,
     `PARTY_OPTIONAL_FIELD_NAME`, `PARTY_OPTIONAL_FIELD_VALUE`, `DATE_OF_DATA`, `YEARMONTH`,
     `LOADED_AT`
@@ -2799,7 +2799,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_PORTFOLIOGROUPS"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_portfoliogroups (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_portfoliogroups (
     `GROUP_ID` BIGINT,
     `GROUP_NAME` STRING,
     `GROUP_TYPE` STRING,
@@ -2824,12 +2824,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_portfoliogroups (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_portfoliogroups IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_portfoliogroups IS 
 'The table contains information about portfolio groups, including their IDs, names, types, and statuses. It also captures details such as associated accounts, fees, and strategies. This data can be useful for analyzing portfolio group structures, monitoring their statuses, and managing related financial products and strategies.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_portfoliogroups;
+TRUNCATE TABLE landing_sei.default.sei_ovn_portfoliogroups;
 
-INSERT INTO landing_seidefault.sei_ovn_portfoliogroups (
+INSERT INTO landing_sei.default.sei_ovn_portfoliogroups (
     `GROUP_ID`, `GROUP_NAME`, `GROUP_TYPE`, `GROUP_STATUS`, `GROUP_BASE_CURRENCY`,
     `FEE_PACKAGE_ID`, `FEE_PACKAGE_NAME`, `PORTFOLIO_NAME`, `ACCOUNT_NUMBER`, `ACCOUNT_NAME`,
     `POSSIBLE_RECIPIENT_ID`, `POSSIBLE_RECIPIENT_NAME`, `FIRM_ID`, `GROUP_DEACTIVATION_DT`,
@@ -2863,7 +2863,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_PORTFOLIOPERFORMANCE"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_portfolioperformance (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_portfolioperformance (
     `PERFORMANCE_LEVEL_SYSTEM_ID` DECIMAL(9,0),
     `PERFORMANCE_LEVEL_CD` DECIMAL(5,0),
     `PERFORMANCE_AS_OF_DATE` DATE,
@@ -2901,12 +2901,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_portfolioperformance (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_portfolioperformance IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_portfolioperformance IS 
 'The table tracks the performance metrics of investment portfolios over time. It includes information about performance levels, returns across various time frames (monthly, quarterly, yearly), market value, and contributions. This data can be used to analyze portfolio performance trends, assess risk through standard deviation, and monitor changes since inception. Colleagues can utilize this table for reporting, performance evaluation, and strategy development.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_portfolioperformance;
+TRUNCATE TABLE landing_sei.default.sei_ovn_portfolioperformance;
 
-INSERT INTO landing_seidefault.sei_ovn_portfolioperformance (
+INSERT INTO landing_sei.default.sei_ovn_portfolioperformance (
     `PERFORMANCE_LEVEL_SYSTEM_ID`, `PERFORMANCE_LEVEL_CD`, `PERFORMANCE_AS_OF_DATE`,
     `PERFORMANCE_CHANGE_DATE`, `PERFORMANCE_INCEPTION_DT`, `PERFORMANCE_CODE`, `MARKET_VAL`,
     `MONTH1_UVR`, `MONTH1_RETURN`, `MONTH2_RETURN`, `MONTH3_RETURN`, `MONTH4_RETURN`,
@@ -2957,7 +2957,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_RECCASHACTIVITIES"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_reccashactivities (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_reccashactivities (
     `FIRM_ID` BIGINT,
     `ACCOUNT_NUMBER` STRING,
     `PORTFOLIO_ID` BIGINT,
@@ -3017,12 +3017,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_reccashactivities (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_reccashactivities IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_reccashactivities IS 
 'The table contains data on recurring cash activities related to customer accounts. It includes information such as account identifiers, recurrence schedules, payment details, and amounts involved in each transaction. Use cases for this table include tracking cash flow schedules, managing recurring transactions, and analyzing payment patterns for different payer profiles.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_reccashactivities;
+TRUNCATE TABLE landing_sei.default.sei_ovn_reccashactivities;
 
-INSERT INTO landing_seidefault.sei_ovn_reccashactivities (
+INSERT INTO landing_sei.default.sei_ovn_reccashactivities (
     `FIRM_ID`, `ACCOUNT_NUMBER`, `PORTFOLIO_ID`, `RECURRANCE_SCHEDULE_START_DT`,
     `RECURRENCE_NO_END_DATE_FLG`, `RECURRENCE_END_AFTER_X_OCCURRENCES`,
     `RECURRENCE_SCHEDULE_END_DT`, `RECURRENCE_FREQUENCY`, `DAILY_RECURRENCE_NUMBER_OF_DAYS`,
@@ -3105,7 +3105,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_REFERENCE"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_reference (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_reference (
     `TYPE` STRING,
     `CODE` STRING,
     `DESCRIPTION` STRING,
@@ -3117,12 +3117,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_reference (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_reference IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_reference IS 
 'The table contains reference data related to various types, codes, and descriptions. It includes information associated with different firms, qualifiers, and relevant dates. Potential use cases include data validation, reference lookups for categorizing or classifying data, and historical trend analysis based on the date of data.';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_reference;
+TRUNCATE TABLE landing_sei.default.sei_ovn_reference;
 
-INSERT INTO landing_seidefault.sei_ovn_reference (
+INSERT INTO landing_sei.default.sei_ovn_reference (
     `TYPE`, `CODE`, `DESCRIPTION`, `FIRM_ID`, `QUALIFIER_1`, `QUALIFIER_2`, `QUALIFIER_3`,
     `DATE_OF_DATA`, `YEARMONTH`, `LOADED_AT`
 )
@@ -3140,7 +3140,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_RELATIONSHIP_MAPPING_SEI_JHA"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_relationship_mapping_sei_jha (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_relationship_mapping_sei_jha (
     `Relationship_Code` STRING,
     `Relationship_Short_Name` STRING,
     `Relationship_Description` STRING,
@@ -3150,12 +3150,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_relationship_mapping_sei_jha (
     `SWP_Role` STRING,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_relationship_mapping_sei_jha IS 
+COMMENT ON TABLE landing_sei.default.sei_relationship_mapping_sei_jha IS 
 'The table includes a mapping of various relationship types and their associated roles. It provides details such as relationship codes, short names, and descriptions. This data can be used to understand the different types of relationships within the system and to facilitate mapping and integration tasks between different systems or applications.';
 
-TRUNCATE TABLE landing_seidefault.sei_relationship_mapping_sei_jha;
+TRUNCATE TABLE landing_sei.default.sei_relationship_mapping_sei_jha;
 
-INSERT INTO landing_seidefault.sei_relationship_mapping_sei_jha (
+INSERT INTO landing_sei.default.sei_relationship_mapping_sei_jha (
     `Relationship_Code`, `Relationship_Short_Name`, `Relationship_Description`,
     `REVERSE_RELATIONSHIP_TYPE`, `SWP_Relationship`, `RELATIONSHIP_ROLE_TYPE`, `SWP_Role`,
     `LOADED_AT`
@@ -3172,7 +3172,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_RELATIONSHIPS"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_relationships (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_relationships (
     `RELATIONSHIP_IDENTIFIER` BIGINT,
     `PRIMARY_ENTITY_IDENTIFIER` BIGINT,
     `PRIMARY_ENTITY_TYPE` STRING,
@@ -3224,12 +3224,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_relationships (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_relationships IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_relationships IS 
 'Source: DQP_LANDING.dbo.SEI_OVN_RELATIONSHIPS';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_relationships;
+TRUNCATE TABLE landing_sei.default.sei_ovn_relationships;
 
-INSERT INTO landing_seidefault.sei_ovn_relationships (
+INSERT INTO landing_sei.default.sei_ovn_relationships (
     `RELATIONSHIP_IDENTIFIER`, `PRIMARY_ENTITY_IDENTIFIER`, `PRIMARY_ENTITY_TYPE`,
     `PRIMARY_ENTITY_IDENTIFIER_TEXT`, `PRIMARY_ENTITY_DESCRIPTION`, `RELATIONSHIP_TYPE`,
     `RELATIONSHIP_ROLE`, `SECONDARY_ENTITY_IDENTIFIER`, `SECONDARY_ENTITY_TYPE`,
@@ -3303,7 +3303,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_ROLEDETAIL"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_roledetail (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_roledetail (
     `ROLE_ID` BIGINT,
     `FUNCTION_CATEGORY` STRING,
     `FUNCTION__CS` STRING,
@@ -3314,12 +3314,12 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_roledetail (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_seidefault.sei_ovn_roledetail IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_roledetail IS 
 'Source: DQP_LANDING.dbo.SEI_OVN_ROLEDETAIL';
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_roledetail;
+TRUNCATE TABLE landing_sei.default.sei_ovn_roledetail;
 
-INSERT INTO landing_seidefault.sei_ovn_roledetail (
+INSERT INTO landing_sei.default.sei_ovn_roledetail (
     `ROLE_ID`, `FUNCTION_CATEGORY`, `FUNCTION__CS`, `TARGET_TYPE`, `ACCESS_TYPE`,
     `FUNCTION_POINT_DISPLAY_NAME`, `DATE_OF_DATA`, `YEARMONTH`, `LOADED_AT`
 )
@@ -3336,7 +3336,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_STATEMENTEVENTS"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_statementevents (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_statementevents (
     `STATEMENT_EVENT_ID` BIGINT,
     `STATEMENT_PACKAGE_ID` BIGINT,
     `FIRM_ID` BIGINT,
@@ -3377,9 +3377,9 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_statementevents (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_statementevents;
+TRUNCATE TABLE landing_sei.default.sei_ovn_statementevents;
 
-INSERT INTO landing_seidefault.sei_ovn_statementevents (
+INSERT INTO landing_sei.default.sei_ovn_statementevents (
     `STATEMENT_EVENT_ID`, `STATEMENT_PACKAGE_ID`, `FIRM_ID`, `PROCESSING_GROUP`,
     `STMT_RECURRENCE_FREQUENCY`, `ACCOUNT_ID`, `ACCOUNT_GROUP_ID`, `RECIPIENT_ENTITY_ID`,
     `DELIVERY_ADDRESS_ID`, `DELIVERY_METHOD`, `EVENT_STATUS`, `OVERRIDE_LAG_DAYS`,
@@ -3433,7 +3433,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_STATEMENTINSTANCE"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_statementinstance (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_statementinstance (
     `STATEMENT_EVENT_INSTANCE_ID` BIGINT,
     `STATEMENT_EVENT_ID` BIGINT,
     `STATEMENT_PACKAGE_ID` BIGINT,
@@ -3507,9 +3507,9 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_statementinstance (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_statementinstance;
+TRUNCATE TABLE landing_sei.default.sei_ovn_statementinstance;
 
-INSERT INTO landing_seidefault.sei_ovn_statementinstance (
+INSERT INTO landing_sei.default.sei_ovn_statementinstance (
     `STATEMENT_EVENT_INSTANCE_ID`, `STATEMENT_EVENT_ID`, `STATEMENT_PACKAGE_ID`,
     `STATEMENT_BATCH_ID`, `STATEMENT_PACKAGE_TYPE`, `ADHOC_FLAG`, `FIRM_ID`, `PROCESSING_GROUP`,
     `STMT_RECURRENCE_FREQUENCY`, `ACCOUNT_ID`, `ACCOUNT_GROUP_ID`, `PROCESSING_DATE`, `FROM_DATE`,
@@ -3605,7 +3605,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_STATEMENTPACKAGE"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_statementpackage (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_statementpackage (
     `STATEMENT_PACKAGE_ID` BIGINT,
     `STATEMENT_PACKAGE_NAME` STRING,
     `STATEMENT_PACAKGE_DESCRIPTION` STRING,
@@ -3626,9 +3626,9 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_statementpackage (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_statementpackage;
+TRUNCATE TABLE landing_sei.default.sei_ovn_statementpackage;
 
-INSERT INTO landing_seidefault.sei_ovn_statementpackage (
+INSERT INTO landing_sei.default.sei_ovn_statementpackage (
     `STATEMENT_PACKAGE_ID`, `STATEMENT_PACKAGE_NAME`, `STATEMENT_PACAKGE_DESCRIPTION`, `FIRM_ID`,
     `PROCESSING_GROUP`, `STATEMENT_PACKAGE_TYPE`, `STMT_RECURRENCE_FREQUENCY`,
     `STATEMENT_PACKAGE_PURPOSE`, `DEFAULT_EVENT_INST_STATUS`, `STATEMENT_PACKAGE_STATUS`,
@@ -3657,7 +3657,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_TRANSACTIONDETAIL"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_transactiondetail (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_transactiondetail (
     `FIRM_ID` BIGINT,
     `TRANSACTION_ID` BIGINT,
     `TRANSACTION_TYPE` BIGINT,
@@ -3698,9 +3698,9 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_transactiondetail (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_transactiondetail;
+TRUNCATE TABLE landing_sei.default.sei_ovn_transactiondetail;
 
-INSERT INTO landing_seidefault.sei_ovn_transactiondetail (
+INSERT INTO landing_sei.default.sei_ovn_transactiondetail (
     `FIRM_ID`, `TRANSACTION_ID`, `TRANSACTION_TYPE`, `ACCOUNT_ID`, `PORTFOLIO_ID`,
     `TRANSACTION_DETAIL_ID`, `COMPONENT_TYPE`, `FEE_TYPE`, `TAX_TYPE`, `TREATMENT_CODE`,
     `TRANSACTION_AMT`, `DEBIT_CREDIT_FLAG_1`, `TRANSACTION_QTY`, `DEBIT_CREDIT_FLAG_2`,
@@ -3753,7 +3753,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_TRANSACTIONDETAILUPD"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_transactiondetailupd (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_transactiondetailupd (
     `FIRM_ID` BIGINT,
     `TRANSACTION_ID` BIGINT,
     `TRANSACTION_TYPE` BIGINT,
@@ -3794,9 +3794,9 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_transactiondetailupd (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_transactiondetailupd;
+TRUNCATE TABLE landing_sei.default.sei_ovn_transactiondetailupd;
 
-INSERT INTO landing_seidefault.sei_ovn_transactiondetailupd (
+INSERT INTO landing_sei.default.sei_ovn_transactiondetailupd (
     `FIRM_ID`, `TRANSACTION_ID`, `TRANSACTION_TYPE`, `ACCOUNT_ID`, `PORTFOLIO_ID`,
     `TRANSACTION_DETAIL_ID`, `COMPONENT_TYPE`, `FEE_TYPE`, `TAX_TYPE`, `TREATMENT_CODE`,
     `TRANSACTION_AMT`, `DEBIT_CREDIT_FLAG_1`, `TRANSACTION_QTY`, `DEBIT_CREDIT_FLAG_2`,
@@ -3849,7 +3849,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_TRANSACTIONHEADER"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_transactionheader (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_transactionheader (
     `FIRM_ID` BIGINT,
     `TRANSACTION_ID` BIGINT,
     `TRANSACTION_TYPE` BIGINT,
@@ -4002,9 +4002,9 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_transactionheader (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_transactionheader;
+TRUNCATE TABLE landing_sei.default.sei_ovn_transactionheader;
 
-INSERT INTO landing_seidefault.sei_ovn_transactionheader (
+INSERT INTO landing_sei.default.sei_ovn_transactionheader (
     `FIRM_ID`, `TRANSACTION_ID`, `TRANSACTION_TYPE`, `ACCOUNT_ID`, `INSTRUMENT_ID`,
     `TRD_INSTRUMENT_ID`, `BUSINESS_EVENT_TYPE`, `BUSINESS_EVENT_ID`, `ACTIVITY_ID`,
     `RELATED_TRANSACTION_ID`, `REVERSAL_FLAG`, `TRANSACTION_DESCRIPTION`, `DESCRIPTION_CODE_ID`,
@@ -4199,7 +4199,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_TRANSACTIONHEADERUPD"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_transactionheaderupd (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_transactionheaderupd (
     `FIRM_ID` BIGINT,
     `TRANSACTION_ID` BIGINT,
     `TRANSACTION_TYPE` BIGINT,
@@ -4352,9 +4352,9 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_transactionheaderupd (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_transactionheaderupd;
+TRUNCATE TABLE landing_sei.default.sei_ovn_transactionheaderupd;
 
-INSERT INTO landing_seidefault.sei_ovn_transactionheaderupd (
+INSERT INTO landing_sei.default.sei_ovn_transactionheaderupd (
     `FIRM_ID`, `TRANSACTION_ID`, `TRANSACTION_TYPE`, `ACCOUNT_ID`, `INSTRUMENT_ID`,
     `TRD_INSTRUMENT_ID`, `BUSINESS_EVENT_TYPE`, `BUSINESS_EVENT_ID`, `ACTIVITY_ID`,
     `RELATED_TRANSACTION_ID`, `REVERSAL_FLAG`, `TRANSACTION_DESCRIPTION`, `DESCRIPTION_CODE_ID`,
@@ -4549,7 +4549,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_UPCOMINGACTIVITIES"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_upcomingactivities (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_upcomingactivities (
     `FIRM_ID` BIGINT,
     `ACCOUNT_NUMBER` STRING,
     `PORTFOLIO_ID` BIGINT,
@@ -4589,9 +4589,9 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_upcomingactivities (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_upcomingactivities;
+TRUNCATE TABLE landing_sei.default.sei_ovn_upcomingactivities;
 
-INSERT INTO landing_seidefault.sei_ovn_upcomingactivities (
+INSERT INTO landing_sei.default.sei_ovn_upcomingactivities (
     `FIRM_ID`, `ACCOUNT_NUMBER`, `PORTFOLIO_ID`, `PORTFOLIO_LONG_NAME`, `TRD_INSTRUMENT_ID`,
     `PROJECTED_DATE`, `ACTIVITY_REF`, `ACTIVITY_TYPE`, `ACTIVITY_DESCRIPTION`, `ORDER_TYPE`,
     `TIME_IN_FORCE`, `ORDER_SPECIFICATION`, `ACTIVITY_STATUS`, `CA_EVENT_TYPE`, `CA_EVENT_STATUS`,
@@ -4644,7 +4644,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_USERDETAIL"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_userdetail (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_userdetail (
     `ENTITY_ID` BIGINT,
     `USER_DISPLAY_NAME` STRING,
     `LOGIN_USER_ID` STRING,
@@ -4661,9 +4661,9 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_userdetail (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_userdetail;
+TRUNCATE TABLE landing_sei.default.sei_ovn_userdetail;
 
-INSERT INTO landing_seidefault.sei_ovn_userdetail (
+INSERT INTO landing_sei.default.sei_ovn_userdetail (
     `ENTITY_ID`, `USER_DISPLAY_NAME`, `LOGIN_USER_ID`, `USER_CREATION_DATE`, `ECX_ACCESS_FLAG`,
     `FIRM_ID`, `LAST_LOGIN_TIME`, `USER_STATUS`, `MONEY_MOVEMENT_LIMIT`, `SSO_KEY`, `USER_TYPE`,
     `DATE_OF_DATA`, `YEARMONTH`, `LOADED_AT`
@@ -4686,7 +4686,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_OVN_USERTEAMROLEDETAIL"
-CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_userteamroledetail (
+CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_userteamroledetail (
     `ENTITY_ID` BIGINT,
     `EMPLOYEE_ROLE_ID` BIGINT,
     `EMPLOYEE_ROLE_DESCRIPTION` STRING,
@@ -4698,9 +4698,9 @@ CREATE TABLE IF NOT EXISTS landing_seidefault.sei_ovn_userteamroledetail (
     `LOADED_AT` TIMESTAMP
 );
 
-TRUNCATE TABLE landing_seidefault.sei_ovn_userteamroledetail;
+TRUNCATE TABLE landing_sei.default.sei_ovn_userteamroledetail;
 
-INSERT INTO landing_seidefault.sei_ovn_userteamroledetail (
+INSERT INTO landing_sei.default.sei_ovn_userteamroledetail (
     `ENTITY_ID`, `EMPLOYEE_ROLE_ID`, `EMPLOYEE_ROLE_DESCRIPTION`, `EMPLOYEE_TEAM_ID`,
     `EMPLOYEE_TEAM_DESCRIPTION`, `PRIMARY_TEAM_FLAG`, `DATE_OF_DATA`, `YEARMONTH`, `LOADED_AT`
 )
@@ -4717,127 +4717,127 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 SELECT 'sei_ovn_accountoptionalfields' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_accountoptionalfields
+FROM landing_sei.default.sei_ovn_accountoptionalfields
 UNION ALL
 SELECT 'sei_ovn_accounts' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_accounts
+FROM landing_sei.default.sei_ovn_accounts
 UNION ALL
 SELECT 'sei_ovn_activeblocks' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_activeblocks
+FROM landing_sei.default.sei_ovn_activeblocks
 UNION ALL
 SELECT 'sei_ovn_assetinvclas' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_assetinvclas
+FROM landing_sei.default.sei_ovn_assetinvclas
 UNION ALL
 SELECT 'sei_ovn_assetoptfields' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_assetoptfields
+FROM landing_sei.default.sei_ovn_assetoptfields
 UNION ALL
 SELECT 'sei_ovn_assets' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_assets
+FROM landing_sei.default.sei_ovn_assets
 UNION ALL
 SELECT 'sei_ovn_clientaccountlink' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_clientaccountlink
+FROM landing_sei.default.sei_ovn_clientaccountlink
 UNION ALL
 SELECT 'sei_ovn_clients' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_clients
+FROM landing_sei.default.sei_ovn_clients
 UNION ALL
 SELECT 'sei_ovn_contactdetails' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_contactdetails
+FROM landing_sei.default.sei_ovn_contactdetails
 UNION ALL
 SELECT 'sei_ovn_custodynostropositions' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_custodynostropositions
+FROM landing_sei.default.sei_ovn_custodynostropositions
 UNION ALL
 SELECT 'sei_ovn_eodchangedpositions' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_eodchangedpositions
+FROM landing_sei.default.sei_ovn_eodchangedpositions
 UNION ALL
 SELECT 'sei_ovn_eodposvalaggr' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_eodposvalaggr
+FROM landing_sei.default.sei_ovn_eodposvalaggr
 UNION ALL
 SELECT 'sei_ovn_eodpositions' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_eodpositions
+FROM landing_sei.default.sei_ovn_eodpositions
 UNION ALL
 SELECT 'sei_ovn_eodpositionssupplemental' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_eodpositionssupplemental
+FROM landing_sei.default.sei_ovn_eodpositionssupplemental
 UNION ALL
 SELECT 'sei_ovn_feecomputation' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_feecomputation
+FROM landing_sei.default.sei_ovn_feecomputation
 UNION ALL
 SELECT 'sei_ovn_feegroup' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_feegroup
+FROM landing_sei.default.sei_ovn_feegroup
 UNION ALL
 SELECT 'sei_ovn_feepackagerule' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_feepackagerule
+FROM landing_sei.default.sei_ovn_feepackagerule
 UNION ALL
 SELECT 'sei_ovn_feepackageusage' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_feepackageusage
+FROM landing_sei.default.sei_ovn_feepackageusage
 UNION ALL
 SELECT 'sei_ovn_fundcutoff' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_fundcutoff
+FROM landing_sei.default.sei_ovn_fundcutoff
 UNION ALL
 SELECT 'sei_ovn_fxforward' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_fxforward
+FROM landing_sei.default.sei_ovn_fxforward
 UNION ALL
 SELECT 'sei_ovn_interestratetypes' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_interestratetypes
+FROM landing_sei.default.sei_ovn_interestratetypes
 UNION ALL
 SELECT 'sei_ovn_modelalloc' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_modelalloc
+FROM landing_sei.default.sei_ovn_modelalloc
 UNION ALL
 SELECT 'sei_ovn_modelsintext' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_modelsintext
+FROM landing_sei.default.sei_ovn_modelsintext
 UNION ALL
 SELECT 'sei_ovn_paidto' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_paidto
+FROM landing_sei.default.sei_ovn_paidto
 UNION ALL
 SELECT 'sei_ovn_partyoptionalfields' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_partyoptionalfields
+FROM landing_sei.default.sei_ovn_partyoptionalfields
 UNION ALL
 SELECT 'sei_ovn_portfoliogroups' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_portfoliogroups
+FROM landing_sei.default.sei_ovn_portfoliogroups
 UNION ALL
 SELECT 'sei_ovn_portfolioperformance' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_portfolioperformance
+FROM landing_sei.default.sei_ovn_portfolioperformance
 UNION ALL
 SELECT 'sei_ovn_reccashactivities' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_reccashactivities
+FROM landing_sei.default.sei_ovn_reccashactivities
 UNION ALL
 SELECT 'sei_ovn_reference' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_reference
+FROM landing_sei.default.sei_ovn_reference
 UNION ALL
 SELECT 'sei_relationship_mapping_sei_jha' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_relationship_mapping_sei_jha
+FROM landing_sei.default.sei_relationship_mapping_sei_jha
 UNION ALL
 SELECT 'sei_ovn_relationships' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_relationships
+FROM landing_sei.default.sei_ovn_relationships
 UNION ALL
 SELECT 'sei_ovn_roledetail' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_roledetail
+FROM landing_sei.default.sei_ovn_roledetail
 UNION ALL
 SELECT 'sei_ovn_statementevents' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_statementevents
+FROM landing_sei.default.sei_ovn_statementevents
 UNION ALL
 SELECT 'sei_ovn_statementinstance' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_statementinstance
+FROM landing_sei.default.sei_ovn_statementinstance
 UNION ALL
 SELECT 'sei_ovn_statementpackage' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_statementpackage
+FROM landing_sei.default.sei_ovn_statementpackage
 UNION ALL
 SELECT 'sei_ovn_transactiondetail' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_transactiondetail
+FROM landing_sei.default.sei_ovn_transactiondetail
 UNION ALL
 SELECT 'sei_ovn_transactiondetailupd' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_transactiondetailupd
+FROM landing_sei.default.sei_ovn_transactiondetailupd
 UNION ALL
 SELECT 'sei_ovn_transactionheader' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_transactionheader
+FROM landing_sei.default.sei_ovn_transactionheader
 UNION ALL
 SELECT 'sei_ovn_transactionheaderupd' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_transactionheaderupd
+FROM landing_sei.default.sei_ovn_transactionheaderupd
 UNION ALL
 SELECT 'sei_ovn_upcomingactivities' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_upcomingactivities
+FROM landing_sei.default.sei_ovn_upcomingactivities
 UNION ALL
 SELECT 'sei_ovn_userdetail' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_userdetail
+FROM landing_sei.default.sei_ovn_userdetail
 UNION ALL
 SELECT 'sei_ovn_userteamroledetail' AS table_name, COUNT(*) AS record_count
-FROM landing_seidefault.sei_ovn_userteamroledetail;
+FROM landing_sei.default.sei_ovn_userteamroledetail;
