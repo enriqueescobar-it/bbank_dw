@@ -61,6 +61,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sblc_lcmaster (
     YEARMONTH INT,
     LOADED_AT TIMESTAMP
 );
+COMMENT ON TABLE landing.default.sblc_lcmaster IS 
+'The table contains data related to loan contracts and their characteristics. It includes information such as loan amounts, currencies, statuses, types, and various financial calculations associated with the loans. This data can be used for analyzing loan performance, tracking loan features over time, and assessing trends in lending practices.';
 
 TRUNCATE TABLE landing.default.sblc_lcmaster;
 
@@ -104,6 +106,8 @@ CREATE TABLE IF NOT EXISTS landing.default.sblc_lctranx (
     YEARMONTH INT,
     LOADED_AT TIMESTAMP
 );
+COMMENT ON TABLE landing.default.sblc_lctranx IS 
+'The table contains data related to financial transactions. It includes details such as transaction costs, types, and amounts, as well as relevant account information. Possible use cases for this table include analyzing transaction patterns, monitoring financial performance, and supporting reconciliation processes. The data can help in understanding the distribution of transactions over time and assessing account activities.';
 
 TRUNCATE TABLE landing.default.sblc_lctranx;
 
