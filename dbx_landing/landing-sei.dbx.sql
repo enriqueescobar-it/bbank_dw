@@ -3087,31 +3087,31 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."SEI_RELATIONSHIP_MAPPING_SEI_JHA"
 CREATE TABLE IF NOT EXISTS landing.default.sei_relationship_mapping_sei_jha (
-    `Relationship Code` STRING,
-    `Relationship Short Name` STRING,
-    `Relationship Description` STRING,
+    `Relationship_Code` STRING,
+    `Relationship_Short_Name` STRING,
+    `Relationship_Description` STRING,
     `REVERSE_RELATIONSHIP_TYPE` BIGINT,
-    `SWP Relationship` STRING,
+    `SWP_Relationship` STRING,
     `RELATIONSHIP_ROLE_TYPE` BIGINT,
-    `SWP Role` STRING,
+    `SWP_Role` STRING,
     `LOADED_AT` TIMESTAMP
 );
 
 TRUNCATE TABLE landing.default.sei_relationship_mapping_sei_jha;
 
 INSERT INTO landing.default.sei_relationship_mapping_sei_jha (
-    `Relationship Code`, `Relationship Short Name`, `Relationship Description`,
-    `REVERSE_RELATIONSHIP_TYPE`, `SWP Relationship`, `RELATIONSHIP_ROLE_TYPE`, `SWP Role`,
+    `Relationship_Code`, `Relationship_Short_Name`, `Relationship_Description`,
+    `REVERSE_RELATIONSHIP_TYPE`, `SWP_Relationship`, `RELATIONSHIP_ROLE_TYPE`, `SWP_Role`,
     `LOADED_AT`
 )
 SELECT
-    concat('RELATIONSHIP_CODE_', lpad(TRY_CAST(idx AS STRING), 2, '0')) AS `Relationship Code`,
-    concat('RELATIONSHIP_SHORT_NAME_', lpad(TRY_CAST(idx AS STRING), 2, '0')) AS `Relationship Short Name`,
-    concat('RELATIONSHIP_DESCRIPTION_', lpad(TRY_CAST(idx AS STRING), 2, '0')) AS `Relationship Description`,
+    concat('RELATIONSHIP_CODE_', lpad(TRY_CAST(idx AS STRING), 2, '0')) AS `Relationship_Code`,
+    concat('RELATIONSHIP_SHORT_NAME_', lpad(TRY_CAST(idx AS STRING), 2, '0')) AS `Relationship_Short_Name`,
+    concat('RELATIONSHIP_DESCRIPTION_', lpad(TRY_CAST(idx AS STRING), 2, '0')) AS `Relationship_Description`,
     idx AS `REVERSE_RELATIONSHIP_TYPE`,
-    concat('SWP_RELATIONSHIP_', lpad(TRY_CAST(idx AS STRING), 2, '0')) AS `SWP Relationship`,
+    concat('SWP_RELATIONSHIP_', lpad(TRY_CAST(idx AS STRING), 2, '0')) AS `SWP_Relationship`,
     idx AS `RELATIONSHIP_ROLE_TYPE`,
-    concat('SWP_ROLE_', lpad(TRY_CAST(idx AS STRING), 2, '0')) AS `SWP Role`,
+    concat('SWP_ROLE_', lpad(TRY_CAST(idx AS STRING), 2, '0')) AS `SWP_Role`,
     timestampadd(DAY, idx - 1, TIMESTAMP '2026-01-01 12:00:00') AS `LOADED_AT`
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
