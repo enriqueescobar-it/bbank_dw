@@ -1,14 +1,16 @@
+--DROP CATALOG canaria_inc_sample_enriched_linkedin_data_for_b2b_crm_talent_acquisition_linkedin_data_70m_company;
+
 -- Databricks SQL for source: manual
 -- Generated from sqlserver/brz-manual.sql
 
-CREATE CATALOG IF NOT EXISTS landing;
-USE CATALOG landing;
+CREATE CATALOG IF NOT EXISTS manual; -- Commented out: Catalog already exists, quota limit reached
+USE CATALOG manual;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."FILE_APEX_MONTHLY_ACCOUNTS"
-CREATE TABLE IF NOT EXISTS landing.default.file_apex_monthly_accounts (
+CREATE TABLE IF NOT EXISTS manual.default.file_apex_monthly_accounts (
     `CLIENT_CODE` STRING,
     `CORRESPONDENT_CODE` STRING,
     `ACCOUNT_GROUP_CODE` STRING,
@@ -30,12 +32,10 @@ CREATE TABLE IF NOT EXISTS landing.default.file_apex_monthly_accounts (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing.default.file_apex_monthly_accounts IS 
-'The table contains monthly account data related to clients and their billing details. It records account information such as client codes, billing categories, rates, and equity data for specific periods. Use cases include analyzing billing trends, monitoring account performance, and reconciling monthly statements.';
 
-TRUNCATE TABLE landing.default.file_apex_monthly_accounts;
+TRUNCATE TABLE manual.default.file_apex_monthly_accounts;
 
-INSERT INTO landing.default.file_apex_monthly_accounts (
+INSERT INTO manual.default.file_apex_monthly_accounts (
     `CLIENT_CODE`, `CORRESPONDENT_CODE`, `ACCOUNT_GROUP_CODE`, `ACCOUNT_NUMBER`, `BILLING_CALENDAR_MONTH`, `BILLING_CALENDAR_YEAR`,
     `BILLING_TRANSACTION_ID`, `BILLING_SECTION`, `BILLING_CATEGORY`, `BILLING_SUB_CATEGORY`, `BILLING_NAME_RATE`, `BILLING_RATE`,
     `PROCESS_START_DATE`, `PROCESS_END_DATE`, `FUNDED_START_DATE`, `FUNDED_END_DATE`, `AVG_MONTHLY_EQUITY`, `DATE_OF_DATA`,
@@ -65,7 +65,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FILE_APEX_MONTHLY_CREDIT"
-CREATE TABLE IF NOT EXISTS landing.default.file_apex_monthly_credit (
+CREATE TABLE IF NOT EXISTS manual.default.file_apex_monthly_credit (
     `CLIENT_CODE` STRING,
     `CORRESPONDENT_CODE` STRING,
     `ACCOUNT_GROUP_CODE` STRING,
@@ -86,12 +86,10 @@ CREATE TABLE IF NOT EXISTS landing.default.file_apex_monthly_credit (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing.default.file_apex_monthly_credit IS 
-'The table contains monthly credit billing data for different clients. It tracks various attributes such as client and correspondent codes, account details, billing categories, and associated rates. Use cases include analyzing billing trends over time, assessing cash settlement balances, and monitoring the performance of different billing categories and rates.';
 
-TRUNCATE TABLE landing.default.file_apex_monthly_credit;
+TRUNCATE TABLE manual.default.file_apex_monthly_credit;
 
-INSERT INTO landing.default.file_apex_monthly_credit (
+INSERT INTO manual.default.file_apex_monthly_credit (
     `CLIENT_CODE`, `CORRESPONDENT_CODE`, `ACCOUNT_GROUP_CODE`, `ACCOUNT_NUMBER`, `BILLING_CALENDAR_MONTH`, `BILLING_CALENDAR_YEAR`,
     `BILLING_TRANSACTION_ID`, `BILLING_SECTION`, `BILLING_CATEGORY`, `BILLING_SUB_CATEGORY`, `BILLING_NAME_RATE`, `RATE_PERCENT`,
     `CASH_SETTLE_BALANCE`, `BILLING_RATE`, `PROCESS_START_DATE`, `PROCESS_END_DATE`, `DATE_OF_DATA`, `YEARMONTH`,
@@ -120,7 +118,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FILE_APEX_MONTHLY_EXECUTION"
-CREATE TABLE IF NOT EXISTS landing.default.file_apex_monthly_execution (
+CREATE TABLE IF NOT EXISTS manual.default.file_apex_monthly_execution (
     `BILLINGPERIOD` STRING,
     `CLEARINGACCOUNT` STRING,
     `INSTRUMENTTYPE` STRING,
@@ -142,12 +140,10 @@ CREATE TABLE IF NOT EXISTS landing.default.file_apex_monthly_execution (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing.default.file_apex_monthly_execution IS 
-'The table contains monthly execution data related to transactions in a trading environment. It includes details such as billing periods, clearing accounts, instrument types, and customer venues. Key metrics such as the number of orders, fills, and notional amounts are recorded, along with various fees and surcharges associated with customer transactions. This data can be used for analyzing trading performance, understanding cost structures, and evaluating customer activity over time.';
 
-TRUNCATE TABLE landing.default.file_apex_monthly_execution;
+TRUNCATE TABLE manual.default.file_apex_monthly_execution;
 
-INSERT INTO landing.default.file_apex_monthly_execution (
+INSERT INTO manual.default.file_apex_monthly_execution (
     `BILLINGPERIOD`, `CLEARINGACCOUNT`, `INSTRUMENTTYPE`, `CUSTOMER_VENUE`, `APEXROUTE`, `DESCRIPTION`,
     `EXCH`, `ORDERS`, `FILLS`, `NOTIONAL`, `QUANTITY`, `CUSTOMERPASSTHRUFEE`,
     `EXECUTION_FEE`, `CUSTOMER_PFOF`, `CUSTOMER_INDEX_SURCHARGE`, `CATHISTORICALFEE`, `CATONGOINGFEE`, `DATE_OF_DATA`,
@@ -177,7 +173,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FILE_APEX_MONTHLY_FDIC"
-CREATE TABLE IF NOT EXISTS landing.default.file_apex_monthly_fdic (
+CREATE TABLE IF NOT EXISTS manual.default.file_apex_monthly_fdic (
     `CORRESPONDENT_CODE` STRING,
     `ACCOUNT_NUMBER` STRING,
     `ACCOUNT_ID` STRING,
@@ -191,12 +187,10 @@ CREATE TABLE IF NOT EXISTS landing.default.file_apex_monthly_fdic (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing.default.file_apex_monthly_fdic IS 
-'The table contains monthly data related to FDIC accounts. Key details include account balances, accrued interest, and various identifiers for accounts and correspondents. This data can be used for financial analysis, tracking account performance over time, and understanding the distribution of assets across different correspondents.';
 
-TRUNCATE TABLE landing.default.file_apex_monthly_fdic;
+TRUNCATE TABLE manual.default.file_apex_monthly_fdic;
 
-INSERT INTO landing.default.file_apex_monthly_fdic (
+INSERT INTO manual.default.file_apex_monthly_fdic (
     `CORRESPONDENT_CODE`, `ACCOUNT_NUMBER`, `ACCOUNT_ID`, `FDIC_ASSET_SYMBOL`, `BALANCE_DATE`, `PRINCIPAL_BALANCE`,
     `ACCRUED_INTEREST`, `EFF`, `CORRESPONDENT_REBATE`, `DATE_OF_DATA`, `YEARMONTH`, `LOADED_AT`
 )
@@ -216,7 +210,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FILE_APEX_MONTHLY_TRADES"
-CREATE TABLE IF NOT EXISTS landing.default.file_apex_monthly_trades (
+CREATE TABLE IF NOT EXISTS manual.default.file_apex_monthly_trades (
     `CLIENT_CODE` STRING,
     `CORRESPONDENT_CODE` STRING,
     `ACCOUNT_GROUP_CODE` STRING,
@@ -265,12 +259,10 @@ CREATE TABLE IF NOT EXISTS landing.default.file_apex_monthly_trades (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing.default.file_apex_monthly_trades IS 
-'The table contains monthly trade data, capturing various financial transactions related to clients. It includes information such as client codes, account details, transaction identifiers, asset types, and financial amounts. This data can be used for performance analysis, reconciliation, and generating financial reports. It is particularly useful for understanding market activities, assessing trading performance, and analyzing costs and revenues associated with trading activities';
 
-TRUNCATE TABLE landing.default.file_apex_monthly_trades;
+TRUNCATE TABLE manual.default.file_apex_monthly_trades;
 
-INSERT INTO landing.default.file_apex_monthly_trades (
+INSERT INTO manual.default.file_apex_monthly_trades (
     `CLIENT_CODE`, `CORRESPONDENT_CODE`, `ACCOUNT_GROUP_CODE`, `ACCOUNT_NUMBER`, `BILLING_CALENDAR_MONTH`, `BILLING_CALENDAR_YEAR`,
     `BILLING_TRANSACTION_ID`, `BILLING_SECTION`, `BILLING_CATEGORY`, `BILLING_SUB_CATEGORY`, `BILLING_NAME_RATE`, `BILLING_RATE`,
     `FUNDING_TYPE`, `ACTIVITY_DATE`, `PROCESS_DATE`, `SETTLE_DATE`, `ACTIVITY_ID`, `SYMBOL`,
@@ -331,7 +323,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FILE_BFLCRTRAN"
-CREATE TABLE IF NOT EXISTS landing.default.file_bflcrtran (
+CREATE TABLE IF NOT EXISTS manual.default.file_bflcrtran (
     `TREFF6` STRING,
     `TRDAT6` STRING,
     `TRANCD` STRING,
@@ -351,12 +343,10 @@ CREATE TABLE IF NOT EXISTS landing.default.file_bflcrtran (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing.default.file_bflcrtran IS 
-'The table contains transaction data related to various financial activities. Key attributes include transaction dates, amounts, account identifiers, and batch information. This data can be useful for tracking financial transactions, analyzing spending patterns, or reconciling accounts.';
 
-TRUNCATE TABLE landing.default.file_bflcrtran;
+TRUNCATE TABLE manual.default.file_bflcrtran;
 
-INSERT INTO landing.default.file_bflcrtran (
+INSERT INTO manual.default.file_bflcrtran (
     `TREFF6`, `TRDAT6`, `TRANCD`, `DORC`, `AMT`, `PFGLAC`,
     `BATCH`, `DDSD1`, `DDSD2`, `LCMACC`, `CIFNO`, `BRANCH`,
     `GLCOST`, `GLPROD`, `GROUP`, `TRACCT`, `YEARMONTH`, `LOADED_AT`
@@ -383,7 +373,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FILE_BIU_ACTIVITY"
-CREATE TABLE IF NOT EXISTS landing.default.file_biu_activity (
+CREATE TABLE IF NOT EXISTS manual.default.file_biu_activity (
     `ACCOUNT_NUMBER` STRING,
     `END_AUMS` DECIMAL(38,10),
     `MGMT_FEES` DECIMAL(38,10),
@@ -394,12 +384,10 @@ CREATE TABLE IF NOT EXISTS landing.default.file_biu_activity (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing.default.file_biu_activity IS 
-'The table tracks activity related to financial accounts, specifically focusing on various fees and account values over time. Use cases include analyzing management fees, understanding advisor fees, and monitoring account performance. Additionally, the data can help in financial forecasting and assessing overall account health, and is organized by year and month for trend analysis.';
 
-TRUNCATE TABLE landing.default.file_biu_activity;
+TRUNCATE TABLE manual.default.file_biu_activity;
 
-INSERT INTO landing.default.file_biu_activity (
+INSERT INTO manual.default.file_biu_activity (
     `ACCOUNT_NUMBER`, `END_AUMS`, `MGMT_FEES`, `IB_FEES`, `NET_MGMT_FEE`, `SUB_ADVISOR_FEE`,
     `OUTSTANDING`, `YEARMONTH`, `LOADED_AT`
 )
@@ -416,7 +404,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FILE_FEDLINK_INC"
-CREATE TABLE IF NOT EXISTS landing.default.file_fedlink_inc (
+CREATE TABLE IF NOT EXISTS manual.default.file_fedlink_inc (
     `PAY_VIA` STRING,
     `TYPE` STRING,
     `TRACEKEY` STRING,
@@ -544,12 +532,10 @@ CREATE TABLE IF NOT EXISTS landing.default.file_fedlink_inc (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing.default.file_fedlink_inc IS 
-'This table holds detailed records related to financial transactions, including payment details, sender and receiver information, and associated fees. It can be used to analyze transaction patterns, assess financial flows, and manage account details. The data includes timestamps for when the transactions occurred, relevant identifiers, and amounts involved.';
 
-TRUNCATE TABLE landing.default.file_fedlink_inc;
+TRUNCATE TABLE manual.default.file_fedlink_inc;
 
-INSERT INTO landing.default.file_fedlink_inc (
+INSERT INTO manual.default.file_fedlink_inc (
     `PAY_VIA`, `TYPE`, `TRACEKEY`, `REF`, `ACCOUNT`, `NAME`,
     `PRODCODE`, `SUBTYPE`, `LOADDATE`, `DATETIME`, `SENDERABA`, `SENDERNAME`,
     `RECEIVERABA`, `RECEIVERNAME`, `ORG`, `ORGCDE`, `ORGACC`, `ORG1`,
@@ -702,7 +688,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FILE_FEDLINK_OUT"
-CREATE TABLE IF NOT EXISTS landing.default.file_fedlink_out (
+CREATE TABLE IF NOT EXISTS manual.default.file_fedlink_out (
     `PAY_VIA` STRING,
     `TYPE` STRING,
     `TRACEKEY` STRING,
@@ -830,12 +816,10 @@ CREATE TABLE IF NOT EXISTS landing.default.file_fedlink_out (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing.default.file_fedlink_out IS 
-'The table contains information related to financial transactions processed via various payment channels. It includes details such as account identifiers, transaction amounts, fees, and related organization data. Possible use cases involve tracking transaction flows, analyzing service fees across different transaction types, and managing relationships with sending and receiving institutions. The presence of fields for currency exchange rates and foreign bank information can also aid in financial reporting and compliance.';
 
-TRUNCATE TABLE landing.default.file_fedlink_out;
+TRUNCATE TABLE manual.default.file_fedlink_out;
 
-INSERT INTO landing.default.file_fedlink_out (
+INSERT INTO manual.default.file_fedlink_out (
     `PAY_VIA`, `TYPE`, `TRACEKEY`, `REF`, `ACCOUNT`, `NAME`,
     `PRODCODE`, `SUBTYPE`, `LOADDATE`, `DATETIME`, `SENDERABA`, `SENDERNAME`,
     `RECEIVERABA`, `RECEIVERNAME`, `ORG`, `ORGCDE`, `ORGACC`, `ORG1`,
@@ -988,7 +972,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FILE_RDCI"
-CREATE TABLE IF NOT EXISTS landing.default.file_rdci (
+CREATE TABLE IF NOT EXISTS manual.default.file_rdci (
     `INSTRUMENT_ID` STRING,
     `ADJUSTED_AX_INTEREST` DECIMAL(38,10),
     `ADJUSTED_FTP_AMOUNT` DECIMAL(38,10),
@@ -999,12 +983,10 @@ CREATE TABLE IF NOT EXISTS landing.default.file_rdci (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing.default.file_rdci IS 
-'The table contains financial data related to various income and expense metrics associated with instruments. It includes adjusted interest amounts, net interest income, non-interest income, total revenue, and total non-interest expenses, along with timestamps for when the data was loaded. This data can be used for financial analysis, performance assessments, and trend evaluations over time';
 
-TRUNCATE TABLE landing.default.file_rdci;
+TRUNCATE TABLE manual.default.file_rdci;
 
-INSERT INTO landing.default.file_rdci (
+INSERT INTO manual.default.file_rdci (
     `INSTRUMENT_ID`, `ADJUSTED_AX_INTEREST`, `ADJUSTED_FTP_AMOUNT`, `NET_INTEREST_INCOME`, `NON_INTEREST_INCOME`, `TOTAL_REVENUE`,
     `TOTAL_NONINTEREST_EXPENSE`, `YEARMONTH`, `LOADED_AT`
 )
@@ -1021,7 +1003,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FILE_TRAILER_FEES"
-CREATE TABLE IF NOT EXISTS landing.default.file_trailer_fees (
+CREATE TABLE IF NOT EXISTS manual.default.file_trailer_fees (
     `PERSHING_ACCOUNT` STRING,
     `CUSIP` STRING,
     `ISIN` STRING,
@@ -1029,12 +1011,10 @@ CREATE TABLE IF NOT EXISTS landing.default.file_trailer_fees (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing.default.file_trailer_fees IS 
-'The table contains data related to trailer fees associated with different accounts. It includes information such as account identifiers, financial instruments (CUSIP, ISIN), the fee amount, the year and month for which the fees apply, and the timestamp of when this data was loaded. This information can be used to analyze fee trends over time, manage account-related finances, and reconcile financial statements.';
 
-TRUNCATE TABLE landing.default.file_trailer_fees;
+TRUNCATE TABLE manual.default.file_trailer_fees;
 
-INSERT INTO landing.default.file_trailer_fees (
+INSERT INTO manual.default.file_trailer_fees (
     `PERSHING_ACCOUNT`, `CUSIP`, `ISIN`, `AMOUNT`, `YEARMONTH`, `LOADED_AT`
 )
 SELECT
@@ -1047,7 +1027,7 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Source: "DQP_LANDING"."dbo"."FILE_TRAILER_FEES_ACCRUALS"
-CREATE TABLE IF NOT EXISTS landing.default.file_trailer_fees_accruals (
+CREATE TABLE IF NOT EXISTS manual.default.file_trailer_fees_accruals (
     `ACCOUNT_NO` STRING,
     `SHORT_NAME` STRING,
     `OFFICE` STRING,
@@ -1075,12 +1055,10 @@ CREATE TABLE IF NOT EXISTS landing.default.file_trailer_fees_accruals (
     `GL_ACCOUNT` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing.default.file_trailer_fees_accruals IS 
-'The table contains information related to fees accruals for various accounts and trades. It includes data on account numbers, trade date quantities, market values, and management fees associated with different securities. Potential use cases include financial reporting, analysis of management fees across funds, and tracking account performance over time.';
 
-TRUNCATE TABLE landing.default.file_trailer_fees_accruals;
+TRUNCATE TABLE manual.default.file_trailer_fees_accruals;
 
-INSERT INTO landing.default.file_trailer_fees_accruals (
+INSERT INTO manual.default.file_trailer_fees_accruals (
     `ACCOUNT_NO`, `SHORT_NAME`, `OFFICE`, `IP`, `SYMBOL`, `CUSIP`,
     `SEC_REGISTERED`, `SECURITY_DESCRIPTION`, `TRADE_DATE_QUANTITY`, `TRADE_DATE_MARKET_VALUE`, `PERCENTAGE_OF_GRAND_TOTAL_TRADE_DATE_MARKET_VALUE`, `TOTAL_SETTLEMENT_DATE_MARKET_VALUE`,
     `SETTLEMENT_DATE_QUANTITY`, `ACCOUNT_STATUS`, `ACCRUED_AMOUNT`, `CLOSING_BALANCE`, `REFERENCE`, `MANAGEMENT_FEES_PERCENTAGE`,
@@ -1117,37 +1095,37 @@ SELECT
 FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 SELECT 'file_apex_monthly_accounts' AS table_name, COUNT(*) AS record_count
-FROM landing.default.file_apex_monthly_accounts
+FROM manual.default.file_apex_monthly_accounts
 UNION ALL
 SELECT 'file_apex_monthly_credit' AS table_name, COUNT(*) AS record_count
-FROM landing.default.file_apex_monthly_credit
+FROM manual.default.file_apex_monthly_credit
 UNION ALL
 SELECT 'file_apex_monthly_execution' AS table_name, COUNT(*) AS record_count
-FROM landing.default.file_apex_monthly_execution
+FROM manual.default.file_apex_monthly_execution
 UNION ALL
 SELECT 'file_apex_monthly_fdic' AS table_name, COUNT(*) AS record_count
-FROM landing.default.file_apex_monthly_fdic
+FROM manual.default.file_apex_monthly_fdic
 UNION ALL
 SELECT 'file_apex_monthly_trades' AS table_name, COUNT(*) AS record_count
-FROM landing.default.file_apex_monthly_trades
+FROM manual.default.file_apex_monthly_trades
 UNION ALL
 SELECT 'file_bflcrtran' AS table_name, COUNT(*) AS record_count
-FROM landing.default.file_bflcrtran
+FROM manual.default.file_bflcrtran
 UNION ALL
 SELECT 'file_biu_activity' AS table_name, COUNT(*) AS record_count
-FROM landing.default.file_biu_activity
+FROM manual.default.file_biu_activity
 UNION ALL
 SELECT 'file_fedlink_inc' AS table_name, COUNT(*) AS record_count
-FROM landing.default.file_fedlink_inc
+FROM manual.default.file_fedlink_inc
 UNION ALL
 SELECT 'file_fedlink_out' AS table_name, COUNT(*) AS record_count
-FROM landing.default.file_fedlink_out
+FROM manual.default.file_fedlink_out
 UNION ALL
 SELECT 'file_rdci' AS table_name, COUNT(*) AS record_count
-FROM landing.default.file_rdci
+FROM manual.default.file_rdci
 UNION ALL
 SELECT 'file_trailer_fees' AS table_name, COUNT(*) AS record_count
-FROM landing.default.file_trailer_fees
+FROM manual.default.file_trailer_fees
 UNION ALL
 SELECT 'file_trailer_fees_accruals' AS table_name, COUNT(*) AS record_count
-FROM landing.default.file_trailer_fees_accruals;
+FROM manual.default.file_trailer_fees_accruals;
