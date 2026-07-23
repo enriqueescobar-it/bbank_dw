@@ -39,6 +39,8 @@ CREATE TABLE IF NOT EXISTS landing.default.file_invoice_requests (
     `YEARMONTH` BIGINT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE landing.default.file_invoice_requests IS 
+'The table contains information about invoice requests, including details such as the employee and vendor names, invoice amounts, and payment statuses. It can be used to track the lifecycle of invoice requests, analyze approval and payment processes, and generate reports for financial reviews.';
 
 TRUNCATE TABLE landing.default.file_invoice_requests;
 
