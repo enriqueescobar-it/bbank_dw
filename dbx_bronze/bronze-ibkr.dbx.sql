@@ -89,6 +89,9 @@ bronze_data AS(
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_bcp_ibkr_account IS
+'Bronze table bronze_bcp_ibkr_account contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-ibkr.dbx.sql
 -- Source model: bronze_bcp_ibkr_acct_holder
@@ -283,6 +286,9 @@ bronze_data AS(
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_bcp_ibkr_acct_holder IS
+'Bronze table bronze_bcp_ibkr_acct_holder contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-ibkr.dbx.sql
 -- Source model: bronze_bcp_ibkr_balance_history
@@ -327,3 +333,6 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_bcp_ibkr_balance_history IS
+'Bronze table bronze_bcp_ibkr_balance_history contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+

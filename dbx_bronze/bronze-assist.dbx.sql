@@ -62,6 +62,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_assist_codfil_ref IS
+'Bronze table bronze_assist_codfil_ref contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-assist.dbx.sql
 -- Source model: bronze_assist_customer_addl_fields
@@ -130,6 +133,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_assist_customer_addl_fields IS
+'Bronze table bronze_assist_customer_addl_fields contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-assist.dbx.sql
 -- Source model: bronze_assist_customer_class
@@ -176,6 +182,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_assist_customer_class IS
+'Bronze table bronze_assist_customer_class contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-assist.dbx.sql
 -- Source model: bronze_assist_customer_tbl
@@ -274,6 +283,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_assist_customer_tbl IS
+'Bronze table bronze_assist_customer_tbl contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-assist.dbx.sql
 -- Source model: bronze_assist_master_account_tbl
@@ -366,6 +378,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_assist_master_account_tbl IS
+'Bronze table bronze_assist_master_account_tbl contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-assist.dbx.sql
 -- Source model: bronze_assist_officers_costcenter
@@ -416,6 +431,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_assist_officers_costcenter IS
+'Bronze table bronze_assist_officers_costcenter contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-assist.dbx.sql
 -- Source model: bronze_assist_transactions_tbl
@@ -506,3 +524,6 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_assist_transactions_tbl IS
+'Bronze table bronze_assist_transactions_tbl contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+

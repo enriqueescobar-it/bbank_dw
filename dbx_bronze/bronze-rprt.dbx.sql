@@ -49,3 +49,6 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_rprt_sharing_agreement_exception IS
+'Bronze table bronze_rprt_sharing_agreement_exception contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+

@@ -85,6 +85,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_q2_customer IS
+'Bronze table bronze_q2_customer contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-q2.dbx.sql
 -- Source model: bronze_q2_user
@@ -146,6 +149,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_q2_user IS
+'Bronze table bronze_q2_user contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-q2.dbx.sql
 -- Source model: bronze_q2_user_pii
@@ -217,3 +223,6 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_q2_user_pii IS
+'Bronze table bronze_q2_user_pii contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+

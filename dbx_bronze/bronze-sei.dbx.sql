@@ -51,6 +51,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_accountoptionalfields IS
+'Bronze table bronze_sei_accountoptionalfields contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_accounts
@@ -372,6 +375,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_accounts IS
+'Bronze table bronze_sei_accounts contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_activeblocks
@@ -443,6 +449,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_activeblocks IS
+'Bronze table bronze_sei_activeblocks contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_assetinvclas
@@ -536,6 +545,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_assetinvclas IS
+'Bronze table bronze_sei_assetinvclas contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_assetoptfields
@@ -583,6 +595,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_assetoptfields IS
+'Bronze table bronze_sei_assetoptfields contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_assets
@@ -856,6 +871,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_assets IS
+'Bronze table bronze_sei_assets contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_clientaccountlink
@@ -1073,6 +1091,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_clientaccountlink IS
+'Bronze table bronze_sei_clientaccountlink contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_clients
@@ -1320,6 +1341,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_clients IS
+'Bronze table bronze_sei_clients contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_contactdetails
@@ -1415,6 +1439,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_contactdetails IS
+'Bronze table bronze_sei_contactdetails contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_custodynostropositions
@@ -1500,6 +1527,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_custodynostropositions IS
+'Bronze table bronze_sei_custodynostropositions contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_eodchangedpositions
@@ -1703,6 +1733,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_eodchangedpositions IS
+'Bronze table bronze_sei_eodchangedpositions contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_eodposvalaggr
@@ -1784,6 +1817,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_eodposvalaggr IS
+'Bronze table bronze_sei_eodposvalaggr contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_eodpositions
@@ -1987,6 +2023,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_eodpositions IS
+'Bronze table bronze_sei_eodpositions contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_eodpositionssupplemental
@@ -2076,6 +2115,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_eodpositionssupplemental IS
+'Bronze table bronze_sei_eodpositionssupplemental contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_feecomputation
@@ -2185,6 +2227,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_feecomputation IS
+'Bronze table bronze_sei_feecomputation contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_feegroup
@@ -2238,6 +2283,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_feegroup IS
+'Bronze table bronze_sei_feegroup contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_feepackagerule
@@ -2319,6 +2367,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_feepackagerule IS
+'Bronze table bronze_sei_feepackagerule contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_feepackageusage
@@ -2454,6 +2505,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_feepackageusage IS
+'Bronze table bronze_sei_feepackageusage contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_fundcutoff
@@ -2504,6 +2558,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_fundcutoff IS
+'Bronze table bronze_sei_fundcutoff contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_fxforward
@@ -2587,6 +2644,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_fxforward IS
+'Bronze table bronze_sei_fxforward contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_interestratetypes
@@ -2644,6 +2704,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_interestratetypes IS
+'Bronze table bronze_sei_interestratetypes contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_modelalloc
@@ -2725,6 +2788,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_modelalloc IS
+'Bronze table bronze_sei_modelalloc contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_modelsintext
@@ -2794,6 +2860,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_modelsintext IS
+'Bronze table bronze_sei_modelsintext contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_paidto
@@ -2899,6 +2968,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_paidto IS
+'Bronze table bronze_sei_paidto contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_partyoptionalfields
@@ -2948,6 +3020,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_partyoptionalfields IS
+'Bronze table bronze_sei_partyoptionalfields contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_portfoliogroups
@@ -3025,6 +3100,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_portfoliogroups IS
+'Bronze table bronze_sei_portfoliogroups contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_portfolioperformance
@@ -3128,6 +3206,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_portfolioperformance IS
+'Bronze table bronze_sei_portfolioperformance contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_reccashactivities
@@ -3275,6 +3356,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_reccashactivities IS
+'Bronze table bronze_sei_reccashactivities contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_reference
@@ -3326,6 +3410,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_reference IS
+'Bronze table bronze_sei_reference contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_relationshipmapping_sei_jha
@@ -3370,6 +3457,9 @@ casted_relationship_mapping AS (
 )
 
 SELECT * FROM casted_relationship_mapping;
+COMMENT ON TABLE bronze.default.bronze_sei_relationshipmapping_sei_jha IS
+'Bronze table bronze_sei_relationshipmapping_sei_jha contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_relationships
@@ -3501,6 +3591,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_relationships IS
+'Bronze table bronze_sei_relationships contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_roledetail
@@ -3550,6 +3643,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_roledetail IS
+'Bronze table bronze_sei_roledetail contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_statementevents
@@ -3657,6 +3753,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_statementevents IS
+'Bronze table bronze_sei_statementevents contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_statementinstance
@@ -3830,6 +3929,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_statementinstance IS
+'Bronze table bronze_sei_statementinstance contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_statementpackage
@@ -3897,6 +3999,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_statementpackage IS
+'Bronze table bronze_sei_statementpackage contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_transactiondetail
@@ -4004,6 +4109,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_transactiondetail IS
+'Bronze table bronze_sei_transactiondetail contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_transactiondetailupd
@@ -4111,6 +4219,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_transactiondetailupd IS
+'Bronze table bronze_sei_transactiondetailupd contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_transactionheader
@@ -4442,6 +4553,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_transactionheader IS
+'Bronze table bronze_sei_transactionheader contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_transactionheaderupd
@@ -4773,6 +4887,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_transactionheaderupd IS
+'Bronze table bronze_sei_transactionheaderupd contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_upcomingactivities
@@ -4878,6 +4995,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_upcomingactivities IS
+'Bronze table bronze_sei_upcomingactivities contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_userdetail
@@ -4937,6 +5057,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_userdetail IS
+'Bronze table bronze_sei_userdetail contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_userteamroledetail
@@ -4986,3 +5109,6 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sei_userteamroledetail IS
+'Bronze table bronze_sei_userteamroledetail contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+

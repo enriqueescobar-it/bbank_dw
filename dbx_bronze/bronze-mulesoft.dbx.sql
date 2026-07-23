@@ -66,6 +66,9 @@ cte_bronze_data as (
 
 
 select * from cte_bronze_data;
+COMMENT ON TABLE bronze.default.bronze_mulesoft_customer_external_id IS
+'Bronze table bronze_mulesoft_customer_external_id contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-mulesoft.dbx.sql
 -- Source model: bronze_mulesoft_party
@@ -124,6 +127,9 @@ cte_bronze_data as (
 
 
 select * from cte_bronze_data;
+COMMENT ON TABLE bronze.default.bronze_mulesoft_party IS
+'Bronze table bronze_mulesoft_party contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-mulesoft.dbx.sql
 -- Source model: bronze_mulesoft_prospect_external_data
@@ -310,3 +316,6 @@ cte_bronze_data as (
 
 
 select * from cte_bronze_data;
+COMMENT ON TABLE bronze.default.bronze_mulesoft_prospect_external_data IS
+'Bronze table bronze_mulesoft_prospect_external_data contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+

@@ -61,3 +61,6 @@ WITH landing_data AS (
 
 
 SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
+COMMENT ON TABLE bronze.default.bronze_file_invoice_requests IS
+'Bronze table bronze_file_invoice_requests contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+

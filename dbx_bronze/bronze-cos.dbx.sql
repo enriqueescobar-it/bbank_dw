@@ -229,6 +229,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_cos_applicant IS
+'Bronze table bronze_cos_applicant contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-cos.dbx.sql
 -- Source model: bronze_cos_prospect
@@ -296,6 +299,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_cos_prospect IS
+'Bronze table bronze_cos_prospect contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-cos.dbx.sql
 -- Source model: bronze_cos_td_treasury_rate
@@ -349,3 +355,6 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_cos_td_treasury_rate IS
+'Bronze table bronze_cos_td_treasury_rate contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+

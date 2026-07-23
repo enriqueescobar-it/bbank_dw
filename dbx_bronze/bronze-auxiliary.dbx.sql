@@ -41,6 +41,9 @@ WITH landing_data as (
 )
 
 SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
+COMMENT ON TABLE bronze.default.bronze_auxiliary_br_dcode IS
+'Bronze table bronze_auxiliary_br_dcode contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-auxiliary.dbx.sql
 -- Source model: bronze_auxiliary_jha_sei_trans_code
@@ -1284,3 +1287,6 @@ adjusted_data AS (
                 landing_data
 )
 SELECT *, current_timestamp() AS LOADED_AT FROM adjusted_data;
+COMMENT ON TABLE bronze.default.bronze_auxiliary_jha_sei_trans_code IS
+'Bronze table bronze_auxiliary_jha_sei_trans_code contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+

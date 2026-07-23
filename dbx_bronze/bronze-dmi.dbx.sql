@@ -229,6 +229,9 @@ WITH landing_data AS (
 
 
 SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
+COMMENT ON TABLE bronze.default.bronze_dmi_bacmast IS
+'Bronze table bronze_dmi_bacmast contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-dmi.dbx.sql
 -- Source model: bronze_dmi_disb
@@ -282,6 +285,9 @@ FROM  cte_bronze_dmi_disb
 
 
 SELECT *, current_timestamp() AS LOADED_AT FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_dmi_disb IS
+'Bronze table bronze_dmi_disb contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-dmi.dbx.sql
 -- Source model: bronze_dmi_e006
@@ -380,6 +386,9 @@ bronze_data as (
 
 
 SELECT *, current_timestamp() AS LOADED_AT FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_dmi_e006 IS
+'Bronze table bronze_dmi_e006 contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-dmi.dbx.sql
 -- Source model: bronze_dmi_gl_mapping
@@ -529,6 +538,9 @@ SELECT
     TRY_CAST('2026-05-01' AS DATE) AS Effective_Date,
     current_timestamp() AS LOADED_AT
 FROM cte_data;
+COMMENT ON TABLE bronze.default.bronze_dmi_gl_mapping IS
+'Bronze table bronze_dmi_gl_mapping contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-dmi.dbx.sql
 -- Source model: bronze_dmi_non_cash
@@ -586,6 +598,9 @@ FROM  cte_bronze_dmi_non_cash
 
 
 SELECT *, current_timestamp() AS LOADED_AT FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_dmi_non_cash IS
+'Bronze table bronze_dmi_non_cash contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-dmi.dbx.sql
 -- Source model: bronze_dmi_p110
@@ -647,6 +662,9 @@ WITH cte_dmi_P110 AS (
 
 
 SELECT *,current_timestamp() AS LOADED_AT FROM cte_dmi_P110;
+COMMENT ON TABLE bronze.default.bronze_dmi_p110 IS
+'Bronze table bronze_dmi_p110 contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-dmi.dbx.sql
 -- Source model: bronze_dmi_p132
@@ -696,6 +714,9 @@ WITH cte_dmi_P132 AS (
 
 
 SELECT *,current_timestamp() AS LOADED_AT FROM cte_dmi_P132;
+COMMENT ON TABLE bronze.default.bronze_dmi_p132 IS
+'Bronze table bronze_dmi_p132 contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-dmi.dbx.sql
 -- Source model: bronze_dmi_pmt
@@ -777,6 +798,9 @@ FROM  cte_bronze_dmi_pmt A
 
 
 SELECT *, current_timestamp() AS LOADED_AT FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_dmi_pmt IS
+'Bronze table bronze_dmi_pmt contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-dmi.dbx.sql
 -- Source model: bronze_dmi_s2tt
@@ -898,6 +922,9 @@ bronze_data as (
 
 
 SELECT *, current_timestamp() AS LOADED_AT FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_dmi_s2tt IS
+'Bronze table bronze_dmi_s2tt contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-dmi.dbx.sql
 -- Source model: bronze_dmi_s2tv
@@ -996,6 +1023,9 @@ bronze_data as (
 
 
 SELECT *, current_timestamp() AS LOADED_AT FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_dmi_s2tv IS
+'Bronze table bronze_dmi_s2tv contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-dmi.dbx.sql
 -- Source model: bronze_dmi_s5az
@@ -1043,6 +1073,9 @@ WITH cte_dmi_S5AZ AS (
 
 
 SELECT *,current_timestamp() AS LOADED_AT FROM cte_dmi_S5AZ;
+COMMENT ON TABLE bronze.default.bronze_dmi_s5az IS
+'Bronze table bronze_dmi_s5az contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-dmi.dbx.sql
 -- Source model: bronze_dmi_t69w
@@ -1118,6 +1151,9 @@ bronze_data as (
 
 
 SELECT *, current_timestamp() AS LOADED_AT FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_dmi_t69w IS
+'Bronze table bronze_dmi_t69w contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-dmi.dbx.sql
 -- Source model: bronze_dmi_transaction_codes_mapping
@@ -1258,3 +1294,6 @@ casted_dmi_transaction_codes AS (
 )
 
 SELECT *, current_timestamp() AS LOADED_AT FROM casted_dmi_transaction_codes;
+COMMENT ON TABLE bronze.default.bronze_dmi_transaction_codes_mapping IS
+'Bronze table bronze_dmi_transaction_codes_mapping contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+

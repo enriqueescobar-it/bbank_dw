@@ -141,6 +141,9 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
+COMMENT ON TABLE bronze.default.bronze_sblc_lcmaster IS
+'Bronze table bronze_sblc_lcmaster contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- From bronze-sblc.dbx.sql
 -- Source model: bronze_sblc_lctranx
@@ -186,5 +189,8 @@ with landing_data as (
 
 
 SELECT *,current_timestamp() AS LOADED_AT FROM landing_data;
+COMMENT ON TABLE bronze.default.bronze_sblc_lctranx IS
+'Bronze table bronze_sblc_lctranx contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+
 
 -- Row-count verification
