@@ -738,8 +738,8 @@ WITH landing_data AS (
         non_statused_acct_to,
         grand_tot,
         TRY_CAST(processed_at AS DATE) as processed_at,
-        TRY_CAST(data_date AS DATE) AS DATE_OF_DATA,
-        TRY_CAST(date_format(TRY_CAST(data_date AS DATE), 'yyyyMM') AS INT) AS YEARMONTH
+        DATE_OF_DATA,
+        TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH
     FROM
         landing.default.fis_lp_510
     
