@@ -3434,13 +3434,13 @@ WITH raw_relationship_mapping_sei_jha AS (
 
 cleaned_relationship_mapping AS (
     SELECT
-        `Relationship Code` AS RELATIONSHIP_CODE,
-        LTRIM(RTRIM(REPLACE(`Relationship Short Name`, '?', ''))) AS RELATIONSHIP_SHORT_NAME,
-        LTRIM(RTRIM(REPLACE(`Relationship Description`, '?', ''))) AS RELATIONSHIP_DESCRIPTION,
+        `Relationship_Code` AS RELATIONSHIP_CODE,
+        LTRIM(RTRIM(REPLACE(`Relationship_Short_Name`, '?', ''))) AS RELATIONSHIP_SHORT_NAME,
+        LTRIM(RTRIM(REPLACE(`Relationship_Description`, '?', ''))) AS RELATIONSHIP_DESCRIPTION,
         `REVERSE_RELATIONSHIP_TYPE` AS REVERSE_RELATIONSHIP_TYPE,
-        LTRIM(RTRIM(REPLACE(`SWP Relationship`, '?', ''))) AS SWP_RELATIONSHIP,
+        LTRIM(RTRIM(REPLACE(`SWP_Relationship`, '?', ''))) AS SWP_RELATIONSHIP,
         `RELATIONSHIP_ROLE_TYPE` AS RELATIONSHIP_ROLE_TYPE,
-        LTRIM(RTRIM(REPLACE(`SWP Role`, '?', ''))) AS SWP_ROLE
+        LTRIM(RTRIM(REPLACE(`SWP_Role`, '?', ''))) AS SWP_ROLE
         FROM raw_relationship_mapping_sei_jha
 ),
 casted_relationship_mapping AS (
