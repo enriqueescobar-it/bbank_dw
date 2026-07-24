@@ -1,0 +1,9 @@
+sysname     -> STRING
+varchar     -> STRING
+char        -> STRING
+nchar       -> STRING
+datetime    -> TIMESTAMP
+date/data   -> DATE
+numeric     -> DECIMAL(p,s)
+int         -> INT
+tinyint     -> SMALLINT
