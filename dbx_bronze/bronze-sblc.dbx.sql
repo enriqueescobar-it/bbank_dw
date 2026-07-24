@@ -161,19 +161,19 @@ CREATE OR REPLACE TABLE bronze.default.bronze_sblc_lctranx AS
 
 with landing_data as (
     SELECT
-        TRY_CAST(NULLIF(TRBR, '') AS INTEGER) AS TRBR
-        ,TRY_CAST(NULLIF(TRCOST, '') AS INTEGER) AS TRCOST
-        ,TRY_CAST(NULLIF(TRPROD, '') AS INTEGER) AS TRPROD
-        ,TRY_CAST(NULLIF(TRAGLN, '') AS INTEGER) AS TRAGLN
+        TRBR
+        ,TRCOST
+        ,TRPROD
+        ,TRAGLN
         ,TRACCN
-        ,TRY_CAST(NULLIF(LCMACC, '') AS INTEGER) AS LCMACC
-        ,TRY_CAST(NULLIF(TRCODE, '') AS INTEGER) AS TRCODE
+        ,LCMACC
+        ,TRCODE
         ,TRY_CAST(NULLIF(TRATYP, '') AS STRING) AS TRATYP
         ,DESCRI
         ,TRY_CAST(NULLIF(TRDORC, '') AS STRING) AS TRDORC
-        ,TRY_CAST(NULLIF(AMOUNT, '') AS DECIMAL(20,2)) AS AMOUNT
+        ,AMOUNT
         ,date_format(
-            try_cast(STUFF(STUFF(NULLIF(TRIM(TREFF6), ''), 5, 0, '/'), 3, 0, '/') AS DATE),
+            try_cast(OVERLAY(OVERLAY(NULLIF(TRIM(TREFF6), ''), '/', 5, 0), '/', 3, 0) AS DATE),
             'dd-MM-yyyy') AS TREFF6
         ,DDMUID
         ,DATE_OF_DATA
@@ -192,5 +192,3 @@ SELECT *,current_timestamp() AS LOADED_AT FROM landing_data;
 COMMENT ON TABLE bronze.default.bronze_sblc_lctranx IS
 'Bronze table bronze_sblc_lctranx contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
 
-
--- Row-count verification
