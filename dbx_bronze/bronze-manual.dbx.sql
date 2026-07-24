@@ -581,7 +581,7 @@ WITH landing_data AS (
         ,PRODCODE
         ,SUBTYPE
         ,LOADDATE
-        ,TIMESTAMP
+        ,DATETIME
         ,SENDERABA
         ,SENDERNAME
         ,RECEIVERABA
@@ -713,7 +713,7 @@ bronze_data AS (
         ,PRODCODE
         ,SUBTYPE
         ,LOADDATE
-        ,TIMESTAMP
+        ,DATETIME
         ,SENDERABA
         ,SENDERNAME
         ,RECEIVERABA
@@ -871,7 +871,7 @@ WITH landing_data AS (
         ,PRODCODE
         ,SUBTYPE
         ,LOADDATE
-        ,TIMESTAMP
+        ,DATETIME
         ,SENDERABA
         ,SENDERNAME
         ,RECEIVERABA
@@ -1003,7 +1003,7 @@ bronze_data AS (
         ,PRODCODE
         ,SUBTYPE
         ,LOADDATE
-        ,TIMESTAMP
+        ,DATETIME
         ,SENDERABA
         ,SENDERNAME
         ,RECEIVERABA
@@ -1308,7 +1308,7 @@ bronze_data AS (
         ,FUND_FAMILY_NAME
         ,COST_CENTER
         ,TEAM
-        ,to_date(NULLIF(NULLIF(NULLIF(LTRIM(RTRIM(MONTH_YEAR)), ''), 'NULL'), ' - '), 'MM/dd/yyyy') AS MONTH_YEAR
+        ,try_to_date(NULLIF(NULLIF(NULLIF(LTRIM(RTRIM(MONTH_YEAR)), ''), 'NULL'), ' - '), 'MM/dd/yyyy') AS MONTH_YEAR
         ,YEARMONTH
         ,try_cast(NULLIF(NULLIF(NULLIF(LTRIM(RTRIM(GL_ACCOUNT)), ''), 'NULL'), ' - ') AS INT) AS GL_ACCOUNT
     FROM landing_data A
