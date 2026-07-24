@@ -17,7 +17,7 @@
 
 with landing_data as (
     SELECT
-	    TRANSCODE
+        TRANSCODE
         ,RECORDIND
         ,RECORDSEQUENCEID
         ,ACCTNUMBER
@@ -130,7 +130,7 @@ with landing_data as (
 
 bronze_data AS (
     SELECT
-	    TRANSCODE
+        TRANSCODE
         ,RECORDIND
         ,RECORDSEQUENCEID
         ,ACCTNUMBER
@@ -235,7 +235,7 @@ bronze_data AS (
         ,CREDITINTERESTIND
         ,AMAIND
         ,DATEOFDATA
-		,YEARMONTH
+        ,YEARMONTH
         ,GETUTCDATE() AS LOADED_AT
     FROM landing_data
     {% if is_incremental() %}

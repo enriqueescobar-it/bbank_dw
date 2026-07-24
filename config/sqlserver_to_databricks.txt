@@ -7,3 +7,4 @@ date/data   -> DATE
 numeric     -> DECIMAL(p,s)
 int         -> INT
 tinyint     -> SMALLINT
+STUFF       -> OVERLAY

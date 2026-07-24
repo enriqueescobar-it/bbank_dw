@@ -17,7 +17,7 @@
 
 WITH landing_data AS (
     SELECT
-	    PershingID
+        PershingID
         ,ACCTNO
         ,INVACC
         ,INVACT
@@ -62,7 +62,7 @@ WITH landing_data AS (
 
 bronze_data AS (
     SELECT
-	    PershingID
+        PershingID
         ,ACCTNO
         ,INVACC
         ,INVACT
