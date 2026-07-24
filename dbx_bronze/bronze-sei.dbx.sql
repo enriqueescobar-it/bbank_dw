@@ -31,7 +31,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_accountoptionalfields
+        landing_sei.default.sei_ovn_accountoptionalfields
 ),
 
 bronze_data AS (
@@ -217,7 +217,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_accounts
+        landing_sei.default.sei_ovn_accounts
 ),
 
 bronze_data AS (
@@ -416,7 +416,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_activeblocks
+        landing_sei.default.sei_ovn_activeblocks
 ),
 
 bronze_data AS (
@@ -501,7 +501,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_assetinvclas
+        landing_sei.default.sei_ovn_assetinvclas
 ),
 
 bronze_data AS (
@@ -574,7 +574,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_assetoptfields
+        landing_sei.default.sei_ovn_assetoptfields
 ),
 
 bronze_data AS (
@@ -737,7 +737,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_assets
+        landing_sei.default.sei_ovn_assets
 ),
 
 bronze_data AS (
@@ -985,7 +985,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_clientaccountlink
+        landing_sei.default.sei_ovn_clientaccountlink
 ),
 
 bronze_data AS (
@@ -1220,7 +1220,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_clients
+        landing_sei.default.sei_ovn_clients
 ),
 
 bronze_data AS (
@@ -1394,7 +1394,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_contactdetails
+        landing_sei.default.sei_ovn_contactdetails
 ),
 
 bronze_data AS (
@@ -1487,7 +1487,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_custodynostropositions
+        landing_sei.default.sei_ovn_custodynostropositions
 ),
 
 bronze_data AS (
@@ -1634,7 +1634,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_eodchangedpositions
+        landing_sei.default.sei_ovn_eodchangedpositions
 ),
 
 bronze_data AS (
@@ -1779,7 +1779,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_eodposvalaggr
+        landing_sei.default.sei_ovn_eodposvalaggr
 ),
 
 bronze_data AS (
@@ -1924,7 +1924,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_eodpositions
+        landing_sei.default.sei_ovn_eodpositions
 ),
 
 bronze_data AS (
@@ -2073,7 +2073,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_eodpositionssupplemental
+        landing_sei.default.sei_ovn_eodpositionssupplemental
 ),
 
 bronze_data AS (
@@ -2175,7 +2175,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_feecomputation
+        landing_sei.default.sei_ovn_feecomputation
 ),
 
 bronze_data AS (
@@ -2259,7 +2259,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_feegroup
+        landing_sei.default.sei_ovn_feegroup
 ),
 
 bronze_data AS (
@@ -2329,7 +2329,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_feepackagerule
+        landing_sei.default.sei_ovn_feepackagerule
 ),
 
 bronze_data AS (
@@ -2440,7 +2440,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_feepackageusage
+        landing_sei.default.sei_ovn_feepackageusage
 ),
 
 bronze_data AS (
@@ -2535,7 +2535,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_fundcutoff
+        landing_sei.default.sei_ovn_fundcutoff
 ),
 
 bronze_data AS (
@@ -2605,7 +2605,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_fxforward
+        landing_sei.default.sei_ovn_fxforward
 ),
 
 bronze_data AS (
@@ -2678,7 +2678,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_interestratetypes
+        landing_sei.default.sei_ovn_interestratetypes
 ),
 
 bronze_data AS (
@@ -2750,7 +2750,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_modelalloc
+        landing_sei.default.sei_ovn_modelalloc
 ),
 
 bronze_data AS (
@@ -2828,7 +2828,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_modelsintext
+        landing_sei.default.sei_ovn_modelsintext
 ),
 
 bronze_data AS (
@@ -2918,7 +2918,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_paidto
+        landing_sei.default.sei_ovn_paidto
 ),
 
 bronze_data AS (
@@ -2998,7 +2998,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_partyoptionalfields
+        landing_sei.default.sei_ovn_partyoptionalfields
 ),
 
 bronze_data AS (
@@ -3064,7 +3064,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_portfoliogroups
+        landing_sei.default.sei_ovn_portfoliogroups
 ),
 
 bronze_data AS (
@@ -3157,7 +3157,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_portfolioperformance
+        landing_sei.default.sei_ovn_portfolioperformance
 ),
 
 bronze_data AS (
@@ -3285,7 +3285,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_reccashactivities
+        landing_sei.default.sei_ovn_reccashactivities
 ),
 
 bronze_data AS (
@@ -3387,7 +3387,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_reference
+        landing_sei.default.sei_ovn_reference
 ),
 
 bronze_data AS (
@@ -3429,7 +3429,7 @@ CREATE OR REPLACE TABLE bronze.default.bronze_sei_relationshipmapping_sei_jha AS
 
 WITH raw_relationship_mapping_sei_jha AS (
     SELECT *
-        FROM landing.default.sei_relationship_mapping_sei_jha
+        FROM landing_sei.default.sei_relationship_mapping_sei_jha
 ),
 
 cleaned_relationship_mapping AS (
@@ -3528,7 +3528,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_relationships
+        landing_sei.default.sei_ovn_relationships
 ),
 
 bronze_data AS (
@@ -3621,7 +3621,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_roledetail
+        landing_sei.default.sei_ovn_roledetail
 ),
 
 bronze_data AS (
@@ -3702,7 +3702,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_statementevents
+        landing_sei.default.sei_ovn_statementevents
 ),
 
 bronze_data AS (
@@ -3845,7 +3845,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_statementinstance
+        landing_sei.default.sei_ovn_statementinstance
 ),
 
 bronze_data AS (
@@ -3968,7 +3968,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_statementpackage
+        landing_sei.default.sei_ovn_statementpackage
 ),
 
 bronze_data AS (
@@ -4058,7 +4058,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_transactiondetail
+        landing_sei.default.sei_ovn_transactiondetail
 ),
 
 bronze_data AS (
@@ -4168,7 +4168,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_transactiondetailupd
+        landing_sei.default.sei_ovn_transactiondetailupd
 ),
 
 bronze_data AS (
@@ -4390,7 +4390,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_transactionheader
+        landing_sei.default.sei_ovn_transactionheader
 ),
 
 bronze_data AS (
@@ -4724,7 +4724,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_transactionheaderupd
+        landing_sei.default.sei_ovn_transactionheaderupd
 ),
 
 bronze_data AS (
@@ -4945,7 +4945,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_upcomingactivities
+        landing_sei.default.sei_ovn_upcomingactivities
 ),
 
 bronze_data AS (
@@ -5030,7 +5030,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_userdetail
+        landing_sei.default.sei_ovn_userdetail
 ),
 
 bronze_data AS (
@@ -5087,7 +5087,7 @@ WITH landing_data AS (
         TRY_CAST(date_format(DATE_OF_DATA, 'yyyyMM') AS INT) AS YEARMONTH,
         LOADED_AT
     FROM
-        landing.default.sei_ovn_userteamroledetail
+        landing_sei.default.sei_ovn_userteamroledetail
 ),
 
 bronze_data AS (
