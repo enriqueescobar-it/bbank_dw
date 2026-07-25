@@ -1,10 +1,25 @@
-sysname     -> STRING
-varchar     -> STRING
-char        -> STRING
-nchar       -> STRING
-datetime    -> TIMESTAMP
-date/data   -> DATE
-numeric     -> DECIMAL(p,s)
-int         -> INT
-tinyint     -> SMALLINT
-STUFF       -> OVERLAY
+sysname                       -> STRING
+varchar                       -> STRING
+char                          -> STRING
+nchar                         -> STRING
+nvarchar                      -> STRING
+datetime                      -> TIMESTAMP
+datetime2                     -> TIMESTAMP
+date/data                     -> DATE
+numeric                       -> DECIMAL(p,s)
+decimal(p,s)                  -> DECIMAL(p,s)
+bigint                        -> BIGINT
+int                           -> INT
+integer                       -> INT
+tinyint                       -> SMALLINT
+smallint                      -> SMALLINT
+float                         -> DOUBLE
+STUFF                         -> OVERLAY
+ISNULL(expr, fallback)        -> COALESCE(expr, fallback)
+CAST(expr AS type)            -> TRY_CAST(expr AS type) for data conversions
+CAST(expr AS FLOAT)           -> TRY_CAST(expr AS DOUBLE)
+GETUTCDATE()                  -> current_timestamp()
+GETDATE()                     -> current_timestamp()
+DATEADD("m", n, dt)           -> add_months(dt, n)
+DATEADD(day, n, dt)           -> timestampadd(DAY, n, dt)
+CONVERT(nvarchar(6), dt, 112) -> date_format(dt, 'yyyyMM')
