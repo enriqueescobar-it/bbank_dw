@@ -19,6 +19,36 @@ Use this skill as the shared conversion reference when translating SQL Server SQ
 6. Remove dbt/Jinja constructs when producing final `.dbx.sql` files.
 7. Validate that no SQL Server-only syntax remains.
 
+```mermaid
+flowchart TD
+    A["Input SQL Server artifact"] --> B["Classify artifact type"]
+    B --> B1["DDL or metadata schema"]
+    B --> B2["SELECT or CTAS logic"]
+    B --> B3["dbt SQL Server model"]
+
+    B1 --> C["Map SQL Server data types"]
+    B2 --> D["Rewrite functions and casts"]
+    B3 --> E["Remove dbt/Jinja constructs"]
+
+    C --> F["Quote risky identifiers"]
+    D --> F
+    E --> F
+
+    F --> G["Apply Databricks-safe syntax"]
+    G --> G1["Use TRY_CAST for source data"]
+    G --> G2["Use backticks for reserved names"]
+    G --> G3["Use current_timestamp, add_months, timestampadd, date_format"]
+
+    G1 --> H["Validate conversion"]
+    G2 --> H
+    G3 --> H
+
+    H --> H1["No CONVERT or SQL Server brackets"]
+    H --> H2["No GETDATE or GETUTCDATE"]
+    H --> H3["No unwanted dbt Jinja"]
+    H --> H4["Target layer supplies catalog and file layout"]
+```
+
 ## Type Mapping
 
 Use these mappings unless the local file or user request provides a more precise target type.
