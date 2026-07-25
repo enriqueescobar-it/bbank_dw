@@ -1,0 +1,4 @@
+interface:
+  display_name: "DBX Validation Auditor"
+  short_description: "Audit DBX landing and bronze SQL"
+  default_prompt: "Use $dbx-validation-auditor to audit Databricks landing and bronze SQL for conversion and deployment issues."
