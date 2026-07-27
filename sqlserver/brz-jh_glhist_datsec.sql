@@ -45,7 +45,7 @@ WITH landing_data AS (
         ,dbo.ConvertJhDateJulianToDatetime(TRDAT7) AS PostingDate
         ,dbo.ConvertJhDateToDatetime(TREFF6) AS EffectiveDate
         ,(SELECT CONVERT(DATE,dqp_landing.dbo.ConvertJhDateJulianToDatetime(POSTD7))
-	        FROM dqp_landing.dbo.jh_ddpar1) as AsOfDate
+            FROM dqp_landing.dbo.jh_ddpar1) as AsOfDate
         ,CONVERT(INT, CONVERT(nvarchar(6), dbo.ConvertJhDateJulianToDatetime(TREFF7), 112)) AS YEARMONTH
         ,LOADED_AT
     FROM

@@ -11,7 +11,7 @@
 
 WITH landing_data AS (
     SELECT
-	    CFCIF__CS
+        CFCIF__CS
         ,USFNAM
         ,USFVAL
         ,USFDATE6
@@ -23,7 +23,7 @@ WITH landing_data AS (
             ELSE 0
         END USFNUM15_FLAG
         ,(SELECT CONVERT(DATE,dqp_landing.dbo.ConvertJhDateJulianToDatetime(POSTD7))
-	        FROM dqp_landing.dbo.jh_ddpar1) as AsOfDate
+            FROM dqp_landing.dbo.jh_ddpar1) as AsOfDate
         ,NULL AS YEARMONTH
         ,LOADED_AT
     FROM
@@ -32,7 +32,7 @@ WITH landing_data AS (
 
 bronze_data AS (
     SELECT
-	    CFCIF__CS
+        CFCIF__CS
         ,USFNAM
         ,USFVAL
         ,USFDATE6

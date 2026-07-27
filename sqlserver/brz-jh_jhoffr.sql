@@ -11,7 +11,7 @@
 
 WITH landing_data AS (
     SELECT
-	    JHOOFF
+        JHOOFF
         ,JHOXRFNBR
         ,JHONAM
         ,JHOSNA
@@ -31,7 +31,7 @@ WITH landing_data AS (
 
 bronze_data AS (
     SELECT
-	    JHOOFF
+        JHOOFF
         ,JHOXRFNBR
         ,JHONAM
         ,JHOSNA

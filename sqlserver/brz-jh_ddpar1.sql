@@ -11,7 +11,7 @@
 
 WITH landing_data AS (
     SELECT
-	    RECID
+        RECID
         ,LASTDT
         ,POSTDT
         ,NEXTDT

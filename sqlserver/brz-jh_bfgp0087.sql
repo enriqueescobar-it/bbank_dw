@@ -11,14 +11,14 @@
 
 with landing_data as (
     SELECT
-    	 ASOFDATE
-	    ,ACCTNO
-	    ,CIFNO
-	    ,ACTYPE
-	    ,TCBAL
-	    ,TDAYCBAL
-	    ,DAYSM
-	    ,AVERAGE
+         ASOFDATE
+        ,ACCTNO
+        ,CIFNO
+        ,ACTYPE
+        ,TCBAL
+        ,TDAYCBAL
+        ,DAYSM
+        ,AVERAGE
         ,NULL AS YEARMONTH
         ,LOADED_AT
     FROM

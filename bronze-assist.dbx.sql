@@ -27,19 +27,19 @@ CREATE OR REPLACE TABLE bronze.default.bronze_assist_customer_addl_fields AS
 WITH landing_data as (
     SELECT
         cifno
-	    ,fullName
-	    ,firstName
-	    ,middleName
-	    ,lastName
-	    ,class
-	    ,officer_code
-	    ,cifGroupID
-	    ,cifGroupDesc
-	    ,residenceCountryCode
-	    ,residenceCountryDesc
-	    ,customerSince
-	    ,date_imported
-		,TRY_CAST(TRY_CAST(add_months(LOADED_AT, -1) AS STRING) AS INT) AS YEARMONTH
+        ,fullName
+        ,firstName
+        ,middleName
+        ,lastName
+        ,class
+        ,officer_code
+        ,cifGroupID
+        ,cifGroupDesc
+        ,residenceCountryCode
+        ,residenceCountryDesc
+        ,customerSince
+        ,date_imported
+        ,TRY_CAST(TRY_CAST(add_months(LOADED_AT, -1) AS STRING) AS INT) AS YEARMONTH
         ,LOADED_AT
     FROM
         assist.default.assist_customer_addl_fields
@@ -53,19 +53,19 @@ WITH landing_data as (
 bronze_data AS (
     SELECT
         cifno
-	    ,fullName
-	    ,firstName
-	    ,middleName
-	    ,lastName
-	    ,class
-	    ,officer_code
-	    ,cifGroupID
-	    ,cifGroupDesc
-	    ,residenceCountryCode
-	    ,residenceCountryDesc
-	    ,customerSince
-	    ,date_imported
-		,YEARMONTH
+        ,fullName
+        ,firstName
+        ,middleName
+        ,lastName
+        ,class
+        ,officer_code
+        ,cifGroupID
+        ,cifGroupDesc
+        ,residenceCountryCode
+        ,residenceCountryDesc
+        ,customerSince
+        ,date_imported
+        ,YEARMONTH
         ,current_timestamp() AS LOADED_AT
     FROM landing_data
 

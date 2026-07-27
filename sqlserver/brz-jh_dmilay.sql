@@ -205,7 +205,7 @@ WITH landing_data AS (
         ,CONVERT(DATETIME, MATDATE) AS MaturityDate
         ,CONVERT(DATETIME, FIRSTDUE) AS FirstDueDate
         ,(SELECT CONVERT(DATE,dqp_landing.dbo.ConvertJhDateJulianToDatetime(POSTD7))
-	        FROM dqp_landing.dbo.jh_ddpar1) as AsOfDate
+            FROM dqp_landing.dbo.jh_ddpar1) as AsOfDate
         ,NULL as YEARMONTH
         ,LOADED_AT
     FROM
@@ -408,7 +408,7 @@ bronze_data AS (
         ,MaturityDate
         ,FirstDueDate
         ,AsOfDate
-		,CONVERT(INT, CONVERT(nvarchar(6), AsOfDate, 112)) AS YEARMONTH
+        ,CONVERT(INT, CONVERT(nvarchar(6), AsOfDate, 112)) AS YEARMONTH
         ,GETUTCDATE() AS LOADED_AT
     FROM landing_data
     

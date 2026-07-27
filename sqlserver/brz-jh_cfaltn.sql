@@ -32,7 +32,7 @@ WITH landing_data AS (
         ,CFADL6
         ,CFFORC
         ,(SELECT CONVERT(DATE,dqp_landing.dbo.ConvertJhDateJulianToDatetime(POSTD7))
-	        FROM dqp_landing.dbo.jh_ddpar1) as AsOfDate
+            FROM dqp_landing.dbo.jh_ddpar1) as AsOfDate
         ,NULL AS YEARMONTH
         ,LOADED_AT
     FROM

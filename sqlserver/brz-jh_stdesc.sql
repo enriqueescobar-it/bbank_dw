@@ -11,7 +11,7 @@
 
 WITH landing_data AS (
     SELECT
-	    DSRID
+        DSRID
         ,DSCOD
         ,DSKEY
         ,DSDS1
@@ -36,7 +36,7 @@ WITH landing_data AS (
         ,dbo.ConvertJhDateJulianToDatetime(DSTRAD) AS DSTRAD
         ,DSTRA6
         ,(SELECT CONVERT(DATE,dqp_landing.dbo.ConvertJhDateJulianToDatetime(POSTD7))
-	        FROM dqp_landing.dbo.jh_ddpar1) as AsOfDate
+            FROM dqp_landing.dbo.jh_ddpar1) as AsOfDate
         ,NULL AS YEARMONTH
         ,LOADED_AT
     FROM "DQP_LANDING"."dbo"."JH_STDESC"
@@ -44,7 +44,7 @@ WITH landing_data AS (
 
 bronze_data as (
     SELECT
-	    DSRID
+        DSRID
         ,DSCOD
         ,DSKEY
         ,DSDS1

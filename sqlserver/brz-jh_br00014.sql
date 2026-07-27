@@ -11,21 +11,21 @@
 
 WITH landing_data AS (
     SELECT
-	    PROGRAM
+        PROGRAM
         ,ACTYPE
         ,TRCODE
         ,[TYPE]
         ,(SELECT CONVERT(DATE,dqp_landing.dbo.ConvertJhDateJulianToDatetime(POSTD7))
-	        FROM dqp_landing.dbo.jh_ddpar1) as AsOfDate
+            FROM dqp_landing.dbo.jh_ddpar1) as AsOfDate
         ,NULL AS YEARMONTH
         ,LOADED_AT
     FROM
-    	"DQP_LANDING"."dbo"."JH_BR00014"
+        "DQP_LANDING"."dbo"."JH_BR00014"
 ),
 
 bronze_data AS (
     SELECT
-	    PROGRAM
+        PROGRAM
         ,ACTYPE
         ,TRCODE
         ,[TYPE]

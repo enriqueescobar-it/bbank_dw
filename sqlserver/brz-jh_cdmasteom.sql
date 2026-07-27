@@ -248,7 +248,7 @@ SELECT
     ,NULL AS YEARMONTH
     ,LOADED_AT
 FROM
-	"DQP_LANDING"."dbo"."JH_CDMASTEOM"
+    "DQP_LANDING"."dbo"."JH_CDMASTEOM"
 ),
 
 bronze_data AS (

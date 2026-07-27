@@ -11,7 +11,7 @@
 
 WITH landing_data AS (
     SELECT
-	    CFRECI
+        CFRECI
         ,CFRETN
         ,CFBNKN
         ,CFBRNN

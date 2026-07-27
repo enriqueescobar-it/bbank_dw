@@ -11,7 +11,7 @@
 
 WITH landing_data AS (
     SELECT
-	    BRANCH
+        BRANCH
         ,ACCTNO
         ,ACTYPE
         ,SNAME
@@ -62,7 +62,7 @@ WITH landing_data AS (
             ELSE 0
         END ACTYPE_FLAG
         ,(SELECT CONVERT(DATE,dqp_landing.dbo.ConvertJhDateJulianToDatetime(POSTD7))
-	        FROM dqp_landing.dbo.jh_ddpar1) as AsOfDate
+            FROM dqp_landing.dbo.jh_ddpar1) as AsOfDate
         ,NULL as YEARMONTH
         ,LOADED_AT
     FROM
@@ -71,7 +71,7 @@ WITH landing_data AS (
 
 bronze_data AS (
     SELECT
-	    BRANCH
+        BRANCH
         ,ACCTNO
         ,ACTYPE
         ,SNAME
@@ -119,7 +119,7 @@ bronze_data AS (
         ,JHPAM2
         ,ACTYPE_FLAG
         ,AsOfDate
-		,CONVERT(INT, CONVERT(nvarchar(6), AsOfDate, 112)) AS YEARMONTH
+        ,CONVERT(INT, CONVERT(nvarchar(6), AsOfDate, 112)) AS YEARMONTH
         ,GETUTCDATE() AS LOADED_AT
     FROM landing_data
     

@@ -718,7 +718,7 @@ SELECT
     ,CONVERT(INT, CONVERT(nvarchar(6), DATEADD("m", -1, LOADED_AT), 112)) AS YEARMONTH
     ,LOADED_AT
 FROM
-	"DQP_LANDING"."dbo"."JH_LNMASTEOM"
+    "DQP_LANDING"."dbo"."JH_LNMASTEOM"
 ),
 
 bronze_data AS (

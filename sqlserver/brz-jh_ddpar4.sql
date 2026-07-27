@@ -11,12 +11,12 @@
 
 WITH landing_data AS (
     SELECT
-	     DP4STS
+         DP4STS
         ,DP4DSC
         ,DP4DSS
         ,DP4TXT
         ,(SELECT CONVERT(DATE,dqp_landing.dbo.ConvertJhDateJulianToDatetime(POSTD7))
-	        FROM dqp_landing.dbo.jh_ddpar1) as AsOfDate
+            FROM dqp_landing.dbo.jh_ddpar1) as AsOfDate
         ,NULL AS YEARMONTH
         ,LOADED_AT
     FROM

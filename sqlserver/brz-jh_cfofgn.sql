@@ -11,38 +11,38 @@
 
 WITH landing_data AS (
     SELECT
-		FCIF__CS
-		,FPCITY
-		,FPPROV
-		,FPCODE
-		,FPCNTR
-		,FCNTRY
-		,FEXMPT
-		,FRECIP
-		,FCITZN
-		,FFORTIN
-		,(SELECT CONVERT(DATE,dqp_landing.dbo.ConvertJhDateJulianToDatetime(POSTD7))
-	        FROM dqp_landing.dbo.jh_ddpar1) as AsOfDate
-		,NULL AS YEARMONTH
-		,LOADED_AT
+        FCIF__CS
+        ,FPCITY
+        ,FPPROV
+        ,FPCODE
+        ,FPCNTR
+        ,FCNTRY
+        ,FEXMPT
+        ,FRECIP
+        ,FCITZN
+        ,FFORTIN
+        ,(SELECT CONVERT(DATE,dqp_landing.dbo.ConvertJhDateJulianToDatetime(POSTD7))
+            FROM dqp_landing.dbo.jh_ddpar1) as AsOfDate
+        ,NULL AS YEARMONTH
+        ,LOADED_AT
     FROM
-    	"DQP_LANDING"."dbo"."JH_CFORGN"
+        "DQP_LANDING"."dbo"."JH_CFORGN"
 ),
 
 bronze_data AS (
-	SELECT
-		FCIF__CS
-		,FPCITY
-		,FPPROV
-		,FPCODE
-		,FPCNTR
-		,FCNTRY
-		,FEXMPT
-		,FRECIP
-		,FCITZN
-		,FFORTIN
-		,AsOfDate
-		,CONVERT(INT, CONVERT(nvarchar(6), AsOfDate, 112)) as YEARMONTH
+    SELECT
+        FCIF__CS
+        ,FPCITY
+        ,FPPROV
+        ,FPCODE
+        ,FPCNTR
+        ,FCNTRY
+        ,FEXMPT
+        ,FRECIP
+        ,FCITZN
+        ,FFORTIN
+        ,AsOfDate
+        ,CONVERT(INT, CONVERT(nvarchar(6), AsOfDate, 112)) as YEARMONTH
         ,GETUTCDATE() AS LOADED_AT
     FROM landing_data
     

@@ -730,7 +730,7 @@ WITH landing_data AS (
         ,dbo.ConvertJhDateJulianToDatetime(FRCLD7) as ForeclosureDate
         ,dbo.ConvertJhDateJulianToDatetime(DTPDO7) as DatePaidOff
         ,(SELECT CONVERT(DATE,dqp_landing.dbo.ConvertJhDateJulianToDatetime(POSTD7))
-	        FROM dqp_landing.dbo.jh_ddpar1) as AsOfDate
+            FROM dqp_landing.dbo.jh_ddpar1) as AsOfDate
         ,NULL as YEARMONTH
         ,LOADED_AT
     FROM
