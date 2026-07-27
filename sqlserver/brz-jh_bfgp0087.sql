@@ -1,0 +1,55 @@
+-- NAME: BRONZE_JH_BFGP0087
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: MONTHLY - 4TH BUSINESS DAY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+with landing_data as (
+    SELECT
+    	 ASOFDATE
+	    ,ACCTNO
+	    ,CIFNO
+	    ,ACTYPE
+	    ,TCBAL
+	    ,TDAYCBAL
+	    ,DAYSM
+	    ,AVERAGE
+        ,NULL AS YEARMONTH
+        ,LOADED_AT
+    FROM
+        "DQP_LANDING"."dbo"."JH_BFGP0087"
+),
+
+bronze_data AS (
+    SELECT
+        --CAST(NULLIF(ASOFDATE, '') AS VARCHAR(8)) AS ASOFDATE,
+        CAST(NULLIF(ACCTNO, '') AS VARCHAR(16)) AS ACCTNO,
+        CAST(NULLIF(CIFNO, '') AS VARCHAR(8)) AS CIFNO,
+        CAST(NULLIF(ACTYPE, '') AS VARCHAR(1)) AS ACTYPE,
+        CAST(NULLIF(TCBAL, '') AS NUMERIC(15, 2)) AS TCBAL,
+        CAST(NULLIF(TDAYCBAL, '') AS INTEGER) AS TDAYCBAL,
+        CAST(NULLIF(DAYSM, '') AS INTEGER) AS DAYSM,
+        CAST(NULLIF(AVERAGE, '') AS NUMERIC(15, 2)) AS AVERAGE,
+        CAST(
+            SUBSTRING(RIGHT('0' + ASOFDATE, 8), 5, 4) + '-' +
+            SUBSTRING(RIGHT('0' + ASOFDATE, 8), 1, 2) + '-' +
+            SUBSTRING(RIGHT('0' + ASOFDATE, 8), 3, 2)
+            AS DATE) AS AsOfDate,
+        CONVERT(INT, CONVERT(nvarchar(6), DATEADD("m", -1, LOADED_AT), 112)) as YEARMONTH,
+        GETUTCDATE() AS LOADED_AT
+    FROM landing_data
+    
+        WHERE LOADED_AT > COALESCE((SELECT MAX(LOADED_AT) FROM "DQP_BRONZE"."dbo"."bronze_jh_bfgp0087"),'1970-01-01 00:00:00.000')
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data
