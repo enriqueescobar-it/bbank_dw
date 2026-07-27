@@ -1,14 +1,14 @@
 -- Databricks SQL for source: pershingdataprod
 -- Generated from sqlserver_desc/landing-pershingdataprod_pershing-desc.txt
 
-CREATE CATALOG IF NOT EXISTS landing;
-USE CATALOG landing;
+CREATE CATALOG IF NOT EXISTS landing_pershing;
+USE CATALOG landing_pershing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."PERSHINGDATAPROD_PERSHING"
-CREATE TABLE IF NOT EXISTS landing.default.pershingdataprod_pershing (
+CREATE TABLE IF NOT EXISTS landing_pershing.default.pershingdataprod_pershing (
     `PERSHINGID` INT,
     `ACCTNO` STRING,
     `INVACC` STRING,
@@ -47,12 +47,12 @@ CREATE TABLE IF NOT EXISTS landing.default.pershingdataprod_pershing (
     `LOADED_AT` TIMESTAMP,
     `YEARMONTH` INT
 );
-COMMENT ON TABLE landing.default.pershingdataprod_pershing IS
+COMMENT ON TABLE landing_pershing.default.pershingdataprod_pershing IS
 'The table contains PershingDataProd account master records with Pershing identifiers, account numbers, branch and product codes, client names, investor identifiers, officer assignments, balances, status fields, contact details, and load timestamps. It supports landing-layer validation for Pershing account reference data and downstream account reporting.';
 
-TRUNCATE TABLE landing.default.pershingdataprod_pershing;
+TRUNCATE TABLE landing_pershing.default.pershingdataprod_pershing;
 
-INSERT INTO landing.default.pershingdataprod_pershing (
+INSERT INTO landing_pershing.default.pershingdataprod_pershing (
     `PERSHINGID`, `ACCTNO`, `INVACC`, `INVACT`, `BRANCH`, `GLPROD`,
     `CFNA1`, `CFNATITLE`, `CFNA2`, `CFNA3`, `CFNA4`, `CFCITY`,
     `CFSTAT`, `CFZIP`, `CFCOUNTRY`, `INVAMT`, `TEST1`, `TEST2`,
@@ -103,4 +103,4 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Row-count verification
 SELECT 'pershingdataprod_pershing' AS table_name, COUNT(*) AS record_count
-FROM landing.default.pershingdataprod_pershing;
+FROM landing_pershing.default.pershingdataprod_pershing;

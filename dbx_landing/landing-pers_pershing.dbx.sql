@@ -1,14 +1,14 @@
 -- Databricks SQL for source: pershing
 -- Generated from sqlserver_dbt/landing-pers_pershing.dbt.sql
 
-CREATE CATALOG IF NOT EXISTS landing;
-USE CATALOG landing;
+CREATE CATALOG IF NOT EXISTS landing_pershing;
+USE CATALOG landing_pershing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."PERS_PERSHING"
-CREATE TABLE IF NOT EXISTS landing.default.pers_pershing (
+CREATE TABLE IF NOT EXISTS landing_pershing.default.pers_pershing (
     `PershingID` INT,
     `ACCTNO` STRING,
     `INVACC` STRING,
@@ -49,12 +49,12 @@ CREATE TABLE IF NOT EXISTS landing.default.pers_pershing (
     `LOADED_AT` TIMESTAMP,
     `YEARMONTH` INT
 );
-COMMENT ON TABLE landing.default.pers_pershing IS
+COMMENT ON TABLE landing_pershing.default.pers_pershing IS
 'The table contains Pershing account master records with account numbers, investor identifiers, branch and officer attributes, balances, status dates, and contact fields. It supports landing-layer validation for Pershing account onboarding, relationship maintenance, and downstream account reporting.';
 
-TRUNCATE TABLE landing.default.pers_pershing;
+TRUNCATE TABLE landing_pershing.default.pers_pershing;
 
-INSERT INTO landing.default.pers_pershing (
+INSERT INTO landing_pershing.default.pers_pershing (
     `PershingID`, `ACCTNO`, `INVACC`, `INVACT`, `BRANCH`, `GLPROD`,
     `CFNA1`, `CFNATITLE`, `CFNA2`, `CFNA3`, `CFNA4`, `CFCITY`,
     `CFSTAT`, `CFZIP`, `CFCOUNTRY`, `INVAMT`, `TEST1`, `TEST2`,
@@ -107,4 +107,4 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Row-count verification
 SELECT 'pers_pershing' AS table_name, COUNT(*) AS record_count
-FROM landing.default.pers_pershing;
+FROM landing_pershing.default.pers_pershing;

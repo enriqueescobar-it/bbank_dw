@@ -1,14 +1,14 @@
 -- Databricks SQL for source: pershing
 -- Generated from sqlserver_dbt/landing-pershing_aca2_d.dbt.sql
 
-CREATE CATALOG IF NOT EXISTS landing;
-USE CATALOG landing;
+CREATE CATALOG IF NOT EXISTS landing_pershing;
+USE CATALOG landing_pershing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."PERSHING_ACA2_D"
-CREATE TABLE IF NOT EXISTS landing.default.pershing_aca2_d (
+CREATE TABLE IF NOT EXISTS landing_pershing.default.pershing_aca2_d (
     `TRANSACTION_CODE` STRING,
     `RECORD_INDICATOR_TRANSFER_TYPE` STRING,
     `RECORD_ID_SEQUENCE_NUMBER` STRING,
@@ -44,12 +44,12 @@ CREATE TABLE IF NOT EXISTS landing.default.pershing_aca2_d (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing.default.pershing_aca2_d IS
+COMMENT ON TABLE landing_pershing.default.pershing_aca2_d IS
 'The table contains Pershing ACATS transfer record D data with account identifiers, transfer status, contra broker details, request metadata, market values, NSCC status, reject reasons, and data-date controls. It supports landing-layer validation for transfer monitoring, exception review, and downstream brokerage operations reporting.';
 
-TRUNCATE TABLE landing.default.pershing_aca2_d;
+TRUNCATE TABLE landing_pershing.default.pershing_aca2_d;
 
-INSERT INTO landing.default.pershing_aca2_d (
+INSERT INTO landing_pershing.default.pershing_aca2_d (
     `TRANSACTION_CODE`, `RECORD_INDICATOR_TRANSFER_TYPE`, `RECORD_ID_SEQUENCE_NUMBER`, `ACCOUNT_NUMBER`, `INVESTMENT_PROFESSIONAL`, `RECORD_TYPE`,
     `TRANSFER_TYPE`, `TRANSFER_STATUS`, `NUMBER_OF_DAYS_IN_PERSHING_STATUS`, `CONTRA_BROKER_NUMBER`, `CONTRA_BROKER_NAME`, `CONTRA_ACCOUNT_NUMBER`,
     `RETIREMENT_ACCOUNT_CLASS_INDICATOR`, `REQUEST_CREATION_DATE`, `REQUEST_CREATION_USER_ID`, `LAST_UPDATE_DATE`, `LAST_UPDATE_USER_ID`, `TOTAL_MARKET_VALUE_OF_TRANSFER`,
@@ -96,4 +96,4 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Row-count verification
 SELECT 'pershing_aca2_d' AS table_name, COUNT(*) AS record_count
-FROM landing.default.pershing_aca2_d;
+FROM landing_pershing.default.pershing_aca2_d;

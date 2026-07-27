@@ -1,14 +1,14 @@
 -- Databricks SQL for source: pershingdataprod
 -- Generated from sqlserver_desc/landing-pershingdataprod_caps_hist-desc.txt
 
-CREATE CATALOG IF NOT EXISTS landing;
-USE CATALOG landing;
+CREATE CATALOG IF NOT EXISTS landing_pershing;
+USE CATALOG landing_pershing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."PERSHINGDATAPROD_CAPS_HIST"
-CREATE TABLE IF NOT EXISTS landing.default.pershingdataprod_caps_hist (
+CREATE TABLE IF NOT EXISTS landing_pershing.default.pershingdataprod_caps_hist (
     `id` INT,
     `IBD_1` STRING,
     `RECORD_ID_1` STRING,
@@ -98,12 +98,12 @@ CREATE TABLE IF NOT EXISTS landing.default.pershingdataprod_caps_hist (
     `LOADED_AT` TIMESTAMP,
     `YEARMONTH` INT
 );
-COMMENT ON TABLE landing.default.pershingdataprod_caps_hist IS
+COMMENT ON TABLE landing_pershing.default.pershingdataprod_caps_hist IS
 'The table contains Pershing CAPS historical trade and commission activity, including trade references, account identifiers, security details, quantities, prices, revenue amounts, fees, currency values, and settlement attributes. It supports landing-layer validation for trading activity, revenue allocation, commission review, and downstream Pershing reporting.';
 
-TRUNCATE TABLE landing.default.pershingdataprod_caps_hist;
+TRUNCATE TABLE landing_pershing.default.pershingdataprod_caps_hist;
 
-INSERT INTO landing.default.pershingdataprod_caps_hist (
+INSERT INTO landing_pershing.default.pershingdataprod_caps_hist (
     `id`, `IBD_1`, `RECORD_ID_1`, `TRADE_DATE`, `TRADE_REFERENCE_NUMBER`, `PERSHING_OFFICE_NUMBER`,
     `ACCOUNT_NUMBER`, `ACCOUNT_NAME`, `BUY_SELL_INDICATOR`, `CANCEL_INDICATOR`, `CAPS_SOURCE`, `TRADE_QUANTITY`,
     `PRICE`, `PRODUCT_CODE`, `CUSIP_NUMBER_OF_SECURITY_TRADED`, `ACCOUNT_SHORT_NAME`, `ORDER_TYPE`, `MISCELLANEOUS_FEE`,
@@ -213,4 +213,4 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Row-count verification
 SELECT 'pershingdataprod_caps_hist' AS table_name, COUNT(*) AS record_count
-FROM landing.default.pershingdataprod_caps_hist;
+FROM landing_pershing.default.pershingdataprod_caps_hist;

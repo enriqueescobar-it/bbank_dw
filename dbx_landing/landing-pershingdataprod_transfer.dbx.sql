@@ -1,14 +1,14 @@
 -- Databricks SQL for source: pershingdataprod
 -- Generated from sqlserver_desc/landing-pershingdataprod_transfer-desc.txt
 
-CREATE CATALOG IF NOT EXISTS landing;
-USE CATALOG landing;
+CREATE CATALOG IF NOT EXISTS landing_pershing;
+USE CATALOG landing_pershing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."PERSHINGDATAPROD_TRANSFER"
-CREATE TABLE IF NOT EXISTS landing.default.pershingdataprod_transfer (
+CREATE TABLE IF NOT EXISTS landing_pershing.default.pershingdataprod_transfer (
     `ID` INT,
     `DATA_DT` DATE,
     `RUN_DT` TIMESTAMP,
@@ -39,12 +39,12 @@ CREATE TABLE IF NOT EXISTS landing.default.pershingdataprod_transfer (
     `LOADED_AT` TIMESTAMP,
     `YEARMONTH` INT
 );
-COMMENT ON TABLE landing.default.pershingdataprod_transfer IS
+COMMENT ON TABLE landing_pershing.default.pershingdataprod_transfer IS
 'The table contains Pershing transfer records with data and run dates, transfer type, account and IP references, transfer status, aging, contra broker details, creation and update metadata, amounts, source, SMA, customer, tax identifier, reject reason, comments, request identifier, and load timestamp. It supports landing-layer validation for ACATS transfer operations and exception tracking.';
 
-TRUNCATE TABLE landing.default.pershingdataprod_transfer;
+TRUNCATE TABLE landing_pershing.default.pershingdataprod_transfer;
 
-INSERT INTO landing.default.pershingdataprod_transfer (
+INSERT INTO landing_pershing.default.pershingdataprod_transfer (
     `ID`, `DATA_DT`, `RUN_DT`, `TYPE`, `SEQUENCE`, `ACCOUNT`,
     `IP`, `TYPE2`, `STATUS`, `DAYS`, `CB_NUMBER`, `CB_NAME`,
     `CA_NUMBER`, `RETIREMENT`, `CREATION_DT`, `CREATION_USER`, `UPDATE_DT`, `UPDATE_USER`,
@@ -85,4 +85,4 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Row-count verification
 SELECT 'pershingdataprod_transfer' AS table_name, COUNT(*) AS record_count
-FROM landing.default.pershingdataprod_transfer;
+FROM landing_pershing.default.pershingdataprod_transfer;

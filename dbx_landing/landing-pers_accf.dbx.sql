@@ -1,14 +1,14 @@
 -- Databricks SQL for source: pershing
 -- Generated from sqlserver_dbt/landing-pers_accf.dbt.sql
 
-CREATE CATALOG IF NOT EXISTS landing;
-USE CATALOG landing;
+CREATE CATALOG IF NOT EXISTS landing_pershing;
+USE CATALOG landing_pershing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."PERS_ACCF"
-CREATE TABLE IF NOT EXISTS landing.default.pers_accf (
+CREATE TABLE IF NOT EXISTS landing_pershing.default.pers_accf (
     `TRANSCODE` STRING,
     `RECORDIND` STRING,
     `RECORDSEQUENCEID` STRING,
@@ -117,12 +117,12 @@ CREATE TABLE IF NOT EXISTS landing.default.pers_accf (
     `LOADED_AT` TIMESTAMP,
     `YEARMONTH` INT
 );
-COMMENT ON TABLE landing.default.pers_accf IS
+COMMENT ON TABLE landing_pershing.default.pers_accf IS
 'The table contains Pershing account file profile data, including registration details, account lifecycle dates, investment objective settings, option permissions, fee indicators, plan attributes, compliance markers, and trusted-contact status. It supports landing-layer validation for account maintenance, compliance review, and downstream Pershing account analytics.';
 
-TRUNCATE TABLE landing.default.pers_accf;
+TRUNCATE TABLE landing_pershing.default.pers_accf;
 
-INSERT INTO landing.default.pers_accf (
+INSERT INTO landing_pershing.default.pers_accf (
     `TRANSCODE`, `RECORDIND`, `RECORDSEQUENCEID`, `ACCTNUMBER`, `BROKERDEALERNUMBER`, `INVESTMENTPRONUMBER`,
     `ACCOUNTSHORTNAME`, `TRANSACTIONTYPE`, `AUTOTITLEDACCT`, `ACCTTYPECODE`, `REGISTRATIONTYPE`, `NUMBERACCTTITLELINES`,
     `ACCTREGISLINE1`, `ACCTREGISLINE2`, `ACCTREGISLINE3`, `ACCTREGISLINE4`, `ACCTREGISLINE5`, `ACCTREGISLINE6`,
@@ -254,4 +254,4 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Row-count verification
 SELECT 'pers_accf' AS table_name, COUNT(*) AS record_count
-FROM landing.default.pers_accf;
+FROM landing_pershing.default.pers_accf;

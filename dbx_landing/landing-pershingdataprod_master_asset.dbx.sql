@@ -1,14 +1,14 @@
 -- Databricks SQL for source: pershingdataprod
 -- Generated from sqlserver_desc/landing-pershingdataprod_master_asset-desc.txt
 
-CREATE CATALOG IF NOT EXISTS landing;
-USE CATALOG landing;
+CREATE CATALOG IF NOT EXISTS landing_pershing;
+USE CATALOG landing_pershing;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."PERSHINGDATAPROD_MASTER_ASSET"
-CREATE TABLE IF NOT EXISTS landing.default.pershingdataprod_master_asset (
+CREATE TABLE IF NOT EXISTS landing_pershing.default.pershingdataprod_master_asset (
     `ID` INT,
     `TRANSFER_ID` INT,
     `DATA_DT` DATE,
@@ -31,12 +31,12 @@ CREATE TABLE IF NOT EXISTS landing.default.pershingdataprod_master_asset (
     `LOADED_AT` TIMESTAMP,
     `YEARMONTH` INT
 );
-COMMENT ON TABLE landing.default.pershingdataprod_master_asset IS
+COMMENT ON TABLE landing_pershing.default.pershingdataprod_master_asset IS
 'The table contains Pershing transfer master asset records with transfer identifiers, account references, asset classification, security number and description, status, quantity, value, delivery details, request identifiers, and load timestamps. It supports landing-layer validation for asset transfers, holdings movement, and transfer exception analysis.';
 
-TRUNCATE TABLE landing.default.pershingdataprod_master_asset;
+TRUNCATE TABLE landing_pershing.default.pershingdataprod_master_asset;
 
-INSERT INTO landing.default.pershingdataprod_master_asset (
+INSERT INTO landing_pershing.default.pershingdataprod_master_asset (
     `ID`, `TRANSFER_ID`, `DATA_DT`, `RUN_DT`, `TRANSFER_TYPE`, `SEQUENCE`,
     `ACCOUNT`, `IP`, `ASSET_TYPE`, `ASSET_TYPE_ID`, `NUMBER`, `DESCRIPTION`,
     `STATUS`, `QUANTITY`, `VALUE`, `CASH_MARGIN`, `DELIVERY`, `JSON_DATA`,
@@ -68,4 +68,4 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Row-count verification
 SELECT 'pershingdataprod_master_asset' AS table_name, COUNT(*) AS record_count
-FROM landing.default.pershingdataprod_master_asset;
+FROM landing_pershing.default.pershingdataprod_master_asset;
