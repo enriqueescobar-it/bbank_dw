@@ -1,0 +1,44 @@
+-- NAME: BRONZE_JH_AXIDMIAV
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+
+
+WITH landing_data AS (
+    SELECT
+        ASOFDATE
+        ,ACCTNO
+        ,ACTYPE
+        ,AGGR
+        ,AVERAGE
+        ,CONVERT(INT, RIGHT(CAST(ASOFDATE AS VARCHAR(8)), 4) + RIGHT('00' + LEFT(CAST(ASOFDATE AS VARCHAR(8)), LEN(CAST(ASOFDATE AS VARCHAR(8))) - 6), 2)) AS YEARMONTH
+        ,LOADED_AT
+    FROM
+        "DQP_LANDING"."dbo"."JH_AXIDMIAV"
+),
+
+bronze_data AS (
+    SELECT
+        ASOFDATE
+        ,ACCTNO
+        ,ACTYPE
+        ,AGGR
+        ,AVERAGE
+        ,YEARMONTH
+        ,GETDATE()  AS LOADED_AT
+    FROM landing_data
+    
+        WHERE LOADED_AT > COALESCE((SELECT MAX(LOADED_AT) FROM "DQP_BRONZE"."dbo"."bronze_jh_axidmiav"),'1970-01-01 00:00:00.000')
+    
+)
+
+
+
+
+
+SELECT * FROM bronze_data
