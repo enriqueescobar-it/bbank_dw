@@ -1,6 +1,6 @@
 ---
 name: dbx-validation-auditor
-description: Audit Databricks SQL files under dbx_landing and dbx_bronze for SQL Server conversion mistakes, catalog/schema drift, landing-to-bronze mismatches, missing table comments, unsafe casts, reserved-word quoting issues, tab characters, dbt/Jinja leftovers, and deployment-risk inconsistencies. Use when validating generated DBX SQL, comparing landing and bronze layers, producing an issue report, or planning safe repairs without generating new landing or bronze files.
+description: Audit Databricks SQL files under dbx_landing and dbx_bronze for SQL Server conversion mistakes, catalog/schema drift, landing-to-bronze mismatches, missing table comments, unsafe casts, reserved-word quoting issues, tab characters, dbt/Jinja leftovers, source-specific landing catalog issues such as landing_jh, landing_pershing, and landing_sei, and deployment-risk inconsistencies. Use when validating generated DBX SQL, comparing landing and bronze layers, producing an issue report, or planning safe repairs without generating new landing or bronze files.
 ---
 
 # DBX Validation Auditor
@@ -53,7 +53,7 @@ flowchart TD
     F -->|No| G["Layer-only validation"]
     F -->|Yes| H["Cross-check landing to bronze"]
     H --> H1["Bronze inputs exist in landing"]
-    H --> H2["Bronze source catalog is landing.default unless exception is proven"]
+    H --> H2["Bronze source catalog matches landing family"]
     H --> H3["Landing table columns cover bronze references"]
     H --> H4["No per-source catalog drift"]
 
@@ -83,9 +83,9 @@ Use this plan for every validation pass:
 5. Identify layer expectations:
    - Landing files live under `dbx_landing/`.
    - Bronze files live under `dbx_bronze/`.
-   - Landing targets normally use `landing.default`.
+   - Landing targets use `landing.default` or a source-specific landing catalog.
    - Bronze targets use `bronze.default`.
-   - Bronze sources normally read from `landing.default`.
+   - Bronze sources read from the matching landing catalog.
 6. Compare actual SQL against those expectations.
 7. Report only actionable findings. Do not invent missing source columns or assume exceptions.
 
@@ -113,8 +113,8 @@ Use context before deciding whether `CAST(` is a defect. In this repository, cas
 
 For `dbx_landing/*.dbx.sql`, validate:
 
-- The file creates or uses the `landing` catalog unless an intentional exception is already established in the current file.
-- Tables are created in `landing.default`.
+- The file creates or uses the expected landing catalog.
+- Tables are created in the matching landing schema, such as `landing.default`, `landing_jh.default`, `landing_pershing.default`, or `landing_sei.default`.
 - Each generated table has a meaningful `COMMENT ON TABLE`.
 - Seed files insert exactly 10 deterministic rows unless the file clearly follows a different current convention.
 - Row-count verification exists for generated test data.
@@ -128,7 +128,7 @@ For `dbx_bronze/*.dbx.sql`, validate:
 
 - The file creates or uses the `bronze` catalog.
 - Bronze outputs are `bronze.default.<table>`.
-- Landing inputs are `landing.default.<table>` unless an intentional exception is proven.
+- Landing inputs use the matching landing catalog, such as `landing.default.<table>`, `landing_jh.default.<table>`, `landing_pershing.default.<table>`, or `landing_sei.default.<table>`.
 - Source-data conversions use `TRY_CAST`.
 - SQL Server functions are rewritten to Databricks SQL equivalents.
 - JSON extraction is not used when flattened landing columns are available.
@@ -139,12 +139,22 @@ For `dbx_bronze/*.dbx.sql`, validate:
 
 When both layers are in scope:
 
-1. Map each bronze `FROM landing.default.<table>` reference to a `dbx_landing` table.
+1. Map each bronze `FROM <landing_catalog>.default.<table>` reference to a `dbx_landing` table.
 2. Extract landing `CREATE TABLE` columns.
 3. Extract bronze references to landing columns.
 4. Report missing columns with exact bronze file references.
 5. Report orphan landing tables only when the user asks for coverage analysis.
-6. Preserve intentional catalog exceptions from current source-of-truth files.
+6. Preserve source-specific landing catalogs from current source-of-truth files.
+
+Use this expected catalog map:
+
+```text
+general landing sources   -> landing.default
+Jack Henry JH_* sources   -> landing_jh.default
+Pershing sources          -> landing_pershing.default
+SEI sources               -> landing_sei.default
+bronze outputs            -> bronze.default unless current SEI bronze files intentionally use bronze_sei.default
+```
 
 ## Finding Severity
 
@@ -200,7 +210,7 @@ Expected behavior:
 - Reads both files.
 - Identifies landing target tables and bronze source references.
 - Reports missing landing tables or columns.
-- Confirms `landing.default` to `bronze.default` flow when valid.
+- Confirms the matching landing catalog to bronze flow when valid.
 - Does not propose JSON parsing when flattened landing columns exist.
 
 ### Full Folder Audit Test

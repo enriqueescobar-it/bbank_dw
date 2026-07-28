@@ -1,6 +1,6 @@
 ---
 name: dbx-landing-generator
-description: Generate or repair Databricks landing SQL files under dbx_landing from SQL Server SQL files, dbt SQL Server models, or sqlserver_desc metadata. Use when creating landing.default tables, deterministic 10-row seed data, meaningful table comments, row-count checks, and landing-only DBX files without touching bronze-layer SQL.
+description: Generate or repair Databricks landing SQL files under dbx_landing from SQL Server SQL files, dbt SQL Server models, or sqlserver_desc metadata. Use when creating landing tables in the correct landing catalog, including landing.default, landing_jh.default, landing_pershing.default, and landing_sei.default, deterministic 10-row seed data, meaningful table comments, row-count checks, and landing-only DBX files without touching bronze-layer SQL.
 ---
 
 # DBX Landing Generator
@@ -42,7 +42,7 @@ flowchart TD
     G --> H
 
     H --> I["Resolve landing target"]
-    I --> I1["Catalog: landing unless current source explicitly differs"]
+    I --> I1["Catalog: landing or source-specific landing catalog"]
     I --> I2["Schema: default"]
     I --> I3["Table: source name converted to lower_snake_case"]
 
@@ -98,28 +98,40 @@ Parse source table blocks and SELECT/CTE logic conservatively. Prefer structured
 
 ## Naming Rules
 
-Use these defaults unless the current source-of-truth file shows an intentional exception:
+Use these defaults unless the current source-of-truth file shows a source-specific catalog:
 
 ```text
-catalog                  -> landing
 schema                   -> default
 SQL Server source table   -> lower_snake_case Databricks table
 output file              -> dbx_landing/landing-<source-family-or-table>.dbx.sql
+```
+
+Use the current catalog convention by source family:
+
+```text
+general landing sources   -> landing.default.<table>
+Jack Henry JH_* sources   -> landing_jh.default.<table>
+Pershing sources          -> landing_pershing.default.<table>
+SEI sources               -> landing_sei.default.<table>
 ```
 
 Examples:
 
 ```text
 "DQP_LANDING"."dbo"."PERSHINGDATAPROD_TRANSFER"
--> landing.default.pershingdataprod_transfer
+-> landing_pershing.default.pershingdataprod_transfer
 -> dbx_landing/landing-pershingdataprod_transfer.dbx.sql
 
+sqlserver/brz-jh_glmast.sql
+-> landing_jh.default.jh_glmast
+-> dbx_landing/landing-jh_glmast.dbx.sql
+
 {{ source("pershing", "PERSHING_ACA2_A") }}
--> landing.default.pershing_aca2_a
+-> landing_pershing.default.pershing_aca2_a
 -> dbx_landing/landing-pershing_aca2_a.dbx.sql
 ```
 
-Do not change special catalog exceptions unless the user asks. For example, if a current landing file intentionally uses a different catalog, preserve it during repairs.
+Do not collapse source-specific catalogs back into `landing`. Preserve `landing_jh`, `landing_pershing`, and `landing_sei` during repairs unless the user explicitly asks to change the catalog.
 
 ## File Structure
 
@@ -129,24 +141,24 @@ Use this order:
 -- Databricks SQL for source: <source>
 -- Generated from <input-path>
 
-CREATE CATALOG IF NOT EXISTS landing;
-USE CATALOG landing;
+CREATE CATALOG IF NOT EXISTS <landing_catalog>;
+USE CATALOG <landing_catalog>;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- Source: "DQP_LANDING"."dbo"."<SOURCE_TABLE>"
-CREATE TABLE IF NOT EXISTS landing.default.<table_name> (
+CREATE TABLE IF NOT EXISTS <landing_catalog>.default.<table_name> (
     `COLUMN_NAME` STRING,
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing.default.<table_name> IS
+COMMENT ON TABLE <landing_catalog>.default.<table_name> IS
 'Meaningful description of the table, its key entities, and analytical use.';
 
-TRUNCATE TABLE landing.default.<table_name>;
+TRUNCATE TABLE <landing_catalog>.default.<table_name>;
 
-INSERT INTO landing.default.<table_name> (
+INSERT INTO <landing_catalog>.default.<table_name> (
     `COLUMN_NAME`, `YEARMONTH`, `LOADED_AT`
 )
 SELECT
@@ -157,7 +169,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 
 -- Row-count verification
 SELECT '<table_name>' AS table_name, COUNT(*) AS record_count
-FROM landing.default.<table_name>;
+FROM <landing_catalog>.default.<table_name>;
 ```
 
 ## Seed Data Rules
@@ -197,7 +209,7 @@ Before finishing:
 
 - Only `dbx_landing/*.dbx.sql` files were created or edited.
 - No `dbx_bronze/` files were touched.
-- Output uses the expected landing catalog/schema.
+- Output uses the expected landing catalog/schema, including source-specific catalogs such as `landing_jh`, `landing_pershing`, and `landing_sei`.
 - Each table has exactly one `CREATE TABLE IF NOT EXISTS`, `COMMENT ON TABLE`, `TRUNCATE TABLE`, and `INSERT INTO` block unless the file intentionally contains multiple source tables.
 - All source columns are represented in the landing table.
 - There are no duplicate generated control columns.

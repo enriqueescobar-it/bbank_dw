@@ -14,6 +14,8 @@ CREATE TABLE IF NOT EXISTS landing.default.auxiliary_br_dcode (
     `Value` DECIMAL(38,10),
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE landing.default.auxiliary_br_dcode IS
+'The auxiliary BR dcode landing table contains static mapping codes and values used for reference validation, lookup enrichment, and downstream Databricks processing.';
 
 TRUNCATE TABLE landing.default.auxiliary_br_dcode;
 
@@ -40,6 +42,8 @@ CREATE TABLE IF NOT EXISTS landing.default.auxiliary_jha_sei_trans_code (
     `TREATMENT_CODE` STRING,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE landing.default.auxiliary_jha_sei_trans_code IS
+'The auxiliary JHA SEI transaction code landing table contains transaction type, code, debit-credit, account type, description, and treatment mappings for reconciliation and downstream classification.';
 
 TRUNCATE TABLE landing.default.auxiliary_jha_sei_trans_code;
 

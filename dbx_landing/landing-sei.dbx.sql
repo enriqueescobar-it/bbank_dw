@@ -2522,6 +2522,8 @@ CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_interestratetypes (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE landing_sei.default.sei_ovn_interestratetypes IS
+'The SEI OVN interest rate types landing table captures instrument-level interest rate, payment, record, ex-dividend, and payout attributes for rate validation, income processing, and downstream reporting.';
 
 TRUNCATE TABLE landing_sei.default.sei_ovn_interestratetypes;
 
@@ -2574,6 +2576,8 @@ CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_modelalloc (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
+COMMENT ON TABLE landing_sei.default.sei_ovn_modelalloc IS
+'The SEI OVN model allocation landing table captures model allocation hierarchy, target percentage, strategy, instrument, style, product, and manager attributes for portfolio model validation and downstream analytics.';
 
 TRUNCATE TABLE landing_sei.default.sei_ovn_modelalloc;
 
@@ -4602,7 +4606,7 @@ CREATE TABLE IF NOT EXISTS landing_sei.default.sei_ovn_upcomingactivities (
     `YEARMONTH` INT,
     `LOADED_AT` TIMESTAMP
 );
-COMMENT ON TABLE landing_sei.default.sei_ovn_statementevents IS 
+COMMENT ON TABLE landing_sei.default.sei_ovn_upcomingactivities IS 
 'The table contains data related to upcoming activities for specific financial accounts and portfolios. It includes fields such as projected dates, activity types, expected quantities, and cash impacts. This table can be used to track and analyze planned trading activities and their anticipated financial outcomes, facilitating effective portfolio management and trading strategy development.';
 
 TRUNCATE TABLE landing_sei.default.sei_ovn_upcomingactivities;

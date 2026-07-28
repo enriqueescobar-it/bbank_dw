@@ -1,6 +1,6 @@
 ---
 name: dbx-bronze-generator
-description: Generate or repair Databricks bronze SQL files under dbx_bronze from SQL Server SQL, dbt SQL Server bronze models, or existing bronze DBX SQL. Use when creating bronze.default tables, reading from landing.default tables, replacing SQL Server syntax with DBX syntax, adding bronze table comments, validating landing column coverage, and avoiding landing-layer edits.
+description: Generate or repair Databricks bronze SQL files under dbx_bronze from SQL Server SQL, dbt SQL Server bronze models, or existing bronze DBX SQL. Use when creating bronze.default tables, reading from the correct landing catalog such as landing.default, landing_jh.default, landing_pershing.default, or landing_sei.default, replacing SQL Server syntax with DBX syntax, adding bronze table comments, validating landing column coverage, and avoiding landing-layer edits.
 ---
 
 # DBX Bronze Generator
@@ -32,7 +32,7 @@ flowchart TD
     D --> D3["Target table: bronze.default.<bronze_table>"]
 
     C --> E["Identify landing inputs"]
-    E --> E1["Source catalog: landing unless current source explicitly differs"]
+    E --> E1["Source catalog: landing or source-specific landing catalog"]
     E --> E2["Source schema: default"]
     E --> E3["Source table from source(), FROM, or local pattern"]
 
@@ -66,7 +66,7 @@ flowchart TD
     K --> K1["No SQL Server-only syntax"]
     K --> K2["No blind CAST on source data"]
     K --> K3["No dbt Jinja"]
-    K --> K4["No source-specific catalogs"]
+    K --> K4["No obsolete source-system catalogs"]
     K --> K5["No missing comments"]
     K --> K6["No tabs"]
     K --> K7["No landing files touched"]
@@ -108,7 +108,7 @@ Before writing bronze SQL:
 4. Confirm reserved identifiers are referenced consistently with backticks.
 5. Report missing columns instead of inventing them.
 
-If the landing file uses an intentional catalog exception, preserve that source reference. Otherwise use `landing.default.<table>`.
+If the landing file uses a source-specific catalog, preserve that source reference. Otherwise use `landing.default.<table>`.
 
 ## Bronze Naming Rules
 
@@ -122,6 +122,15 @@ source table             -> landing.default.<landing_table>
 output file              -> dbx_bronze/bronze-<source-family>.dbx.sql
 ```
 
+Use this landing source catalog map:
+
+```text
+general landing sources   -> landing.default.<landing_table>
+Jack Henry JH_* sources   -> landing_jh.default.<landing_table>
+Pershing sources          -> landing_pershing.default.<landing_table>
+SEI sources               -> landing_sei.default.<landing_table>
+```
+
 Examples:
 
 ```text
@@ -129,10 +138,10 @@ Examples:
 -> bronze.default.bronze_pershing_aca2_rec_a
 
 {{ source("pershing", "PERSHING_ACA2_A") }}
--> landing.default.pershing_aca2_a
+-> landing_pershing.default.pershing_aca2_a
 ```
 
-Do not recreate old per-source catalogs like `apex.default`, `q2.default`, `ibkr.default`, or `pershing.default` unless the current source file explicitly proves that is intentional.
+Do not recreate old source-system catalogs like `apex.default`, `q2.default`, `ibkr.default`, or `pershing.default`. Use the current landing catalog family instead.
 
 ## Bronze File Structure
 
@@ -151,7 +160,7 @@ CREATE OR REPLACE TABLE bronze.default.<bronze_table> AS
 WITH landing_data AS (
     SELECT
         <landing columns and source-safe conversions>
-    FROM landing.default.<landing_table>
+    FROM <landing_catalog>.default.<landing_table>
 ),
 
 bronze_data AS (
@@ -202,7 +211,7 @@ Before finishing:
 - Only `dbx_bronze/*.dbx.sql` files were created or edited.
 - No `dbx_landing/` files were touched.
 - Outputs use `bronze.default`.
-- Inputs use `landing.default` unless an intentional exception is confirmed.
+- Inputs use the matching landing catalog: `landing.default`, `landing_jh.default`, `landing_pershing.default`, or `landing_sei.default`.
 - No executable `CONVERT(`, `GETUTCDATE()`, `GETDATE()`, SQL Server brackets, or dbt Jinja remain.
 - No blind `CAST(` remains on source data.
 - All referenced landing columns exist.
@@ -232,7 +241,7 @@ Expected behavior:
 
 - It does not edit files.
 - It reads the dbt SQL and landing file.
-- It identifies `landing.default.pershing_aca2_a` as the landing source unless current source proves otherwise.
+- It identifies `landing_pershing.default.pershing_aca2_a` as the landing source unless current source proves otherwise.
 - It identifies `bronze.default.bronze_pershing_aca2_rec_a` from the dbt model name/comment.
 - It reports required columns and any missing landing columns.
 - It explicitly says no landing edits are needed.
@@ -258,7 +267,7 @@ Expected generated output:
 - A repo-consistent `dbx_bronze/bronze-*.dbx.sql` file.
 - `CREATE CATALOG IF NOT EXISTS bronze`.
 - `CREATE OR REPLACE TABLE bronze.default.<table> AS`.
-- Reads from `landing.default.pershing_aca2_a`.
+- Reads from `landing_pershing.default.pershing_aca2_a`.
 - Uses `TRY_CAST` for source-data conversion.
 - Removes dbt Jinja.
 - Adds `COMMENT ON TABLE`.
