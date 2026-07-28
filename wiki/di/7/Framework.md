@@ -453,3 +453,115 @@ The RACI model defines accountability and ownership for Data Quality activities 
 | Monitor business SLA and publication quality | I | A/R | R | I |
 | Approve operational readiness | A | R | C | C |
 | Resolve and investigate delivery failures | I | C | A/R | I |
+
+## Assessment
+
+| Area | Assessment | **When** |
+| --- | --- | --- |
+| DQ dimensions | Strong | NA |
+| Layer-specific applicability | Strong | NA |
+| Guardrail concept | Strong | NA |
+| Severity model | Good | NA |
+| RACI | Good | NA |
+| Threshold methodology | Good | NA |
+| Migration readiness | Weak | DBX parity |
+| Critical Data Elements (CDEs) | Underdeveloped | TBD |
+| Data Contracts | Missing | TBD |
+| Data Observability | Missing | TBD |
+| DQ Scorecards | Missing | TBD |
+| Source-to-Target Reconciliation | Underdeveloped | David? |
+| Data Product Ownership | Missing | DBX parity |
+| Metadata integration | Missing | DBX parity |
+
+### **CDEs**
+
+The framework treats all columns almost equally.
+
+In practice:
+
+- Account Number
+- Customer ID
+- Loan ID
+- Policy Number
+- Posting Date
+- Balance Amount
+- Branch ID
+
+are not equal to:
+
+- Comment field
+- Description field
+- Optional attributes
+
+Without CDE classification, teams often end up creating 500 DQ checks nobody cares about.
+
+### Data Criticality
+
+#### Classification
+
+| Tier | Description |
+| --- | --- |
+| Tier 1 | Regulatory / Financial |
+| Tier 2 | Operational |
+| Tier 3 | Reporting |
+| Tier 4 | Informational |
+
+#### Coverage
+
+| Tier | DQ Coverage |
+| --- | --- |
+| Tier 1 | Mandatory |
+| Tier 2 | Strongly recommended |
+| Tier 3 | Recommended |
+| Tier 4 | Optional |
+
+### Data Contract Layer
+
+We assume data is governed but no definition of:
+
+- source
+- schema
+- SLA
+- change management
+
+Source-To-Target Reconciliation
+
+Focus on Gold layer but we should for all layers source row count vs target row count (maybe amounts and sums)
+
+### DQ Scorecards Percentage
+
+We need to measure:
+
+- completeness
+- accuracy
+- consistency
+- freshness
+
+### Domain Validation Implicit
+
+Make it explicit with DBT Tests
+
+```
+Account Status
+can only be:
+OPEN
+CLOSED
+SUSPENDED
+```
+
+### Data Quality with Observability
+
+Should we add Missing dimensions:
+
+| Observability Area |
+| --- |
+| Volume |
+| Freshness |
+| Schema Drift |
+| Distribution Drift |
+| Pipeline Failure |
+| Consumption Drop |
+
+### Severity Model
+
+Which is better or faster to determine, three or four choices?
