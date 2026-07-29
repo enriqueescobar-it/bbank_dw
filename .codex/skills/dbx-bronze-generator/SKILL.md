@@ -1,6 +1,6 @@
 ---
 name: dbx-bronze-generator
-description: Generate or repair Databricks bronze SQL files under dbx_bronze from SQL Server SQL, dbt SQL Server bronze models, or existing bronze DBX SQL. Use when creating bronze.default tables, reading from the correct landing catalog such as landing.default, landing_jh.default, landing_pershing.default, or landing_sei.default, replacing SQL Server syntax with DBX syntax, adding bronze table comments, validating landing column coverage, and avoiding landing-layer edits.
+description: Generate or repair Databricks bronze SQL files under dbx_bronze from SQL Server SQL, dbt SQL Server bronze models, or existing bronze DBX SQL. Use when creating bronze.default tables or source-specific bronze catalogs such as bronze_jh.default when requested, reading from the correct landing catalog such as landing.default, landing_jh.default, landing_pershing.default, or landing_sei.default, replacing SQL Server syntax with DBX syntax, adding bronze table comments, validating landing column coverage, and avoiding landing-layer edits.
 ---
 
 # DBX Bronze Generator
@@ -122,6 +122,12 @@ source table             -> landing.default.<landing_table>
 output file              -> dbx_bronze/bronze-<source-family>.dbx.sql
 ```
 
+When the user requests a source-specific bronze catalog, preserve that catalog in all CTAS and comment targets. Current local exception:
+
+```text
+Jack Henry combined bronze -> bronze_jh.default.<bronze_table>
+```
+
 Use this landing source catalog map:
 
 ```text
@@ -136,6 +142,9 @@ Examples:
 ```text
 -- NAME: BRONZE_PERSHING_ACA2_REC_A
 -> bronze.default.bronze_pershing_aca2_rec_a
+
+sqlserver/brz-jh_*.sql with requested Jack Henry bronze catalog
+-> bronze_jh.default.bronze_jh_<table>
 
 {{ source("pershing", "PERSHING_ACA2_A") }}
 -> landing_pershing.default.pershing_aca2_a
@@ -197,7 +206,7 @@ Do not use JSON extraction when matching flattened landing columns already exist
 
 ## Comment Rules
 
-Every `CREATE OR REPLACE TABLE bronze.default.* AS` must have a matching `COMMENT ON TABLE bronze.default.*`.
+Every `CREATE OR REPLACE TABLE <bronze_catalog>.default.* AS` must have a matching `COMMENT ON TABLE <bronze_catalog>.default.*`. For the normal shared bronze catalog this is `bronze.default.*`; for the requested Jack Henry split catalog this is `bronze_jh.default.*`.
 
 Use a domain-aware description when possible:
 
@@ -214,7 +223,7 @@ Before finishing:
 
 - Only `dbx_bronze/*.dbx.sql` files were created or edited.
 - No `dbx_landing/` files were touched.
-- Outputs use `bronze.default`.
+- Outputs use `bronze.default` unless the user requested a source-specific bronze catalog, such as `bronze_jh.default` for the combined Jack Henry bronze file.
 - Inputs use the matching landing catalog: `landing.default`, `landing_jh.default`, `landing_pershing.default`, or `landing_sei.default`.
 - No executable `CONVERT(`, `GETUTCDATE()`, `GETDATE()`, SQL Server brackets, or dbt Jinja remain.
 - No blind `CAST(` remains on source data.

@@ -127,8 +127,8 @@ For `dbx_landing/*.dbx.sql`, validate:
 
 For `dbx_bronze/*.dbx.sql`, validate:
 
-- The file creates or uses the `bronze` catalog.
-- Bronze outputs are `bronze.default.<table>`.
+- The file creates or uses the expected bronze catalog: normally `bronze`, or a requested source-specific catalog such as `bronze_jh` for combined Jack Henry bronze.
+- Bronze outputs are `bronze.default.<table>` unless the file is intentionally source-specific, such as `bronze_jh.default.<table>` for Jack Henry.
 - Landing inputs use the matching landing catalog, such as `landing.default.<table>`, `landing_jh.default.<table>`, `landing_pershing.default.<table>`, or `landing_sei.default.<table>`.
 - Source-data conversions use `TRY_CAST`.
 - SQL Server functions are rewritten to Databricks SQL equivalents.
@@ -155,7 +155,7 @@ general landing sources   -> landing.default
 Jack Henry JH_* sources   -> landing_jh.default
 Pershing sources          -> landing_pershing.default
 SEI sources               -> landing_sei.default
-bronze outputs            -> bronze.default unless current SEI bronze files intentionally use bronze_sei.default
+bronze outputs            -> bronze.default unless current files intentionally use a source-specific catalog such as bronze_jh.default for Jack Henry or bronze_sei.default for SEI
 ```
 
 ## Finding Severity
