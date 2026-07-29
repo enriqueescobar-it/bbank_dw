@@ -1,5 +1,5 @@
 -- Databricks SQL for source: q2
--- Generated from sqlserver/brz-q2.sql
+-- Generated from sqlserver_brz/brz-q2.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing;
 USE CATALOG landing;

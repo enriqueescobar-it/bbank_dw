@@ -1,5 +1,5 @@
 -- Databricks SQL for source: sblc
--- Generated from sqlserver/brz-sblc.sql
+-- Generated from sqlserver_brz/brz-sblc.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing;
 USE CATALOG landing;

@@ -1,5 +1,5 @@
 -- Databricks SQL for source: jh_ddpar1
--- Generated from sqlserver/brz-jh_ddpar1.sql
+-- Generated from sqlserver_brz/brz-jh_ddpar1.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;

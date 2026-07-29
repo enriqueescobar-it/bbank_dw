@@ -1,5 +1,5 @@
 -- Databricks SQL for source: mis
--- Generated from sqlserver/brz-mis.sql
+-- Generated from sqlserver_brz/brz-mis.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing;
 USE CATALOG landing;

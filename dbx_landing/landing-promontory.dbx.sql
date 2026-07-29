@@ -1,5 +1,5 @@
 -- Databricks SQL for source: promontory
--- Generated from sqlserver/brz-promontory.sql
+-- Generated from sqlserver_brz/brz-promontory.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing;
 USE CATALOG landing;

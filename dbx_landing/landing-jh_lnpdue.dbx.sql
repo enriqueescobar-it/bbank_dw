@@ -1,5 +1,5 @@
 -- Databricks SQL for source: jh_lnpdue
--- Generated from sqlserver/brz-jh_lnpdue.sql
+-- Generated from sqlserver_brz/brz-jh_lnpdue.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;

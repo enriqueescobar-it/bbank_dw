@@ -1,5 +1,5 @@
 -- Databricks SQL for source: jh_glhist_datbga
--- Generated from sqlserver/brz-jh_glhist_datbga.sql
+-- Generated from sqlserver_brz/brz-jh_glhist_datbga.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;

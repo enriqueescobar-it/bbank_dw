@@ -1,5 +1,5 @@
 -- Databricks SQL for source: jh_cdmasteom
--- Generated from sqlserver/brz-jh_cdmasteom.sql
+-- Generated from sqlserver_brz/brz-jh_cdmasteom.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;

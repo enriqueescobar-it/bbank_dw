@@ -1,5 +1,5 @@
 -- Databricks SQL for source: jh_cdpost
--- Generated from sqlserver/brz-jh_cdpost.sql
+-- Generated from sqlserver_brz/brz-jh_cdpost.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;

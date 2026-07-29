@@ -1,5 +1,5 @@
 -- Databricks SQL for source: auxiliary
--- Generated from sqlserver/brz-auxiliary.sql
+-- Generated from sqlserver_brz/brz-auxiliary.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing;
 USE CATALOG landing;

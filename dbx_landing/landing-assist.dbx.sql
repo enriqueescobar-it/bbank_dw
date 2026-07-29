@@ -1,5 +1,5 @@
 -- Databricks SQL for source: assist
--- Generated from sqlserver/brz-assist.sql
+-- Generated from sqlserver_brz/brz-assist.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing;
 USE CATALOG landing;

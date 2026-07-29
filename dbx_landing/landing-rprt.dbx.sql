@@ -1,5 +1,5 @@
 -- Databricks SQL for source: rprt
--- Generated from sqlserver/brz-rprt.sql
+-- Generated from sqlserver_brz/brz-rprt.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing;
 USE CATALOG landing;

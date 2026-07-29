@@ -1,5 +1,5 @@
 -- Databricks SQL for source: jh_acsret
--- Generated from sqlserver/brz-jh_acsret.sql
+-- Generated from sqlserver_brz/brz-jh_acsret.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -404,7 +404,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_acsret' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_acsret;
 -- Databricks SQL for source: jh_axidmiav
--- Generated from sqlserver/brz-jh_axidmiav.sql
+-- Generated from sqlserver_brz/brz-jh_axidmiav.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -445,7 +445,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_axidmiav' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_axidmiav;
 -- Databricks SQL for source: jh_bfgp0087
--- Generated from sqlserver/brz-jh_bfgp0087.sql
+-- Generated from sqlserver_brz/brz-jh_bfgp0087.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -492,7 +492,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_bfgp0087' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_bfgp0087;
 -- Databricks SQL for source: jh_bfwt0085
--- Generated from sqlserver/brz-jh_bfwt0085.sql
+-- Generated from sqlserver_brz/brz-jh_bfwt0085.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -535,7 +535,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_bfwt0085' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_bfwt0085;
 -- Databricks SQL for source: jh_bfwtmast
--- Generated from sqlserver/brz-jh_bfwtmast.sql
+-- Generated from sqlserver_brz/brz-jh_bfwtmast.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -966,7 +966,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_bfwtmast' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_bfwtmast;
 -- Databricks SQL for source: jh_br00009
--- Generated from sqlserver/brz-jh_br00009.sql
+-- Generated from sqlserver_brz/brz-jh_br00009.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -1059,7 +1059,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_br00009' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_br00009;
 -- Databricks SQL for source: jh_br00014
--- Generated from sqlserver/brz-jh_br00014.sql
+-- Generated from sqlserver_brz/brz-jh_br00014.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -1100,7 +1100,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_br00014' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_br00014;
 -- Databricks SQL for source: jh_cd2160petl
--- Generated from sqlserver/brz-jh_cd2160petl.sql
+-- Generated from sqlserver_brz/brz-jh_cd2160petl.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -1138,7 +1138,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_cd2160petl' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_cd2160petl;
 -- Databricks SQL for source: jh_cdhist
--- Generated from sqlserver/brz-jh_cdhist.sql
+-- Generated from sqlserver_brz/brz-jh_cdhist.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -1235,7 +1235,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_cdhist' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_cdhist;
 -- Databricks SQL for source: jh_cdmant
--- Generated from sqlserver/brz-jh_cdmant.sql
+-- Generated from sqlserver_brz/brz-jh_cdmant.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -1310,7 +1310,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_cdmant' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_cdmant;
 -- Databricks SQL for source: jh_cdmast
--- Generated from sqlserver/brz-jh_cdmast.sql
+-- Generated from sqlserver_brz/brz-jh_cdmast.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -1860,7 +1860,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_cdmast' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_cdmast;
 -- Databricks SQL for source: jh_cdmasteom
--- Generated from sqlserver/brz-jh_cdmasteom.sql
+-- Generated from sqlserver_brz/brz-jh_cdmasteom.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -2397,7 +2397,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_cdmasteom' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_cdmasteom;
 -- Databricks SQL for source: jh_cdpar2
--- Generated from sqlserver/brz-jh_cdpar2.sql
+-- Generated from sqlserver_brz/brz-jh_cdpar2.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -2713,7 +2713,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_cdpar2' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_cdpar2;
 -- Databricks SQL for source: jh_cdpar3
--- Generated from sqlserver/brz-jh_cdpar3.sql
+-- Generated from sqlserver_brz/brz-jh_cdpar3.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -2784,7 +2784,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_cdpar3' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_cdpar3;
 -- Databricks SQL for source: jh_cdpost
--- Generated from sqlserver/brz-jh_cdpost.sql
+-- Generated from sqlserver_brz/brz-jh_cdpost.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -3219,7 +3219,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_cdpost' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_cdpost;
 -- Databricks SQL for source: jh_cfacct
--- Generated from sqlserver/brz-jh_cfacct.sql
+-- Generated from sqlserver_brz/brz-jh_cfacct.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -3294,7 +3294,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_cfacct' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_cfacct;
 -- Databricks SQL for source: jh_cfaltn
--- Generated from sqlserver/brz-jh_cfaltn.sql
+-- Generated from sqlserver_brz/brz-jh_cfaltn.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -3367,7 +3367,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_cfaltn' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_cfaltn;
 -- Databricks SQL for source: jh_cfcrgp
--- Generated from sqlserver/brz-jh_cfcrgp.sql
+-- Generated from sqlserver_brz/brz-jh_cfcrgp.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -3405,7 +3405,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_cfcrgp' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_cfcrgp;
 -- Databricks SQL for source: jh_cffben
--- Generated from sqlserver/brz-jh_cffben.sql
+-- Generated from sqlserver_brz/brz-jh_cffben.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -3480,7 +3480,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_cffben' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_cffben;
 -- Databricks SQL for source: jh_cfmast
--- Generated from sqlserver/brz-jh_cfmast.sql
+-- Generated from sqlserver_brz/brz-jh_cfmast.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -3902,7 +3902,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_cfmast' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_cfmast;
 -- Databricks SQL for source: jh_cfmesg
--- Generated from sqlserver/brz-jh_cfmesg.sql
+-- Generated from sqlserver_brz/brz-jh_cfmesg.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -3964,7 +3964,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_cfmesg' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_cfmesg;
 -- Databricks SQL for source: jh_cfmlid
--- Generated from sqlserver/brz-jh_cfmlid.sql
+-- Generated from sqlserver_brz/brz-jh_cfmlid.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -4028,7 +4028,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_cfmlid' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_cfmlid;
 -- Databricks SQL for source: jh_cfofgn
--- Generated from sqlserver/brz-jh_cfofgn.sql
+-- Generated from sqlserver_brz/brz-jh_cfofgn.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -4082,7 +4082,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_cfofgn' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_cfofgn;
 -- Databricks SQL for source: jh_cfpar1
--- Generated from sqlserver/brz-jh_cfpar1.sql
+-- Generated from sqlserver_brz/brz-jh_cfpar1.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -4140,7 +4140,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_cfpar1' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_cfpar1;
 -- Databricks SQL for source: jh_cfpar3
--- Generated from sqlserver/brz-jh_cfpar3.sql
+-- Generated from sqlserver_brz/brz-jh_cfpar3.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -4178,7 +4178,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_cfpar3' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_cfpar3;
 -- Databricks SQL for source: jh_cfpard
--- Generated from sqlserver/brz-jh_cfpard.sql
+-- Generated from sqlserver_brz/brz-jh_cfpard.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -4214,7 +4214,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_cfpard' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_cfpard;
 -- Databricks SQL for source: jh_cfparg
--- Generated from sqlserver/brz-jh_cfparg.sql
+-- Generated from sqlserver_brz/brz-jh_cfparg.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -4263,7 +4263,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_cfparg' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_cfparg;
 -- Databricks SQL for source: jh_cfusrflds
--- Generated from sqlserver/brz-jh_cfusrflds.sql
+-- Generated from sqlserver_brz/brz-jh_cfusrflds.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -4312,7 +4312,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_cfusrflds' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_cfusrflds;
 -- Databricks SQL for source: jh_ddaams
--- Generated from sqlserver/brz-jh_ddaams.sql
+-- Generated from sqlserver_brz/brz-jh_ddaams.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -4567,7 +4567,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_ddaams' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_ddaams;
 -- Databricks SQL for source: jh_ddaat1
--- Generated from sqlserver/brz-jh_ddaat1.sql
+-- Generated from sqlserver_brz/brz-jh_ddaat1.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -4625,7 +4625,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_ddaat1' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_ddaat1;
 -- Databricks SQL for source: jh_ddalis_t
--- Generated from sqlserver/brz-jh_ddalis_t.sql
+-- Generated from sqlserver_brz/brz-jh_ddalis_t.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -4746,7 +4746,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_ddalis_t' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_ddalis_t;
 -- Databricks SQL for source: jh_ddetfh
--- Generated from sqlserver/brz-jh_ddetfh.sql
+-- Generated from sqlserver_brz/brz-jh_ddetfh.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -4797,7 +4797,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_ddetfh' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_ddetfh;
 -- Databricks SQL for source: jh_ddhist
--- Generated from sqlserver/brz-jh_ddhist.sql
+-- Generated from sqlserver_brz/brz-jh_ddhist.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -4926,7 +4926,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_ddhist' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_ddhist;
 -- Databricks SQL for source: jh_ddmant
--- Generated from sqlserver/brz-jh_ddmant.sql
+-- Generated from sqlserver_brz/brz-jh_ddmant.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -5001,7 +5001,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_ddmant' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_ddmant;
 -- Databricks SQL for source: jh_ddmast
--- Generated from sqlserver/brz-jh_ddmast.sql
+-- Generated from sqlserver_brz/brz-jh_ddmast.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -6786,7 +6786,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_ddmast' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_ddmast;
 -- Databricks SQL for source: jh_ddmasteom
--- Generated from sqlserver/brz-jh_ddmasteom.sql
+-- Generated from sqlserver_brz/brz-jh_ddmasteom.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -8558,7 +8558,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_ddmasteom' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_ddmasteom;
 -- Databricks SQL for source: jh_ddpar1
--- Generated from sqlserver/brz-jh_ddpar1.sql
+-- Generated from sqlserver_brz/brz-jh_ddpar1.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -8629,7 +8629,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_ddpar1' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_ddpar1;
 -- Databricks SQL for source: jh_ddpar2
--- Generated from sqlserver/brz-jh_ddpar2.sql
+-- Generated from sqlserver_brz/brz-jh_ddpar2.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -9850,7 +9850,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_ddpar2' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_ddpar2;
 -- Databricks SQL for source: jh_ddpar3
--- Generated from sqlserver/brz-jh_ddpar3.sql
+-- Generated from sqlserver_brz/brz-jh_ddpar3.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -9949,7 +9949,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_ddpar3' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_ddpar3;
 -- Databricks SQL for source: jh_ddpar4
--- Generated from sqlserver/brz-jh_ddpar4.sql
+-- Generated from sqlserver_brz/brz-jh_ddpar4.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -9990,7 +9990,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_ddpar4' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_ddpar4;
 -- Databricks SQL for source: jh_ddpost
--- Generated from sqlserver/brz-jh_ddpost.sql
+-- Generated from sqlserver_brz/brz-jh_ddpost.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -10761,7 +10761,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_ddpost' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_ddpost;
 -- Databricks SQL for source: jh_dmilay
--- Generated from sqlserver/brz-jh_dmilay.sql
+-- Generated from sqlserver_brz/brz-jh_dmilay.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -11211,7 +11211,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_dmilay' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_dmilay;
 -- Databricks SQL for source: jh_glhist
--- Generated from sqlserver/brz-jh_glhist.sql
+-- Generated from sqlserver_brz/brz-jh_glhist.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -11314,7 +11314,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_glhist' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_glhist;
 -- Databricks SQL for source: jh_glhist_datbga
--- Generated from sqlserver/brz-jh_glhist_datbga.sql
+-- Generated from sqlserver_brz/brz-jh_glhist_datbga.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -11417,7 +11417,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_glhist_datbga' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_glhist_datbga;
 -- Databricks SQL for source: jh_glhist_datsec
--- Generated from sqlserver/brz-jh_glhist_datsec.sql
+-- Generated from sqlserver_brz/brz-jh_glhist_datsec.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -11520,7 +11520,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_glhist_datsec' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_glhist_datsec;
 -- Databricks SQL for source: jh_glint1
--- Generated from sqlserver/brz-jh_glint1.sql
+-- Generated from sqlserver_brz/brz-jh_glint1.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -11578,7 +11578,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_glint1' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_glint1;
 -- Databricks SQL for source: jh_glmast
--- Generated from sqlserver/brz-jh_glmast.sql
+-- Generated from sqlserver_brz/brz-jh_glmast.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -12043,7 +12043,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_glmast' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_glmast;
 -- Databricks SQL for source: jh_glpar9
--- Generated from sqlserver/brz-jh_glpar9.sql
+-- Generated from sqlserver_brz/brz-jh_glpar9.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -12079,7 +12079,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_glpar9' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_glpar9;
 -- Databricks SQL for source: jh_jhclas
--- Generated from sqlserver/brz-jh_jhclas.sql
+-- Generated from sqlserver_brz/brz-jh_jhclas.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -12120,7 +12120,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_jhclas' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_jhclas;
 -- Databricks SQL for source: jh_jhctry
--- Generated from sqlserver/brz-jh_jhctry.sql
+-- Generated from sqlserver_brz/brz-jh_jhctry.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -12178,7 +12178,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_jhctry' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_jhctry;
 -- Databricks SQL for source: jh_jhmast
--- Generated from sqlserver/brz-jh_jhmast.sql
+-- Generated from sqlserver_brz/brz-jh_jhmast.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -12312,7 +12312,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_jhmast' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_jhmast;
 -- Databricks SQL for source: jh_jhoffr
--- Generated from sqlserver/brz-jh_jhoffr.sql
+-- Generated from sqlserver_brz/brz-jh_jhoffr.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -12366,7 +12366,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_jhoffr' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_jhoffr;
 -- Databricks SQL for source: jh_lcmast
--- Generated from sqlserver/brz-jh_lcmast.sql
+-- Generated from sqlserver_brz/brz-jh_lcmast.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -12502,7 +12502,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_lcmast' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_lcmast;
 -- Databricks SQL for source: jh_lnepos
--- Generated from sqlserver/brz-jh_lnepos.sql
+-- Generated from sqlserver_brz/brz-jh_lnepos.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -12597,7 +12597,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_lnepos' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_lnepos;
 -- Databricks SQL for source: jh_lnfpst
--- Generated from sqlserver/brz-jh_lnfpst.sql
+-- Generated from sqlserver_brz/brz-jh_lnfpst.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -12692,7 +12692,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_lnfpst' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_lnfpst;
 -- Databricks SQL for source: jh_lnhist
--- Generated from sqlserver/brz-jh_lnhist.sql
+-- Generated from sqlserver_brz/brz-jh_lnhist.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -12769,7 +12769,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_lnhist' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_lnhist;
 -- Databricks SQL for source: jh_lnmant
--- Generated from sqlserver/brz-jh_lnmant.sql
+-- Generated from sqlserver_brz/brz-jh_lnmant.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -12846,7 +12846,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_lnmant' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_lnmant;
 -- Databricks SQL for source: jh_lnmast
--- Generated from sqlserver/brz-jh_lnmast.sql
+-- Generated from sqlserver_brz/brz-jh_lnmast.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -14434,7 +14434,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_lnmast' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_lnmast;
 -- Databricks SQL for source: jh_lnmasteom
--- Generated from sqlserver/brz-jh_lnmasteom.sql
+-- Generated from sqlserver_brz/brz-jh_lnmasteom.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -15989,7 +15989,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_lnmasteom' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_lnmasteom;
 -- Databricks SQL for source: jh_lnpar2
--- Generated from sqlserver/brz-jh_lnpar2.sql
+-- Generated from sqlserver_brz/brz-jh_lnpar2.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -16714,7 +16714,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_lnpar2' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_lnpar2;
 -- Databricks SQL for source: jh_lnpar3
--- Generated from sqlserver/brz-jh_lnpar3.sql
+-- Generated from sqlserver_brz/brz-jh_lnpar3.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -16800,7 +16800,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_lnpar3' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_lnpar3;
 -- Databricks SQL for source: jh_lnpar9
--- Generated from sqlserver/brz-jh_lnpar9.sql
+-- Generated from sqlserver_brz/brz-jh_lnpar9.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -16836,7 +16836,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_lnpar9' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_lnpar9;
 -- Databricks SQL for source: jh_lnpdue
--- Generated from sqlserver/brz-jh_lnpdue.sql
+-- Generated from sqlserver_brz/brz-jh_lnpdue.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -16968,7 +16968,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_lnpdue' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_lnpdue;
 -- Databricks SQL for source: jh_lnpost1
--- Generated from sqlserver/brz-jh_lnpost1.sql
+-- Generated from sqlserver_brz/brz-jh_lnpost1.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -18610,7 +18610,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_lnpost1' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_lnpost1;
 -- Databricks SQL for source: jh_lnpost2
--- Generated from sqlserver/brz-jh_lnpost2.sql
+-- Generated from sqlserver_brz/brz-jh_lnpost2.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -20247,7 +20247,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_lnpost2' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_lnpost2;
 -- Databricks SQL for source: jh_lnspos
--- Generated from sqlserver/brz-jh_lnspos.sql
+-- Generated from sqlserver_brz/brz-jh_lnspos.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -21167,7 +21167,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_lnspos' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_lnspos;
 -- Databricks SQL for source: jh_nvmast
--- Generated from sqlserver/brz-jh_nvmast.sql
+-- Generated from sqlserver_brz/brz-jh_nvmast.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -21262,7 +21262,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_nvmast' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_nvmast;
 -- Databricks SQL for source: jh_stdesc
--- Generated from sqlserver/brz-jh_stdesc.sql
+-- Generated from sqlserver_brz/brz-jh_stdesc.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;
@@ -21346,7 +21346,7 @@ FROM VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9), (10) AS seed(idx);
 SELECT 'jh_stdesc' AS table_name, COUNT(*) AS record_count
 FROM landing_jh.default.jh_stdesc;
 -- Databricks SQL for source: jh_transactions
--- Generated from sqlserver/brz-jh_transactions.sql
+-- Generated from sqlserver_brz/brz-jh_transactions.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;

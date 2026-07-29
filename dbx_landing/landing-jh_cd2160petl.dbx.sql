@@ -1,5 +1,5 @@
 -- Databricks SQL for source: jh_cd2160petl
--- Generated from sqlserver/brz-jh_cd2160petl.sql
+-- Generated from sqlserver_brz/brz-jh_cd2160petl.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;

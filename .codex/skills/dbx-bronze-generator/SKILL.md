@@ -1,13 +1,13 @@
 ---
 name: dbx-bronze-generator
-description: Generate or repair Databricks bronze SQL files under dbx_bronze from SQL Server SQL, dbt SQL Server bronze models, or existing bronze DBX SQL. Use when creating bronze.default tables or source-specific bronze catalogs such as bronze_jh.default when requested, reading from the correct landing catalog such as landing.default, landing_jh.default, landing_pershing.default, or landing_sei.default, replacing SQL Server syntax with DBX syntax, adding bronze table comments, validating landing column coverage, and avoiding landing-layer edits.
+description: Generate or repair Databricks bronze SQL files under dbx_bronze from SQL Server bronze SQL under sqlserver_brz, dbt SQL Server bronze models, or existing bronze DBX SQL. Use when creating bronze.default tables or source-specific bronze catalogs such as bronze_jh.default when requested, reading from the correct landing catalog such as landing.default, landing_jh.default, landing_pershing.default, or landing_sei.default, replacing SQL Server syntax with DBX syntax, adding bronze table comments, validating landing column coverage, and avoiding landing-layer edits.
 ---
 
 # DBX Bronze Generator
 
 ## Purpose
 
-Use this skill to generate or repair `dbx_bronze/*.dbx.sql` files. Bronze SQL should preserve source model logic, read from the landing layer, write to the bronze layer, and run in Databricks SQL.
+Use this skill to generate or repair `dbx_bronze/*.dbx.sql` files. Bronze SQL should preserve source model logic from `sqlserver_brz/*.ms.sql`, read from the landing layer, write to the bronze layer, and run in Databricks SQL.
 
 This skill owns bronze-file structure, source-to-landing references, output bronze table naming, bronze comments, landing column validation, and bronze-only validation. Use `$sqlserver-to-dbx-converter` for SQL Server type, function, cast, and reserved-word conversion rules.
 
@@ -19,7 +19,7 @@ This skill owns bronze-file structure, source-to-landing references, output bron
 4. Confirm the task is bronze-only. Do not create or modify landing files.
 5. Check current repo conventions for table naming, comments, and source references before writing.
 
-When the user says to refresh files in memory, do not rely on prior conversation context. Re-list the current files on disk with `rg --files sqlserver dbx_landing dbx_bronze`, then re-read the relevant SQL Server source files, the matching landing file or files, and the current target bronze file before comparing or editing.
+When the user says to refresh files in memory, do not rely on prior conversation context. Re-list the current files on disk with `rg --files sqlserver_brz dbx_landing dbx_bronze`, then re-read the relevant SQL Server bronze source files, the matching landing file or files, and the current target bronze file before comparing or editing.
 
 ## Workflow
 
@@ -29,9 +29,9 @@ flowchart TD
     B --> C["Read matching dbx_landing source tables"]
 
     C --> D["Identify bronze outputs"]
-    D --> D1["Target catalog: bronze"]
+    D --> D1["Target catalog: bronze or requested source-specific catalog"]
     D --> D2["Target schema: default"]
-    D --> D3["Target table: bronze.default.<bronze_table>"]
+    D --> D3["Target table: <bronze_catalog>.default.<bronze_table>"]
 
     C --> E["Identify landing inputs"]
     E --> E1["Source catalog: landing or source-specific landing catalog"]
@@ -55,14 +55,14 @@ flowchart TD
     H -->|No| I["Report missing columns or mismatch; do not invent"]
     H -->|Yes| J["Generate or repair bronze SQL"]
 
-    J --> J1["CREATE CATALOG IF NOT EXISTS bronze"]
-    J --> J2["USE CATALOG bronze"]
+    J --> J1["CREATE CATALOG IF NOT EXISTS <bronze_catalog>"]
+    J --> J2["USE CATALOG <bronze_catalog>"]
     J --> J3["CREATE SCHEMA IF NOT EXISTS default"]
-    J --> J4["CREATE OR REPLACE TABLE bronze.default.<table> AS"]
+    J --> J4["CREATE OR REPLACE TABLE <bronze_catalog>.default.<table> AS"]
     J --> J5["WITH landing_data AS (...)"]
     J --> J6["WITH bronze_data AS (...)"]
     J --> J7["SELECT * FROM bronze_data"]
-    J --> J8["COMMENT ON TABLE bronze.default.<table>"]
+    J --> J8["COMMENT ON TABLE <bronze_catalog>.default.<table>"]
 
     J --> K["Validate output"]
     K --> K1["No SQL Server-only syntax"]
@@ -81,9 +81,9 @@ flowchart TD
 
 ## Source Input Rules
 
-### `sqlserver/*.sql`
+### `sqlserver_brz/*.ms.sql`
 
-Use SQL Server source files as bronze transformation logic. Extract each model/table block, source references, selected columns, type conversions, date logic, and final output table names from comments or local naming patterns.
+Use SQL Server bronze source files as bronze transformation logic. Extract each model/table block, source references, selected columns, type conversions, date logic, and final output table names from comments or local naming patterns.
 
 ### `sqlserver_dbt/*.dbt.sql`
 
@@ -147,7 +147,7 @@ Examples:
 -- NAME: BRONZE_PERSHING_ACA2_REC_A
 -> bronze.default.bronze_pershing_aca2_rec_a
 
-sqlserver/brz-jh_*.sql with requested Jack Henry bronze catalog
+sqlserver_brz/brz-jh_*.ms.sql with requested Jack Henry bronze catalog
 -> bronze_jh.default.bronze_jh_<table>
 
 {{ source("pershing", "PERSHING_ACA2_A") }}
@@ -161,15 +161,15 @@ Do not recreate old source-system catalogs like `apex.default`, `q2.default`, `i
 Use this order for each bronze table:
 
 ```sql
-CREATE CATALOG IF NOT EXISTS bronze;
-USE CATALOG bronze;
+CREATE CATALOG IF NOT EXISTS <bronze_catalog>;
+USE CATALOG <bronze_catalog>;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
--- From <source-file>
+-- From <source-file, such as sqlserver_brz/brz-jh_acsret.ms.sql>
 -- Source model: <bronze_table>
-CREATE OR REPLACE TABLE bronze.default.<bronze_table> AS
+CREATE OR REPLACE TABLE <bronze_catalog>.default.<bronze_table> AS
 WITH landing_data AS (
     SELECT
         <landing columns and source-safe conversions>
@@ -183,7 +183,7 @@ bronze_data AS (
 )
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze.default.<bronze_table> IS
+COMMENT ON TABLE <bronze_catalog>.default.<bronze_table> IS
 'Bronze table <bronze_table> contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
 ```
 

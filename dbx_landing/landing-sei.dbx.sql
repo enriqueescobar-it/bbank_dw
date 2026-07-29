@@ -1,5 +1,5 @@
 -- Databricks SQL for source: sei
--- Generated from sqlserver/brz-sei.sql
+-- Generated from sqlserver_brz/brz-sei.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_sei;
 USE CATALOG landing_sei;

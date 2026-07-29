@@ -1,5 +1,5 @@
 -- Databricks SQL for source: ibkr
--- Generated from sqlserver/brz-ibkr.sql
+-- Generated from sqlserver_brz/brz-ibkr.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing;
 USE CATALOG landing;

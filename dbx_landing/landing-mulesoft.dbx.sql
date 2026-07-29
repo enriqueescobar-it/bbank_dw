@@ -1,5 +1,5 @@
 -- Databricks SQL for source: mulesoft
--- Generated from sqlserver/brz-mulesoft.sql
+-- Generated from sqlserver_brz/brz-mulesoft.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing;
 USE CATALOG landing;

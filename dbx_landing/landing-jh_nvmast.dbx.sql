@@ -1,5 +1,5 @@
 -- Databricks SQL for source: jh_nvmast
--- Generated from sqlserver/brz-jh_nvmast.sql
+-- Generated from sqlserver_brz/brz-jh_nvmast.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;

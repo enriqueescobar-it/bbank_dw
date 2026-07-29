@@ -1,5 +1,5 @@
 -- Databricks SQL for source: axiom
--- Generated from sqlserver/brz-axiom.sql
+-- Generated from sqlserver_brz/brz-axiom.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing;
 USE CATALOG landing;

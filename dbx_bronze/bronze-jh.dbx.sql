@@ -1,5 +1,5 @@
 -- Databricks SQL for Jack Henry bronze catalog
--- Generated from sqlserver/brz-jh_*.sql and dbx_landing/landing-jh.dbx.sql
+-- Generated from sqlserver_brz/brz-jh_*.ms.sql and dbx_landing/landing-jh.dbx.sql
 
 CREATE CATALOG IF NOT EXISTS bronze_jh;
 USE CATALOG bronze_jh;
@@ -7,7 +7,7 @@ USE CATALOG bronze_jh;
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
--- From sqlserver/brz-jh_acsret.sql
+-- From sqlserver_brz/brz-jh_acsret.ms.sql
 -- Source model: bronze_jh_acsret
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_acsret AS
 WITH landing_data AS (
@@ -374,7 +374,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_acsret IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_acsret in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_axidmiav.sql
+-- From sqlserver_brz/brz-jh_axidmiav.ms.sql
 -- Source model: bronze_jh_axidmiav
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_axidmiav AS
 WITH landing_data AS (
@@ -405,7 +405,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_axidmiav IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_axidmiav in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_bfgp0087.sql
+-- From sqlserver_brz/brz-jh_bfgp0087.ms.sql
 -- Source model: bronze_jh_bfgp0087
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_bfgp0087 AS
 WITH landing_data AS (
@@ -442,7 +442,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_bfgp0087 IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_bfgp0087 in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_bfwt0085.sql
+-- From sqlserver_brz/brz-jh_bfwt0085.ms.sql
 -- Source model: bronze_jh_bfwt0085
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_bfwt0085 AS
 WITH landing_data AS (
@@ -475,7 +475,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_bfwt0085 IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_bfwt0085 in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_bfwtmast.sql
+-- From sqlserver_brz/brz-jh_bfwtmast.ms.sql
 -- Source model: bronze_jh_bfwtmast
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_bfwtmast AS
 WITH landing_data AS (
@@ -866,7 +866,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_bfwtmast IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_bfwtmast in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_br00009.sql
+-- From sqlserver_brz/brz-jh_br00009.ms.sql
 -- Source model: bronze_jh_br00009
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_br00009 AS
 WITH landing_data AS (
@@ -945,7 +945,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_br00009 IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_br00009 in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_br00014.sql
+-- From sqlserver_brz/brz-jh_br00014.ms.sql
 -- Source model: bronze_jh_br00014
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_br00014 AS
 WITH landing_data AS (
@@ -976,7 +976,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_br00014 IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_br00014 in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_cd2160petl.sql
+-- From sqlserver_brz/brz-jh_cd2160petl.ms.sql
 -- Source model: bronze_jh_cd2160petl
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_cd2160petl AS
 WITH landing_data AS (
@@ -1005,7 +1005,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_cd2160petl IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_cd2160petl in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_cdhist.sql
+-- From sqlserver_brz/brz-jh_cdhist.ms.sql
 -- Source model: bronze_jh_cdhist
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_cdhist AS
 WITH landing_data AS (
@@ -1088,7 +1088,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_cdhist IS
 'Bronze Jack Henry core banking table containing transaction, posting, activity history, and reconciliation details sourced from landing_jh.default.jh_cdhist in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_cdmant.sql
+-- From sqlserver_brz/brz-jh_cdmant.ms.sql
 -- Source model: bronze_jh_cdmant
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_cdmant AS
 WITH landing_data AS (
@@ -1151,7 +1151,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_cdmant IS
 'Bronze Jack Henry core banking table containing transaction, posting, activity history, and reconciliation details sourced from landing_jh.default.jh_cdmant in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_cdmast.sql
+-- From sqlserver_brz/brz-jh_cdmast.ms.sql
 -- Source model: bronze_jh_cdmast
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_cdmast AS
 WITH landing_data AS (
@@ -1652,7 +1652,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_cdmast IS
 'Bronze Jack Henry core banking table containing deposit account, certificate, posting, balance, and parameter attributes sourced from landing_jh.default.jh_cdmast in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_cdmasteom.sql
+-- From sqlserver_brz/brz-jh_cdmasteom.ms.sql
 -- Source model: bronze_jh_cdmasteom
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_cdmasteom AS
 WITH landing_data AS (
@@ -2141,7 +2141,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_cdmasteom IS
 'Bronze Jack Henry core banking table containing deposit account, certificate, posting, balance, and parameter attributes sourced from landing_jh.default.jh_cdmasteom in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_cdpar2.sql
+-- From sqlserver_brz/brz-jh_cdpar2.ms.sql
 -- Source model: bronze_jh_cdpar2
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_cdpar2 AS
 WITH landing_data AS (
@@ -2426,7 +2426,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_cdpar2 IS
 'Bronze Jack Henry core banking table containing deposit account, certificate, posting, balance, and parameter attributes sourced from landing_jh.default.jh_cdpar2 in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_cdpar3.sql
+-- From sqlserver_brz/brz-jh_cdpar3.ms.sql
 -- Source model: bronze_jh_cdpar3
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_cdpar3 AS
 WITH landing_data AS (
@@ -2485,7 +2485,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_cdpar3 IS
 'Bronze Jack Henry core banking table containing deposit account, certificate, posting, balance, and parameter attributes sourced from landing_jh.default.jh_cdpar3 in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_cdpost.sql
+-- From sqlserver_brz/brz-jh_cdpost.ms.sql
 -- Source model: bronze_jh_cdpost
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_cdpost AS
 WITH landing_data AS (
@@ -2880,7 +2880,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_cdpost IS
 'Bronze Jack Henry core banking table containing transaction, posting, activity history, and reconciliation details sourced from landing_jh.default.jh_cdpost in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_cfacct.sql
+-- From sqlserver_brz/brz-jh_cfacct.ms.sql
 -- Source model: bronze_jh_cfacct
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_cfacct AS
 WITH landing_data AS (
@@ -2943,7 +2943,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_cfacct IS
 'Bronze Jack Henry core banking table containing account master, ownership, status, balance, and lifecycle attributes sourced from landing_jh.default.jh_cfacct in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_cfaltn.sql
+-- From sqlserver_brz/brz-jh_cfaltn.ms.sql
 -- Source model: bronze_jh_cfaltn
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_cfaltn AS
 WITH landing_data AS (
@@ -3004,7 +3004,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_cfaltn IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_cfaltn in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_cfcrgp.sql
+-- From sqlserver_brz/brz-jh_cfcrgp.ms.sql
 -- Source model: bronze_jh_cfcrgp
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_cfcrgp AS
 WITH landing_data AS (
@@ -3033,7 +3033,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_cfcrgp IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_cfcrgp in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_cffben.sql
+-- From sqlserver_brz/brz-jh_cffben.ms.sql
 -- Source model: bronze_jh_cffben
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_cffben AS
 WITH landing_data AS (
@@ -3096,7 +3096,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_cffben IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_cffben in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_cfmast.sql
+-- From sqlserver_brz/brz-jh_cfmast.ms.sql
 -- Source model: bronze_jh_cfmast
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_cfmast AS
 WITH landing_data AS (
@@ -3479,7 +3479,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_cfmast IS
 'Bronze Jack Henry core banking table containing customer, client, relationship, registration, and identity attributes sourced from landing_jh.default.jh_cfmast in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_cfmesg.sql
+-- From sqlserver_brz/brz-jh_cfmesg.ms.sql
 -- Source model: bronze_jh_cfmesg
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_cfmesg AS
 WITH landing_data AS (
@@ -3530,7 +3530,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_cfmesg IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_cfmesg in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_cfmlid.sql
+-- From sqlserver_brz/brz-jh_cfmlid.ms.sql
 -- Source model: bronze_jh_cfmlid
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_cfmlid AS
 WITH landing_data AS (
@@ -3583,7 +3583,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_cfmlid IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_cfmlid in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_cfofgn.sql
+-- From sqlserver_brz/brz-jh_cfofgn.ms.sql
 -- Source model: bronze_jh_cforgn
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_cforgn AS
 WITH landing_data AS (
@@ -3626,7 +3626,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_cforgn IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_cfofgn in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_cfpar1.sql
+-- From sqlserver_brz/brz-jh_cfpar1.ms.sql
 -- Source model: bronze_jh_cfpar1
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_cfpar1 AS
 WITH landing_data AS (
@@ -3673,7 +3673,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_cfpar1 IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_cfpar1 in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_cfpar3.sql
+-- From sqlserver_brz/brz-jh_cfpar3.ms.sql
 -- Source model: bronze_jh_cfpar3
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_cfpar3 AS
 WITH landing_data AS (
@@ -3702,7 +3702,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_cfpar3 IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_cfpar3 in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_cfpard.sql
+-- From sqlserver_brz/brz-jh_cfpard.ms.sql
 -- Source model: bronze_jh_cfpard
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_cfpard AS
 WITH landing_data AS (
@@ -3729,7 +3729,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_cfpard IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_cfpard in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_cfparg.sql
+-- From sqlserver_brz/brz-jh_cfparg.ms.sql
 -- Source model: bronze_jh_cfparg
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_cfparg AS
 WITH landing_data AS (
@@ -3768,7 +3768,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_cfparg IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_cfparg in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_cfusrflds.sql
+-- From sqlserver_brz/brz-jh_cfusrflds.ms.sql
 -- Source model: bronze_jh_cfusrflds
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_cfusrflds AS
 WITH landing_data AS (
@@ -3807,7 +3807,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_cfusrflds IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_cfusrflds in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_ddaams.sql
+-- From sqlserver_brz/brz-jh_ddaams.ms.sql
 -- Source model: bronze_jh_ddaams
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_ddaams AS
 WITH landing_data AS (
@@ -4036,7 +4036,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_ddaams IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_ddaams in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_ddaat1.sql
+-- From sqlserver_brz/brz-jh_ddaat1.ms.sql
 -- Source model: bronze_jh_ddaat1
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_ddaat1 AS
 WITH landing_data AS (
@@ -4083,7 +4083,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_ddaat1 IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_ddaat1 in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_ddalis_t.sql
+-- From sqlserver_brz/brz-jh_ddalis_t.ms.sql
 -- Source model: bronze_jh_ddalis_t
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_ddalis_t AS
 WITH landing_data AS (
@@ -4188,7 +4188,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_ddalis_t IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_ddalis_t in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_ddetfh.sql
+-- From sqlserver_brz/brz-jh_ddetfh.ms.sql
 -- Source model: bronze_jh_ddefth
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_ddefth AS
 WITH landing_data AS (
@@ -4229,7 +4229,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_ddefth IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_ddetfh in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_ddhist.sql
+-- From sqlserver_brz/brz-jh_ddhist.ms.sql
 -- Source model: bronze_jh_ddhist
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_ddhist AS
 WITH landing_data AS (
@@ -4342,7 +4342,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_ddhist IS
 'Bronze Jack Henry core banking table containing transaction, posting, activity history, and reconciliation details sourced from landing_jh.default.jh_ddhist in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_ddmant.sql
+-- From sqlserver_brz/brz-jh_ddmant.ms.sql
 -- Source model: bronze_jh_ddmant
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_ddmant AS
 WITH landing_data AS (
@@ -4405,7 +4405,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_ddmant IS
 'Bronze Jack Henry core banking table containing transaction, posting, activity history, and reconciliation details sourced from landing_jh.default.jh_ddmant in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_ddmast.sql
+-- From sqlserver_brz/brz-jh_ddmast.ms.sql
 -- Source model: bronze_jh_ddmast
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_ddmast AS
 WITH landing_data AS (
@@ -6046,7 +6046,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_ddmast IS
 'Bronze Jack Henry core banking table containing deposit account, certificate, posting, balance, and parameter attributes sourced from landing_jh.default.jh_ddmast in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_ddmasteom.sql
+-- From sqlserver_brz/brz-jh_ddmasteom.ms.sql
 -- Source model: bronze_jh_ddmasteom
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_ddmasteom AS
 WITH landing_data AS (
@@ -7675,7 +7675,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_ddmasteom IS
 'Bronze Jack Henry core banking table containing deposit account, certificate, posting, balance, and parameter attributes sourced from landing_jh.default.jh_ddmasteom in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_ddpar1.sql
+-- From sqlserver_brz/brz-jh_ddpar1.ms.sql
 -- Source model: bronze_jh_ddpar1
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_ddpar1 AS
 WITH landing_data AS (
@@ -7734,7 +7734,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_ddpar1 IS
 'Bronze Jack Henry core banking table containing deposit account, certificate, posting, balance, and parameter attributes sourced from landing_jh.default.jh_ddpar1 in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_ddpar2.sql
+-- From sqlserver_brz/brz-jh_ddpar2.ms.sql
 -- Source model: bronze_jh_ddpar2
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_ddpar2 AS
 WITH landing_data AS (
@@ -8855,7 +8855,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_ddpar2 IS
 'Bronze Jack Henry core banking table containing deposit account, certificate, posting, balance, and parameter attributes sourced from landing_jh.default.jh_ddpar2 in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_ddpar3.sql
+-- From sqlserver_brz/brz-jh_ddpar3.ms.sql
 -- Source model: bronze_jh_ddpar3
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_ddpar3 AS
 WITH landing_data AS (
@@ -8940,7 +8940,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_ddpar3 IS
 'Bronze Jack Henry core banking table containing deposit account, certificate, posting, balance, and parameter attributes sourced from landing_jh.default.jh_ddpar3 in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_ddpar4.sql
+-- From sqlserver_brz/brz-jh_ddpar4.ms.sql
 -- Source model: bronze_jh_ddpar4
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_ddpar4 AS
 WITH landing_data AS (
@@ -8971,7 +8971,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_ddpar4 IS
 'Bronze Jack Henry core banking table containing deposit account, certificate, posting, balance, and parameter attributes sourced from landing_jh.default.jh_ddpar4 in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_ddpost.sql
+-- From sqlserver_brz/brz-jh_ddpost.ms.sql
 -- Source model: bronze_jh_ddpost
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_ddpost AS
 WITH landing_data AS (
@@ -9676,7 +9676,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_ddpost IS
 'Bronze Jack Henry core banking table containing transaction, posting, activity history, and reconciliation details sourced from landing_jh.default.jh_ddpost in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_dmilay.sql
+-- From sqlserver_brz/brz-jh_dmilay.ms.sql
 -- Source model: bronze_jh_dmilay
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_dmilay AS
 WITH landing_data AS (
@@ -10085,7 +10085,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_dmilay IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_dmilay in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_glhist.sql
+-- From sqlserver_brz/brz-jh_glhist.ms.sql
 -- Source model: bronze_jh_glhist
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_glhist AS
 WITH landing_data AS (
@@ -10174,7 +10174,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_glhist IS
 'Bronze Jack Henry core banking table containing transaction, posting, activity history, and reconciliation details sourced from landing_jh.default.jh_glhist in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_glhist_datbga.sql
+-- From sqlserver_brz/brz-jh_glhist_datbga.ms.sql
 -- Source model: bronze_jh_glhist_datbga
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_glhist_datbga AS
 WITH landing_data AS (
@@ -10263,7 +10263,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_glhist_datbga IS
 'Bronze Jack Henry core banking table containing transaction, posting, activity history, and reconciliation details sourced from landing_jh.default.jh_glhist_datbga in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_glhist_datsec.sql
+-- From sqlserver_brz/brz-jh_glhist_datsec.ms.sql
 -- Source model: bronze_jh_glhist_datsec
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_glhist_datsec AS
 WITH landing_data AS (
@@ -10352,7 +10352,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_glhist_datsec IS
 'Bronze Jack Henry core banking table containing transaction, posting, activity history, and reconciliation details sourced from landing_jh.default.jh_glhist_datsec in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_glint1.sql
+-- From sqlserver_brz/brz-jh_glint1.ms.sql
 -- Source model: bronze_jh_glint1
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_glint1 AS
 WITH landing_data AS (
@@ -10399,7 +10399,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_glint1 IS
 'Bronze Jack Henry core banking table containing general ledger, finance reporting, account mapping, and management reporting attributes sourced from landing_jh.default.jh_glint1 in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_glmast.sql
+-- From sqlserver_brz/brz-jh_glmast.ms.sql
 -- Source model: bronze_jh_glmast
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_glmast AS
 WITH landing_data AS (
@@ -10822,7 +10822,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_glmast IS
 'Bronze Jack Henry core banking table containing general ledger, finance reporting, account mapping, and management reporting attributes sourced from landing_jh.default.jh_glmast in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_glpar9.sql
+-- From sqlserver_brz/brz-jh_glpar9.ms.sql
 -- Source model: bronze_jh_glpar9
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_glpar9 AS
 WITH landing_data AS (
@@ -10849,7 +10849,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_glpar9 IS
 'Bronze Jack Henry core banking table containing general ledger, finance reporting, account mapping, and management reporting attributes sourced from landing_jh.default.jh_glpar9 in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_jhclas.sql
+-- From sqlserver_brz/brz-jh_jhclas.ms.sql
 -- Source model: bronze_jh_jhclas
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_jhclas AS
 WITH landing_data AS (
@@ -10880,7 +10880,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_jhclas IS
 'Bronze Jack Henry core banking table containing reference code, mapping, classification, and lookup values sourced from landing_jh.default.jh_jhclas in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_jhctry.sql
+-- From sqlserver_brz/brz-jh_jhctry.ms.sql
 -- Source model: bronze_jh_jhctry
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_jhctry AS
 WITH landing_data AS (
@@ -10927,7 +10927,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_jhctry IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_jhctry in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_jhmast.sql
+-- From sqlserver_brz/brz-jh_jhmast.ms.sql
 -- Source model: bronze_jh_jhmast
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_jhmast AS
 WITH landing_data AS (
@@ -11044,7 +11044,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_jhmast IS
 'Bronze Jack Henry core banking table containing customer, client, relationship, registration, and identity attributes sourced from landing_jh.default.jh_jhmast in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_jhoffr.sql
+-- From sqlserver_brz/brz-jh_jhoffr.ms.sql
 -- Source model: bronze_jh_jhoffr
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_jhoffr AS
 WITH landing_data AS (
@@ -11087,7 +11087,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_jhoffr IS
 'Bronze Jack Henry core banking table containing officer, team, user role, and responsibility assignments sourced from landing_jh.default.jh_jhoffr in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_lcmast.sql
+-- From sqlserver_brz/brz-jh_lcmast.ms.sql
 -- Source model: bronze_jh_lcmast
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_lcmast AS
 WITH landing_data AS (
@@ -11206,7 +11206,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_lcmast IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_lcmast in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_lnepos.sql
+-- From sqlserver_brz/brz-jh_lnepos.ms.sql
 -- Source model: bronze_jh_lnepos
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_lnepos AS
 WITH landing_data AS (
@@ -11287,7 +11287,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_lnepos IS
 'Bronze Jack Henry core banking table containing transaction, posting, activity history, and reconciliation details sourced from landing_jh.default.jh_lnepos in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_lnfpst.sql
+-- From sqlserver_brz/brz-jh_lnfpst.ms.sql
 -- Source model: bronze_jh_lnfpst
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_lnfpst AS
 WITH landing_data AS (
@@ -11368,7 +11368,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_lnfpst IS
 'Bronze Jack Henry core banking table containing transaction, posting, activity history, and reconciliation details sourced from landing_jh.default.jh_lnfpst in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_lnhist.sql
+-- From sqlserver_brz/brz-jh_lnhist.ms.sql
 -- Source model: bronze_jh_lnmant
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_lnmant AS
 WITH landing_data AS (
@@ -11433,7 +11433,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_lnmant IS
 'Bronze Jack Henry core banking table containing transaction, posting, activity history, and reconciliation details sourced from landing_jh.default.jh_lnhist in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_lnmant.sql
+-- From sqlserver_brz/brz-jh_lnmant.ms.sql
 -- Source model: bronze_jh_lnmant
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_lnmant AS
 WITH landing_data AS (
@@ -11498,7 +11498,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_lnmant IS
 'Bronze Jack Henry core banking table containing transaction, posting, activity history, and reconciliation details sourced from landing_jh.default.jh_lnmant in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_lnmast.sql
+-- From sqlserver_brz/brz-jh_lnmast.ms.sql
 -- Source model: bronze_jh_lnmast
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_lnmast AS
 WITH landing_data AS (
@@ -12957,7 +12957,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_lnmast IS
 'Bronze Jack Henry core banking table containing loan account, payment, participation, balance, and servicing attributes sourced from landing_jh.default.jh_lnmast in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_lnmasteom.sql
+-- From sqlserver_brz/brz-jh_lnmasteom.ms.sql
 -- Source model: bronze_jh_lnmasteom
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_lnmasteom AS
 WITH landing_data AS (
@@ -14386,7 +14386,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_lnmasteom IS
 'Bronze Jack Henry core banking table containing loan account, payment, participation, balance, and servicing attributes sourced from landing_jh.default.jh_lnmasteom in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_lnpar2.sql
+-- From sqlserver_brz/brz-jh_lnpar2.ms.sql
 -- Source model: bronze_jh_lnpar2
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_lnpar2 AS
 WITH landing_data AS (
@@ -15049,7 +15049,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_lnpar2 IS
 'Bronze Jack Henry core banking table containing loan account, payment, participation, balance, and servicing attributes sourced from landing_jh.default.jh_lnpar2 in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_lnpar3.sql
+-- From sqlserver_brz/brz-jh_lnpar3.ms.sql
 -- Source model: bronze_jh_lnpar3
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_lnpar3 AS
 WITH landing_data AS (
@@ -15122,7 +15122,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_lnpar3 IS
 'Bronze Jack Henry core banking table containing loan account, payment, participation, balance, and servicing attributes sourced from landing_jh.default.jh_lnpar3 in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_lnpar9.sql
+-- From sqlserver_brz/brz-jh_lnpar9.ms.sql
 -- Source model: bronze_jh_lnpar9
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_lnpar9 AS
 WITH landing_data AS (
@@ -15149,7 +15149,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_lnpar9 IS
 'Bronze Jack Henry core banking table containing loan account, payment, participation, balance, and servicing attributes sourced from landing_jh.default.jh_lnpar9 in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_lnpdue.sql
+-- From sqlserver_brz/brz-jh_lnpdue.ms.sql
 -- Source model: bronze_jh_lnpdue
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_lnpdue AS
 WITH landing_data AS (
@@ -15264,7 +15264,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_lnpdue IS
 'Bronze Jack Henry core banking table containing loan account, payment, participation, balance, and servicing attributes sourced from landing_jh.default.jh_lnpdue in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_lnpost1.sql
+-- From sqlserver_brz/brz-jh_lnpost1.ms.sql
 -- Source model: bronze_jh_lnpost1
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_lnpost1 AS
 WITH landing_data AS (
@@ -16773,7 +16773,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_lnpost1 IS
 'Bronze Jack Henry core banking table containing transaction, posting, activity history, and reconciliation details sourced from landing_jh.default.jh_lnpost1 in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_lnpost2.sql
+-- From sqlserver_brz/brz-jh_lnpost2.ms.sql
 -- Source model: bronze_jh_lnpost2
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_lnpost2 AS
 WITH landing_data AS (
@@ -18278,7 +18278,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_lnpost2 IS
 'Bronze Jack Henry core banking table containing transaction, posting, activity history, and reconciliation details sourced from landing_jh.default.jh_lnpost2 in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_lnspos.sql
+-- From sqlserver_brz/brz-jh_lnspos.ms.sql
 -- Source model: bronze_jh_lnspos
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_lnspos AS
 WITH landing_data AS (
@@ -19121,7 +19121,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_lnspos IS
 'Bronze Jack Henry core banking table containing transaction, posting, activity history, and reconciliation details sourced from landing_jh.default.jh_lnspos in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_nvmast.sql
+-- From sqlserver_brz/brz-jh_nvmast.ms.sql
 -- Source model: bronze_jh_nvmast
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_nvmast AS
 WITH landing_data AS (
@@ -19202,7 +19202,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_nvmast IS
 'Bronze Jack Henry core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_jh.default.jh_nvmast in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_stdesc.sql
+-- From sqlserver_brz/brz-jh_stdesc.ms.sql
 -- Source model: bronze_jh_stdesc
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_stdesc AS
 WITH landing_data AS (
@@ -19273,7 +19273,7 @@ SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze_jh.default.bronze_jh_stdesc IS
 'Bronze Jack Henry core banking table containing reference code, mapping, classification, and lookup values sourced from landing_jh.default.jh_stdesc in the Jack Henry landing catalog for downstream warehouse parity and analytics.';
 
--- From sqlserver/brz-jh_transactions.sql
+-- From sqlserver_brz/brz-jh_transactions.ms.sql
 -- Source model: bronze_jh_transactions
 CREATE OR REPLACE TABLE bronze_jh.default.bronze_jh_transactions AS
 WITH landing_data AS (

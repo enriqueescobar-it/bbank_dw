@@ -1,5 +1,5 @@
 -- Databricks SQL for source: cos
--- Generated from sqlserver/brz-cos.sql
+-- Generated from sqlserver_brz/brz-cos.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing;
 USE CATALOG landing;

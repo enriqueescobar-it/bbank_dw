@@ -84,12 +84,12 @@ Use this plan for every validation pass:
    - Landing files live under `dbx_landing/`.
    - Bronze files live under `dbx_bronze/`.
    - Landing targets use `landing.default` or a source-specific landing catalog.
-   - Bronze targets use `bronze.default`.
+   - Bronze targets use `bronze.default` unless a source-specific bronze catalog is intentional, such as `bronze_jh.default`.
    - Bronze sources read from the matching landing catalog.
 6. Compare actual SQL against those expectations.
 7. Report only actionable findings. Do not invent missing source columns or assume exceptions.
 
-When the user says to refresh files in memory, treat the current filesystem as the source of truth. Re-list `sqlserver/`, `dbx_landing/`, and `dbx_bronze/`, then re-read the files in scope before auditing or repairing, even if similar files were read earlier in the conversation.
+When the user says to refresh files in memory, treat the current filesystem as the source of truth. Re-list `sqlserver_brz/`, `dbx_landing/`, and `dbx_bronze/`, then re-read the files in scope before auditing or repairing, even if similar files were read earlier in the conversation.
 
 ## Static Checks
 

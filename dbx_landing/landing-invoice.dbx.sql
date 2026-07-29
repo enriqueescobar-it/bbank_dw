@@ -1,5 +1,5 @@
 -- Databricks SQL for source: invoice
--- Generated from sqlserver/brz-invoice.sql
+-- Generated from sqlserver_brz/brz-invoice.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing;
 USE CATALOG landing;

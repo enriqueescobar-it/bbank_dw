@@ -1,5 +1,5 @@
 -- Databricks SQL for source: apex
--- Generated from sqlserver/brz-apex.sql
+-- Generated from sqlserver_brz/brz-apex.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing;
 USE CATALOG landing;

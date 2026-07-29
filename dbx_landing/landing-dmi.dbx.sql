@@ -1,5 +1,5 @@
 -- Databricks SQL for source: dmi
--- Generated from sqlserver/brz-dmi.sql
+-- Generated from sqlserver_brz/brz-dmi.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing;
 USE CATALOG landing;

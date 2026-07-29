@@ -1,5 +1,5 @@
 -- Databricks SQL for source: manual
--- Generated from sqlserver/brz-manual.sql
+-- Generated from sqlserver_brz/brz-manual.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing;
 USE CATALOG landing;

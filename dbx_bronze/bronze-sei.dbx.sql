@@ -1,5 +1,5 @@
 -- Databricks SQL for bronze catalog
--- Generated from sqlserver/brz-sei.sql
+-- Generated from sqlserver_brz/brz-sei.ms.sql
 
 CREATE CATALOG IF NOT EXISTS bronze_sei;
 USE CATALOG bronze_sei;

@@ -1,5 +1,5 @@
 -- Databricks SQL for source: jh_lnfpst
--- Generated from sqlserver/brz-jh_lnfpst.sql
+-- Generated from sqlserver_brz/brz-jh_lnfpst.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_jh;
 USE CATALOG landing_jh;

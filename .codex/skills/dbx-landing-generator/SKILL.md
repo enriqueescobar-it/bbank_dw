@@ -1,6 +1,6 @@
 ---
 name: dbx-landing-generator
-description: Generate or repair Databricks landing SQL files under dbx_landing from SQL Server SQL files, dbt SQL Server models, or sqlserver_desc metadata. Use when creating landing tables in the correct landing catalog, including landing.default, landing_jh.default, landing_pershing.default, and landing_sei.default, deterministic 10-row seed data, meaningful table comments, row-count checks, and landing-only DBX files without touching bronze-layer SQL.
+description: Generate or repair Databricks landing SQL files under dbx_landing from SQL Server bronze SQL files under sqlserver_brz, dbt SQL Server models, or sqlserver_desc metadata. Use when creating landing tables in the correct landing catalog, including landing.default, landing_jh.default, landing_pershing.default, and landing_sei.default, deterministic 10-row seed data, meaningful table comments, row-count checks, and landing-only DBX files without touching bronze-layer SQL.
 ---
 
 # DBX Landing Generator
@@ -19,7 +19,7 @@ This skill owns landing-file structure, target landing table naming, generated s
 4. Preserve user edits unless the user explicitly asks to replace them.
 5. Do not edit `dbx_bronze/` or any bronze SQL file.
 
-When the user says to refresh files in memory, do not rely on prior conversation context. Re-list the current files on disk with `rg --files sqlserver dbx_landing dbx_bronze`, then re-read the source artifacts, existing landing targets, and any same-family examples needed for the current task.
+When the user says to refresh files in memory, do not rely on prior conversation context. Re-list the current files on disk with `rg --files sqlserver_brz dbx_landing dbx_bronze`, then re-read the source artifacts, existing landing targets, and any same-family examples needed for the current task.
 
 ## Workflow
 
@@ -28,7 +28,7 @@ flowchart TD
     A["Landing generation request"] --> B["Read current dbx_landing examples"]
     B --> C["Identify source input type"]
 
-    C --> C1["sqlserver/*.sql"]
+    C --> C1["sqlserver_brz/*.ms.sql"]
     C --> C2["sqlserver_dbt/*.dbt.sql"]
     C --> C3["sqlserver_desc/*-desc.txt"]
     C --> C4["Existing dbx_landing repair"]
@@ -94,7 +94,7 @@ Extract:
 
 Remove dbt config, Jinja conditionals, `{{ this }}`, and logging blocks from final `.dbx.sql`.
 
-### `sqlserver/*.sql`
+### `sqlserver_brz/*.ms.sql`
 
 Parse source table blocks and SELECT/CTE logic conservatively. Prefer structured source columns from metadata or explicit SELECT lists over broad regex assumptions. Use existing landing files from the same source family as the naming/style guide.
 
@@ -124,7 +124,7 @@ Examples:
 -> landing_pershing.default.pershingdataprod_transfer
 -> dbx_landing/landing-pershingdataprod_transfer.dbx.sql
 
-sqlserver/brz-jh_glmast.sql
+sqlserver_brz/brz-jh_glmast.ms.sql
 -> landing_jh.default.jh_glmast
 -> dbx_landing/landing-jh_glmast.dbx.sql
 
