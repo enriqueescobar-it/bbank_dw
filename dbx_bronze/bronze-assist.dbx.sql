@@ -63,7 +63,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_assist_codfil_ref IS
-'Bronze table bronze_assist_codfil_ref contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze Assist core banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing.default.assist_codfil_ref in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-assist.dbx.sql
@@ -134,7 +134,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_assist_customer_addl_fields IS
-'Bronze table bronze_assist_customer_addl_fields contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze Assist core banking table containing customer, client, relationship, registration, and identity attributes sourced from landing.default.assist_customer_addl_fields in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-assist.dbx.sql
@@ -183,7 +183,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_assist_customer_class IS
-'Bronze table bronze_assist_customer_class contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze Assist core banking table containing customer, client, relationship, registration, and identity attributes sourced from landing.default.assist_customer_class in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-assist.dbx.sql
@@ -284,7 +284,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_assist_customer_tbl IS
-'Bronze table bronze_assist_customer_tbl contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze Assist core banking table containing customer, client, relationship, registration, and identity attributes sourced from landing.default.assist_customer_tbl in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-assist.dbx.sql
@@ -379,7 +379,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_assist_master_account_tbl IS
-'Bronze table bronze_assist_master_account_tbl contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze Assist core banking table containing account master, ownership, status, balance, and lifecycle attributes sourced from landing.default.assist_master_account_tbl in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-assist.dbx.sql
@@ -432,7 +432,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_assist_officers_costcenter IS
-'Bronze table bronze_assist_officers_costcenter contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze Assist core banking table containing officer, team, user role, and responsibility assignments sourced from landing.default.assist_officers_costcenter in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-assist.dbx.sql
@@ -525,5 +525,5 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_assist_transactions_tbl IS
-'Bronze table bronze_assist_transactions_tbl contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze Assist core banking table containing transaction, posting, activity history, and reconciliation details sourced from landing.default.assist_transaction_tbl in the general landing catalog for downstream warehouse parity and analytics.';
 

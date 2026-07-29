@@ -176,6 +176,8 @@ COMMENT ON TABLE bronze.default.<bronze_table> IS
 
 Use meaningful comments when the source context is clear. Generic bronze comments are acceptable only when no useful business context is available.
 
+Do not put apostrophes or single quotes inside `COMMENT ON TABLE ... IS '<description>';` text. Phrases such as `system's` break the SQL string unless escaped, so prefer wording like `system source`, `source system`, or `system-level`. Keep comment text plain ASCII unless the source file already requires otherwise.
+
 ## Conversion Rules
 
 Follow `$sqlserver-to-dbx-converter` rules, with these bronze-specific constraints:
@@ -204,6 +206,8 @@ Use a domain-aware description when possible:
 - Transactions: movement, amount, posting, source, reference, reconciliation.
 - Positions/assets: holdings, market value, quantity, security identifiers.
 
+Fix obvious English typos in generated descriptions when you see them. Do not "fix" source-of-truth object names, table names, column names, or model names merely because they look misspelled; preserve names from SQL Server headers, source references, and existing DBX files unless the user explicitly asks for a rename.
+
 ## Validation Checklist
 
 Before finishing:
@@ -217,6 +221,7 @@ Before finishing:
 - All referenced landing columns exist.
 - Reserved identifiers are backticked.
 - Every created bronze table has a `COMMENT ON TABLE`.
+- Table comments contain no apostrophes or unescaped single quotes inside the description literal.
 - No tab characters are introduced.
 
 ## Test Prompts

@@ -80,7 +80,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_file_apex_monthly_accounts IS
-'Bronze table bronze_file_apex_monthly_accounts contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze manual file table containing account master, ownership, status, balance, and lifecycle attributes sourced from landing.default.file_apex_monthly_accounts in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-manual.dbx.sql
@@ -158,7 +158,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_file_apex_monthly_credit IS
-'Bronze table bronze_file_apex_monthly_credit contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze manual file table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing.default.file_apex_monthly_credit in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-manual.dbx.sql
@@ -234,7 +234,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_file_apex_monthly_execution IS
-'Bronze table bronze_file_apex_monthly_execution contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze manual file table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing.default.file_apex_monthly_execution in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-manual.dbx.sql
@@ -294,7 +294,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_file_apex_monthly_fdic IS
-'Bronze table bronze_file_apex_monthly_fdic contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze manual file table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing.default.file_apex_monthly_fdic in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-manual.dbx.sql
@@ -424,7 +424,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_file_apex_monthly_trades IS
-'Bronze table bronze_file_apex_monthly_trades contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze manual file table containing transaction, posting, activity history, and reconciliation details sourced from landing.default.file_apex_monthly_trades in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-manual.dbx.sql
@@ -496,7 +496,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_file_bflcrtran IS
-'Bronze table bronze_file_bflcrtran contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze manual file table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing.default.file_bflcrtran in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-manual.dbx.sql
@@ -551,7 +551,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_file_biu_activity IS
-'Bronze table bronze_file_biu_activity contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze manual file table containing transaction, posting, activity history, and reconciliation details sourced from landing.default.file_biu_activity in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-manual.dbx.sql
@@ -841,7 +841,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_file_fedlink_inc IS
-'Bronze table bronze_file_fedlink_inc contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze manual file table containing cash movement, non-cash activity, file transfer, and reconciliation details sourced from landing.default.file_fedlink_inc in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-manual.dbx.sql
@@ -1131,7 +1131,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_file_fedlink_out IS
-'Bronze table bronze_file_fedlink_out contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze manual file table containing cash movement, non-cash activity, file transfer, and reconciliation details sourced from landing.default.file_fedlink_out in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-manual.dbx.sql
@@ -1186,7 +1186,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_file_rdci IS
-'Bronze table bronze_file_rdci contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze manual file table containing cash movement, non-cash activity, file transfer, and reconciliation details sourced from landing.default.file_rdci in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-manual.dbx.sql
@@ -1235,7 +1235,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_file_trailer_fees IS
-'Bronze table bronze_file_trailer_fees contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze manual file table containing fee schedule, computation, package, and billing attributes sourced from landing.default.file_trailer_fees in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-manual.dbx.sql
@@ -1322,5 +1322,5 @@ bronze_data AS (
 
 SELECT *, current_timestamp() AS LOADED_AT FROM BRONZE_DATA;
 COMMENT ON TABLE bronze.default.bronze_file_trailer_fees_accruals IS
-'Bronze table bronze_file_trailer_fees_accruals contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze manual file table containing fee schedule, computation, package, and billing attributes sourced from landing.default.file_trailer_fees_accruals in the general landing catalog for downstream warehouse parity and analytics.';
 

@@ -148,6 +148,12 @@ Double quotes around source system names in comments can stay comments. Double q
 
 Preserve original identifier casing when quoting. Do not normalize case unless the generator or local file convention requires it.
 
+## SQL Comment Literal Safety
+
+For generated Databricks `COMMENT ON TABLE ... IS '<description>';` statements, do not put apostrophes or single quotes inside the description text. A phrase like `system's landing data` terminates the SQL string unless escaped. Prefer equivalent wording without an apostrophe, such as `system landing data`, `source system data`, or `system-level data`.
+
+Fix obvious English typos in generated description text. Do not treat source object names, model names, table names, or column names as typos; preserve them exactly unless the user explicitly requests a rename or the source-of-truth file proves the current DBX object name is wrong.
+
 ## Reserved And Ambiguous Identifiers
 
 Quote these names with backticks when they appear as column names or aliases:
@@ -238,6 +244,7 @@ Before considering a conversion complete:
 - No executable `CONVERT(` remains.
 - No executable `GETUTCDATE()` or `GETDATE()` remains.
 - No executable SQL Server bracket identifiers remain.
+- Generated `COMMENT ON TABLE` descriptions do not contain apostrophes or unescaped single quotes.
 - No dbt Jinja remains in `.dbx.sql` output unless explicitly requested.
 - Source-data conversions use `TRY_CAST`, not blind `CAST`.
 - SQL Server `FLOAT` becomes Databricks `DOUBLE`.

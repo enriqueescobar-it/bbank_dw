@@ -56,7 +56,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_mis_pershing_officer_code IS
-'Bronze table bronze_mis_pershing_officer_code contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze MIS reporting table containing officer, team, user role, and responsibility assignments sourced from landing.default.file_mis_pershing_officer_code in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-mis.dbx.sql
@@ -120,5 +120,5 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_mis_team_officers_v2 IS
-'Bronze table bronze_mis_team_officers_v2 contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze MIS reporting table containing officer, team, user role, and responsibility assignments sourced from landing.default.file_mis_team_officers_v2 in the general landing catalog for downstream warehouse parity and analytics.';
 

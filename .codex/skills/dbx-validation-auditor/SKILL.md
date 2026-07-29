@@ -103,6 +103,7 @@ SQL Server [identifier] brackets
 blind CAST( on source data
 source-family.default catalogs in generated DBX SQL
 missing COMMENT ON TABLE
+apostrophes or unescaped single quotes inside COMMENT ON TABLE description literals
 tab characters
 reserved identifiers without backticks
 ```
@@ -133,6 +134,7 @@ For `dbx_bronze/*.dbx.sql`, validate:
 - SQL Server functions are rewritten to Databricks SQL equivalents.
 - JSON extraction is not used when flattened landing columns are available.
 - Every bronze table has a matching `COMMENT ON TABLE`.
+- `COMMENT ON TABLE` description literals do not contain apostrophes or unescaped single quotes.
 - No landing files are modified during bronze repairs.
 
 ## Cross-Layer Checks
@@ -176,6 +178,7 @@ Only repair files when explicitly asked. When repairing:
 - Do not regenerate full files unless structurally necessary.
 - Do not touch landing while repairing bronze unless the user asks.
 - Do not touch bronze while repairing landing unless the user asks.
+- Fix obvious English typos in generated comments when encountered, but do not rename source-of-truth tables, columns, models, or source references just because they look misspelled.
 - Re-run the relevant static checks after editing.
 
 ## Test Prompts

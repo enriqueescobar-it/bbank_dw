@@ -627,7 +627,7 @@ bronze_data AS(
 
 SELECT bd.*, current_timestamp() AS LOADED_AT FROM bronze_data bd;
 COMMENT ON TABLE bronze.default.bronze_fis_cd300 IS
-'Bronze table bronze_fis_cd300 contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze FIS card and deposit table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing.default.fis_cd300 in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-fis.dbx.sql
@@ -703,7 +703,7 @@ bronze_data AS(
 
 SELECT *,current_timestamp() AS LOADED_AT FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_fis_ethos_interchange_fee_data IS
-'Bronze table bronze_fis_ethos_interchange_fee_data contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze FIS card and deposit table containing fee schedule, computation, package, and billing attributes sourced from landing.default.fis_ethos_interchange_fee_data in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-fis.dbx.sql
@@ -752,5 +752,5 @@ WITH landing_data AS (
 
 SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
 COMMENT ON TABLE bronze.default.bronze_fis_lp_510 IS
-'Bronze table bronze_fis_lp_510 contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze FIS card and deposit table containing card processing, interchange, product, and operational attributes sourced from landing.default.fis_lp_510 in the general landing catalog for downstream warehouse parity and analytics.';
 

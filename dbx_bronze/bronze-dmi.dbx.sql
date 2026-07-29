@@ -230,7 +230,7 @@ WITH landing_data AS (
 
 SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
 COMMENT ON TABLE bronze.default.bronze_dmi_bacmast IS
-'Bronze table bronze_dmi_bacmast contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze DMI mortgage servicing table containing account master, ownership, status, balance, and lifecycle attributes sourced from landing.default.dmi_bacmast in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-dmi.dbx.sql
@@ -286,7 +286,7 @@ FROM  cte_bronze_dmi_disb
 
 SELECT *, current_timestamp() AS LOADED_AT FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_dmi_disb IS
-'Bronze table bronze_dmi_disb contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze DMI mortgage servicing table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing.default.dmi_disb in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-dmi.dbx.sql
@@ -387,7 +387,7 @@ bronze_data as (
 
 SELECT *, current_timestamp() AS LOADED_AT FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_dmi_e006 IS
-'Bronze table bronze_dmi_e006 contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze DMI mortgage servicing table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing.default.dmi_e006 in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-dmi.dbx.sql
@@ -539,7 +539,7 @@ SELECT
     current_timestamp() AS LOADED_AT
 FROM cte_data;
 COMMENT ON TABLE bronze.default.bronze_dmi_gl_mapping IS
-'Bronze table bronze_dmi_gl_mapping contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze DMI mortgage servicing table containing reference code, mapping, classification, and lookup values sourced from curated static reference data or landing-derived inputs for downstream warehouse parity and analytics.';
 
 
 -- From bronze-dmi.dbx.sql
@@ -599,7 +599,7 @@ FROM  cte_bronze_dmi_non_cash
 
 SELECT *, current_timestamp() AS LOADED_AT FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_dmi_non_cash IS
-'Bronze table bronze_dmi_non_cash contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze DMI mortgage servicing table containing cash movement, non-cash activity, file transfer, and reconciliation details sourced from landing.default.dmi_noncash in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-dmi.dbx.sql
@@ -663,7 +663,7 @@ WITH cte_dmi_P110 AS (
 
 SELECT *,current_timestamp() AS LOADED_AT FROM cte_dmi_P110;
 COMMENT ON TABLE bronze.default.bronze_dmi_p110 IS
-'Bronze table bronze_dmi_p110 contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze DMI mortgage servicing table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing.default.dmi_p110 in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-dmi.dbx.sql
@@ -715,7 +715,7 @@ WITH cte_dmi_P132 AS (
 
 SELECT *,current_timestamp() AS LOADED_AT FROM cte_dmi_P132;
 COMMENT ON TABLE bronze.default.bronze_dmi_p132 IS
-'Bronze table bronze_dmi_p132 contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze DMI mortgage servicing table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing.default.dmi_p132 in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-dmi.dbx.sql
@@ -799,7 +799,7 @@ FROM  cte_bronze_dmi_pmt A
 
 SELECT *, current_timestamp() AS LOADED_AT FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_dmi_pmt IS
-'Bronze table bronze_dmi_pmt contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze DMI mortgage servicing table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing.default.dmi_pmt in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-dmi.dbx.sql
@@ -923,7 +923,7 @@ bronze_data as (
 
 SELECT *, current_timestamp() AS LOADED_AT FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_dmi_s2tt IS
-'Bronze table bronze_dmi_s2tt contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze DMI mortgage servicing table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing.default.dmi_s2tt in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-dmi.dbx.sql
@@ -1024,7 +1024,7 @@ bronze_data as (
 
 SELECT *, current_timestamp() AS LOADED_AT FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_dmi_s2tv IS
-'Bronze table bronze_dmi_s2tv contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze DMI mortgage servicing table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing.default.dmi_s2tv in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-dmi.dbx.sql
@@ -1074,7 +1074,7 @@ WITH cte_dmi_S5AZ AS (
 
 SELECT *,current_timestamp() AS LOADED_AT FROM cte_dmi_S5AZ;
 COMMENT ON TABLE bronze.default.bronze_dmi_s5az IS
-'Bronze table bronze_dmi_s5az contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze DMI mortgage servicing table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing.default.dmi_s5az in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-dmi.dbx.sql
@@ -1152,7 +1152,7 @@ bronze_data as (
 
 SELECT *, current_timestamp() AS LOADED_AT FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_dmi_t69w IS
-'Bronze table bronze_dmi_t69w contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze DMI mortgage servicing table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing.default.dmi_t69w in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-dmi.dbx.sql
@@ -1295,5 +1295,5 @@ casted_dmi_transaction_codes AS (
 
 SELECT *, current_timestamp() AS LOADED_AT FROM casted_dmi_transaction_codes;
 COMMENT ON TABLE bronze.default.bronze_dmi_transaction_codes_mapping IS
-'Bronze table bronze_dmi_transaction_codes_mapping contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze DMI mortgage servicing table containing reference code, mapping, classification, and lookup values sourced from curated static reference data or landing-derived inputs for downstream warehouse parity and analytics.';
 

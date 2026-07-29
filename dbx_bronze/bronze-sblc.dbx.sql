@@ -142,7 +142,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_sblc_lcmaster IS
-'Bronze table bronze_sblc_lcmaster contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze SBLC letter of credit table containing standby letter of credit master and transaction attributes sourced from landing.default.sblc_lcmaster in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sblc.dbx.sql
@@ -190,5 +190,5 @@ with landing_data as (
 
 SELECT *,current_timestamp() AS LOADED_AT FROM landing_data;
 COMMENT ON TABLE bronze.default.bronze_sblc_lctranx IS
-'Bronze table bronze_sblc_lctranx contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze SBLC letter of credit table containing standby letter of credit master and transaction attributes sourced from landing.default.sblc_lctranx in the general landing catalog for downstream warehouse parity and analytics.';
 

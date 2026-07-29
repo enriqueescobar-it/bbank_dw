@@ -1,15 +1,15 @@
 -- Databricks SQL for bronze catalog
 -- Generated from sqlserver/brz-sei.sql
 
-CREATE CATALOG IF NOT EXISTS bronze_sei;
-USE CATALOG bronze_sei;
+CREATE CATALOG IF NOT EXISTS bronze;
+USE CATALOG bronze;
 
 CREATE SCHEMA IF NOT EXISTS default;
 USE SCHEMA default;
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_accountoptionalfields
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_accountoptionalfields AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_accountoptionalfields AS
 -- NAME: BRONZE_SEI_ACCOUNTOPTIONALFIELDS
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -51,13 +51,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_accountoptionalfields IS
-'Bronze table bronze_sei_accountoptionalfields contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_accountoptionalfields IS
+'Bronze SEI wealth platform table containing optional field attributes and extension values sourced from landing_sei.default.sei_ovn_accountoptionalfields in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_accounts
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_accounts AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_accounts AS
 -- NAME: BRONZE_SEI_ACCOUNTS
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -375,13 +375,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_accounts IS
-'Bronze table bronze_sei_accounts contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_accounts IS
+'Bronze SEI wealth platform table containing account master, ownership, status, balance, and lifecycle attributes sourced from landing_sei.default.sei_ovn_accounts in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_activeblocks
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_activeblocks AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_activeblocks AS
 -- NAME: BRONZE_SEI_ACTIVEBLOCKS
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -449,13 +449,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_activeblocks IS
-'Bronze table bronze_sei_activeblocks contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_activeblocks IS
+'Bronze SEI wealth platform table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_sei.default.sei_ovn_activeblocks in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_assetinvclas
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_assetinvclas AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_assetinvclas AS
 -- NAME: BRONZE_SEI_ASSETINVCLAS
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -545,13 +545,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_assetinvclas IS
-'Bronze table bronze_sei_assetinvclas contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_assetinvclas IS
+'Bronze SEI wealth platform table containing asset, position, quantity, market value, and security reference details sourced from landing_sei.default.sei_ovn_assetinvclas in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_assetoptfields
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_assetoptfields AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_assetoptfields AS
 -- NAME: BRONZE_SEI_ASSETOPTFIELDS
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -595,13 +595,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_assetoptfields IS
-'Bronze table bronze_sei_assetoptfields contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_assetoptfields IS
+'Bronze SEI wealth platform table containing optional field attributes and extension values sourced from landing_sei.default.sei_ovn_assetoptfields in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_assets
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_assets AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_assets AS
 -- NAME: BRONZE_SEI_ASSETS
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -871,13 +871,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_assets IS
-'Bronze table bronze_sei_assets contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_assets IS
+'Bronze SEI wealth platform table containing asset, position, quantity, market value, and security reference details sourced from landing_sei.default.sei_ovn_assets in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_clientaccountlink
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_clientaccountlink AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_clientaccountlink AS
 -- NAME: BRONZE_SEI_CLIENTACCOUNTLINK
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -1091,13 +1091,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_clientaccountlink IS
-'Bronze table bronze_sei_clientaccountlink contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_clientaccountlink IS
+'Bronze SEI wealth platform table containing account master, ownership, status, balance, and lifecycle attributes sourced from landing_sei.default.sei_ovn_clientaccountlink in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_clients
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_clients AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_clients AS
 -- NAME: BRONZE_SEI_CLIENTS
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -1341,13 +1341,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_clients IS
-'Bronze table bronze_sei_clients contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_clients IS
+'Bronze SEI wealth platform table containing customer, client, relationship, registration, and identity attributes sourced from landing_sei.default.sei_ovn_clients in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_contactdetails
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_contactdetails AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_contactdetails AS
 -- NAME: BRONZE_SEI_CONTACTDETAILS
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -1439,13 +1439,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_contactdetails IS
-'Bronze table bronze_sei_contactdetails contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_contactdetails IS
+'Bronze SEI wealth platform table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_sei.default.sei_ovn_contactdetails in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_custodynostropositions
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_custodynostropositions AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_custodynostropositions AS
 -- NAME: BRONZE_SEI_CUSTODYNOSTROPOSITIONS
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -1527,13 +1527,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_custodynostropositions IS
-'Bronze table bronze_sei_custodynostropositions contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_custodynostropositions IS
+'Bronze SEI wealth platform table containing asset, position, quantity, market value, and security reference details sourced from landing_sei.default.sei_ovn_custodynostropositions in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_eodchangedpositions
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_eodchangedpositions AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_eodchangedpositions AS
 -- NAME: BRONZE_SEI_EODCHANGEDPOSITIONS
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -1733,13 +1733,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_eodchangedpositions IS
-'Bronze table bronze_sei_eodchangedpositions contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_eodchangedpositions IS
+'Bronze SEI wealth platform table containing asset, position, quantity, market value, and security reference details sourced from landing_sei.default.sei_ovn_eodchangedpositions in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_eodposvalaggr
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_eodposvalaggr AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_eodposvalaggr AS
 -- NAME: BRONZE_SEI_EODPosValAggr
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -1817,13 +1817,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_eodposvalaggr IS
-'Bronze table bronze_sei_eodposvalaggr contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_eodposvalaggr IS
+'Bronze SEI wealth platform table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_sei.default.sei_ovn_eodposvalaggr in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_eodpositions
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_eodpositions AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_eodpositions AS
 -- NAME: BRONZE_SEI_EODPOSITIONS
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -2023,13 +2023,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_eodpositions IS
-'Bronze table bronze_sei_eodpositions contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_eodpositions IS
+'Bronze SEI wealth platform table containing asset, position, quantity, market value, and security reference details sourced from landing_sei.default.sei_ovn_eodpositions in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_eodpositionssupplemental
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_eodpositionssupplemental AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_eodpositionssupplemental AS
 -- NAME: BRONZE_SEI_EODPOSITIONSSUPPLEMENTAL
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -2115,13 +2115,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_eodpositionssupplemental IS
-'Bronze table bronze_sei_eodpositionssupplemental contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_eodpositionssupplemental IS
+'Bronze SEI wealth platform table containing asset, position, quantity, market value, and security reference details sourced from landing_sei.default.sei_ovn_eodpositionssupplemental in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_feecomputation
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_feecomputation AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_feecomputation AS
 -- NAME: BRONZE_SEI_FEECOMPUTATION
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -2227,13 +2227,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_feecomputation IS
-'Bronze table bronze_sei_feecomputation contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_feecomputation IS
+'Bronze SEI wealth platform table containing fee schedule, computation, package, and billing attributes sourced from landing_sei.default.sei_ovn_feecomputation in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_feegroup
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_feegroup AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_feegroup AS
 -- NAME: BRONZE_SEI_FeeGroup
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -2283,13 +2283,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_feegroup IS
-'Bronze table bronze_sei_feegroup contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_feegroup IS
+'Bronze SEI wealth platform table containing fee schedule, computation, package, and billing attributes sourced from landing_sei.default.sei_ovn_feegroup in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_feepackagerule
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_feepackagerule AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_feepackagerule AS
 -- NAME: BRONZE_SEI_FeePackageRule
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -2367,13 +2367,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_feepackagerule IS
-'Bronze table bronze_sei_feepackagerule contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_feepackagerule IS
+'Bronze SEI wealth platform table containing fee schedule, computation, package, and billing attributes sourced from landing_sei.default.sei_ovn_feepackagerule in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_feepackageusage
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_feepackageusage AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_feepackageusage AS
 -- NAME: BRONZE_SEI_FeePackageUsage
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -2505,13 +2505,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_feepackageusage IS
-'Bronze table bronze_sei_feepackageusage contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_feepackageusage IS
+'Bronze SEI wealth platform table containing fee schedule, computation, package, and billing attributes sourced from landing_sei.default.sei_ovn_feepackageusage in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_fundcutoff
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_fundcutoff AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_fundcutoff AS
 -- NAME: BRONZE_SEI_FUNDCUTOFF
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -2558,13 +2558,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_fundcutoff IS
-'Bronze table bronze_sei_fundcutoff contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_fundcutoff IS
+'Bronze SEI wealth platform table containing fund cutoff, settlement, and processing schedule attributes sourced from landing_sei.default.sei_ovn_fundcutoff in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_fxforward
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_fxforward AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_fxforward AS
 -- NAME: BRONZE_SEI_FXFORWARD
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -2644,13 +2644,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_fxforward IS
-'Bronze table bronze_sei_fxforward contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_fxforward IS
+'Bronze SEI wealth platform table containing rate, foreign exchange, treasury, and pricing reference attributes sourced from landing_sei.default.sei_ovn_fxforward in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_interestratetypes
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_interestratetypes AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_interestratetypes AS
 -- NAME: BRONZE_SEI_INTERESTRATETYPES
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -2704,13 +2704,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_interestratetypes IS
-'Bronze table bronze_sei_interestratetypes contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_interestratetypes IS
+'Bronze SEI wealth platform table containing rate, foreign exchange, treasury, and pricing reference attributes sourced from landing_sei.default.sei_ovn_interestratetypes in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_modelalloc
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_modelalloc AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_modelalloc AS
 -- NAME: BRONZE_SEI_MODELALLOC
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -2788,13 +2788,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_modelalloc IS
-'Bronze table bronze_sei_modelalloc contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_modelalloc IS
+'Bronze SEI wealth platform table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_sei.default.sei_ovn_modelalloc in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_modelsintext
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_modelsintext AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_modelsintext AS
 -- NAME: BRONZE_SEI_MODELSINTEXT
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -2860,13 +2860,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_modelsintext IS
-'Bronze table bronze_sei_modelsintext contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_modelsintext IS
+'Bronze SEI wealth platform table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_sei.default.sei_ovn_modelsintext in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_paidto
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_paidto AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_paidto AS
 -- NAME: BRONZE_SEI_PAIDTO
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -2968,13 +2968,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_paidto IS
-'Bronze table bronze_sei_paidto contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_paidto IS
+'Bronze SEI wealth platform table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_sei.default.sei_ovn_paidto in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_partyoptionalfields
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_partyoptionalfields AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_partyoptionalfields AS
 -- NAME: BRONZE_SEI_PARTYOPTIONALFIELDS
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -3020,13 +3020,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_partyoptionalfields IS
-'Bronze table bronze_sei_partyoptionalfields contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_partyoptionalfields IS
+'Bronze SEI wealth platform table containing optional field attributes and extension values sourced from landing_sei.default.sei_ovn_partyoptionalfields in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_portfoliogroups
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_portfoliogroups AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_portfoliogroups AS
 -- NAME: BRONZE_SEI_PORTFOLIOGROUPS
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -3100,13 +3100,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_portfoliogroups IS
-'Bronze table bronze_sei_portfoliogroups contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_portfoliogroups IS
+'Bronze SEI wealth platform table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_sei.default.sei_ovn_portfoliogroups in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_portfolioperformance
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_portfolioperformance AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_portfolioperformance AS
 -- NAME: BRONZE_SEI_PORTFOLIOPERFORMANCE
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -3206,13 +3206,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_portfolioperformance IS
-'Bronze table bronze_sei_portfolioperformance contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_portfolioperformance IS
+'Bronze SEI wealth platform table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_sei.default.sei_ovn_portfolioperformance in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_reccashactivities
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_reccashactivities AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_reccashactivities AS
 -- NAME: BRONZE_SEI_RECCASHACTIVITIES
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -3356,13 +3356,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_reccashactivities IS
-'Bronze table bronze_sei_reccashactivities contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_reccashactivities IS
+'Bronze SEI wealth platform table containing transaction, posting, activity history, and reconciliation details sourced from landing_sei.default.sei_ovn_reccashactivities in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_reference
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_reference AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_reference AS
 -- NAME: BRONZE_SEI_REFERENCE
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -3410,13 +3410,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_reference IS
-'Bronze table bronze_sei_reference contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_reference IS
+'Bronze SEI wealth platform table containing reference code, mapping, classification, and lookup values sourced from landing_sei.default.sei_ovn_reference in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_relationshipmapping_sei_jha
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_relationshipmapping_sei_jha AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_relationshipmapping_sei_jha AS
 -- NAME: BRONZE_SEI_RELATIONSHIPMAPPING_SEI_JHA
 -- CATEGORY: MODEL
 -- LAYER: BRONZE
@@ -3457,13 +3457,13 @@ casted_relationship_mapping AS (
 )
 
 SELECT * FROM casted_relationship_mapping;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_relationshipmapping_sei_jha IS
-'Bronze table bronze_sei_relationshipmapping_sei_jha contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_relationshipmapping_sei_jha IS
+'Bronze SEI wealth platform table containing relationship mapping, household, counterparty, and cross-system linkage details sourced from landing_sei.default.sei_relationship_mapping_sei_jha in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_relationships
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_relationships AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_relationships AS
 -- NAME: BRONZE_SEI_RELATIONSHIPS
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -3591,13 +3591,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_relationships IS
-'Bronze table bronze_sei_relationships contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_relationships IS
+'Bronze SEI wealth platform table containing relationship mapping, household, counterparty, and cross-system linkage details sourced from landing_sei.default.sei_ovn_relationships in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_roledetail
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_roledetail AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_roledetail AS
 -- NAME: BRONZE_SEI_ROLEDETAIL
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -3643,13 +3643,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_roledetail IS
-'Bronze table bronze_sei_roledetail contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_roledetail IS
+'Bronze SEI wealth platform table containing officer, team, user role, and responsibility assignments sourced from landing_sei.default.sei_ovn_roledetail in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_statementevents
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_statementevents AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_statementevents AS
 -- NAME: BRONZE_SEI_STATEMENTEVENTS
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -3753,13 +3753,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_statementevents IS
-'Bronze table bronze_sei_statementevents contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_statementevents IS
+'Bronze SEI wealth platform table containing statement package, event, instance, and delivery metadata sourced from landing_sei.default.sei_ovn_statementevents in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_statementinstance
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_statementinstance AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_statementinstance AS
 -- NAME: BRONZE_SEI_STATEMENTINSTANCE
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -3929,13 +3929,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_statementinstance IS
-'Bronze table bronze_sei_statementinstance contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_statementinstance IS
+'Bronze SEI wealth platform table containing statement package, event, instance, and delivery metadata sourced from landing_sei.default.sei_ovn_statementinstance in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_statementpackage
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_statementpackage AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_statementpackage AS
 -- NAME: BRONZE_SEI_STATEMENTPACKAGE
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -3999,13 +3999,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_statementpackage IS
-'Bronze table bronze_sei_statementpackage contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_statementpackage IS
+'Bronze SEI wealth platform table containing statement package, event, instance, and delivery metadata sourced from landing_sei.default.sei_ovn_statementpackage in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_transactiondetail
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_transactiondetail AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_transactiondetail AS
 -- NAME: BRONZE_SEI_TRANSACTIONDETAIL
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -4109,13 +4109,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_transactiondetail IS
-'Bronze table bronze_sei_transactiondetail contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_transactiondetail IS
+'Bronze SEI wealth platform table containing transaction, posting, activity history, and reconciliation details sourced from landing_sei.default.sei_ovn_transactiondetail in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_transactiondetailupd
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_transactiondetailupd AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_transactiondetailupd AS
 -- NAME: BRONZE_SEI_TRANSACTIONDETAILUPD
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -4219,13 +4219,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_transactiondetailupd IS
-'Bronze table bronze_sei_transactiondetailupd contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_transactiondetailupd IS
+'Bronze SEI wealth platform table containing transaction, posting, activity history, and reconciliation details sourced from landing_sei.default.sei_ovn_transactiondetailupd in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_transactionheader
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_transactionheader AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_transactionheader AS
 -- NAME: BRONZE_SEI_TRANSACTIONHEADER
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -4553,13 +4553,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_transactionheader IS
-'Bronze table bronze_sei_transactionheader contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_transactionheader IS
+'Bronze SEI wealth platform table containing transaction, posting, activity history, and reconciliation details sourced from landing_sei.default.sei_ovn_transactionheader in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_transactionheaderupd
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_transactionheaderupd AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_transactionheaderupd AS
 -- NAME: BRONZE_SEI_TRANSACTIONHEADERUPD
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -4887,13 +4887,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_transactionheaderupd IS
-'Bronze table bronze_sei_transactionheaderupd contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_transactionheaderupd IS
+'Bronze SEI wealth platform table containing transaction, posting, activity history, and reconciliation details sourced from landing_sei.default.sei_ovn_transactionheaderupd in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_upcomingactivities
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_upcomingactivities AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_upcomingactivities AS
 -- NAME: BRONZE_SEI_UPCOMINGACTIVITIES
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -4995,13 +4995,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_upcomingactivities IS
-'Bronze table bronze_sei_upcomingactivities contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_upcomingactivities IS
+'Bronze SEI wealth platform table containing transaction, posting, activity history, and reconciliation details sourced from landing_sei.default.sei_ovn_upcomingactivities in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_userdetail
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_userdetail AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_userdetail AS
 -- NAME: BRONZE_SEI_UserDetail
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -5057,13 +5057,13 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_userdetail IS
-'Bronze table bronze_sei_userdetail contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_userdetail IS
+'Bronze SEI wealth platform table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing_sei.default.sei_ovn_userdetail in the SEI landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-sei.dbx.sql
 -- Source model: bronze_sei_userteamroledetail
-CREATE OR REPLACE TABLE bronze_sei.default.bronze_sei_userteamroledetail AS
+CREATE OR REPLACE TABLE bronze.default.bronze_sei_userteamroledetail AS
 -- NAME: BRONZE_SEI_UserTeamRoleDetail
 -- CATEGORY: MODEL
 -- MATURITY LEVEL: 0
@@ -5109,6 +5109,6 @@ bronze_data AS (
 
 
 SELECT * FROM bronze_data;
-COMMENT ON TABLE bronze_sei.default.bronze_sei_userteamroledetail IS
-'Bronze table bronze_sei_userteamroledetail contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+COMMENT ON TABLE bronze.default.bronze_sei_userteamroledetail IS
+'Bronze SEI wealth platform table containing officer, team, user role, and responsibility assignments sourced from landing_sei.default.sei_ovn_userteamroledetail in the SEI landing catalog for downstream warehouse parity and analytics.';
 

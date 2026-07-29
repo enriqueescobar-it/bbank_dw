@@ -248,5 +248,5 @@ bronze_data AS(
 SELECT bd.*, current_timestamp() AS LOADED_AT  
 FROM bronze_data bd;
 COMMENT ON TABLE bronze.default.bronze_intrafi_account_trial_balance IS
-'Bronze table bronze_intrafi_account_trial_balance contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze IntraFi deposit network table containing account master, ownership, status, balance, and lifecycle attributes sourced from landing.default.intrafi_r4230 in the general landing catalog for downstream warehouse parity and analytics.';
 

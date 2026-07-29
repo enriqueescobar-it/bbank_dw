@@ -79,7 +79,7 @@ SELECT
 FROM landing.default.apex_daily_accounts;
 
 COMMENT ON TABLE bronze.default.bronze_apex_daily_accounts IS
-'Bronze Apex table sourced from landing.default.apex_daily_accounts. Contains flattened 10-row fixture data for Databricks validation and downstream processing.';
+'Bronze Apex brokerage table containing account master, ownership, status, balance, and lifecycle attributes sourced from landing.default.apex_daily_accounts in the general landing catalog for downstream warehouse parity and analytics.';
 
 -- From bronze-apex.dbx.sql
 -- Source model: bronze_apex_daily_activities
@@ -499,7 +499,7 @@ SELECT
 FROM landing.default.apex_daily_activities;
 
 COMMENT ON TABLE bronze.default.bronze_apex_daily_activities IS
-'Bronze Apex table sourced from landing.default.apex_daily_activities. Contains flattened 10-row fixture data for Databricks validation and downstream processing.';
+'Bronze Apex brokerage table containing transaction, posting, activity history, and reconciliation details sourced from landing.default.apex_daily_activities in the general landing catalog for downstream warehouse parity and analytics.';
 
 -- From bronze-apex.dbx.sql
 -- Source model: bronze_apex_daily_overnight_balances
@@ -571,7 +571,7 @@ SELECT
 FROM landing.default.apex_daily_overnight_balances;
 
 COMMENT ON TABLE bronze.default.bronze_apex_daily_overnight_balances IS
-'Bronze Apex table sourced from landing.default.apex_daily_overnight_balances. Contains flattened 10-row fixture data for Databricks validation and downstream processing.';
+'Bronze Apex brokerage table containing balance, trial balance, and period valuation measures sourced from landing.default.apex_daily_overnight_balances in the general landing catalog for downstream warehouse parity and analytics.';
 
 -- From bronze-apex.dbx.sql
 -- Source model: bronze_apex_daily_positions
@@ -601,7 +601,7 @@ SELECT
 FROM landing.default.apex_daily_positions;
 
 COMMENT ON TABLE bronze.default.bronze_apex_daily_positions IS
-'Bronze Apex table sourced from landing.default.apex_daily_positions. Contains flattened 10-row fixture data for Databricks validation and downstream processing.';
+'Bronze Apex brokerage table containing asset, position, quantity, market value, and security reference details sourced from landing.default.apex_daily_positions in the general landing catalog for downstream warehouse parity and analytics.';
 
 -- From bronze-apex.dbx.sql
 -- Source model: bronze_apex_daily_stock_record
@@ -652,7 +652,7 @@ SELECT
 FROM landing.default.apex_daily_stock_record;
 
 COMMENT ON TABLE bronze.default.bronze_apex_daily_stock_record IS
-'Bronze Apex table sourced from landing.default.apex_daily_stock_record. Contains flattened 10-row fixture data for Databricks validation and downstream processing.';
+'Bronze Apex brokerage table containing asset, position, quantity, market value, and security reference details sourced from landing.default.apex_daily_stock_record in the general landing catalog for downstream warehouse parity and analytics.';
 
 -- From bronze-apex.dbx.sql
 -- Source model: bronze_apex_onboarding_status
@@ -676,4 +676,4 @@ SELECT
 FROM landing.default.apex_onboarding_status;
 
 COMMENT ON TABLE bronze.default.bronze_apex_onboarding_status IS
-'Bronze Apex table sourced from landing.default.apex_onboarding_status. Contains flattened 10-row fixture data for Databricks validation and downstream processing.';
+'Bronze Apex brokerage table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing.default.apex_onboarding_status in the general landing catalog for downstream warehouse parity and analytics.';

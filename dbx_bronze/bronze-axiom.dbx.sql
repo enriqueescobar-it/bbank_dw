@@ -75,7 +75,7 @@ WITH landing_data AS (
 
 SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
 COMMENT ON TABLE bronze.default.bronze_axiom_acct IS
-'Bronze table bronze_axiom_acct contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze Axiom finance table containing account master, ownership, status, balance, and lifecycle attributes sourced from landing.default.axiom_acct in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-axiom.dbx.sql
@@ -205,7 +205,7 @@ WITH landing_data AS (
 
 SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
 COMMENT ON TABLE bronze.default.bronze_axiom_cds IS
-'Bronze table bronze_axiom_cds contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze Axiom finance table containing general ledger, finance reporting, account mapping, and management reporting attributes sourced from landing.default.axiom_cds in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-axiom.dbx.sql
@@ -381,7 +381,7 @@ WITH landing_data AS (
 
 SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
 COMMENT ON TABLE bronze.default.bronze_axiom_devops IS
-'Bronze table bronze_axiom_devops contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze Axiom finance table containing general ledger, finance reporting, account mapping, and management reporting attributes sourced from landing.default.axiom_deposits in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-axiom.dbx.sql
@@ -413,7 +413,7 @@ WITH landing_data AS (
 
 SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
 COMMENT ON TABLE bronze.default.bronze_axiom_dmi_chargeoffs IS
-'Bronze table bronze_axiom_dmi_chargeoffs contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze Axiom finance table containing general ledger, finance reporting, account mapping, and management reporting attributes sourced from landing.default.axiom_dmi_chargeoffs in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-axiom.dbx.sql
@@ -635,7 +635,7 @@ WITH landing_data AS (
 
 SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
 COMMENT ON TABLE bronze.default.bronze_axiom_dmiloans IS
-'Bronze table bronze_axiom_dmiloans contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze Axiom finance table containing loan account, payment, participation, balance, and servicing attributes sourced from landing.default.axiom_dmiloans in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-axiom.dbx.sql
@@ -663,7 +663,7 @@ WITH landing_data AS (
 
 SELECT *,current_timestamp() AS LOADED_AT FROM landing_data;
 COMMENT ON TABLE bronze.default.bronze_axiom_instmodelstg IS
-'Bronze table bronze_axiom_instmodelstg contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze Axiom finance table containing general ledger, finance reporting, account mapping, and management reporting attributes sourced from landing.default.axiom_instmodelstg in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-axiom.dbx.sql
@@ -882,7 +882,7 @@ WITH landing_data AS (
 
 SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
 COMMENT ON TABLE bronze.default.bronze_axiom_loans IS
-'Bronze table bronze_axiom_loans contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze Axiom finance table containing loan account, payment, participation, balance, and servicing attributes sourced from landing.default.axiom_loans in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-axiom.dbx.sql
@@ -988,5 +988,5 @@ WITH landing_data AS (
 
 SELECT *, current_timestamp() AS LOADED_AT FROM landing_data;
 COMMENT ON TABLE bronze.default.bronze_axiom_ovrntdep IS
-'Bronze table bronze_axiom_ovrntdep contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze Axiom finance table containing general ledger, finance reporting, account mapping, and management reporting attributes sourced from landing.default.axiom_ovrntdep in the general landing catalog for downstream warehouse parity and analytics.';
 

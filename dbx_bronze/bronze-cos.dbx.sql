@@ -230,7 +230,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_cos_applicant IS
-'Bronze table bronze_cos_applicant contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze COS customer onboarding table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing.default.cos_applicant in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-cos.dbx.sql
@@ -300,7 +300,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_cos_prospect IS
-'Bronze table bronze_cos_prospect contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze COS customer onboarding table containing customer, client, relationship, registration, and identity attributes sourced from landing.default.cos_prospect in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-cos.dbx.sql
@@ -356,5 +356,5 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_cos_td_treasury_rate IS
-'Bronze table bronze_cos_td_treasury_rate contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze COS customer onboarding table containing rate, foreign exchange, treasury, and pricing reference attributes sourced from landing.default.cos_td_treasury_rate in the general landing catalog for downstream warehouse parity and analytics.';
 

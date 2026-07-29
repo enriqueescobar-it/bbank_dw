@@ -203,6 +203,10 @@ The description should mention:
 
 Avoid generic comments like "contains standardized data." Use domain-specific terms from the source table and column names.
 
+Do not put apostrophes or single quotes inside `COMMENT ON TABLE ... IS '<description>';` text. Phrases such as `system's` break the SQL string unless escaped, so prefer wording like `system source`, `source system`, or `system-level`. Keep comment text plain ASCII unless the source file already requires otherwise.
+
+Fix obvious English typos in generated descriptions when you see them. Do not "fix" source-of-truth object names, table names, column names, or source names merely because they look misspelled; preserve names from SQL Server sources and existing DBX files unless the user explicitly asks for a rename.
+
 ## Validation Checklist
 
 Before finishing:
@@ -215,6 +219,7 @@ Before finishing:
 - There are no duplicate generated control columns.
 - No executable `CONVERT(`, `GETUTCDATE()`, `GETDATE()`, SQL Server brackets, or dbt Jinja remain.
 - Reserved and ambiguous identifiers are backticked.
+- Table comments contain no apostrophes or unescaped single quotes inside the description literal.
 - No tab characters are introduced.
 - Row-count verification is present.
 

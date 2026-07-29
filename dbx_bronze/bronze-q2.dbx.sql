@@ -86,7 +86,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_q2_customer IS
-'Bronze table bronze_q2_customer contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze Q2 digital banking table containing customer, client, relationship, registration, and identity attributes sourced from landing.default.q2_customer in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-q2.dbx.sql
@@ -150,7 +150,7 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_q2_user IS
-'Bronze table bronze_q2_user contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze Q2 digital banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing.default.q2_user in the general landing catalog for downstream warehouse parity and analytics.';
 
 
 -- From bronze-q2.dbx.sql
@@ -224,5 +224,5 @@ bronze_data AS (
 
 SELECT * FROM bronze_data;
 COMMENT ON TABLE bronze.default.bronze_q2_user_pii IS
-'Bronze table bronze_q2_user_pii contains standardized data loaded from the landing layer for Databricks validation and downstream processing.';
+'Bronze Q2 digital banking table containing standardized operational attributes, source identifiers, dates, and audit fields sourced from landing.default.q2_user_pii in the general landing catalog for downstream warehouse parity and analytics.';
 
