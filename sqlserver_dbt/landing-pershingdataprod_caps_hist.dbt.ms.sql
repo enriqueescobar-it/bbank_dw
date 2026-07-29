@@ -1,0 +1,214 @@
+-- NAME: BRONZE_PERSHINGDATAPROD_CAPS_HIST
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: BRONZE
+-- FREQUENCY: DAILY
+-- LOAD TYPE: INCREMENTAL
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+{{
+   config(
+          materialized='incremental',
+          incremental_strategy='append',
+          tags=["pershing_standard"]
+        )
+}}
+
+with landing_data as (
+    SELECT
+        id
+        ,IBD_1
+        ,RECORD_ID_1
+        ,TRADE_DATE
+        ,TRADE_REFERENCE_NUMBER
+        ,PERSHING_OFFICE_NUMBER
+        ,ACCOUNT_NUMBER
+        ,ACCOUNT_NAME
+        ,BUY_SELL_INDICATOR
+        ,CANCEL_INDICATOR
+        ,CAPS_SOURCE
+        ,TRADE_QUANTITY
+        ,PRICE
+        ,PRODUCT_CODE
+        ,CUSIP_NUMBER_OF_SECURITY_TRADED
+        ,ACCOUNT_SHORT_NAME
+        ,ORDER_TYPE
+        ,MISCELLANEOUS_FEE
+        ,NOT_USED_1
+        ,IBD_2
+        ,RECORD_ID_2
+        ,MARKET_CODE
+        ,BLOTTER_CODE
+        ,SECURITY_TYPE
+        ,STOCK_SYMBOL
+        ,SECURITY_DESCRIPTION
+        ,CENTS_PER_SHARE
+        ,DISCOUNT_PERCENT
+        ,PAYCODE
+        ,MASTER_CLIENT_MNEMONIC
+        ,INSTITUTIONAL_RETAIL_INDICATOR
+        ,STATE_CODE
+        ,COMMISSION_INDICATOR
+        ,FIRM_TRADING_ACCOUNT
+        ,POSTED_DATE
+        ,SETTLEMENT_DATE
+        ,NOT_USED_2
+        ,RECYCLE_INDICATOR
+        ,IBD_3
+        ,RECORD_ID_3
+        ,AS_OF_TRADE_INDICATOR
+        ,DISTRIBUTION_INDICATOR
+        ,EXPLODE_INDICATOR
+        ,REVENUE_TYPE
+        ,IP
+        ,IP_CAPS_REVENUE_CENTER
+        ,IP_CAPS_OFFICE_NUMBER
+        ,IP_SPLIT_PERCENT
+        ,TOTAL_AMT_OF_REV_GEN_BY_TR_AND_CRED_TO_IP
+        ,PERSHING_CHARGE
+        ,FROM_IP_NUMBER
+        ,CAPS_REV_CENTER_ASSOC_W_THE_FROM_IP
+        ,CAPS_OFFICE_NO_ASSOC_W_THE_FROM_IP
+        ,TOTAL_ORDER_COMMISSION
+        ,SPREAD_STRADDLE
+        ,CORRECTION_CODE
+        ,SECURITY_MODIFIER
+        ,SECURITY_CALCULATION_CODE
+        ,PRINCIPAL
+        ,CRD_NUMBER
+        ,SOURCE_OF_INPUT
+        ,FOR_PERS_INT_USE_ONLY_3
+        ,SERVICE_CHARGE_OTHER_FEE
+        ,IBD_4
+        ,RECORD_ID_4
+        ,CURRENCY_CODE
+        ,CURRENCY_AMOUNT_OF_REVENUE
+        ,FOREIGN_EXCHANGE_RATE
+        ,CURRENCY_MULTI_DIV_INDICATOR
+        ,IBD_SETTLEMENT_FEE
+        ,CUSTOMER_SETTLEMENT_FEE
+        ,GLOSS_REFERENCE_NUMBER
+        ,CURRENCY_AMOUNT_OF_PERSHING_CHARGE
+        ,NOT_USED_4
+        ,IBD_5
+        ,RECORD_ID_5
+        ,OPTION_ROOT_ID
+        ,EXPIRATION_DATE
+        ,CALL_PUT_INDICATOR
+        ,STRIKE_PRICE
+        ,MASTER_CLIENT_NAME
+        ,FOR_PERS_INT_USE_ONLY_5
+        ,PERS_INT_ORDER_REF_NO
+        ,NOT_USED_5
+        ,AS_OF_DATE
+        ,IMPORTED_DATE
+        ,LOADED_AT
+        ,CONVERT(INT, CONVERT(nvarchar(6), LOADED_AT, 112)) AS YEARMONTH
+    FROM
+        {{ source("pershing", "PERSHINGDATAPROD_CAPS_HIST") }}
+),
+
+bronze_data AS (
+    SELECT
+        id
+        ,IBD_1
+        ,RECORD_ID_1
+        ,TRADE_DATE
+        ,TRADE_REFERENCE_NUMBER
+        ,PERSHING_OFFICE_NUMBER
+        ,ACCOUNT_NUMBER
+        ,ACCOUNT_NAME
+        ,BUY_SELL_INDICATOR
+        ,CANCEL_INDICATOR
+        ,CAPS_SOURCE
+        ,TRADE_QUANTITY
+        ,PRICE
+        ,PRODUCT_CODE
+        ,CUSIP_NUMBER_OF_SECURITY_TRADED
+        ,ACCOUNT_SHORT_NAME
+        ,ORDER_TYPE
+        ,MISCELLANEOUS_FEE
+        ,NOT_USED_1
+        ,IBD_2
+        ,RECORD_ID_2
+        ,MARKET_CODE
+        ,BLOTTER_CODE
+        ,SECURITY_TYPE
+        ,STOCK_SYMBOL
+        ,SECURITY_DESCRIPTION
+        ,CENTS_PER_SHARE
+        ,DISCOUNT_PERCENT
+        ,PAYCODE
+        ,MASTER_CLIENT_MNEMONIC
+        ,INSTITUTIONAL_RETAIL_INDICATOR
+        ,STATE_CODE
+        ,COMMISSION_INDICATOR
+        ,FIRM_TRADING_ACCOUNT
+        ,POSTED_DATE
+        ,SETTLEMENT_DATE
+        ,NOT_USED_2
+        ,RECYCLE_INDICATOR
+        ,IBD_3
+        ,RECORD_ID_3
+        ,AS_OF_TRADE_INDICATOR
+        ,DISTRIBUTION_INDICATOR
+        ,EXPLODE_INDICATOR
+        ,REVENUE_TYPE
+        ,IP
+        ,IP_CAPS_REVENUE_CENTER
+        ,IP_CAPS_OFFICE_NUMBER
+        ,IP_SPLIT_PERCENT
+        ,TOTAL_AMT_OF_REV_GEN_BY_TR_AND_CRED_TO_IP
+        ,PERSHING_CHARGE
+        ,FROM_IP_NUMBER
+        ,CAPS_REV_CENTER_ASSOC_W_THE_FROM_IP
+        ,CAPS_OFFICE_NO_ASSOC_W_THE_FROM_IP
+        ,TOTAL_ORDER_COMMISSION
+        ,SPREAD_STRADDLE
+        ,CORRECTION_CODE
+        ,SECURITY_MODIFIER
+        ,SECURITY_CALCULATION_CODE
+        ,PRINCIPAL
+        ,CRD_NUMBER
+        ,SOURCE_OF_INPUT
+        ,FOR_PERS_INT_USE_ONLY_3
+        ,SERVICE_CHARGE_OTHER_FEE
+        ,IBD_4
+        ,RECORD_ID_4
+        ,CURRENCY_CODE
+        ,CURRENCY_AMOUNT_OF_REVENUE
+        ,FOREIGN_EXCHANGE_RATE
+        ,CURRENCY_MULTI_DIV_INDICATOR
+        ,IBD_SETTLEMENT_FEE
+        ,CUSTOMER_SETTLEMENT_FEE
+        ,GLOSS_REFERENCE_NUMBER
+        ,CURRENCY_AMOUNT_OF_PERSHING_CHARGE
+        ,NOT_USED_4
+        ,IBD_5
+        ,RECORD_ID_5
+        ,OPTION_ROOT_ID
+        ,EXPIRATION_DATE
+        ,CALL_PUT_INDICATOR
+        ,STRIKE_PRICE
+        ,MASTER_CLIENT_NAME
+        ,FOR_PERS_INT_USE_ONLY_5
+        ,PERS_INT_ORDER_REF_NO
+        ,NOT_USED_5
+        ,AS_OF_DATE
+        ,IMPORTED_DATE
+        ,GETUTCDATE() AS LOADED_AT
+        ,YEARMONTH
+    FROM landing_data
+    {% if is_incremental() %}
+        WHERE LOADED_AT > COALESCE((SELECT MAX(LOADED_AT) FROM {{ this }}),'1970-01-01 00:00:00.000')
+    {% endif %}
+)
+
+{% if execute %}
+{{
+    log("Running incrementally: " ~ is_incremental(), info=True)
+}}
+{% endif %}
+
+SELECT * FROM bronze_data

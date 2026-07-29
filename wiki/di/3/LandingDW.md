@@ -62,6 +62,21 @@ landing_pipeline_run
 
 ## Source Inventory
 
+### Pershing DataProd Regeneration
+
+The current checkout may not contain a `dbt_landing/` folder. When that folder is absent, the available source of truth for empty Pershing DataProd dbt landing models is the matching DBX landing schema in `dbx_landing/landing-pershingdataprod_*.dbx.sql`.
+
+```mermaid
+flowchart TD
+    A["dbx_landing/landing-pershingdataprod_*.dbx.sql"] --> B["Extract landing_pershing.default table columns"]
+    A --> C["Read DQP_LANDING dbo Source comment"]
+    B --> D["Regenerate sqlserver_dbt/landing-pershingdataprod_*.dbt.ms.sql"]
+    C --> D
+    D --> E["Use source(\"pershing\", \"PERSHINGDATAPROD_*\")"]
+    D --> F["Derive YEARMONTH from LOADED_AT with SQL Server CONVERT"]
+    D --> G["Apply incremental append and GETUTCDATE loaded timestamp pattern"]
+```
+
 Tier 1: Jack Henry (69 tables) & SEI (42 tables), the largest footprint, likely dominant consumers, therefore most opportunity for metadata inconsistencies
 
 Tier 2: DMI, Pershing, and Axiom have more than 8 table, medium-sized domains, likely reuse common ingestion patterns

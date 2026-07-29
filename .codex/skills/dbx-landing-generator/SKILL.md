@@ -1,6 +1,6 @@
 ---
 name: dbx-landing-generator
-description: Generate or repair Databricks landing SQL files under dbx_landing from SQL Server bronze SQL files under sqlserver_brz, dbt SQL Server models under sqlserver_dbt such as landing-pers*.dbt.ms.sql, or sqlserver_desc metadata. Use when creating landing tables in the correct landing catalog, including landing.default, landing_jh.default, landing_pershing.default, and landing_sei.default, deterministic 10-row seed data, meaningful table comments, row-count checks, and landing-only DBX files without touching bronze-layer SQL.
+description: Generate or repair Databricks landing SQL files under dbx_landing from SQL Server bronze SQL files under sqlserver_brz, dbt SQL Server models under sqlserver_dbt such as landing-pers*.dbt.ms.sql, sqlserver_desc metadata, and regenerate empty Pershing DataProd dbt SQL Server landing models from existing DBX landing schemas. Use when creating landing tables in the correct landing catalog, including landing.default, landing_jh.default, landing_pershing.default, and landing_sei.default, deterministic 10-row seed data, meaningful table comments, row-count checks, and landing-only DBX files without touching bronze-layer SQL.
 ---
 
 # DBX Landing Generator
@@ -9,7 +9,7 @@ description: Generate or repair Databricks landing SQL files under dbx_landing f
 
 Use this skill to create or repair `dbx_landing/*.dbx.sql` files. The output should be deployable Databricks SQL for landing-layer tables and should follow the current repository style.
 
-This skill owns landing-file structure, target landing table naming, generated seed data, table descriptions, and landing validation. Use `$sqlserver-to-dbx-converter` for SQL Server type, function, cast, and reserved-word conversion rules.
+This skill owns landing-file structure, target landing table naming, generated seed data, table descriptions, landing validation, and documented reverse regeneration for empty Pershing DataProd dbt landing models. Use `$sqlserver-to-dbx-converter` for SQL Server type, function, cast, and reserved-word conversion rules.
 
 ## Required Preflight
 
@@ -32,11 +32,13 @@ flowchart TD
     C --> C2["sqlserver_dbt/*.dbt.ms.sql"]
     C --> C3["sqlserver_desc/*-desc.txt"]
     C --> C4["Existing dbx_landing repair"]
+    C --> C5["dbx_landing/landing-pershingdataprod_*.dbx.sql"]
 
     C1 --> D["Extract source table blocks and columns"]
     C2 --> E["Extract dbt source() table and landing_data columns"]
     C3 --> F["Parse column/type metadata"]
     C4 --> G["Inspect current CREATE, INSERT, and comments"]
+    C5 --> R["Reverse-generate empty sqlserver_dbt DataProd model"]
 
     D --> H["Apply sqlserver-to-dbx-converter rules"]
     E --> H
@@ -69,6 +71,13 @@ flowchart TD
     L -->|No| M["Fix landing SQL only"]
     M --> K
     L -->|Yes| N["Report changed files and validation results"]
+
+    R --> R1["Extract source table from Source comment or CREATE TABLE name"]
+    R --> R2["Extract CREATE TABLE column order"]
+    R2 --> R3["Write sqlserver_dbt/landing-pershingdataprod_*.dbt.ms.sql"]
+    R3 --> R4["Use dbt source(\"pershing\", \"PERSHINGDATAPROD_*\")"]
+    R4 --> R5["Derive YEARMONTH with SQL Server CONVERT from LOADED_AT"]
+    R5 --> R6["Use incremental append and GETUTCDATE loaded timestamp pattern"]
 ```
 
 ## Source Input Types
@@ -95,6 +104,19 @@ Extract:
 Remove dbt config, Jinja conditionals, `{{ this }}`, and logging blocks from final `.dbx.sql`.
 
 For Pershing dbt sources matching `sqlserver_dbt/landing-pers*.dbt.ms.sql`, create or repair the counterpart `dbx_landing/landing-per*.dbx.sql`. Use `landing_pershing.default.<source_table_lower>` where `<source_table_lower>` comes from the dbt `source("pershing", "...")` table name, such as `PERSHING_CAPS_1 -> landing_pershing.default.pershing_caps_1`. Preserve non-empty target files unless the user asks to regenerate them; fill empty placeholders when the counterpart exists but has no SQL.
+
+### Reverse Pershing DataProd dbt regeneration
+
+When asked to regenerate `sqlserver_dbt/landing-pershingdataprod_*.dbt.ms.sql` from landing artifacts, first check whether `dbt_landing/` exists. If it does not exist, say so and use the current `dbx_landing/landing-pershingdataprod_*.dbx.sql` files as the available source of truth when the user still asks to proceed.
+
+For each `dbx_landing/landing-pershingdataprod_*.dbx.sql` file:
+
+- Extract the SQL Server source table from the `-- Source: "DQP_LANDING"."dbo"."<SOURCE_TABLE>"` comment when present; otherwise use the uppercased Databricks table name.
+- Extract column order from `CREATE TABLE IF NOT EXISTS landing_pershing.default.<table>`.
+- Regenerate the matching `sqlserver_dbt/landing-pershingdataprod_*.dbt.ms.sql` file only when it is empty or the user explicitly asks to overwrite it.
+- Use the existing dbt SQL Server landing model style: header metadata, `materialized='incremental'`, `incremental_strategy='append'`, `tags=["pershing_standard"]`, a `landing_data` CTE reading from `{{ source("pershing", "<SOURCE_TABLE>") }}`, a `bronze_data` CTE, the standard incremental `LOADED_AT` filter, and final `SELECT * FROM bronze_data`.
+- Keep source columns in DBX `CREATE TABLE` order. Derive `YEARMONTH` as `CONVERT(INT, CONVERT(nvarchar(6), LOADED_AT, 112)) AS YEARMONTH` in `landing_data`. In `bronze_data`, emit `GETUTCDATE() AS LOADED_AT` for the output load timestamp.
+- Do not add Databricks DDL, table comments, backticks, seed data, `TRY_CAST`, `timestampadd`, or `date_add` to `sqlserver_dbt/*.dbt.ms.sql` outputs.
 
 ### `sqlserver_brz/*.ms.sql`
 
@@ -138,6 +160,10 @@ sqlserver_dbt/landing-pershing_caps_rec_1.dbt.ms.sql
 -> source("pershing", "PERSHING_CAPS_1")
 -> landing_pershing.default.pershing_caps_1
 -> dbx_landing/landing-pershing_caps_rec_1.dbx.sql
+
+dbx_landing/landing-pershingdataprod_transfer.dbx.sql
+-> source("pershing", "PERSHINGDATAPROD_TRANSFER")
+-> sqlserver_dbt/landing-pershingdataprod_transfer.dbt.ms.sql
 ```
 
 Do not collapse source-specific catalogs back into `landing`. Preserve `landing_jh`, `landing_pershing`, and `landing_sei` during repairs unless the user explicitly asks to change the catalog.
@@ -220,7 +246,7 @@ Fix obvious English typos in generated descriptions when you see them. Do not "f
 
 Before finishing:
 
-- Only `dbx_landing/*.dbx.sql` files were created or edited.
+- Only `dbx_landing/*.dbx.sql` files were created or edited, except for the documented reverse Pershing DataProd case where empty `sqlserver_dbt/landing-pershingdataprod_*.dbt.ms.sql` files may be regenerated from existing DBX landing schemas.
 - No `dbx_bronze/` files were touched.
 - Output uses the expected landing catalog/schema, including source-specific catalogs such as `landing_jh`, `landing_pershing`, and `landing_sei`.
 - Each table has exactly one `CREATE TABLE IF NOT EXISTS`, `COMMENT ON TABLE`, `TRUNCATE TABLE`, and `INSERT INTO` block unless the file intentionally contains multiple source tables.

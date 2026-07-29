@@ -1,6 +1,6 @@
 ---
 name: dbx-validation-auditor
-description: Audit Databricks SQL files under dbx_landing and dbx_bronze for SQL Server conversion mistakes, catalog/schema drift, landing-to-bronze mismatches, missing table comments, unsafe casts, reserved-word quoting issues, tab characters, dbt/Jinja leftovers, source-specific landing catalog issues such as landing_jh, landing_pershing, and landing_sei, and deployment-risk inconsistencies. Use when validating generated DBX SQL, comparing landing and bronze layers, producing an issue report, or planning safe repairs without generating new landing or bronze files.
+description: Audit Databricks SQL files under dbx_landing and dbx_bronze for SQL Server conversion mistakes, catalog/schema drift, landing-to-bronze mismatches, missing table comments, unsafe casts, reserved-word quoting issues, tab characters, dbt/Jinja leftovers, source-specific landing catalog issues such as landing_jh, landing_pershing, and landing_sei, plus Pershing DataProd dbx_landing to sqlserver_dbt pair consistency. Use when validating generated DBX SQL, comparing landing and bronze layers, producing an issue report, or planning safe repairs without generating new landing or bronze files.
 ---
 
 # DBX Validation Auditor
@@ -31,6 +31,7 @@ flowchart TD
     B --> B3["dbx_landing layer"]
     B --> B4["dbx_bronze layer"]
     B --> B5["Landing plus bronze cross-check"]
+    B --> B6["Pershing DataProd dbt plus DBX landing pairs"]
 
     B --> C["Read current files from disk"]
     C --> D["Classify each file"]
@@ -39,6 +40,7 @@ flowchart TD
     D --> D3["Created tables"]
     D --> D4["Source tables"]
     D --> D5["Comments and seed or CTAS blocks"]
+    D --> D6["Matched dbt source() models"]
 
     D --> E["Run static DBX checks"]
     E --> E1["SQL Server leftovers"]
@@ -52,6 +54,11 @@ flowchart TD
     D --> F{"Both layers in scope?"}
     F -->|No| G["Layer-only validation"]
     F -->|Yes| H["Cross-check landing to bronze"]
+    B6 --> P["Cross-check DBX landing schema to SQL Server dbt model"]
+    P --> P1["Source table matches source(\"pershing\", ...)"]
+    P --> P2["DBX columns appear in dbt landing_data"]
+    P --> P3["YEARMONTH derives from LOADED_AT"]
+    P --> P4["No Databricks-only syntax in dbt model"]
     H --> H1["Bronze inputs exist in landing"]
     H --> H2["Bronze source catalog matches landing family"]
     H --> H3["Landing table columns cover bronze references"]
@@ -59,6 +66,7 @@ flowchart TD
 
     G --> I["Build findings"]
     H --> I
+    P --> I
     I --> I1["Severity"]
     I --> I2["File and line"]
     I --> I3["Problem"]
@@ -90,6 +98,8 @@ Use this plan for every validation pass:
 7. Report only actionable findings. Do not invent missing source columns or assume exceptions.
 
 When the user says to refresh files in memory, treat the current filesystem as the source of truth. Re-list `sqlserver_brz/`, `sqlserver_dbt/`, `dbx_landing/`, and `dbx_bronze/`, then re-read the files in scope before auditing or repairing, even if similar files were read earlier in the conversation.
+
+When validating regenerated Pershing DataProd dbt models, pair `dbx_landing/landing-pershingdataprod_*.dbx.sql` with `sqlserver_dbt/landing-pershingdataprod_*.dbt.ms.sql`. The dbt model should use `{{ source("pershing", "PERSHINGDATAPROD_*") }}`, include all DBX table columns in the same order, derive `YEARMONTH` from `LOADED_AT` with SQL Server `CONVERT`, replace output `LOADED_AT` in `bronze_data` with `GETUTCDATE() AS LOADED_AT`, and contain no Databricks DDL, table comments, seed SQL, backticks, `TRY_CAST`, `timestampadd`, or `date_add`.
 
 ## Static Checks
 

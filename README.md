@@ -16,6 +16,14 @@ sqlserver_dbt/landing-pers*.dbt.ms.sql -> dbx_landing/landing-per*.dbx.sql
 
 The target catalog for Pershing landing tables is `landing_pershing.default`, and the table name comes from the dbt `source("pershing", "...")` table name converted to lower snake case.
 
+For Pershing DataProd reverse regeneration, `dbt_landing/` is expected only if it exists in the current checkout. When that folder is absent, regenerate empty SQL Server dbt models from the matching DBX landing schemas:
+
+```text
+dbx_landing/landing-pershingdataprod_*.dbx.sql -> sqlserver_dbt/landing-pershingdataprod_*.dbt.ms.sql
+```
+
+The regenerated dbt files read from `{{ source("pershing", "PERSHINGDATAPROD_*") }}`, derive `YEARMONTH` from `LOADED_AT` with SQL Server `CONVERT`, and use the established incremental append pattern.
+
 ```mermaid
 flowchart TD
     A["sqlserver_dbt/landing-pers*.dbt.ms.sql"] --> B["Read dbt source() table"]
@@ -27,4 +35,9 @@ flowchart TD
     F --> G["Add deterministic 10-row seed data"]
     F --> H["Add COMMENT ON TABLE without apostrophes"]
     F --> I["Add row-count verification"]
+    J["dbx_landing/landing-pershingdataprod_*.dbx.sql"] --> K["Extract DBX CREATE TABLE columns"]
+    J --> L["Read Source comment for PERSHINGDATAPROD_*"]
+    K --> M["Regenerate empty sqlserver_dbt/landing-pershingdataprod_*.dbt.ms.sql"]
+    L --> M
+    M --> N["Use dbt incremental append and source(\"pershing\", ...)"]
 ```
