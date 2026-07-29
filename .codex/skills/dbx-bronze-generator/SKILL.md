@@ -19,6 +19,8 @@ This skill owns bronze-file structure, source-to-landing references, output bron
 4. Confirm the task is bronze-only. Do not create or modify landing files.
 5. Check current repo conventions for table naming, comments, and source references before writing.
 
+When the user says to refresh files in memory, do not rely on prior conversation context. Re-list the current files on disk with `rg --files sqlserver dbx_landing dbx_bronze`, then re-read the relevant SQL Server source files, the matching landing file or files, and the current target bronze file before comparing or editing.
+
 ## Workflow
 
 ```mermaid
@@ -128,6 +130,8 @@ When the user requests a source-specific bronze catalog, preserve that catalog i
 Jack Henry combined bronze -> bronze_jh.default.<bronze_table>
 ```
 
+For the combined Jack Henry bronze file, use `dbx_landing/landing-jh.dbx.sql` as the landing source of truth and keep source reads on `landing_jh.default.<table>`. The older split `dbx_landing/landing-jh_*.dbx.sql` files may exist for reference, but the combined landing file is the parity input when generating `dbx_bronze/bronze-jh.dbx.sql`.
+
 Use this landing source catalog map:
 
 ```text
@@ -225,6 +229,7 @@ Before finishing:
 - No `dbx_landing/` files were touched.
 - Outputs use `bronze.default` unless the user requested a source-specific bronze catalog, such as `bronze_jh.default` for the combined Jack Henry bronze file.
 - Inputs use the matching landing catalog: `landing.default`, `landing_jh.default`, `landing_pershing.default`, or `landing_sei.default`.
+- For `dbx_bronze/bronze-jh.dbx.sql`, landing coverage was checked against the current `dbx_landing/landing-jh.dbx.sql`.
 - No executable `CONVERT(`, `GETUTCDATE()`, `GETDATE()`, SQL Server brackets, or dbt Jinja remain.
 - No blind `CAST(` remains on source data.
 - All referenced landing columns exist.

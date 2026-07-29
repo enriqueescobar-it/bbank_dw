@@ -89,6 +89,8 @@ Use this plan for every validation pass:
 6. Compare actual SQL against those expectations.
 7. Report only actionable findings. Do not invent missing source columns or assume exceptions.
 
+When the user says to refresh files in memory, treat the current filesystem as the source of truth. Re-list `sqlserver/`, `dbx_landing/`, and `dbx_bronze/`, then re-read the files in scope before auditing or repairing, even if similar files were read earlier in the conversation.
+
 ## Static Checks
 
 Flag these as deployment or correctness risks:
@@ -147,6 +149,8 @@ When both layers are in scope:
 4. Report missing columns with exact bronze file references.
 5. Report orphan landing tables only when the user asks for coverage analysis.
 6. Preserve source-specific landing catalogs from current source-of-truth files.
+
+For `dbx_bronze/bronze-jh.dbx.sql`, check landing coverage against the consolidated `dbx_landing/landing-jh.dbx.sql` and expect source reads from `landing_jh.default.*`. Do not require the split `dbx_landing/landing-jh_*.dbx.sql` files when the combined landing file is present and current.
 
 Use this expected catalog map:
 

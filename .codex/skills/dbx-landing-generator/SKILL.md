@@ -19,6 +19,8 @@ This skill owns landing-file structure, target landing table naming, generated s
 4. Preserve user edits unless the user explicitly asks to replace them.
 5. Do not edit `dbx_bronze/` or any bronze SQL file.
 
+When the user says to refresh files in memory, do not rely on prior conversation context. Re-list the current files on disk with `rg --files sqlserver dbx_landing dbx_bronze`, then re-read the source artifacts, existing landing targets, and any same-family examples needed for the current task.
+
 ## Workflow
 
 ```mermaid
