@@ -19,7 +19,7 @@ This skill owns bronze-file structure, source-to-landing references, output bron
 4. Confirm the task is bronze-only. Do not create or modify landing files.
 5. Check current repo conventions for table naming, comments, and source references before writing.
 
-When the user says to refresh files in memory, do not rely on prior conversation context. Re-list the current files on disk with `rg --files sqlserver_brz dbx_landing dbx_bronze`, then re-read the relevant SQL Server bronze source files, the matching landing file or files, and the current target bronze file before comparing or editing.
+When the user says to refresh files in memory, do not rely on prior conversation context. Re-list the current files on disk with `rg --files sqlserver_brz sqlserver_dbt dbx_landing dbx_bronze`, then re-read the relevant SQL Server bronze source files, dbt SQL Server files when in scope, the matching landing file or files, and the current target bronze file before comparing or editing.
 
 ## Workflow
 
@@ -85,7 +85,7 @@ flowchart TD
 
 Use SQL Server bronze source files as bronze transformation logic. Extract each model/table block, source references, selected columns, type conversions, date logic, and final output table names from comments or local naming patterns.
 
-### `sqlserver_dbt/*.dbt.sql`
+### `sqlserver_dbt/*.dbt.ms.sql`
 
 Extract:
 
@@ -248,7 +248,7 @@ Use this prompt to test skill behavior without edits:
 Use $dbx-bronze-generator to assess, but do not edit files.
 
 Source bronze SQL:
-sqlserver_dbt/landing-pershing_aca2_a.dbt.sql
+sqlserver_dbt/landing-pershing_aca2_a.dbt.ms.sql
 
 Landing source:
 dbx_landing/landing-pershing_aca2_a.dbx.sql
@@ -273,7 +273,7 @@ Use this prompt when writes are intended:
 Use $dbx-bronze-generator to generate or repair bronze SQL for:
 
 Source:
-sqlserver_dbt/landing-pershing_aca2_a.dbt.sql
+sqlserver_dbt/landing-pershing_aca2_a.dbt.ms.sql
 
 Landing:
 dbx_landing/landing-pershing_aca2_a.dbx.sql

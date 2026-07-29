@@ -1,5 +1,5 @@
 -- Databricks SQL for source: pershing
--- Generated from sqlserver_dbt/landing-pers_accf.dbt.sql
+-- Generated from sqlserver_dbt/landing-pers_accf.dbt.ms.sql
 
 CREATE CATALOG IF NOT EXISTS landing_pershing;
 USE CATALOG landing_pershing;
