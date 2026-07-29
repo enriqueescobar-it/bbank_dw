@@ -1,3 +1,4 @@
+
 -- Databricks SQL for source: pershingdataprod
 -- Generated from sqlserver_desc/landing-pershingdataprod_caps_hist-desc.txt
 
