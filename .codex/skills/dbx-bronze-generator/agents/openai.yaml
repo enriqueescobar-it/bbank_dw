@@ -1,4 +1,0 @@
-interface:
-  display_name: "DBX Bronze Generator"
-  short_description: "Generate Databricks bronze SQL files"
-  default_prompt: "Use $dbx-bronze-generator to generate Databricks bronze SQL from SQL Server or dbt bronze logic."

@@ -1,15 +1,15 @@
 ---
-name: dbx-bronze-generator
-description: Generate or repair Databricks bronze SQL files under dbx_bronze from SQL Server bronze SQL under sqlserver_brz, dbt SQL Server bronze models, or existing bronze DBX SQL. Use when creating bronze.default tables or source-specific bronze catalogs such as bronze_jh.default when requested, reading from the correct landing catalog such as landing.default, landing_jh.default, landing_pershing.default, or landing_sei.default, replacing SQL Server syntax with DBX syntax, adding bronze table comments, validating landing column coverage, and avoiding landing-layer edits.
+name: bronze-to-dbx-generator
+description: Generate or repair Databricks bronze SQL files under dbx_bronze from SQL Server bronze SQL under sqlserver_brz, non-empty dbt SQL Server bronze models under sqlserver_brz_dbt, populated landing dbt transformation models under sqlserver_landing_dbt when they are the available source, or existing bronze DBX SQL. Use when creating bronze.default tables or source-specific bronze catalogs such as bronze_jh.default when requested, reading from the correct landing catalog such as landing.default, landing_jh.default, landing_pershing.default, or landing_sei.default, replacing SQL Server syntax with DBX syntax, adding bronze table comments, validating landing column coverage, and avoiding landing-layer edits.
 ---
 
-# DBX Bronze Generator
+# Bronze To DBX Generator
 
 ## Purpose
 
-Use this skill to generate or repair `dbx_bronze/*.dbx.sql` files. Bronze SQL should preserve source model logic from `sqlserver_brz/*.ms.sql`, read from the landing layer, write to the bronze layer, and run in Databricks SQL.
+Use this skill to generate or repair `dbx_bronze/*.dbx.sql` files. Bronze SQL should preserve source model logic from `sqlserver_brz/*.ms.sql` or a populated dbt model, read from the landing layer, write to the bronze layer, and run in Databricks SQL.
 
-This skill owns bronze-file structure, source-to-landing references, output bronze table naming, bronze comments, landing column validation, and bronze-only validation. Use `$sqlserver-to-dbx-converter` for SQL Server type, function, cast, and reserved-word conversion rules.
+This skill owns bronze-file structure, source-to-landing references, output bronze table naming, bronze comments, landing column validation, and bronze-only validation. Use `$sqlserver-dbx-syntax-converter` for SQL Server type, function, cast, and reserved-word conversion rules.
 
 ## Required Preflight
 
@@ -19,7 +19,7 @@ This skill owns bronze-file structure, source-to-landing references, output bron
 4. Confirm the task is bronze-only. Do not create or modify landing files.
 5. Check current repo conventions for table naming, comments, and source references before writing.
 
-When the user says to refresh files in memory, do not rely on prior conversation context. Re-list the current files on disk with `rg --files sqlserver_brz sqlserver_dbt dbx_landing dbx_bronze`, then re-read the relevant SQL Server bronze source files, dbt SQL Server files when in scope, the matching landing file or files, and the current target bronze file before comparing or editing.
+When the user says to refresh files in memory, do not rely on prior conversation context. Re-list the current files on disk with `rg --files sqlserver_brz sqlserver_brz_dbt sqlserver_landing_dbt dbx_landing dbx_bronze`, then re-read the relevant SQL Server bronze source files, dbt SQL Server files when in scope, the matching landing file or files, and the current target bronze file before comparing or editing.
 
 ## Workflow
 
@@ -38,7 +38,7 @@ flowchart TD
     E --> E2["Source schema: default"]
     E --> E3["Source table from source(), FROM, or local pattern"]
 
-    B --> F["Apply sqlserver-to-dbx-converter rules"]
+    B --> F["Apply sqlserver-dbx-syntax-converter rules"]
     F --> F1["CONVERT -> TRY_CAST"]
     F --> F2["CAST source data -> TRY_CAST"]
     F --> F3["GETUTCDATE and GETDATE -> current_timestamp"]
@@ -85,7 +85,7 @@ flowchart TD
 
 Use SQL Server bronze source files as bronze transformation logic. Extract each model/table block, source references, selected columns, type conversions, date logic, and final output table names from comments or local naming patterns.
 
-### `sqlserver_dbt/*.dbt.ms.sql`
+### `sqlserver_brz_dbt/*.dbt.ms.sql` and `sqlserver_landing_dbt/*.dbt.ms.sql`
 
 Extract:
 
@@ -95,6 +95,8 @@ Extract:
 - Final bronze output columns from `bronze_data`.
 
 Remove dbt config, Jinja conditionals, `{{ this }}`, and logging blocks from final `.dbx.sql`.
+
+Use `sqlserver_brz_dbt/*.dbt.ms.sql` only when the file is populated. In the current repo snapshot, `sqlserver_brz_dbt/` may contain zero-line placeholders; do not treat those empty files as transformation sources. For populated Pershing dbt transformation logic, use the matching `sqlserver_landing_dbt/landing-*.dbt.ms.sql` file when it contains the `landing_data` and `bronze_data` CTEs.
 
 ### Existing `dbx_bronze/*.dbx.sql`
 
@@ -193,7 +195,7 @@ Do not put apostrophes or single quotes inside `COMMENT ON TABLE ... IS '<descri
 
 ## Conversion Rules
 
-Follow `$sqlserver-to-dbx-converter` rules, with these bronze-specific constraints:
+Follow `$sqlserver-dbx-syntax-converter` rules, with these bronze-specific constraints:
 
 - Use `TRY_CAST` for source-data conversions.
 - Avoid blind `CAST` on landing columns.
@@ -245,10 +247,10 @@ Before finishing:
 Use this prompt to test skill behavior without edits:
 
 ```text
-Use $dbx-bronze-generator to assess, but do not edit files.
+Use $bronze-to-dbx-generator to assess, but do not edit files.
 
 Source bronze SQL:
-sqlserver_dbt/landing-pershing_aca2_a.dbt.ms.sql
+sqlserver_landing_dbt/landing-pershing_aca2_rec_a.dbt.ms.sql
 
 Landing source:
 dbx_landing/landing-pershing_aca2_a.dbx.sql
@@ -270,10 +272,10 @@ Expected behavior:
 Use this prompt when writes are intended:
 
 ```text
-Use $dbx-bronze-generator to generate or repair bronze SQL for:
+Use $bronze-to-dbx-generator to generate or repair bronze SQL for:
 
 Source:
-sqlserver_dbt/landing-pershing_aca2_a.dbt.ms.sql
+sqlserver_landing_dbt/landing-pershing_aca2_rec_a.dbt.ms.sql
 
 Landing:
 dbx_landing/landing-pershing_aca2_a.dbx.sql

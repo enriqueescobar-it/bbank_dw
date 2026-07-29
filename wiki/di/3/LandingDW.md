@@ -64,17 +64,33 @@ landing_pipeline_run
 
 ### Pershing DataProd Regeneration
 
-The current checkout may not contain a `dbt_landing/` folder. When that folder is absent, the available source of truth for empty Pershing DataProd dbt landing models is the matching DBX landing schema in `dbx_landing/landing-pershingdataprod_*.dbx.sql`.
+The current checkout uses `sqlserver_landing_dbt/` for SQL Server landing dbt models and `sqlserver_brz_dbt/` for SQL Server bronze dbt models. When an older `dbt_landing/` folder is mentioned but absent, the available source of truth for empty Pershing DataProd landing dbt models is the matching DBX landing schema in `dbx_landing/landing-pershingdataprod_*.dbx.sql`.
 
 ```mermaid
 flowchart TD
     A["dbx_landing/landing-pershingdataprod_*.dbx.sql"] --> B["Extract landing_pershing.default table columns"]
     A --> C["Read DQP_LANDING dbo Source comment"]
-    B --> D["Regenerate sqlserver_dbt/landing-pershingdataprod_*.dbt.ms.sql"]
+    B --> D["Regenerate sqlserver_landing_dbt/landing-pershingdataprod_*.dbt.ms.sql"]
     C --> D
     D --> E["Use source(\"pershing\", \"PERSHINGDATAPROD_*\")"]
     D --> F["Derive YEARMONTH from LOADED_AT with SQL Server CONVERT"]
     D --> G["Apply incremental append and GETUTCDATE loaded timestamp pattern"]
+```
+
+### Codex Skill Map
+
+Use `$landing-to-dbx-generator` for landing SQL, `$bronze-to-dbx-generator` for bronze SQL, `$dbx-layer-auditor` for landing and bronze validation, and `$sqlserver-dbx-syntax-converter` for SQL Server to Databricks syntax rules.
+
+```mermaid
+flowchart LR
+    A["sqlserver_landing_desc and sqlserver_landing_dbt"] --> B["$landing-to-dbx-generator"]
+    B --> C["dbx_landing"]
+    C --> D["$bronze-to-dbx-generator"]
+    D --> E["dbx_bronze"]
+    F["$sqlserver-dbx-syntax-converter"] --> B
+    F --> D
+    C --> G["$dbx-layer-auditor"]
+    E --> G
 ```
 
 Tier 1: Jack Henry (69 tables) & SEI (42 tables), the largest footprint, likely dominant consumers, therefore most opportunity for metadata inconsistencies

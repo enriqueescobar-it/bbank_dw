@@ -1,4 +1,0 @@
-interface:
-  display_name: "DBX Landing Generator"
-  short_description: "Generate Databricks landing SQL files"
-  default_prompt: "Use $dbx-landing-generator to create Databricks landing SQL files from SQL Server metadata."

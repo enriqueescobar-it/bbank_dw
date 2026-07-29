@@ -1,9 +1,9 @@
 ---
-name: sqlserver-to-dbx-converter
+name: sqlserver-dbx-syntax-converter
 description: Convert Microsoft SQL Server T-SQL, dbt SQL Server models, and SQL Server table metadata into Databricks SQL syntax. Use when rewriting SQL Server data types, CONVERT/CAST expressions, date functions, null handling, bracketed identifiers, reserved words, or source SQL into DBX-compatible SQL for landing or bronze layer work.
 ---
 
-# SQL Server To DBX Converter
+# SQL Server DBX Syntax Converter
 
 ## Purpose
 

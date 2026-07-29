@@ -1,0 +1,4 @@
+interface:
+  display_name: "SQL Server DBX Syntax Converter"
+  short_description: "Convert SQL Server SQL into Databricks SQL"
+  default_prompt: "Use $sqlserver-dbx-syntax-converter to convert this SQL Server query into Databricks SQL."
