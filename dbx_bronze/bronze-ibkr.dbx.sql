@@ -45,7 +45,7 @@ WITH landing_data AS (
         ,STATUS_MSG
         ,MODIFY_DT
         ,PORTFOLIO
-        ,(SELECT TRY_CAST(POSTD7 AS DATE) FROM landing_jh.default.jh_ddpar1) as AsOfDate
+        ,(SELECT MAX(TRY_CAST(POSTD7 AS DATE)) FROM landing_jh.default.jh_ddpar1) as AsOfDate
         ,TRY_CAST(date_format(LOADED_AT, 'yyyyMM') AS INT) AS YEARMONTH
         ,LOADED_AT
     FROM
