@@ -9,7 +9,7 @@ USE SCHEMA default;
 
 -- Source model: BRONZE_PERSHING_ISCA_REC_J
 -- Source table: landing_pershing.default.pershing_isca_j
-CREATE OR REPLACE TABLE bronze_pershing.default.bronze_pershing_isca_rec_j AS
+CREATE OR REPLACE TABLE bronze_pershing.default.bronze_pershing_isca_j AS
 SELECT
     `RECORD_INDICATOR_VALUE`,
     `RECORD_ID_SEQUENCE_NUMBER`,
@@ -33,5 +33,5 @@ SELECT
     current_timestamp() AS `LOADED_AT`
 FROM landing_pershing.default.pershing_isca_j;
 
-COMMENT ON TABLE bronze_pershing.default.bronze_pershing_isca_rec_j IS
-'Bronze Pershing table bronze_pershing_isca_rec_j contains security, fund, pricing, income, and product reference records sourced from landing_pershing.default.pershing_isca_j for warehouse parity, validation, reconciliation, and downstream reporting.';
+COMMENT ON TABLE bronze_pershing.default.bronze_pershing_isca_j IS
+'Bronze Pershing table bronze_pershing_isca_j contains security, fund, pricing, income, and product reference records sourced from landing_pershing.default.pershing_isca_j for warehouse parity, validation, reconciliation, and downstream reporting.';

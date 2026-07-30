@@ -9,7 +9,7 @@ USE SCHEMA default;
 
 -- Source model: BRONZE_PERSHING_GACT_REC_B
 -- Source table: landing_pershing.default.pershing_gact_b
-CREATE OR REPLACE TABLE bronze_pershing.default.bronze_pershing_gact_rec_b AS
+CREATE OR REPLACE TABLE bronze_pershing.default.bronze_pershing_gact_b AS
 SELECT
     `TRANSACTION_CODE`,
     `RECORD_INDICATOR_VALUE`,
@@ -77,5 +77,5 @@ SELECT
     current_timestamp() AS `LOADED_AT`
 FROM landing_pershing.default.pershing_gact_b;
 
-COMMENT ON TABLE bronze_pershing.default.bronze_pershing_gact_rec_b IS
-'Bronze Pershing table bronze_pershing_gact_rec_b contains transfer, ACATS, contra broker, status, and exception records sourced from landing_pershing.default.pershing_gact_b for warehouse parity, validation, reconciliation, and downstream reporting.';
+COMMENT ON TABLE bronze_pershing.default.bronze_pershing_gact_b IS
+'Bronze Pershing table bronze_pershing_gact_b contains transfer, ACATS, contra broker, status, and exception records sourced from landing_pershing.default.pershing_gact_b for warehouse parity, validation, reconciliation, and downstream reporting.';

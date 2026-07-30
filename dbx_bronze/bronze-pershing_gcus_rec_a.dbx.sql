@@ -9,7 +9,7 @@ USE SCHEMA default;
 
 -- Source model: BRONZE_PERSHING_GCUS_REC_A
 -- Source table: landing_pershing.default.pershing_gcus_a
-CREATE OR REPLACE TABLE bronze_pershing.default.bronze_pershing_gcus_rec_a AS
+CREATE OR REPLACE TABLE bronze_pershing.default.bronze_pershing_gcus_a AS
 SELECT
     `TRANSACTION_CODE`,
     `RECORD_INDICATOR_VALUE`,
@@ -83,5 +83,5 @@ SELECT
     current_timestamp() AS `LOADED_AT`
 FROM landing_pershing.default.pershing_gcus_a;
 
-COMMENT ON TABLE bronze_pershing.default.bronze_pershing_gcus_rec_a IS
-'Bronze Pershing table bronze_pershing_gcus_rec_a contains custody, position, margin, collateral, and security records sourced from landing_pershing.default.pershing_gcus_a for warehouse parity, validation, reconciliation, and downstream reporting.';
+COMMENT ON TABLE bronze_pershing.default.bronze_pershing_gcus_a IS
+'Bronze Pershing table bronze_pershing_gcus_a contains custody, position, margin, collateral, and security records sourced from landing_pershing.default.pershing_gcus_a for warehouse parity, validation, reconciliation, and downstream reporting.';
