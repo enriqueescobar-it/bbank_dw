@@ -18,7 +18,7 @@
 
 WITH landing_data AS (
 SELECT
-	 ID
+     ID
     ,TRANSFER_ID
     ,DATA_DT
     ,RUN_DT
@@ -41,12 +41,12 @@ SELECT
     ,CAST(FORMAT(DATA_DT,'yyyyMM') as INTEGER) AS YEARMONTH
     ,LOADED_AT
 FROM
-	{{ source("pershing", "PERSHINGDATAPROD_MASTER_ASSET") }}
+    {{ source("pershing", "PERSHINGDATAPROD_MASTER_ASSET") }}
 ),
 
 bronze_data AS (
 SELECT
-	 ID
+     ID
     ,TRANSFER_ID
     ,DATA_DT
     ,RUN_DT

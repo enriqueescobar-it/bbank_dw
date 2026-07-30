@@ -9,7 +9,7 @@
 
 {{
    config(
-	      materialized='incremental',
+          materialized='incremental',
           incremental_strategy='append',
           tags=["pershing_standard"]
         )
@@ -17,8 +17,8 @@
 
 WITH landing_data AS (
     SELECT DISTINCT
-	    RECORD_INDICATOR_VALUE,
-	    CONVERT(INT, RECORD_ID_SEQUENCE_NUMBER) AS RECORD_ID_SEQUENCE_NUMBER,
+        RECORD_INDICATOR_VALUE,
+        CONVERT(INT, RECORD_ID_SEQUENCE_NUMBER) AS RECORD_ID_SEQUENCE_NUMBER,
         CUSIP_NUMBER,
         STATE_TAX_INDICATOR,
         FEDERAL_TAXABLE_STATUS_INDICATOR,
@@ -33,12 +33,12 @@ WITH landing_data AS (
         USER_CUSIP_IDENTIFIER,
         CONVERT(INT, PRICE_PURGE_DATE) PRICE_PURGE_DATE,
         TAXABLE_INDICATOR,
-	    CONVERT(DATE, DATE_OF_DATA) AS DATE_OF_DATA,
-	    YEARMONTH
+        CONVERT(DATE, DATE_OF_DATA) AS DATE_OF_DATA,
+        YEARMONTH
     FROM
         {{ source("pershing", "PERSHING_ISCA_C") }}
     {% if is_incremental() %}
-		WHERE DATE_OF_DATA NOT IN (SELECT DISTINCT DATE_OF_DATA FROM {{ this }})
+        WHERE DATE_OF_DATA NOT IN (SELECT DISTINCT DATE_OF_DATA FROM {{ this }})
     {% endif %}
 )
 

@@ -50,7 +50,7 @@ SELECT
     ,LOADED_AT
 
 FROM
-	{{ source("pershing", "PERSHINGDATAPROD_TRANSFER") }}
+    {{ source("pershing", "PERSHINGDATAPROD_TRANSFER") }}
 ),
 
 bronze_data AS (

@@ -33,6 +33,7 @@ flowchart TD
     B --> B5["Landing plus bronze cross-check"]
     B --> B6["Pershing DataProd sqlserver_landing_dbt plus DBX landing pairs"]
     B --> B7["Known Pershing isca_rec_i typo check"]
+    B --> B8["Pershing sqlserver_brz_dbt plus DBX bronze pairs"]
 
     B --> C["Read current files from disk"]
     C --> D["Classify each file"]
@@ -51,6 +52,7 @@ flowchart TD
     E --> E5["Tabs or formatting drift"]
     E --> E6["dbt or Jinja leftovers"]
     E --> E7["Missing COMMENT ON TABLE"]
+    E --> E8["Landing to bronze catalog parity drift"]
 
     D --> F{"Both layers in scope?"}
     F -->|No| G["Layer-only validation"]
@@ -60,6 +62,11 @@ flowchart TD
     P --> P2["DBX columns appear in dbt landing_data"]
     P --> P3["YEARMONTH derives from LOADED_AT"]
     P --> P4["No Databricks-only syntax in dbt model"]
+    B8 --> R["Cross-check Pershing bronze dbt to DBX bronze model"]
+    R --> R1["Every brz-pers*.dbt.ms.sql has bronze-pers*.dbx.sql"]
+    R --> R2["DBX bronze reads landing_pershing.default"]
+    R --> R3["DBX bronze writes bronze_pershing.default"]
+    R --> R4["DBX bronze has COMMENT ON TABLE"]
     B7 --> Q["Confirm only isca_rec_j artifacts remain"]
     H --> H1["Bronze inputs exist in landing"]
     H --> H2["Bronze source catalog matches landing family"]
@@ -69,6 +76,7 @@ flowchart TD
     G --> I["Build findings"]
     H --> I
     P --> I
+    R --> I
     Q --> I
     I --> I1["Severity"]
     I --> I2["File and line"]
@@ -95,7 +103,7 @@ Use this plan for every validation pass:
    - Landing files live under `dbx_landing/`.
    - Bronze files live under `dbx_bronze/`.
    - Landing targets use `landing.default` or a source-specific landing catalog.
-   - Bronze targets use `bronze.default` unless a source-specific bronze catalog is intentional, such as `bronze_jh.default`.
+   - Bronze targets use `bronze.default` unless a source-specific bronze catalog is intentional, such as `bronze_jh.default`, `bronze_pershing.default`, or `bronze_sei.default`.
    - Bronze sources read from the matching landing catalog.
 6. Compare actual SQL against those expectations.
 7. Report only actionable findings. Do not invent missing source columns or assume exceptions.
@@ -103,6 +111,8 @@ Use this plan for every validation pass:
 When the user says to refresh files in memory, treat the current filesystem as the source of truth. Re-list `sqlserver_brz/`, `sqlserver_landing_dbt/`, `sqlserver_brz_dbt/`, `dbx_landing/`, and `dbx_bronze/`, then re-read the files in scope before auditing or repairing, even if similar files were read earlier in the conversation.
 
 When validating regenerated Pershing DataProd landing dbt models, pair `dbx_landing/landing-pershingdataprod_*.dbx.sql` with `sqlserver_landing_dbt/landing-pershingdataprod_*.dbt.ms.sql`. The dbt model should use `{{ source("pershing", "PERSHINGDATAPROD_*") }}`, include all DBX table columns in the same order, derive `YEARMONTH` from `LOADED_AT` with SQL Server `CONVERT`, replace output `LOADED_AT` in `bronze_data` with `GETUTCDATE() AS LOADED_AT`, and contain no Databricks DDL, table comments, seed SQL, backticks, `TRY_CAST`, `timestampadd`, or `date_add`.
+
+When validating regenerated Pershing bronze files, pair every populated `sqlserver_brz_dbt/brz-pers*.dbt.ms.sql` file with `dbx_bronze/bronze-pers*.dbx.sql`. The DBX bronze file should read from `landing_pershing.default.<source_table>`, write to `bronze_pershing.default.<bronze_model>`, include a `COMMENT ON TABLE`, contain no dbt Jinja, contain no SQL Server-only functions such as `CONVERT(`, `GETUTCDATE()`, or `GETDATE()`, and contain no tabs.
 
 When auditing Pershing ISCA records, flag any active `isca_rec_i` file, table, or provenance reference as stale. The corrected artifact is `isca_rec_j`, sourced from `PERSHING_ISCA_J`, and should resolve to `landing_pershing.default.pershing_isca_j`.
 
@@ -145,7 +155,7 @@ For `dbx_landing/*.dbx.sql`, validate:
 For `dbx_bronze/*.dbx.sql`, validate:
 
 - The file creates or uses the expected bronze catalog: normally `bronze`, or a requested source-specific catalog such as `bronze_jh` for combined Jack Henry bronze.
-- Bronze outputs are `bronze.default.<table>` unless the file is intentionally source-specific, such as `bronze_jh.default.<table>` for Jack Henry.
+- Bronze outputs are `bronze.default.<table>` unless the file is intentionally source-specific, such as `bronze_jh.default.<table>` for Jack Henry, `bronze_pershing.default.<table>` for Pershing, or `bronze_sei.default.<table>` for SEI.
 - Landing inputs use the matching landing catalog, such as `landing.default.<table>`, `landing_jh.default.<table>`, `landing_pershing.default.<table>`, or `landing_sei.default.<table>`.
 - Source-data conversions use `TRY_CAST`.
 - SQL Server functions are rewritten to Databricks SQL equivalents.
@@ -174,7 +184,16 @@ general landing sources   -> landing.default
 Jack Henry JH_* sources   -> landing_jh.default
 Pershing sources          -> landing_pershing.default
 SEI sources               -> landing_sei.default
-bronze outputs            -> bronze.default unless current files intentionally use a source-specific catalog such as bronze_jh.default for Jack Henry or bronze_sei.default for SEI
+bronze outputs            -> bronze.default unless current files intentionally use a source-specific catalog such as bronze_jh.default for Jack Henry, bronze_pershing.default for Pershing, or bronze_sei.default for SEI
+```
+
+Catalog parity map:
+
+```text
+landing.default           -> bronze.default
+landing_jh.default        -> bronze_jh.default
+landing_pershing.default  -> bronze_pershing.default
+landing_sei.default       -> bronze_sei.default
 ```
 
 ## Finding Severity

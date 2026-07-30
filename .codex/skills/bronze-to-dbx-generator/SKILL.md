@@ -1,6 +1,6 @@
 ---
 name: bronze-to-dbx-generator
-description: Generate or repair Databricks bronze SQL files under dbx_bronze from SQL Server bronze SQL under sqlserver_brz, non-empty dbt SQL Server bronze models under sqlserver_brz_dbt, populated landing dbt transformation models under sqlserver_landing_dbt when they are the available source, or existing bronze DBX SQL. Use when creating bronze.default tables or source-specific bronze catalogs such as bronze_jh.default when requested, reading from the correct landing catalog such as landing.default, landing_jh.default, landing_pershing.default, or landing_sei.default, replacing SQL Server syntax with DBX syntax, adding bronze table comments, validating landing column coverage, and avoiding landing-layer edits.
+description: Generate or repair Databricks bronze SQL files under dbx_bronze from SQL Server bronze SQL under sqlserver_brz, non-empty dbt SQL Server bronze models under sqlserver_brz_dbt, populated landing dbt transformation models under sqlserver_landing_dbt when they are the available source, or existing bronze DBX SQL. Use when creating bronze.default tables or source-specific bronze catalogs such as bronze_jh.default and bronze_pershing.default when requested or source-specific parity requires it, reading from the correct landing catalog such as landing.default, landing_jh.default, landing_pershing.default, or landing_sei.default, replacing SQL Server syntax with DBX syntax, adding bronze table comments, validating landing column coverage, and avoiding landing-layer edits.
 ---
 
 # Bronze To DBX Generator
@@ -27,11 +27,14 @@ When the user says to refresh files in memory, do not rely on prior conversation
 flowchart TD
     A["Bronze generation or repair request"] --> B["Read source SQL or existing bronze SQL"]
     B --> C["Read matching dbx_landing source tables"]
+    B --> C1["For sqlserver_brz_dbt/brz-pers*.dbt.ms.sql, pair to dbx_bronze/bronze-pers*.dbx.sql"]
+    C1 --> C
 
     C --> D["Identify bronze outputs"]
     D --> D1["Target catalog: bronze or requested source-specific catalog"]
     D --> D2["Target schema: default"]
     D --> D3["Target table: <bronze_catalog>.default.<bronze_table>"]
+    D --> D4["Catalog parity: landing_pershing maps to bronze_pershing"]
 
     C --> E["Identify landing inputs"]
     E --> E1["Source catalog: landing or source-specific landing catalog"]
@@ -96,7 +99,9 @@ Extract:
 
 Remove dbt config, Jinja conditionals, `{{ this }}`, and logging blocks from final `.dbx.sql`.
 
-Use `sqlserver_brz_dbt/*.dbt.ms.sql` only when the file is populated. In the current repo snapshot, `sqlserver_brz_dbt/` may contain zero-line placeholders; do not treat those empty files as transformation sources. For populated Pershing dbt transformation logic, use the matching `sqlserver_landing_dbt/landing-*.dbt.ms.sql` file when it contains the `landing_data` and `bronze_data` CTEs.
+Use `sqlserver_brz_dbt/*.dbt.ms.sql` only when the file is populated. For Pershing bronze generation, map every populated `sqlserver_brz_dbt/brz-pers*.dbt.ms.sql` file one-to-one to `dbx_bronze/bronze-pers*.dbx.sql`. Use the dbt model name and `source("pershing", "...")` table mapping from the dbt file, then use the matching `dbx_landing/landing-*.dbx.sql` table definition as the deployable typed column source for `landing_pershing.default.<table>`. Pershing bronze targets must use `bronze_pershing.default.<bronze_model>` for parity with `landing_pershing.default`. This avoids carrying SQL Server packed-numeric conversion syntax into Databricks bronze when the DBX landing table already exposes typed columns.
+
+For populated Pershing dbt transformation logic outside `sqlserver_brz_dbt/`, use the matching `sqlserver_landing_dbt/landing-*.dbt.ms.sql` file when it contains the `landing_data` and `bronze_data` CTEs.
 
 ### Existing `dbx_bronze/*.dbx.sql`
 
@@ -143,17 +148,32 @@ Pershing sources          -> landing_pershing.default.<landing_table>
 SEI sources               -> landing_sei.default.<landing_table>
 ```
 
+Use this source-specific bronze catalog map:
+
+```text
+Pershing bronze outputs   -> bronze_pershing.default.<bronze_table>
+Jack Henry bronze outputs -> bronze_jh.default.<bronze_table>
+SEI bronze outputs        -> bronze_sei.default.<bronze_table>
+general bronze outputs    -> bronze.default.<bronze_table>
+```
+
+When a source-specific landing catalog is present, enforce catalog parity in generated bronze SQL. Do not write Pershing, Jack Henry, or SEI bronze outputs to the generic `bronze.default` catalog.
+
 Examples:
 
 ```text
 -- NAME: BRONZE_PERSHING_ACA2_REC_A
--> bronze.default.bronze_pershing_aca2_rec_a
+-> bronze_pershing.default.bronze_pershing_aca2_rec_a
 
 sqlserver_brz/brz-jh_*.ms.sql with requested Jack Henry bronze catalog
 -> bronze_jh.default.bronze_jh_<table>
 
 {{ source("pershing", "PERSHING_ACA2_A") }}
 -> landing_pershing.default.pershing_aca2_a
+
+sqlserver_brz_dbt/brz-pershing_aca2_rec_a.dbt.ms.sql
+-> dbx_bronze/bronze-pershing_aca2_rec_a.dbx.sql
+-> bronze_pershing.default.bronze_pershing_aca2_rec_a
 ```
 
 Do not recreate old source-system catalogs like `apex.default`, `q2.default`, `ibkr.default`, or `pershing.default`. Use the current landing catalog family instead.
@@ -212,7 +232,7 @@ Do not use JSON extraction when matching flattened landing columns already exist
 
 ## Comment Rules
 
-Every `CREATE OR REPLACE TABLE <bronze_catalog>.default.* AS` must have a matching `COMMENT ON TABLE <bronze_catalog>.default.*`. For the normal shared bronze catalog this is `bronze.default.*`; for the requested Jack Henry split catalog this is `bronze_jh.default.*`.
+Every `CREATE OR REPLACE TABLE <bronze_catalog>.default.* AS` must have a matching `COMMENT ON TABLE <bronze_catalog>.default.*`. For the normal shared bronze catalog this is `bronze.default.*`; for source-specific catalogs this includes `bronze_jh.default.*`, `bronze_pershing.default.*`, and `bronze_sei.default.*`.
 
 Use a domain-aware description when possible:
 
@@ -229,7 +249,7 @@ Before finishing:
 
 - Only `dbx_bronze/*.dbx.sql` files were created or edited.
 - No `dbx_landing/` files were touched.
-- Outputs use `bronze.default` unless the user requested a source-specific bronze catalog, such as `bronze_jh.default` for the combined Jack Henry bronze file.
+- Outputs use `bronze.default` unless the user requested or current source parity requires a source-specific bronze catalog, such as `bronze_jh.default` for the combined Jack Henry bronze file or `bronze_pershing.default` for Pershing bronze dbt outputs.
 - Inputs use the matching landing catalog: `landing.default`, `landing_jh.default`, `landing_pershing.default`, or `landing_sei.default`.
 - For `dbx_bronze/bronze-jh.dbx.sql`, landing coverage was checked against the current `dbx_landing/landing-jh.dbx.sql`.
 - No executable `CONVERT(`, `GETUTCDATE()`, `GETDATE()`, SQL Server brackets, or dbt Jinja remain.
@@ -263,7 +283,7 @@ Expected behavior:
 - It does not edit files.
 - It reads the dbt SQL and landing file.
 - It identifies `landing_pershing.default.pershing_aca2_a` as the landing source unless current source proves otherwise.
-- It identifies `bronze.default.bronze_pershing_aca2_rec_a` from the dbt model name/comment.
+- It identifies `bronze_pershing.default.bronze_pershing_aca2_rec_a` from the dbt model name/comment.
 - It reports required columns and any missing landing columns.
 - It explicitly says no landing edits are needed.
 
@@ -286,8 +306,8 @@ Write only under dbx_bronze. Do not touch dbx_landing.
 Expected generated output:
 
 - A repo-consistent `dbx_bronze/bronze-*.dbx.sql` file.
-- `CREATE CATALOG IF NOT EXISTS bronze`.
-- `CREATE OR REPLACE TABLE bronze.default.<table> AS`.
+- `CREATE CATALOG IF NOT EXISTS bronze_pershing`.
+- `CREATE OR REPLACE TABLE bronze_pershing.default.<table> AS`.
 - Reads from `landing_pershing.default.pershing_aca2_a`.
 - Uses `TRY_CAST` for source-data conversion.
 - Removes dbt Jinja.

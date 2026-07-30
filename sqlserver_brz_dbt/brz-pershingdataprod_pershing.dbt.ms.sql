@@ -57,7 +57,7 @@ SELECT
     ,LOADED_AT
 
 FROM
-	{{ source("pershing", "PERSHINGDATAPROD_PERSHING") }}
+    {{ source("pershing", "PERSHINGDATAPROD_PERSHING") }}
 ),
 
 bronze_data AS (

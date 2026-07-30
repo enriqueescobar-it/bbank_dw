@@ -1,0 +1,4 @@
+interface:
+  display_name: "Whitespace Normalizer"
+  short_description: "Replace tabs with four spaces"
+  default_prompt: "Use $whitespace-normalizer to replace tab characters with four spaces and report the cleaned files."

@@ -28,6 +28,16 @@ dbx_landing/landing-pershingdataprod_*.dbx.sql -> sqlserver_landing_dbt/landing-
 
 The regenerated dbt files read from `{{ source("pershing", "PERSHINGDATAPROD_*") }}`, derive `YEARMONTH` from `LOADED_AT` with SQL Server `CONVERT`, and use the established incremental append pattern.
 
+For Pershing bronze dbt inputs, create matching Databricks bronze files from:
+
+```text
+sqlserver_brz_dbt/brz-pers*.dbt.ms.sql -> dbx_bronze/bronze-pers*.dbx.sql
+```
+
+The generated bronze files use the dbt model name and `source("pershing", "...")` mapping, read typed columns from the matching `landing_pershing.default` table in `dbx_landing/`, write to `bronze_pershing.default`, and add `COMMENT ON TABLE` descriptions without apostrophes.
+
+Catalog parity rule: source-specific landing catalogs must write to matching source-specific bronze catalogs. Current mappings are `landing_pershing.default -> bronze_pershing.default`, `landing_jh.default -> bronze_jh.default`, and `landing_sei.default -> bronze_sei.default`. Only generic landing sources should write to `bronze.default`.
+
 ```mermaid
 flowchart TD
     A["sqlserver_landing_dbt/landing-pers*.dbt.ms.sql"] --> B["Read dbt source() table"]
@@ -46,6 +56,14 @@ flowchart TD
     K --> M["Regenerate empty sqlserver_landing_dbt/landing-pershingdataprod_*.dbt.ms.sql"]
     L --> M
     M --> N["Use dbt incremental append and source(\"pershing\", ...)"]
+    R["sqlserver_brz_dbt/brz-pers*.dbt.ms.sql"] --> S["Read bronze dbt model and source() table"]
+    S --> T["Read typed landing_pershing.default columns from dbx_landing"]
+    T --> U["Write dbx_bronze/bronze-pers*.dbx.sql"]
+    U --> V["Target bronze_pershing.default with COMMENT ON TABLE"]
+    W["Catalog parity rule"] --> X["landing_pershing.default maps to bronze_pershing.default"]
+    W --> Y["landing_jh.default maps to bronze_jh.default"]
+    W --> Z["landing_sei.default maps to bronze_sei.default"]
+    X --> V
 ```
 
 ## Codex Skills
@@ -56,6 +74,8 @@ The local skills are named by layer and direction:
 - `$bronze-to-dbx-generator`: generate or repair Databricks bronze SQL from SQL Server bronze SQL, populated dbt transformation models, and DBX landing sources.
 - `$dbx-layer-auditor`: audit DBX landing and bronze SQL, including landing-to-bronze coverage and Pershing DataProd DBX-to-landing-dbt pairs.
 - `$sqlserver-dbx-syntax-converter`: shared SQL Server to Databricks syntax and type conversion rules.
+- `$whitespace-normalizer`: replace tab characters with four spaces and validate that the requested scope is clean.
+- `$catalog-parity-enforcer`: audit and repair source-specific landing to bronze catalog symmetry.
 
 ```mermaid
 flowchart LR
@@ -68,4 +88,10 @@ flowchart LR
     C --> G["$dbx-layer-auditor"]
     E --> G
     H["sqlserver_landing_dbt/*.dbt.ms.sql"] --> G
+    I["$whitespace-normalizer"] --> C
+    I --> E
+    I --> H
+    J["$catalog-parity-enforcer"] --> C
+    J --> E
+    J --> G
 ```

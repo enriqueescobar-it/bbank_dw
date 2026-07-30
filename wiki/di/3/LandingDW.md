@@ -68,6 +68,10 @@ The current checkout uses `sqlserver_landing_dbt/` for SQL Server landing dbt mo
 
 Known Pershing correction: `isca_rec_i` should be treated as a typo for `isca_rec_j`. The corrected source table is `PERSHING_ISCA_J`, and the DBX landing target is `landing_pershing.default.pershing_isca_j`.
 
+Pershing bronze dbt models in `sqlserver_brz_dbt/brz-pers*.dbt.ms.sql` can be regenerated as Databricks bronze files in `dbx_bronze/bronze-pers*.dbx.sql`. The generation path uses the dbt model and `source("pershing", "...")` mapping, reads typed column definitions from `landing_pershing.default` DBX landing tables, and writes `bronze_pershing.default` tables with comments that avoid apostrophes inside SQL string literals.
+
+Catalog parity rule: source-specific landing catalogs should map to matching source-specific bronze catalogs. Use `landing_pershing.default -> bronze_pershing.default`, `landing_jh.default -> bronze_jh.default`, and `landing_sei.default -> bronze_sei.default`.
+
 ```mermaid
 flowchart TD
     A["dbx_landing/landing-pershingdataprod_*.dbx.sql"] --> B["Extract landing_pershing.default table columns"]
@@ -79,11 +83,19 @@ flowchart TD
     D --> G["Apply incremental append and GETUTCDATE loaded timestamp pattern"]
     H["isca_rec_i typo"] --> I["Correct to isca_rec_j"]
     I --> J["Use PERSHING_ISCA_J and pershing_isca_j"]
+    K["sqlserver_brz_dbt/brz-pers*.dbt.ms.sql"] --> L["Read bronze model and source() table"]
+    L --> M["Read matching dbx_landing landing_pershing.default columns"]
+    M --> N["Generate dbx_bronze/bronze-pers*.dbx.sql"]
+    N --> O["Target bronze_pershing.default and add COMMENT ON TABLE"]
+    P["Catalog parity rule"] --> Q["landing_pershing.default maps to bronze_pershing.default"]
+    P --> R["landing_jh.default maps to bronze_jh.default"]
+    P --> S["landing_sei.default maps to bronze_sei.default"]
+    Q --> O
 ```
 
 ### Codex Skill Map
 
-Use `$landing-to-dbx-generator` for landing SQL, `$bronze-to-dbx-generator` for bronze SQL, `$dbx-layer-auditor` for landing and bronze validation, and `$sqlserver-dbx-syntax-converter` for SQL Server to Databricks syntax rules.
+Use `$landing-to-dbx-generator` for landing SQL, `$bronze-to-dbx-generator` for bronze SQL, `$dbx-layer-auditor` for landing and bronze validation, `$sqlserver-dbx-syntax-converter` for SQL Server to Databricks syntax rules, `$whitespace-normalizer` for tab-to-four-space cleanup, and `$catalog-parity-enforcer` for source-specific landing to bronze catalog symmetry.
 
 ```mermaid
 flowchart LR
@@ -95,6 +107,12 @@ flowchart LR
     F --> D
     C --> G["$dbx-layer-auditor"]
     E --> G
+    H["$whitespace-normalizer"] --> A
+    H --> C
+    H --> E
+    I["$catalog-parity-enforcer"] --> C
+    I --> E
+    I --> G
 ```
 
 Tier 1: Jack Henry (69 tables) & SEI (42 tables), the largest footprint, likely dominant consumers, therefore most opportunity for metadata inconsistencies

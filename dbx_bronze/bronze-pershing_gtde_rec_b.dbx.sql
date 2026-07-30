@@ -1,0 +1,97 @@
+-- Databricks SQL for Pershing bronze model
+-- Generated from sqlserver_brz_dbt/brz-pershing_gtde_rec_b.dbt.ms.sql
+
+CREATE CATALOG IF NOT EXISTS bronze_pershing;
+USE CATALOG bronze_pershing;
+
+CREATE SCHEMA IF NOT EXISTS default;
+USE SCHEMA default;
+
+-- Source model: BRONZE_PERSHING_GTDE_REC_B
+-- Source table: landing_pershing.default.pershing_gtde_b
+CREATE OR REPLACE TABLE bronze_pershing.default.bronze_pershing_gtde_rec_b AS
+SELECT
+    `TRANSACTION_CODE`,
+    `RECORD_INDICATOR_VALUE`,
+    `RECORD_ID_SEQUENCE_NUMBER`,
+    `ACCOUNT_NUMBER`,
+    substring(`ACCOUNT_NUMBER`, 1, 3) AS `ACCOUNT_NUMBER_OFFICE`,
+    substring(`ACCOUNT_NUMBER`, 4, 6) AS `ACCOUNT_NUMBER_BASE`,
+    CAST(NULL AS STRING) AS `ACCOUNT_NUMBER_TYPE`,
+    `IBD_NUMBER`,
+    `QUANTITY`,
+    `PRICE`,
+    `TRADE_CURRENCY`,
+    `BASIS_PRICE_INDICATOR`,
+    `YIELD`,
+    `YIELD_TO_WORST`,
+    `YIELD_TO_WORST_CODE`,
+    `PERSHING_CHARGE`,
+    `TRANSACTION_FEE`,
+    `REBATE_AMOUNT`,
+    `NET_AMOUNT`,
+    `SETTLEMENT_CURRENCY`,
+    `SETTLEMENT_CURRENCY_EXCHANGE_RATE`,
+    `SETTLEMENT_CURRENCY_MULTIPLY_DIVIDE_CODE`,
+    `ACCRUED_INTEREST`,
+    `SERVICE_CHARGE_FOR_IBD`,
+    `POSTAGE`,
+    `COMMISSION_SALES_CREDIT_TYPE`,
+    `COMMISSION`,
+    `COMMISSION_PERCENT_DISCOUNT`,
+    `SALES_CREDIT`,
+    `CDSC`,
+    `BASE_COMMISSION`,
+    `EQUITY_MARK_UP_MARK_DOWN`,
+    `PRINCIPAL`,
+    `EXECUTION_CHARGE`,
+    `EXECUTION_ONLY_INDICATOR`,
+    `SETTLEMENT_FEE_CUSTOMER`,
+    `CLEARANCE_ONLY_INDICATOR`,
+    `FGN_RECEIVE_DELIVER_CHARGE`,
+    `NTF_REDEMPTION_FEE`,
+    `NTF_REDEMPTION_ADD_ON_FEE`,
+    `MUTUAL_FUND_EXCHANGE_FEE`,
+    `SRS_FUND_EXCHANGE_FEE`,
+    `HANDLING_FEE`,
+    `STAMP_DUTY`,
+    `PRIME_BROKER_FEE`,
+    `IBD_MISCELLANEOUS_CHARGE_LABEL`,
+    `IBD_MISCELLANEOUS_CHARGE`,
+    `STREETSIDE_MISCELLANEOUS_CHARGE_LABEL`,
+    `STREETSIDE_MISCELLANEOUS_CHARGE`,
+    `TRANSACTION_LEVY`,
+    `TRANSFER_STAMP_FEE`,
+    `TRANSFER_TAX`,
+    `CUSTOMER_CONFIRM_FEE`,
+    `IBD_CONFIRM_FEE`,
+    `FOREIGN_FIN_TRANSACTION_TAX`,
+    `REPORTED_PRICE`,
+    `ADDITIONAL_TRAILER_LINE_ONE`,
+    `ADDITIONAL_TRAILER_LINE_TWO`,
+    `ADDITIONAL_TRAILER_LINE_THREE`,
+    `ADDITIONAL_TRAILER_LINE_FOUR`,
+    `ADDITIONAL_TRAILER_LINE_FIVE`,
+    `ADDITIONAL_TRAILER_LINE_SIX`,
+    `FREEFORM_LOT_INFORMATION_1`,
+    `FREEFORM_LOT_INFORMATION_2`,
+    `FREEFORM_LOT_INFORMATION_3`,
+    `SEC`,
+    `OPTION_REGULATORY_FEE`,
+    `ALTERNATE_SECURITY_ID_1_TYPE`,
+    `ALTERNATE_SECURITY_ID_1`,
+    `ALTERNATE_SECURITY_ID_2_TYPE`,
+    `ALTERNATE_SECURITY_ID_2`,
+    `NET_AMOUNT_IN_USDE`,
+    `INTERNATIONAL_FOREIGN_TRADING_FEE`,
+    `ATS_INDICATOR`,
+    `ATS_MPID`,
+    `PERSHING_INTERNAL_VERSION_NUMBER`,
+    `PERSHING_INTERNAL_TRADE_REFERENCE_NUMBER`,
+    `DATE_OF_DATA`,
+    `YEARMONTH`,
+    current_timestamp() AS `LOADED_AT`
+FROM landing_pershing.default.pershing_gtde_b;
+
+COMMENT ON TABLE bronze_pershing.default.bronze_pershing_gtde_rec_b IS
+'Bronze Pershing table bronze_pershing_gtde_rec_b contains transaction, cash, financial activity, and reconciliation records sourced from landing_pershing.default.pershing_gtde_b for warehouse parity, validation, reconciliation, and downstream reporting.';

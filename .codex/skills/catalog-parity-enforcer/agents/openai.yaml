@@ -1,0 +1,4 @@
+interface:
+  display_name: "Catalog Parity Enforcer"
+  short_description: "Align landing and bronze catalogs"
+  default_prompt: "Use $catalog-parity-enforcer to audit and repair source-specific landing to bronze catalog parity."
