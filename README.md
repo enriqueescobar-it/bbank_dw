@@ -10,6 +10,26 @@ Bradesco Bank Databricks
 - Databricks landing SQL lives under `dbx_landing/` as `*.dbx.sql`.
 - Databricks bronze SQL lives under `dbx_bronze/` as `*.dbx.sql`.
 
+## Current Refreshed Inventory
+
+Refreshed from the local filesystem on 2026-07-30:
+
+| Area | Count |
+| --- | ---: |
+| `sqlserver_brz/*.ms.sql` files | 128 |
+| `sqlserver_brz_dbt/brz-pers*.dbt.ms.sql` files | 40 |
+| `sqlserver_landing_dbt/landing-pers*.dbt.ms.sql` files | 40 |
+| `sqlserver_landing_desc/*pershing*-desc.ms.txt` files | 37 |
+| `dbx_landing/*.dbx.sql` files | 130 |
+| `dbx_bronze/*.dbx.sql` files | 59 |
+| `dbx_bronze/bronze-pers*.dbx.sql` files | 41 |
+| Unique DBX landing tables | 221 |
+| Unique DBX bronze tables | 220 |
+| Unique Pershing landing tables | 40 |
+| Unique Pershing bronze tables | 40 |
+
+The Pershing bronze file count includes the aggregate `dbx_bronze/bronze-pershing.dbx.sql` plus the 40 one-to-one files generated from `sqlserver_brz_dbt/brz-pers*.dbt.ms.sql`.
+
 For Pershing dbt landing inputs, create matching Databricks landing files from:
 
 ```text
@@ -40,6 +60,12 @@ Catalog parity rule: source-specific landing catalogs must write to matching sou
 
 ```mermaid
 flowchart TD
+    AA["Filesystem refresh 2026-07-30"] --> AB["130 DBX landing SQL files"]
+    AA --> AC["59 DBX bronze SQL files"]
+    AB --> AD["221 unique landing tables"]
+    AC --> AE["220 unique bronze tables"]
+    AD --> AF["40 unique Pershing landing tables"]
+    AE --> AG["40 unique Pershing bronze tables"]
     A["sqlserver_landing_dbt/landing-pers*.dbt.ms.sql"] --> B["Read dbt source() table"]
     A --> C["Extract landing_data columns and conversions"]
     B --> D["Resolve landing_pershing.default.<source_table>"]
@@ -64,6 +90,8 @@ flowchart TD
     W --> Y["landing_jh.default maps to bronze_jh.default"]
     W --> Z["landing_sei.default maps to bronze_sei.default"]
     X --> V
+    AF --> X
+    AG --> V
 ```
 
 ## Codex Skills

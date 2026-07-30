@@ -123,6 +123,8 @@ Tier 3: The rest
 
 ### Count
 
+Refreshed from the local filesystem on 2026-07-30. Counts below are unique DBX landing table names, so combined and split files do not double-count the same table.
+
 | **Tier** | **Source** | **Landing Table Count** |
 | --- | --- | --- |
 | 3 | Apex | 6 |
@@ -135,10 +137,10 @@ Tier 3: The rest
 | 3 | IBKR | 3 |
 | 3 | Invoice | 1 |
 | 1 | Jack Henry | 69 |
-| 3 | Manual | 12 |
+| 3 | Manual | 14 |
 | 3 | MIS | 2 |
 | 3 | MuleSoft | 3 |
-| 2 | Pershing | 8 |
+| 2 | Pershing | 40 |
 | 3 | Promontory | 1 |
 | 3 | Q2 | 3 |
 | 3 | RPRT | 1 |
@@ -159,10 +161,10 @@ Tier 3: The rest
 | IBKR | bcp\_ibkr\_account bcp\_ibkr\_acct\_holder bcp\_ibkr\_balance\_history |
 | Invoice | file\_invoice\_requests |
 | Jack Henry | jh\_acsret jh\_axidmiav jh\_bfgp0087 jh\_bfwt0085 jh\_bfwtmast jh\_br00009 jh\_br00014 jh\_cd2160petl jh\_cdhist jh\_cdmant jh\_cdmast jh\_cdmasteom jh\_cdpar2 jh\_cdpar3 jh\_cdpost jh\_cfacct jh\_cfaltn jh\_cfcrgp jh\_cffben jh\_cfmast jh\_cfmesg jh\_cfmlid jh\_cfofgn jh\_cfpar1 jh\_cfpar3 jh\_cfpard jh\_cfparg jh\_cfusrflds jh\_ddaams jh\_ddaat1 jh\_ddalis\_t jh\_ddetfh jh\_ddhist jh\_ddmant jh\_ddmast jh\_ddmasteom jh\_ddpar1 jh\_ddpar2 jh\_ddpar3 jh\_ddpar4 jh\_ddpost jh\_dmilay jh\_glhist jh\_glhist\_datbga jh\_glhist\_datsec jh\_glint1 jh\_glmast jh\_glpar9 jh\_jhclas jh\_jhctry jh\_jhmast jh\_jhoffr jh\_lcmast jh\_lnepos jh\_lnfpst jh\_lnhist jh\_lnmant jh\_lnmast jh\_lnmasteom jh\_lnpar2 jh\_lnpar3 jh\_lnpar9 jh\_lnpdue jh\_lnpost1 jh\_lnpost2 jh\_lnspos jh\_nvmast jh\_stdesc jh\_transaction |
-| Manual | file\_apex\_monthly\_accounts file\_apex\_monthly\_credit file\_apex\_monthly\_execution file\_apex\_monthly\_fdic file\_apex\_monthly\_trades file\_bflcrtran file\_biu\_activity file\_fedlink\_inc file\_fedlink\_out file\_rdci file\_trailer\_fees file\_trailer\_fees\_accruals |
+| Manual | file\_apex\_monthly\_accounts file\_apex\_monthly\_credit file\_apex\_monthly\_execution file\_apex\_monthly\_fdic file\_apex\_monthly\_trades file\_bflcrtran file\_biu\_activity file\_fedlink\_inc file\_fedlink\_out file\_mis\_pershing\_officer\_code file\_mis\_team\_officers\_v2 file\_rdci file\_trailer\_fees file\_trailer\_fees\_accruals |
 | MIS | file\_mis\_pershing\_officer\_code file\_mis\_team\_officers\_v2 |
 | MuleSoft | mulesoft\_customer\_external\_id mulesoft\_party mulesoft\_prospect\_external\_data |
-| Pershing | pershingdataprod\_caps\_hist pershingdataprod\_master\_asset pershingdataprod\_pershing pershingdataprod\_transfer pers\_accf pers\_pershing pershing\_aca2\_a pershing\_aca2\_d |
+| Pershing | pers\_accf pers\_pershing pershing\_aca2\_a pershing\_aca2\_d pershing\_accf\_a pershing\_accf\_b pershing\_acct\_a pershing\_acct\_b pershing\_caps\_1 pershing\_caps\_2 pershing\_caps\_3 pershing\_caps\_4 pershing\_caps\_5 pershing\_capt\_1 pershing\_capt\_2 pershing\_capt\_3 pershing\_capt\_4 pershing\_capt\_5 pershing\_ckff\_a pershing\_ckff\_b pershing\_ckff\_c pershing\_ckff\_d pershing\_fund\_a pershing\_gact\_a pershing\_gact\_b pershing\_gcus\_a pershing\_gcus\_b pershing\_gtde\_a pershing\_gtde\_b pershing\_isca\_a pershing\_isca\_b pershing\_isca\_c pershing\_isca\_g pershing\_isca\_j pershing\_isrc\_a pershing\_mfds\_a pershingdataprod\_caps\_hist pershingdataprod\_master\_asset pershingdataprod\_pershing pershingdataprod\_transfer |
 | Promontory | intrafi\_r4230 |
 | Q2 | q2\_customer q2\_user q2\_user\_pii |
 | RPRT | rprt\_sharing\_agreement\_exception |
