@@ -55,7 +55,7 @@ flowchart TD
     J --> L["Read Source comment for PERSHINGDATAPROD_*"]
     K --> M["Regenerate empty sqlserver_landing_dbt/landing-pershingdataprod_*.dbt.ms.sql"]
     L --> M
-    M --> N["Use dbt incremental append and source(\"pershing\", ...)"]
+    M --> N["Use dbt incremental append and Pershing source mapping"]
     R["sqlserver_brz_dbt/brz-pers*.dbt.ms.sql"] --> S["Read bronze dbt model and source() table"]
     S --> T["Read typed landing_pershing.default columns from dbx_landing"]
     T --> U["Write dbx_bronze/bronze-pers*.dbx.sql"]

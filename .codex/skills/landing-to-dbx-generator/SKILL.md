@@ -76,7 +76,7 @@ flowchart TD
     R --> R1["Extract source table from Source comment or CREATE TABLE name"]
     R --> R2["Extract CREATE TABLE column order"]
     R2 --> R3["Write sqlserver_landing_dbt/landing-pershingdataprod_*.dbt.ms.sql"]
-    R3 --> R4["Use dbt source(\"pershing\", \"PERSHINGDATAPROD_*\")"]
+    R3 --> R4["Use dbt Pershing DataProd source mapping"]
     R4 --> R5["Derive YEARMONTH with SQL Server CONVERT from LOADED_AT"]
     R5 --> R6["Use incremental append and GETUTCDATE loaded timestamp pattern"]
     C6 --> E

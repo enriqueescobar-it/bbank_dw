@@ -58,7 +58,7 @@ flowchart TD
     F -->|No| G["Layer-only validation"]
     F -->|Yes| H["Cross-check landing to bronze"]
     B6 --> P["Cross-check DBX landing schema to SQL Server landing dbt model"]
-    P --> P1["Source table matches source(\"pershing\", ...)"]
+    P --> P1["Source table matches Pershing source mapping"]
     P --> P2["DBX columns appear in dbt landing_data"]
     P --> P3["YEARMONTH derives from LOADED_AT"]
     P --> P4["No Databricks-only syntax in dbt model"]

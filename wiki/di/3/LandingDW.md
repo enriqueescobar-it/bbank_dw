@@ -78,7 +78,7 @@ flowchart TD
     A --> C["Read DQP_LANDING dbo Source comment"]
     B --> D["Regenerate sqlserver_landing_dbt/landing-pershingdataprod_*.dbt.ms.sql"]
     C --> D
-    D --> E["Use source(\"pershing\", \"PERSHINGDATAPROD_*\")"]
+    D --> E["Use Pershing source mapping for PERSHINGDATAPROD"]
     D --> F["Derive YEARMONTH from LOADED_AT with SQL Server CONVERT"]
     D --> G["Apply incremental append and GETUTCDATE loaded timestamp pattern"]
     H["isca_rec_i typo"] --> I["Correct to isca_rec_j"]
