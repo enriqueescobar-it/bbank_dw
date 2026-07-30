@@ -18,6 +18,8 @@ sqlserver_landing_dbt/landing-pers*.dbt.ms.sql -> dbx_landing/landing-per*.dbx.s
 
 The target catalog for Pershing landing tables is `landing_pershing.default`, and the table name comes from the dbt `source("pershing", "...")` table name converted to lower snake case.
 
+Known Pershing correction: `isca_rec_i` is a typo. Use `isca_rec_j` for SQL Server, dbt, and DBX landing artifacts sourced from `PERSHING_ISCA_J`.
+
 For Pershing DataProd reverse regeneration, use the current SQL Server landing dbt folder. If an older `dbt_landing/` folder is mentioned but absent, regenerate empty SQL Server dbt models from the matching DBX landing schemas:
 
 ```text
@@ -37,6 +39,8 @@ flowchart TD
     F --> G["Add deterministic 10-row seed data"]
     F --> H["Add COMMENT ON TABLE without apostrophes"]
     F --> I["Add row-count verification"]
+    O["Known typo isca_rec_i"] --> P["Normalize to isca_rec_j"]
+    P --> Q["Use PERSHING_ISCA_J and pershing_isca_j"]
     J["dbx_landing/landing-pershingdataprod_*.dbx.sql"] --> K["Extract DBX CREATE TABLE columns"]
     J --> L["Read Source comment for PERSHINGDATAPROD_*"]
     K --> M["Regenerate empty sqlserver_landing_dbt/landing-pershingdataprod_*.dbt.ms.sql"]

@@ -39,6 +39,7 @@ flowchart TD
     C3 --> F["Parse column/type metadata"]
     C4 --> G["Inspect current CREATE, INSERT, and comments"]
     C5 --> R["Reverse-generate empty sqlserver_landing_dbt DataProd model"]
+    C2 --> C6["Known correction: isca_rec_i -> isca_rec_j"]
 
     D --> H["Apply sqlserver-dbx-syntax-converter rules"]
     E --> H
@@ -78,6 +79,7 @@ flowchart TD
     R3 --> R4["Use dbt source(\"pershing\", \"PERSHINGDATAPROD_*\")"]
     R4 --> R5["Derive YEARMONTH with SQL Server CONVERT from LOADED_AT"]
     R5 --> R6["Use incremental append and GETUTCDATE loaded timestamp pattern"]
+    C6 --> E
 ```
 
 ## Source Input Types
@@ -104,6 +106,8 @@ Extract:
 Remove dbt config, Jinja conditionals, `{{ this }}`, and logging blocks from final `.dbx.sql`.
 
 For Pershing dbt sources matching `sqlserver_landing_dbt/landing-pers*.dbt.ms.sql`, create or repair the counterpart `dbx_landing/landing-per*.dbx.sql`. Use `landing_pershing.default.<source_table_lower>` where `<source_table_lower>` comes from the dbt `source("pershing", "...")` table name, such as `PERSHING_CAPS_1 -> landing_pershing.default.pershing_caps_1`. Preserve non-empty target files unless the user asks to regenerate them; fill empty placeholders when the counterpart exists but has no SQL.
+
+Known Pershing correction: `isca_rec_i` is a typo for `isca_rec_j`. When a file, provenance comment, model name, or landing artifact says `PERSHING_ISCA_J` or `BRONZE_PERSHING_ISCA_REC_J`, use `landing-pershing_isca_rec_j.*`, `brz-pershing_isca_rec_j.*`, and `landing_pershing.default.pershing_isca_j`. Do not recreate `*_isca_rec_i.*` artifacts.
 
 ### Reverse Pershing DataProd dbt regeneration
 
@@ -164,6 +168,11 @@ sqlserver_landing_dbt/landing-pershing_caps_rec_1.dbt.ms.sql
 dbx_landing/landing-pershingdataprod_transfer.dbx.sql
 -> source("pershing", "PERSHINGDATAPROD_TRANSFER")
 -> sqlserver_landing_dbt/landing-pershingdataprod_transfer.dbt.ms.sql
+
+sqlserver_landing_dbt/landing-pershing_isca_rec_j.dbt.ms.sql
+-> source("pershing", "PERSHING_ISCA_J")
+-> landing_pershing.default.pershing_isca_j
+-> dbx_landing/landing-pershing_isca_rec_j.dbx.sql
 ```
 
 Do not collapse source-specific catalogs back into `landing`. Preserve `landing_jh`, `landing_pershing`, and `landing_sei` during repairs unless the user explicitly asks to change the catalog.

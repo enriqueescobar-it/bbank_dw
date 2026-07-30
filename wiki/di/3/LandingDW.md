@@ -66,6 +66,8 @@ landing_pipeline_run
 
 The current checkout uses `sqlserver_landing_dbt/` for SQL Server landing dbt models and `sqlserver_brz_dbt/` for SQL Server bronze dbt models. When an older `dbt_landing/` folder is mentioned but absent, the available source of truth for empty Pershing DataProd landing dbt models is the matching DBX landing schema in `dbx_landing/landing-pershingdataprod_*.dbx.sql`.
 
+Known Pershing correction: `isca_rec_i` should be treated as a typo for `isca_rec_j`. The corrected source table is `PERSHING_ISCA_J`, and the DBX landing target is `landing_pershing.default.pershing_isca_j`.
+
 ```mermaid
 flowchart TD
     A["dbx_landing/landing-pershingdataprod_*.dbx.sql"] --> B["Extract landing_pershing.default table columns"]
@@ -75,6 +77,8 @@ flowchart TD
     D --> E["Use source(\"pershing\", \"PERSHINGDATAPROD_*\")"]
     D --> F["Derive YEARMONTH from LOADED_AT with SQL Server CONVERT"]
     D --> G["Apply incremental append and GETUTCDATE loaded timestamp pattern"]
+    H["isca_rec_i typo"] --> I["Correct to isca_rec_j"]
+    I --> J["Use PERSHING_ISCA_J and pershing_isca_j"]
 ```
 
 ### Codex Skill Map

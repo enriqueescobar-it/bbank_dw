@@ -1,5 +1,5 @@
 -- Databricks SQL for source: pershingdataprod
--- Generated from sqlserver_desc/landing-pershingdataprod_pershing-desc.txt
+-- Generated from sqlserver_landing_desc/landing-pershingdataprod_pershing-desc.ms.txt
 
 CREATE CATALOG IF NOT EXISTS landing_pershing;
 USE CATALOG landing_pershing;

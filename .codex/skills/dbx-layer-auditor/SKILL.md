@@ -32,6 +32,7 @@ flowchart TD
     B --> B4["dbx_bronze layer"]
     B --> B5["Landing plus bronze cross-check"]
     B --> B6["Pershing DataProd sqlserver_landing_dbt plus DBX landing pairs"]
+    B --> B7["Known Pershing isca_rec_i typo check"]
 
     B --> C["Read current files from disk"]
     C --> D["Classify each file"]
@@ -59,6 +60,7 @@ flowchart TD
     P --> P2["DBX columns appear in dbt landing_data"]
     P --> P3["YEARMONTH derives from LOADED_AT"]
     P --> P4["No Databricks-only syntax in dbt model"]
+    B7 --> Q["Confirm only isca_rec_j artifacts remain"]
     H --> H1["Bronze inputs exist in landing"]
     H --> H2["Bronze source catalog matches landing family"]
     H --> H3["Landing table columns cover bronze references"]
@@ -67,6 +69,7 @@ flowchart TD
     G --> I["Build findings"]
     H --> I
     P --> I
+    Q --> I
     I --> I1["Severity"]
     I --> I2["File and line"]
     I --> I3["Problem"]
@@ -100,6 +103,8 @@ Use this plan for every validation pass:
 When the user says to refresh files in memory, treat the current filesystem as the source of truth. Re-list `sqlserver_brz/`, `sqlserver_landing_dbt/`, `sqlserver_brz_dbt/`, `dbx_landing/`, and `dbx_bronze/`, then re-read the files in scope before auditing or repairing, even if similar files were read earlier in the conversation.
 
 When validating regenerated Pershing DataProd landing dbt models, pair `dbx_landing/landing-pershingdataprod_*.dbx.sql` with `sqlserver_landing_dbt/landing-pershingdataprod_*.dbt.ms.sql`. The dbt model should use `{{ source("pershing", "PERSHINGDATAPROD_*") }}`, include all DBX table columns in the same order, derive `YEARMONTH` from `LOADED_AT` with SQL Server `CONVERT`, replace output `LOADED_AT` in `bronze_data` with `GETUTCDATE() AS LOADED_AT`, and contain no Databricks DDL, table comments, seed SQL, backticks, `TRY_CAST`, `timestampadd`, or `date_add`.
+
+When auditing Pershing ISCA records, flag any active `isca_rec_i` file, table, or provenance reference as stale. The corrected artifact is `isca_rec_j`, sourced from `PERSHING_ISCA_J`, and should resolve to `landing_pershing.default.pershing_isca_j`.
 
 ## Static Checks
 
