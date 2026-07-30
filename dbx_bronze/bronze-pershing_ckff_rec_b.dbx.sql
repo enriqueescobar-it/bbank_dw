@@ -9,7 +9,7 @@ USE SCHEMA default;
 
 -- Source model: BRONZE_PERSHING_CKFF_REC_B
 -- Source table: landing_pershing.default.pershing_ckff_b
-CREATE OR REPLACE TABLE bronze_pershing.default.bronze_pershing_ckff_rec_b AS
+CREATE OR REPLACE TABLE bronze_pershing.default.bronze_pershing_ckff_b AS
 SELECT
     `TRANSACTION_CODE`,
     `RECORD_TYPE`,
@@ -39,5 +39,5 @@ SELECT
     current_timestamp() AS `LOADED_AT`
 FROM landing_pershing.default.pershing_ckff_b;
 
-COMMENT ON TABLE bronze_pershing.default.bronze_pershing_ckff_rec_b IS
-'Bronze Pershing table bronze_pershing_ckff_rec_b contains transaction, cash, financial activity, and reconciliation records sourced from landing_pershing.default.pershing_ckff_b for warehouse parity, validation, reconciliation, and downstream reporting.';
+COMMENT ON TABLE bronze_pershing.default.bronze_pershing_ckff_b IS
+'Bronze Pershing table bronze_pershing_ckff_b contains transaction, cash, financial activity, and reconciliation records sourced from landing_pershing.default.pershing_ckff_b for warehouse parity, validation, reconciliation, and downstream reporting.';

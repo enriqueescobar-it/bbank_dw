@@ -9,7 +9,7 @@ USE SCHEMA default;
 
 -- Source model: BRONZE_PERSHING_ACA2_REC_A
 -- Source table: landing_pershing.default.pershing_aca2_a
-CREATE OR REPLACE TABLE bronze_pershing.default.bronze_pershing_aca2_rec_a AS
+CREATE OR REPLACE TABLE bronze_pershing.default.bronze_pershing_aca2_a AS
 SELECT
     `TRANSACTION_CODE`,
     `RECORD_INDICATOR_TRANSFER_TYPE`,
@@ -50,5 +50,5 @@ SELECT
     current_timestamp() AS `LOADED_AT`
 FROM landing_pershing.default.pershing_aca2_a;
 
-COMMENT ON TABLE bronze_pershing.default.bronze_pershing_aca2_rec_a IS
-'Bronze Pershing table bronze_pershing_aca2_rec_a contains transfer, ACATS, contra broker, status, and exception records sourced from landing_pershing.default.pershing_aca2_a for warehouse parity, validation, reconciliation, and downstream reporting.';
+COMMENT ON TABLE bronze_pershing.default.bronze_pershing_aca2_a IS
+'Bronze Pershing table bronze_pershing_aca2_a contains transfer, ACATS, contra broker, status, and exception records sourced from landing_pershing.default.pershing_aca2_a for warehouse parity, validation, reconciliation, and downstream reporting.';

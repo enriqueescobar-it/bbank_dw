@@ -9,7 +9,7 @@ USE SCHEMA default;
 
 -- Source model: BRONZE_PERSHING_CAPT_REC_4
 -- Source table: landing_pershing.default.pershing_capt_4
-CREATE OR REPLACE TABLE bronze_pershing.default.bronze_pershing_capt_rec_4 AS
+CREATE OR REPLACE TABLE bronze_pershing.default.bronze_pershing_capt_4 AS
 SELECT
     `INTRODUCING_BROKER_DEALER_IBD_NUMBER`,
     `RECORD_ID`,
@@ -27,5 +27,5 @@ SELECT
     current_timestamp() AS `LOADED_AT`
 FROM landing_pershing.default.pershing_capt_4;
 
-COMMENT ON TABLE bronze_pershing.default.bronze_pershing_capt_rec_4 IS
-'Bronze Pershing table bronze_pershing_capt_rec_4 contains trade, commission, revenue, security, and settlement records sourced from landing_pershing.default.pershing_capt_4 for warehouse parity, validation, reconciliation, and downstream reporting.';
+COMMENT ON TABLE bronze_pershing.default.bronze_pershing_capt_4 IS
+'Bronze Pershing table bronze_pershing_capt_4 contains trade, commission, revenue, security, and settlement records sourced from landing_pershing.default.pershing_capt_4 for warehouse parity, validation, reconciliation, and downstream reporting.';

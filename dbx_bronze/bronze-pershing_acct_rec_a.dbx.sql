@@ -9,7 +9,7 @@ USE SCHEMA default;
 
 -- Source model: BRONZE_PERSHING_ACCT_REC_A
 -- Source table: landing_pershing.default.pershing_acct_a
-CREATE OR REPLACE TABLE bronze_pershing.default.bronze_pershing_acct_rec_a AS
+CREATE OR REPLACE TABLE bronze_pershing.default.bronze_pershing_acct_a AS
 SELECT
     `RECORD_INDICATOR_VALUE`,
     `RECORD_ID_SEQUENCE_NUMBER`,
@@ -145,5 +145,5 @@ SELECT
     current_timestamp() AS `LOADED_AT`
 FROM landing_pershing.default.pershing_acct_a;
 
-COMMENT ON TABLE bronze_pershing.default.bronze_pershing_acct_rec_a IS
-'Bronze Pershing table bronze_pershing_acct_rec_a contains account, registration, client, status, and relationship records sourced from landing_pershing.default.pershing_acct_a for warehouse parity, validation, reconciliation, and downstream reporting.';
+COMMENT ON TABLE bronze_pershing.default.bronze_pershing_acct_a IS
+'Bronze Pershing table bronze_pershing_acct_a contains account, registration, client, status, and relationship records sourced from landing_pershing.default.pershing_acct_a for warehouse parity, validation, reconciliation, and downstream reporting.';

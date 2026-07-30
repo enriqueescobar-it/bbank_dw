@@ -9,7 +9,7 @@ USE SCHEMA default;
 
 -- Source model: BRONZE_PERSHING_MFDS_REC_A
 -- Source table: landing_pershing.default.pershing_mfds_a
-CREATE OR REPLACE TABLE bronze_pershing.default.bronze_pershing_mfds_rec_a AS
+CREATE OR REPLACE TABLE bronze_pershing.default.bronze_pershing_mfds_a AS
 SELECT
     `TRANSACTION_CODE`,
     `RECORD_ID`,
@@ -84,5 +84,5 @@ SELECT
     current_timestamp() AS `LOADED_AT`
 FROM landing_pershing.default.pershing_mfds_a;
 
-COMMENT ON TABLE bronze_pershing.default.bronze_pershing_mfds_rec_a IS
-'Bronze Pershing table bronze_pershing_mfds_rec_a contains security, fund, pricing, income, and product reference records sourced from landing_pershing.default.pershing_mfds_a for warehouse parity, validation, reconciliation, and downstream reporting.';
+COMMENT ON TABLE bronze_pershing.default.bronze_pershing_mfds_a IS
+'Bronze Pershing table bronze_pershing_mfds_a contains security, fund, pricing, income, and product reference records sourced from landing_pershing.default.pershing_mfds_a for warehouse parity, validation, reconciliation, and downstream reporting.';

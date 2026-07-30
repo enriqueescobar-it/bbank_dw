@@ -9,7 +9,7 @@ USE SCHEMA default;
 
 -- Source model: BRONZE_PERSHING_ACCF_REC_B
 -- Source table: landing_pershing.default.pershing_accf_b
-CREATE OR REPLACE TABLE bronze_pershing.default.bronze_pershing_accf_rec_b AS
+CREATE OR REPLACE TABLE bronze_pershing.default.bronze_pershing_accf_b AS
 SELECT
     `TRANSACTION_CODE`,
     `RECORD_INDICATOR_VALUE`,
@@ -114,5 +114,5 @@ SELECT
     current_timestamp() AS `LOADED_AT`
 FROM landing_pershing.default.pershing_accf_b;
 
-COMMENT ON TABLE bronze_pershing.default.bronze_pershing_accf_rec_b IS
-'Bronze Pershing table bronze_pershing_accf_rec_b contains account, registration, client, status, and relationship records sourced from landing_pershing.default.pershing_accf_b for warehouse parity, validation, reconciliation, and downstream reporting.';
+COMMENT ON TABLE bronze_pershing.default.bronze_pershing_accf_b IS
+'Bronze Pershing table bronze_pershing_accf_b contains account, registration, client, status, and relationship records sourced from landing_pershing.default.pershing_accf_b for warehouse parity, validation, reconciliation, and downstream reporting.';
