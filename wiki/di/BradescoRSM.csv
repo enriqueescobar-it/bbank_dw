@@ -1,0 +1,67 @@
+1_Project Governance & Engagement Management,1.1_Project Initiation,1.1.1_Kickoff Meeting
+1_Project Governance & Engagement Management,1.1_Project Initiation,1.1.2_Stakeholder Register
+1_Project Governance & Engagement Management,1.1_Project Initiation,1.1.3_Assessment Methodology
+1_Project Governance & Engagement Management,1.1_Project Initiation,1.1.4_Communication Plan
+2_Current State Data Governance Assessment,2.1_Governance Operating Model Assessment,2.1.1_Executive Sponsorship Assessment
+2_Current State Data Governance Assessment,2.1_Governance Operating Model Assessment,2.1.2_Decision Rights Assessment
+2_Current State Data Governance Assessment,2.1_Governance Operating Model Assessment,2.1.3_Stewardship Assessment
+2_Current State Data Governance Assessment,2.1_Governance Operating Model Assessment,2.1.4_Ownership Assessment
+2_Current State Data Governance Assessment,2.2_Data Domain Assessment,2.2.1_Customer Domain
+2_Current State Data Governance Assessment,2.2_Data Domain Assessment,2.2.2_Deposit Domain
+2_Current State Data Governance Assessment,2.2_Data Domain Assessment,2.2.3_Time Deposit Domain
+2_Current State Data Governance Assessment,2.2_Data Domain Assessment,2.2.4_Treasury Domain
+2_Current State Data Governance Assessment,2.2_Data Domain Assessment,2.2.5_Finance Domain
+2_Current State Data Governance Assessment,2.2_Data Domain Assessment,2.2.6_Regulatory Reporting Domain
+2_Current State Data Governance Assessment,2.2_Data Domain Assessment,2.2.7_Risk Domain
+2_Current State Data Governance Assessment,2.3_Data Asset Assessment,2.3.1_Source System Inventory
+2_Current State Data Governance Assessment,2.3_Data Asset Assessment,2.3.2_Product Inventory Review
+2_Current State Data Governance Assessment,2.3_Data Asset Assessment,2.3.3_Business Glossary Seed
+3_Metadata & Catalog Assessment,3.1_Business Metadata Assessment,3.1.1_Glossary Assessment
+3_Metadata & Catalog Assessment,3.1_Business Metadata Assessment,3.1.2_Definition Standardization
+3_Metadata & Catalog Assessment,3.2_Technical Metadata Assessment,3.2.1_Catalog Coverage Assessment
+4_Data Lineage Assessment,4.1_Enterprise Lineage Review,4.1.1_Source-to-Landing Review
+4_Data Lineage Assessment,4.1_Enterprise Lineage Review,4.1.2_Landing-to-Warehouse Review
+4_Data Lineage Assessment,4.1_Enterprise Lineage Review,4.1.3_Warehouse-to-Reporting Review
+4_Data Lineage Assessment,4.1_Enterprise Lineage Review,4.1.4_Regulatory Traceability Review
+5_Data Quality Assessment,5.1_Data Quality Framework Review,5.1.1_Completeness Assessment
+5_Data Quality Assessment,5.1_Data Quality Framework Review,5.1.2_Accuracy Assessment
+5_Data Quality Assessment,5.1_Data Quality Framework Review,5.1.3_Consistency Assessment
+5_Data Quality Assessment,5.1_Data Quality Framework Review,5.1.4_Timeliness Assessment
+5_Data Quality Assessment,5.1_Data Quality Framework Review,5.1.5_Validity Assessment
+5_Data Quality Assessment,5.2_Critical Data Elements Program,5.2.1_CDE Inventory
+5_Data Quality Assessment,5.2_Critical Data Elements Program,5.2.2_CDE Ownership
+5_Data Quality Assessment,5.2_Critical Data Elements Program,5.2.3_CDE Rule Definition
+6_SecurityPrivacy_AndComplianceAssessment,6.1_Data Classification Assessment,6.1.1_Public Classification Review
+6_SecurityPrivacy_AndComplianceAssessment,6.1_Data Classification Assessment,6.1.2_Internal Classification Review
+6_SecurityPrivacy_AndComplianceAssessment,6.1_Data Classification Assessment,6.1.3_Confidential Classification Review
+6_SecurityPrivacy_AndComplianceAssessment,6.1_Data Classification Assessment,6.1.4_Restricted Classification Review
+6_SecurityPrivacy_AndComplianceAssessment,6.2_Regulatory Controls Assessment,6.1.1_TBD
+7_Current State Maturity Assessment,7.1_Strategy & Vision,7.1.1_TBD
+7_Current State Maturity Assessment,7.2_Policies & Standards,7.2.1_TBD
+7_Current State Maturity Assessment,7.3_Organization & Roles,7.3.1_TBD
+7_Current State Maturity Assessment,7.4_Metadata & Catalog,7.4.1_TBD
+7_Current State Maturity Assessment,7.5_Data Lineage,7.5.1_TBD
+7_Current State Maturity Assessment,7.6_Data Quality,7.6.1_TBD
+7_Current State Maturity Assessment,7.7_Classification & Privacy,7.7.1_TBD
+7_Current State Maturity Assessment,7.8_Retention & Records,7.8.1_TBD
+7_Current State Maturity Assessment,7.9_Architecture & Platform,7.9.1_TBD
+7_Current State Maturity Assessment,7.10_Monitoring & Reporting,7.10.1_TBD
+8_Gap Analysis,8.1_Governance Gaps,8.1.1_TBD
+8_Gap Analysis,8.2_Technology Gaps,8.2.1_TBD
+8_Gap Analysis,8.3_Organizational Gaps,8.3.1_TBD
+8_Gap Analysis,8.4_Metadata Gaps,8.4.1_TBD
+8_Gap Analysis,8.5_Lineage Gaps,8.5.1_TBD
+8_Gap Analysis,8.6_Data Quality Gaps,8.6.1_TBD
+9_Target State Governance Framework,9.1_Governance Vision,9.1.1_TBD
+9_Target State Governance Framework,9.2_Governance Council Design,9.2.1_TBD
+9_Target State Governance Framework,9.3_Stewardship Model Design,9.3.1_TBD
+9_Target State Governance Framework,9.4_RACI Development,9.4.1_TBD
+9_Target State Governance Framework,9.5_Escalation Framework,9.5.1_TBD
+9_Target State Governance Framework,9.6_Decision Rights Framework,9.6.1_TBD
+10_Target State Data Architecture,10.1_Enterprise Domain Model,10.1.1_TBD
+10_Target State Data Architecture,10.2_Governance Architecture,10.2.1_Unity Catalog Architecture
+10_Target State Data Architecture,10.2_Governance Architecture,10.2.2_Metadata Architecture
+10_Target State Data Architecture,10.2_Governance Architecture,10.2.3_DQ Architecture
+10_Target State Data Architecture,10.2_Governance Architecture,10.2.4_Lineage Architecture
+10_Target State Data Architecture,10.2_Governance Architecture,10.2.5_Security Architecture
+10_Target State Data Architecture,10.3_Medallion Architecture Design,10.3.1_TBD
