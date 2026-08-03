@@ -66,7 +66,7 @@ This epic establishes Bradesco Bank's Data Governance Framework and Target Data 
 | --- | --- | --- |
 | Data Manager | @Michel Ferreira | Supervise and align RSM team with BBank team |
 | Team lead | @Enrique Escobar | Communicate inside BBANK department |
-| Data analyst | @David Tatis | Provide the requested documentation or assestment |
+| Data analyst | @David Tatis | Provide the requested documentation or assessment |
 
 ## 5. Current State
 
@@ -107,17 +107,17 @@ Bradesco Bank defined a formal Data Governance Framework, documented policies, d
 | Source System | Object / Table / API | Description | Refresh Frequency | Owner |
 | --- | --- | --- | --- | --- |
 | Data Governance Assessment | Governance Artifacts | Existing Governance documentation and standards | Ad Hoc | @David Tatis |
-| Current Data Artchitecture | Architecture Documents | Current-state architecture, data flows and system inventory | Ad Hoc | @David Tatis |
-| Stake holders | Interviews | Business and technical knowledge transfers | Ad Hoc |  |
+| Current Data Architecture | Architecture Documents | Current-state architecture, data flows and system inventory | Ad Hoc | @David Tatis |
+| Stakeholders | Interviews | Business and technical knowledge transfers | Ad Hoc |  |
 
 ### 8.2 Target Data Products
 
 | Data Product | Description | Consumer | SLA | Owner |
 | --- | --- | --- | --- | --- |
-| Data Governance Framework | Governance roles, and operating model | Business & It |  | Data foundation |
-| Data Governance Policy | Governance principles, standards, and controls | Business & It |  | Data foundation |
+| Data Governance Framework | Governance roles, and operating model | Business & IT |  | Data foundation |
+| Data Governance Policy | Governance principles, standards, and controls | Business & IT |  | Data foundation |
 | Future-State Architecture Diagram | Target conceptual data architecture | Infrastructure & Data Teams |  | Data Intelligence |
-| 30/60/90-Day Action Plan | Prioritized implementation roadmap | Business & It |  | Data Intelligence |
+| 30/60/90-Day Action Plan | Prioritized implementation roadmap | Business & IT |  | Data Intelligence |
 
 ## 9. Functional Requirements
 
@@ -266,7 +266,7 @@ Add these labels to the page:
 - delivery
 - governance
 
-## DELIVERABLES?
+## RSM Deliverables
 
 ### RSM List
 
