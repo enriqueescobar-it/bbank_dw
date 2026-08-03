@@ -323,9 +323,39 @@ The target state is not limited to producing static documentation. The assessmen
 
 ## 7. Architecture and Design
 
-### High-Level Architecture
+## 7. Architecture and Design
 
-**To be attached:** Future-State Conceptual Data Architecture Diagram (RSM Deliverable).
+The architecture and design scope for this epic defines how Data Governance capabilities should align with Bradesco Bank’s target cloud and Databricks data architecture. This section does not represent a production implementation design. It provides the conceptual governance architecture direction that should be validated through the RSM target-state architecture deliverable and translated into future implementation backlog items.
+
+The target design should embed governance controls across the data lifecycle, from source discovery and ingestion through landing, bronze, curated, warehouse, reporting, and consumption layers. Governance should not operate as a separate documentation exercise only; it should be connected to platform controls, data-domain ownership, metadata capture, lineage, Data Quality monitoring, classification, access management, retention, and auditability.
+
+At a conceptual level, the target architecture should include the following design components:
+
+| Design Component | Target Design Intent | Governance Relevance |
+| --- | --- | --- |
+| Source and System Inventory | Maintain a validated inventory of in-scope systems, databases, data assets, owners, purpose, integrations, and operational status. | Establishes the evidence base for ownership, lineage, criticality, migration readiness, and governance scope. |
+| Landing Layer | Preserve source deliveries with delivery identity, technical validation, schema visibility, quarantine, replay support, and controlled release. | Provides traceability and operational evidence before data enters downstream processing layers. |
+| Bronze Layer | Store source-aligned, queryable raw history with load identity, record traceability, schema evolution controls, idempotency, and immutable historical evidence. | Supports auditability, reproducibility, lineage, and governance over raw source-aligned records. |
+| Curated / Silver Layer | Apply approved cleansing, standardization, validation, and Data Quality controls for governed data assets. | Enables steward-reviewed quality expectations, CDE rules, exceptions, and remediation workflows. |
+| Consumption / Gold Layer | Publish certified business-ready datasets, reporting objects, data products, aggregates, and analytical assets. | Supports trusted consumption, certified metrics, business ownership, and usage governance. |
+| Unity Catalog / Catalog Layer | Provide centralized metadata, namespace management, access control, lineage visibility, table ownership, and sensitivity tagging. | Serves as a key enforcement and visibility point for governance controls in Databricks. |
+| Metadata and Business Glossary | Define business terms, technical metadata, ownership fields, domain mappings, and catalog completeness expectations. | Improves shared understanding, impact analysis, governance accountability, and reuse. |
+| Lineage and Traceability | Capture lineage from source through platform layers and downstream reporting or regulatory outputs. | Enables impact analysis, audit response, regulatory traceability, and change governance. |
+| Data Quality Architecture | Define where profiling, validation rules, thresholds, exceptions, issue tracking, and scorecards should operate. | Connects quality controls to CDE ownership, steward review, and remediation accountability. |
+| Classification and Access Controls | Apply data classification, sensitive data handling, RBAC / group-based access, masking, and audit logging where appropriate. | Supports privacy, security, compliance, and least-privilege access. |
+| Governance Workflow and Evidence | Maintain approval records, issue logs, review outcomes, decision logs, evidence registers, and remediation tracking. | Ensures findings and governance decisions are defensible, auditable, and actionable. |
+| Monitoring and Reporting | Track governance KPIs such as ownership coverage, glossary completeness, catalog coverage, lineage coverage, DQ rule coverage, open issues, and roadmap progress. | Provides leadership visibility into governance adoption and control effectiveness. |
+
+The conceptual design should follow these architecture principles:
+
+- Governance controls should be embedded into the data lifecycle rather than handled only through offline documentation.
+- Ownership and stewardship should be assigned as close as possible to business domains and critical data assets.
+- Metadata, lineage, classification, and quality controls should be captured consistently and reused across governance, architecture, compliance, and delivery processes.
+- Landing and Bronze layers should preserve source fidelity, traceability, replayability, and evidence before downstream transformation.
+- Curated and consumption layers should enforce approved quality, certification, and usage expectations.
+- Target-state architecture should support current assessment needs while remaining scalable for future domain expansion, Databricks adoption, AI readiness, regulatory traceability, and enterprise reporting.
+
+The final architecture package should include a target-state conceptual architecture diagram, governance-to-platform control mapping, domain / ownership alignment, key design decisions, major trade-offs, and dependencies that must be resolved before implementation.
 
 ## 8. Data Requirements
 
