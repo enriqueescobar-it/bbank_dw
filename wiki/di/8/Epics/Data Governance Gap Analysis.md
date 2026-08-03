@@ -20,13 +20,15 @@
 
 ### 1.1 Executive Summary
 
-This epic establishes Bradesco Bank's Data Governance Framework and Target Data Architecture to improve data ownership, quality, compliance, aligned with the Databricks cloud strategy.
+This epic tracks the Data Governance Gap Analysis for Bradesco Bank as part of the broader Data Governance Assessment and cloud / Databricks modernization effort. The purpose of the epic is to establish a clear, evidence-based view of current governance maturity, identify gaps against the target-state governance model, and define the remediation path required to support trusted, compliant, scalable, and auditable data management.
 
-The assessment is aligned with the bank's cloud and Databricks modernization strategy and focuses on the governance capabilities required to support trusted, compliant, scalable, and auditable data management. The scope includes current-state maturity assessment, governance framework and policy recommendations, target-state conceptual data architecture, and a 30/60/90-day action plan with longer-term remediation guidance.
+The assessment scope includes current-state governance maturity, governance operating model, data ownership and stewardship, metadata and cataloging, lineage, data quality, classification and privacy, retention, architecture alignment, monitoring, and remediation planning. The expected deliverables include a current-state maturity assessment, governance framework and policy recommendations, target-state conceptual data architecture, enterprise gap matrix, risk register, prioritized remediation roadmap, 30/60/90-day action plan, and executive readout.
 
-Based on the available RSM delivery plan and assessment backlog, the current engagement is primarily in the assessment and target-state definition phase. Discovery and project initiation activities are mostly complete, while maturity scoring, evidence mapping, detailed gap analysis, target architecture approval, and remediation roadmap completion remain in progress or pending.
+Based on the available RSM work breakdown structure, project plan, assessment backlog seed, and supporting templates, the engagement is currently in progress but the gap analysis itself is not yet complete. Discovery and project initiation activities are mostly complete, and stakeholder interviews have started. However, the maturity scorecard, evidence register, enterprise gap matrix, detailed findings, risk register, and prioritized remediation roadmap remain incomplete or not yet produced.
 
-The expected outcome is a reviewed and approved assessment package that gives Bradesco Bank a clear view of current governance gaps, recommended operating model, architecture direction, and actionable next steps for implementation.
+The current evidence indicates that Bradesco Bank has active data management, architecture, reporting, and Data Quality-related initiatives, but enterprise governance capabilities are not yet consistently formalized, measured, or operationalized across domains. Key gaps include incomplete data ownership and stewardship assignments, limited evidence-backed maturity scoring, immature metadata and business glossary coverage, inconsistent lineage documentation, incomplete Data Quality governance alignment, and pending classification, privacy, compliance, and governance reporting controls.
+
+This epic should remain open until the assessment package is populated with Bradesco-specific findings, supported by documented evidence, reviewed with stakeholders, and approved by the appropriate governance and leadership groups. Completion should be measured by delivery and approval of the maturity assessment, gap matrix, risk register, target-state governance and architecture recommendations, and prioritized remediation roadmap.
 
 ## 2. Business Context
 
@@ -75,29 +77,26 @@ Future AI, BI, analytics, and data product initiatives may lack trusted governan
 
 | Goal | Description | Success Indicator |
 | --- | --- | --- |
-| Establish Current-State Governance Baseline | Assess current maturity across governance dimensions including strategy, policies, roles, metadata, lineage, data quality, classification, retention, architecture, and monitoring. | Current-state maturity assessment completed, reviewed, and supported by documented observations/evidence. |
-| Identify Governance Gaps and Risks | Document gaps between current-state capabilities and target-state governance expectations. | Enterprise governance gap matrix completed with prioritized findings, severity, impact, and recommended actions. |
-| Define Target Governance Operating Model | Define governance roles, responsibilities, RACI, decision rights, escalation paths, stewardship cadence, and approval model. | Governance Framework and operating model reviewed and approved by stakeholders. |
-| Define Target Data Architecture Alignment | Align governance recommendations with the future-state Cloud / Databricks architecture, including Unity Catalog, lineage, access controls, data quality, and domain ownership. | Future-State Conceptual Data Architecture completed and approved. |
-| Improve Ownership and Stewardship Readiness | Connect the gap analysis to domain ownership, stewardship, CDE, and critical domain initiatives. | Ownership/stewardship gaps identified and linked to Data Domains & Ownership and Critical Data Domains work. |
-| Prioritize Remediation Roadmap | Define a 30/60/90-day action plan and longer-term roadmap based on risk, business value, effort, and dependency impact. | Prioritized remediation roadmap completed and approved. |
-| Support Executive Decision-Making | Provide leadership with a clear readout of current maturity, target state, key risks, and investment priorities. | Executive readout completed and final documentation published in the approved repository. |
+| Establish Current-State Governance Baseline | Assess current data governance maturity across strategy, policies, roles, metadata, lineage, data quality, classification, retention, architecture, and monitoring. | Current-state maturity assessment completed, reviewed, and supported by documented evidence. |
+| Identify Governance Gaps and Risks | Document gaps between current-state practices and the target-state governance framework, including operating model, ownership, metadata, lineage, data quality, security, privacy, and compliance gaps. | Enterprise gap matrix and risk register completed with prioritized findings, severity, impact, evidence, and recommended actions. |
+| Define Target Governance Operating Model | Define governance roles, responsibilities, decision rights, stewardship model, RACI, escalation paths, and governance cadence. | Governance framework and policy recommendations reviewed and approved by stakeholders. |
+| Align Governance With Cloud / Databricks Strategy | Connect governance recommendations to the target-state data architecture, including Databricks, Unity Catalog, medallion architecture, metadata, lineage, access controls, and Data Quality controls. | Target-state conceptual data architecture completed, reviewed, and approved. |
+| Improve Data Ownership and Stewardship Readiness | Identify critical data domains, ownership gaps, stewardship gaps, and accountability needs for business data assets. | Data domain ownership gaps documented and linked to ownership / stewardship remediation actions. |
+| Strengthen Metadata, Lineage, and Data Quality Foundations | Define the governance capabilities needed for business glossary, catalog coverage, lineage traceability, CDEs, DQ rules, monitoring, and remediation workflow. | Metadata, lineage, and Data Quality gaps documented with target-state recommendations and prioritized next steps. |
+| Prioritize Remediation Roadmap | Sequence remediation initiatives by risk, business value, implementation effort, dependencies, and readiness. | Prioritized remediation roadmap and 30/60/90-day action plan completed and approved. |
+| Support Executive Decision-Making | Provide leadership with a clear, evidence-based view of current maturity, governance risks, target-state recommendations, and investment priorities. | Executive readout completed and final documentation package published in the approved repository. |
 
 ## 3. Scope
 
-This epic covers the assessment, definition, and planning activities required to establish Bradesco Bank's Data Governance baseline and target-state direction. The scope is focused on producing governance assessment deliverables, identifying current gaps, defining the recommended governance operating model, documenting target-state architecture guidance, and producing a prioritized remediation roadmap.
+This epic covers the assessment, analysis, and planning activities required to define Bradesco Bank’s Data Governance current-state baseline, identify governance gaps, and establish the recommended target-state direction. The scope is focused on producing assessment deliverables and implementation guidance, not executing the remediation work itself.
 
-The epic does not include implementation of the recommended roadmap items, deployment of governance platforms, or remediation of data quality issues. Those activities should be tracked as separate Jira epics or follow-on delivery initiatives.
+The work includes review of current governance practices, stakeholder input, data-domain and data-asset discovery, metadata and lineage readiness, Data Quality governance alignment, security / privacy / compliance considerations, target-state governance architecture, and prioritized remediation planning.
+
+The epic should produce a complete assessment package that enables leadership and delivery teams to understand current governance maturity, approve the target-state operating model, and sequence follow-on implementation initiatives.
 
 ### 3.1 In Scope
 
-- Assessment of current Data Governance capabilities, gaps, risks, and opportunities
-- Definition of Data Governance Framework, including roles and responsibilities.
-- Development of a sample Data Governance Policy
-- Creation of a 30/60/90-Day Action Plan and implementation roadmap.
-- Design of the Future-State Conceptual Data Architecture aligned with Databricks and cloud strategy.
-
-- Conduct current-state Data Governance maturity assessment across core governance dimensions:
+- Assess current-state Data Governance maturity across the following dimensions:
   - Strategy & Vision
   - Policies & Standards
   - Organization & Roles
@@ -109,125 +108,129 @@ The epic does not include implementation of the recommended roadmap items, deplo
   - Architecture & Platform
   - Monitoring & Reporting
 
-- Assess current governance operating model, including:
+- Assess the current governance operating model, including:
   - Executive sponsorship
-  - Decision rights
+  - Governance decision rights
   - Data ownership
   - Data stewardship
   - Escalation paths
-  - Governance participation model
+  - Governance cadence and participation model
 
 - Assess data domain and data asset governance readiness, including:
   - Candidate business data domains
-  - Critical Data Elements readiness
+  - Critical data domains
+  - Critical Data Element readiness
   - Source system inventory gaps
+  - Product / data asset inventory
   - Business glossary foundations
   - Ownership and stewardship gaps
 
 - Assess metadata, catalog, lineage, and traceability capabilities, including:
   - Business metadata
   - Technical metadata
-  - Catalog coverage
+  - Data catalog coverage
+  - Business glossary standardization
   - Source-to-landing lineage
   - Landing-to-warehouse lineage
   - Warehouse-to-reporting lineage
   - Regulatory traceability
 
 - Assess Data Quality governance readiness, including:
-  - Data Quality framework maturity
+  - Existing Data Quality framework maturity
   - Data Quality dimensions
-  - CDE ownership
+  - Critical Data Element ownership
   - Rule definition readiness
-  - Monitoring and reporting gaps
+  - Threshold and exception handling readiness
+  - Monitoring, scorecard, and remediation workflow gaps
 
 - Assess security, privacy, and compliance governance considerations, including:
   - Data classification model
+  - Sensitive data handling
   - Access governance
   - Regulatory control alignment
-  - Sensitive data handling considerations
+  - Auditability and evidence expectations
+  - Retention and records-management considerations
 
-- Define target-state Data Governance Framework, including:
+- Define the target-state Data Governance Framework, including:
   - Governance vision and principles
   - Governance council / decision body concept
+  - Data ownership model
   - Stewardship model
   - RACI model
   - Decision rights framework
   - Escalation framework
+  - Governance operating cadence
 
-- Develop sample governance policy recommendations, including:
+- Develop governance policy and standards recommendations, including:
   - Enterprise Data Governance Policy
   - Data Quality Management Standard
   - Data Classification & Security Standard
   - Metadata Management recommendations
   - Data Lifecycle / Retention recommendations
+  - Data usage, access, and compliance considerations
 
-- Define future-state conceptual data architecture aligned with cloud / Databricks strategy, including:
+- Define future-state conceptual data architecture alignment with cloud / Databricks strategy, including:
   - Medallion architecture alignment
+  - Landing and Bronze governance controls
   - Unity Catalog governance considerations
   - Metadata and catalog architecture
   - Data Quality architecture
   - Lineage architecture
-  - Security and access control architecture
+  - Security and access-control architecture
+  - Domain-oriented governance alignment
 
-- Create prioritized remediation roadmap, including:
+- Create prioritized remediation planning outputs, including:
+  - Enterprise gap matrix
+  - Governance risk register
+  - Prioritized remediation initiatives
   - 30/60/90-day action plan
-  - Quick wins
-  - Foundation initiatives
-  - Governance program initiatives
-  - Longer-term enterprise expansion roadmap
+  - Longer-term roadmap
   - Dependencies, risks, and recommended sequencing
 
-- Prepare final executive readout and closure package, including:
+- Prepare final assessment and executive-readout materials, including:
   - Current-state findings
   - Gap analysis summary
   - Target-state recommendations
-  - Strategic roadmap
+  - Strategic remediation roadmap
   - Final documentation package
 
 ### 3.2 Out of Scope
 
 - Implementation of governance tools, platforms, or technical solutions.
-- Remediation of data quality issues identified during the assessment.
-- Execution of roadmap initiatives beyond planning and recommendations.
-
-- Implementation of governance tools, platforms, or technical solutions.
-- Configuration or deployment of Databricks, Unity Catalog, data cataloging tools, lineage tools, or Data Quality monitoring platforms.
+- Configuration or deployment of Databricks, Unity Catalog, cataloging tools, lineage tools, Data Quality tools, dashboards, or monitoring platforms.
+- Production rollout of the target-state Data Governance operating model.
+- Execution of roadmap initiatives beyond assessment, planning, and recommendations.
 - Remediation of Data Quality issues identified during the assessment.
-- Development or deployment of production Data Quality rules, tests, dashboards, scorecards, or alerts.
-- Execution of roadmap initiatives beyond planning and recommendation.
+- Development or deployment of production Data Quality rules, tests, thresholds, alerts, or scorecards.
+- Full implementation of Critical Data Element governance, including approved CDE inventories, thresholds, rule catalogs, monitoring, and remediation workflows.
 - Full rollout of data ownership and stewardship assignments across all enterprise domains.
-- Full implementation of Critical Data Element governance, including CDE inventories, approved owners, thresholds, rules, and monitoring.
 - Creation of a complete enterprise business glossary or metadata catalog.
-- Production implementation of data classification, privacy controls, masking, encryption, or access-control changes.
-- Detailed data pipeline redesign, data migration, or data platform modernization execution.
+- Production implementation of data classification, privacy controls, masking, encryption, retention automation, or access-control changes.
+- Detailed data pipeline redesign, SQL Server migration execution, data migration, or production data-platform modernization work.
 - Creation of source-to-target mappings for all enterprise systems.
-- Operational support, production incident management, or data remediation activities.
-- Formal audit remediation execution; this epic may identify audit-related gaps, but remediation should be handled through separate delivery work.
-
-## 4. Users and Stakeholders
-
-| Role | Name / Team | Responsibility |
-| --- | --- | --- |
-| Data Manager | @Michel Ferreira | Supervise and align RSM team with BBank team |
-| Team lead | @Enrique Escobar | Communicate inside BBANK department |
-| Data analyst | @David Tatis | Provide the requested documentation or assessment |
+- Operational support, production incident management, or ongoing data remediation.
+- Formal audit remediation execution; this epic may identify audit-related gaps, but remediation should be handled through separate delivery initiatives.
 
 ## 4. Users and Stakeholders
 
 | Role | Name / Team | Responsibility |
 | --- | --- | --- |
 | Executive Sponsor | Bradesco Leadership / Data Foundation Sponsor | Provides executive sponsorship, validates assessment direction, resolves escalations, and approves final recommendations. |
-| Data Manager | @Michel Ferreira | Supervises alignment between RSM and Bradesco teams, validates business expectations, and supports final review. |
-| Technical Lead | @Enrique Escobar | Coordinates technical alignment, validates architecture and data platform inputs, and supports backlog translation. |
+| Data Manager | @Michel Ferreira | Supervises alignment between the RSM team and Bradesco Bank teams, validates business expectations, and supports final review. |
+| Technical Lead | @Enrique Escobar | Coordinates technical alignment, validates architecture and data-platform inputs, supports internal communication, and helps translate assessment findings into backlog items. |
+| Data Analyst / Epic Owner | @David Tatis | Coordinates documentation, collects project inputs, supports assessment evidence gathering, and maintains epic deliverables. |
+| RSM Assessment Team | RSM | Performs the Data Governance assessment, prepares maturity findings, defines governance framework recommendations, develops target-state architecture guidance, and produces roadmap deliverables. |
 | Data Governance Lead | Data Foundation / Data Governance Team | Owns governance framework direction, reviews governance recommendations, and validates operating model feasibility. |
-| RSM Assessment Team | RSM | Performs current-state assessment, prepares maturity findings, defines governance framework recommendations, target architecture, and roadmap deliverables. |
-| Data Analyst | @David Tatis | Coordinates documentation, collects project inputs, supports assessment evidence gathering, and maintains epic deliverables. |
-| Business SMEs | Business & IT SMEs | Provide domain knowledge through interviews, validate current-state gaps, and review governance recommendations. |
-| Data Owners | Assigned / Candidate Domain Owners | Accountable for business meaning, usage, quality, and approval of data governance ownership recommendations. |
-| Data Stewards | Assigned / Candidate Domain Stewards | Support business definitions, metadata ownership, data quality expectations, and stewardship operating model design. |
-| Architecture / Platform Team | Data Architecture / Infrastructure / Databricks Team | Reviews current and target-state architecture, platform constraints, Unity Catalog alignment, lineage, and security feasibility. |
-| Risk, Compliance, and Audit | Risk / Compliance / Audit Stakeholders | Validate regulatory, auditability, classification, privacy, and control expectations. |
-| Security / Access Management | Information Security / IAM | Reviews access control, security standards, classification, masking, and governance recommendations. |
+| Data Intelligence Team | Data Intelligence | Provides current-state data-platform context, source inventory knowledge, reporting and analytics context, and post-assessment ownership for selected remediation activities. |
+| Architecture / Platform Team | Data Architecture / Infrastructure / Databricks Team | Reviews current and target-state architecture, platform constraints, Unity Catalog alignment, lineage, data quality, and security feasibility. |
+| Infrastructure Team | Infrastructure | Supports server and database inventory validation, read-only access coordination, technical ownership mapping, and infrastructure-level discovery. |
+| Business SMEs | Business and IT SMEs | Provide domain knowledge through interviews, validate current-state gaps, clarify data usage, and review governance recommendations. |
+| Application / System Owners | Application Owners, Developers, Vendor Contacts | Explain business purpose, technical dependencies, integrations, reporting usage, operational status, and ownership for systems and databases in scope. |
+| Data Owners | Assigned / Candidate Domain Owners | Accountable for business meaning, usage, quality, approval, and prioritization of data governance recommendations for assigned domains. |
+| Data Stewards | Assigned / Candidate Domain Stewards | Support business definitions, metadata ownership, data quality expectations, glossary maintenance, and stewardship operating model design. |
+| Risk, Compliance, and Audit | Risk / Compliance / Audit Stakeholders | Validate regulatory, auditability, classification, privacy, retention, and control expectations. |
+| Security / Access Management | Information Security / IAM | Reviews access governance, security standards, classification, masking, sensitive data handling, and recommended control alignment. |
+| Executive Readout Audience | Bradesco Leadership, Data Foundation, Business and IT Leadership | Reviews final findings, target-state recommendations, roadmap priorities, risks, and investment decisions. |
 
 ## 5. Current State
 
