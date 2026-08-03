@@ -1,6 +1,6 @@
-# Data Governance Gap analysis
+# Data Governance Gap Analysis
 
-# Epic:  Data Governance Gap analysis
+# Epic:  Data Governance Gap Analysis
 
 ## 1. Epic Summary
 
