@@ -409,13 +409,50 @@ The assessment must produce or validate a source inventory that supports governa
 
 ## 9. Functional Requirements
 
-| ID | Requirement | Priority | Acceptance Criteria |
-| --- | --- | --- | --- |
-| FR-001 | Assess current-state data governance capabilities and identify gaps. | Must | Gap assessment completed and documented. |
-| FR-002 | Define Data Governance Framework, including roles and responsibilities. | Must | Framework reviewed by stakeholders. |
-| FR-003 | Develop a sample Data Governance Policy. | Must | Policy draft completed and reviewed. |
-| FR-004 | Define Future-State Conceptual Data Architecture. | Must | Architecture diagram completed. |
-| FR-005 | Develop a 30/60/90-Day Action Plan. | Must | Action plan documented and approved. |
+The functional requirements for this epic are mapped to the RSM assessment WBS work packages for Current State Maturity Assessment, Gap Analysis, Target State Governance Framework, Target State Data Architecture, and Prioritized Remediation Roadmap. These requirements define what must be produced, reviewed, and approved for the Data Governance Gap Analysis epic to be considered complete.
+
+| ID | WBS ID | Requirement | Priority | Acceptance Criteria |
+| --- | --- | --- | --- | --- |
+| FR-001 | 7.0 | Complete the Current State Maturity Assessment across the defined Data Governance dimensions. | Must | Maturity assessment is completed across Strategy & Vision, Policies & Standards, Organization & Roles, Metadata & Catalog, Data Lineage, Data Quality, Classification & Privacy, Retention & Records, Architecture & Platform, and Monitoring & Reporting. |
+| FR-002 | 7.1 | Assess Strategy & Vision maturity. | Must | Governance mandate, executive sponsorship, strategic objectives, program scope, and alignment with cloud / Databricks modernization are scored and documented. |
+| FR-003 | 7.2 | Assess Policies & Standards maturity. | Must | Existing policy, standard, control, regulatory, and data-management documentation is reviewed; policy gaps and required standards are documented. |
+| FR-004 | 7.3 | Assess Organization & Roles maturity. | Must | Data ownership, stewardship, custodianship, governance participation, accountability, and role-definition gaps are documented. |
+| FR-005 | 7.4 | Assess Metadata & Catalog maturity. | Must | Business glossary, business metadata, technical metadata, catalog coverage, ownership fields, and metadata standards are assessed and scored. |
+| FR-006 | 7.5 | Assess Data Lineage maturity. | Must | Source-to-landing, landing-to-warehouse, warehouse-to-reporting, and regulatory traceability capabilities are assessed and scored. |
+| FR-007 | 7.6 | Assess Data Quality maturity. | Must | Data Quality dimensions, CDE readiness, rule definition, thresholds, monitoring, scorecards, issue management, and remediation ownership are assessed and scored. |
+| FR-008 | 7.7 | Assess Classification & Privacy maturity. | Must | Classification model, sensitive data handling, privacy controls, access governance, and regulatory alignment are assessed and scored. |
+| FR-009 | 7.8 | Assess Retention & Records maturity. | Should | Retention expectations, records-management alignment, lifecycle controls, and retention gaps are assessed and documented. |
+| FR-010 | 7.9 | Assess Architecture & Platform maturity. | Must | Current and target architecture alignment, Databricks readiness, Unity Catalog considerations, platform controls, and governance architecture gaps are assessed. |
+| FR-011 | 7.10 | Assess Monitoring & Reporting maturity. | Should | Governance KPI, dashboard, scorecard, issue tracking, lineage coverage, catalog completeness, and roadmap-progress reporting gaps are assessed. |
+| FR-012 | 8.0 | Produce the Enterprise Gap Matrix. | Must | Gap matrix is completed with governance, technology, organizational, metadata, lineage, and Data Quality gaps, including severity, impact, evidence, owner, priority, and recommended action. |
+| FR-013 | 8.1 | Document Governance Gaps. | Must | Governance operating model, sponsorship, decision rights, policy, stewardship, ownership, and escalation gaps are documented. |
+| FR-014 | 8.2 | Document Technology Gaps. | Must | Platform, tooling, catalog, lineage, access-control, Databricks / Unity Catalog, landing, bronze, and architecture-control gaps are documented. |
+| FR-015 | 8.3 | Document Organizational Gaps. | Must | Role clarity, ownership coverage, stewardship capacity, stakeholder participation, operating cadence, and decision accountability gaps are documented. |
+| FR-016 | 8.4 | Document Metadata Gaps. | Must | Business glossary, metadata standards, catalog completeness, ownership metadata, source inventory, and domain mapping gaps are documented. |
+| FR-017 | 8.5 | Document Lineage Gaps. | Must | End-to-end lineage, regulatory traceability, source-to-report mapping, integration visibility, and impact-analysis gaps are documented. |
+| FR-018 | 8.6 | Document Data Quality Gaps. | Must | CDE inventory, DQ ownership, rule catalog, thresholds, scorecards, monitoring, exception handling, and remediation workflow gaps are documented. |
+| FR-019 | 9.0 | Define the Target State Governance Framework. | Must | Governance operating model is documented, reviewed, and aligned with target-state governance principles and Bradesco stakeholder expectations. |
+| FR-020 | 9.1 | Define Governance Vision. | Must | Governance vision statement and guiding principles are documented and reviewed. |
+| FR-021 | 9.2 | Design Governance Council / Decision Body. | Must | Governance council or equivalent decision body is defined with purpose, participants, authority, cadence, and escalation role. |
+| FR-022 | 9.3 | Design Stewardship Model. | Must | Data Owner, Data Steward, Technical Steward, Data Custodian, and supporting governance roles are defined with responsibilities. |
+| FR-023 | 9.4 | Develop RACI Matrix. | Must | RACI matrix is completed for policy, ownership, metadata, lineage, Data Quality, access, issue management, and roadmap execution decisions. |
+| FR-024 | 9.5 | Define Escalation Framework. | Must | Escalation paths are documented for unresolved data issues, policy exceptions, ownership conflicts, cross-domain decisions, and compliance concerns. |
+| FR-025 | 9.6 | Define Decision Rights Framework. | Must | Decision areas, accountable roles, approval authorities, consulted stakeholders, and informed groups are documented. |
+| FR-026 | 10.0 | Define Target State Data Architecture. | Must | Target architecture package is completed with conceptual architecture, governance-to-platform control mapping, and key design decisions. |
+| FR-027 | 10.1 | Define Enterprise Domain Model. | Should | Candidate enterprise domains, domain boundaries, ownership alignment, and relationship to data products / platform namespaces are documented. |
+| FR-028 | 10.2 | Define Governance Architecture. | Must | Governance architecture describes how metadata, lineage, classification, access, DQ, ownership, and monitoring controls are embedded in the platform. |
+| FR-029 | 10.2.1 | Define Unity Catalog Architecture. | Must | Unity Catalog role in metadata, namespace hierarchy, permissions, ownership, classification, and lineage is documented. |
+| FR-030 | 10.2.2 | Define Metadata Architecture. | Must | Metadata capture, glossary integration, catalog coverage, ownership metadata, and completeness expectations are documented. |
+| FR-031 | 10.2.3 | Define Data Quality Architecture. | Must | DQ control points, rule execution approach, CDE alignment, scorecards, exception handling, and remediation workflow are documented. |
+| FR-032 | 10.2.4 | Define Lineage Architecture. | Must | Lineage capture approach, source-to-consumption traceability, regulatory traceability, and impact-analysis support are documented. |
+| FR-033 | 10.2.5 | Define Security Architecture. | Must | Classification, access-control model, sensitive data handling, RBAC / group-based permissions, masking, audit logging, and compliance controls are documented. |
+| FR-034 | 10.3 | Define Medallion Architecture Design. | Should | Landing, Bronze, Silver, and Gold responsibilities are described with governance control expectations and handoff points. |
+| FR-035 | 11.0 | Produce the Prioritized Remediation Roadmap. | Must | Roadmap is completed with prioritized initiatives, effort, dependency impact, sequencing, owners, timing, and implementation phases. |
+| FR-036 | 11.1 | Define Quick Wins for 0-90 Days. | Must | 30/60/90-day action plan is documented with actions, owners, deliverables, dependencies, and status. |
+| FR-037 | 11.2 | Define Foundation Initiatives for 3-6 Months. | Should | Foundational governance initiatives are documented, prioritized, and sequenced after quick wins. |
+| FR-038 | 11.3 | Define Governance Program Initiatives for 6-12 Months. | Should | Program-level operating model, stewardship, metadata, lineage, DQ, and reporting initiatives are sequenced. |
+| FR-039 | 11.4 | Define Enterprise Expansion Roadmap for 12-24 Months. | Should | Longer-term domain expansion, platform enablement, governance automation, and maturity growth roadmap is documented. |
+| FR-040 | 7.0 / 8.0 / 11.0 | Maintain traceability from maturity scores to gaps and remediation actions. | Must | Each major finding links to maturity dimension, evidence source, gap, risk, recommended action, and roadmap initiative. |
 
 ## 10. Non-Functional Requirements
 
