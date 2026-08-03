@@ -234,48 +234,52 @@ The epic should produce a complete assessment package that enables leadership an
 
 ## 5. Current State
 
-Current-state documentation has been collected and shared for review, and stakeholder engagement began with the project kickoff meeting.
+The current-state Data Governance assessment is in progress. Project initiation, stakeholder alignment, and initial discovery activities have been completed or are mostly complete, but the formal assessment outputs are still at an early stage. Available RSM planning materials indicate that the overall program is approximately 25% complete, with discovery activities mostly complete and analysis deliverables still limited.
 
-The current-state Data Governance assessment is in progress. The assessment has been initiated through RSM engagement, project kickoff, stakeholder alignment, and collection of available governance, architecture, and data-domain documentation.
+Current evidence shows that Bradesco Bank has active data management, Data Intelligence, architecture, reporting, infrastructure, and Data Quality-related capabilities. However, these capabilities are not yet consistently connected through a formal enterprise Data Governance operating model. Governance activities appear to exist across teams and initiatives, but ownership, stewardship, decision rights, metadata standards, lineage, evidence tracking, and remediation processes are not yet fully documented or operationalized across domains.
 
-Current evidence indicates that Bradesco Bank has active data management and Data Intelligence capabilities, but enterprise governance practices are not yet consistently formalized across domains, platforms, and decision-making processes. Governance-related activities exist in several areas, including Data Quality, data architecture, reporting support, and critical data-domain discovery; however, these capabilities are not yet fully connected through a unified governance operating model.
+The RSM work breakdown structure identifies several assessment workstreams currently in progress or pending, including governance operating model, data domains, data assets, metadata and catalog, data lineage, Data Quality, classification and privacy, current-state maturity scoring, gap analysis, target-state governance framework, target-state architecture, remediation roadmap, and executive readout.
 
-The current assessment baseline includes the following workstreams:
+At this stage, the strongest current-state evidence is project and inventory-oriented rather than findings-oriented. The available source files include WBS materials, project plan and milestone tracking, deliverable templates, SQL Server inventory and assessment workbooks, meeting notes, landing / bronze standardization frameworks, and a draft epic backlog seed. These sources establish assessment scope and methodology, but they do not yet provide a complete evidence register, maturity scorecard, enterprise gap matrix, risk register, or finalized Bradesco-specific findings.
 
-| Assessment Area | Current-State Focus | Evidence / Source |
+Current-state completion by major area is summarized below:
+
+| Assessment Area | Current-State Status | Evidence / Source |
 | --- | --- | --- |
-| Governance Operating Model | Executive sponsorship, decision rights, stewardship, ownership, escalation, and governance cadence. | RSM WBS, Governance Framework recommendations |
-| Data Domain Assessment | Identification of critical business domains and domain ownership gaps. | Critical Data Domains, Data Domains & Ownership |
-| Data Asset Assessment | Source system inventory, product inventory review, and business glossary seed. | RSM WBS, BradescoRSM task inventory |
-| Metadata and Catalog Assessment | Business metadata, glossary standardization, technical metadata, and catalog coverage. | RSM WBS, Target-State Architecture draft |
-| Data Lineage Assessment | Source-to-landing, landing-to-warehouse, warehouse-to-reporting, and regulatory traceability review. | RSM WBS, Target-State Architecture draft |
-| Data Quality Assessment | DQ framework review, DQ dimensions, CDEs, quality rules, and monitoring expectations. | Data Quality Framework, Framework.md |
-| Security, Privacy, and Compliance Assessment | Classification, privacy, access, auditability, regulatory controls, and sensitive data handling. | Governance Policy recommendations, Target-State Architecture draft |
-| Architecture and Platform Assessment | Current architecture, Databricks/cloud target-state alignment, Unity Catalog, lineage, DQ, and security architecture. | Target-State Architecture draft |
-| Monitoring and Reporting Assessment | Governance KPIs, DQ scorecards, catalog completeness metrics, lineage coverage, and issue tracking. | Governance Framework recommendations, Dashboard Monitoring DQ |
+| Project Initiation and Planning | Mostly complete; kickoff, stakeholder alignment, methodology, and communication planning are complete or near complete. | RSM WBS; Project Plan workbook |
+| Stakeholder Interviews | Started; initial interviews and coordination activities have occurred, with further validation still required. | Project Plan workbook; Infrastructure meeting summary |
+| Current-State Governance Assessment | In progress; early analysis only, with limited Bradesco-specific findings visible. | RSM WBS; Epic Backlog Seed |
+| Governance Operating Model | Early analysis; sponsorship, decision rights, stewardship, and ownership assessment are not yet fully populated. | RSM WBS; Governance Framework template |
+| Data Domain Assessment | Started; candidate domains are identified, but ownership and stewardship assignment remains incomplete. | RSM WBS; Data Domains & Ownership epic |
+| Data Asset / Source Inventory | In progress; SQL Server inventory and database discovery are underway, but access, ownership, business purpose, and scope validation remain incomplete. | SQL Assessment workbook; Infrastructure meeting summary |
+| Metadata and Catalog Assessment | Started; business glossary, metadata standards, and catalog coverage require further evidence and definition. | RSM WBS; Target-State Architecture template |
+| Data Lineage Assessment | Started; source-to-landing, landing-to-warehouse, warehouse-to-reporting, and regulatory traceability are not yet fully documented. | RSM WBS; Target-State Architecture template |
+| Data Quality Assessment | Started; Data Quality dimensions and CDE concepts are identified, but rule inventory, thresholds, ownership, and remediation workflow are incomplete. | RSM WBS; Epic Backlog Seed |
+| Security, Privacy, and Compliance Assessment | Started; classification and regulatory control assessment require additional evidence and stakeholder validation. | RSM WBS; Governance Policy template |
+| Current-State Maturity Scorecard | Not produced; maturity scores across the ten governance dimensions are not yet populated. | RSM WBS; Current-State Maturity Assessment template |
+| Enterprise Gap Analysis | Not produced; the formal gap matrix remains pending. | RSM WBS; Epic Backlog Seed |
+| Risk Register | Not populated; governance risks are described directionally but not yet formalized into a register. | Epic Backlog Seed; Roadmap template |
+| Target-State Architecture | Conceptual/template stage; detailed Bradesco-specific architecture decisions are not yet finalized. | Target-State Architecture template |
+| Remediation Roadmap | Template only / early planning; prioritized initiatives and sequencing remain incomplete. | RSM WBS; Remediation Roadmap template |
 
 ### 5.1 Current-State Challenges
 
-- Data ownership and stewardship roles are not formally defined across all data domains.
-- Governance policies, standards, and decision-making processes require formalization.
-- Metadata management, data cataloging, and lineage capabilities are inconsistently applied.
-- Limited visibility into data quality management and issue remediation processes.
-- Data is distributed across multiple systems and platforms, increasing governance complexity.
-- Future-state architecture and governance operating model are not yet formally defined.
-- Regulatory, audit, and compliance risks may increase without a standardized governance framework.
-
 | Challenge | Impact | Evidence / Source | Priority |
 | --- | --- | --- | --- |
-| Data ownership and stewardship roles are not formally assigned across all critical data domains. | Data issues lack clear accountability, delaying resolution and weakening audit readiness. | Data Domains & Ownership; Critical Data Domains; RSM WBS Ownership Assessment | High |
-| Governance decision rights and escalation paths are not fully documented. | Policy decisions, issue prioritization, and cross-domain conflicts may be handled inconsistently. | Governance Framework & Policy Recommendations; RSM WBS Decision Rights Assessment | High |
-| Critical data domains are still being identified and refined. | Domain boundaries, ownership assignments, and stewardship responsibilities remain incomplete. | Critical Data Domains; Data Domains Adjusted; Business Domains Adjusted | High |
-| Metadata and business glossary coverage are immature. | Business definitions, ownership, and technical metadata are difficult to standardize and reuse. | RSM WBS Metadata & Catalog Assessment; Epic Backlog Seed | High |
-| Data lineage and traceability are not consistently documented end to end. | Impact analysis, regulatory traceability, and audit evidence require manual investigation. | RSM WBS Lineage Assessment; Target-State Architecture draft | High |
-| Data Quality practices exist but are not yet governed through an enterprise operating model. | DQ rules, CDE mappings, thresholds, ownership, and remediation responsibilities may vary by domain. | Framework.md; ADF-48 Data Quality Framework; ADF-46 Rollout | High |
-| Classification, privacy, and access governance require formal assessment and standardization. | Sensitive data handling, access controls, and regulatory alignment may be inconsistent across platforms. | Governance Policy Recommendations; Target-State Architecture draft | Medium-High |
-| Current architecture is distributed across multiple systems and layers. | Governance controls such as cataloging, lineage, access, and quality monitoring are harder to enforce consistently. | Target-State Architecture draft; Current State Overview; LandingDW | Medium-High |
-| Governance metrics and reporting are not yet established. | Leadership cannot easily monitor governance adoption, data ownership coverage, DQ maturity, or remediation progress. | Governance Policy Recommendations; Dashboard Monitoring DQ | Medium |
-| RSM deliverables are currently structured but still require Bradesco-specific findings, scoring, and evidence population. | The epic cannot be considered complete until maturity scores, observations, and roadmap initiatives are populated and reviewed. | Current-State Maturity Assessment; Epic Backlog Seed; RSM WBS | High |
+| Current-state maturity scores are not yet populated. | The assessment cannot provide a reliable maturity baseline or quantify gaps by governance dimension. | Current-State Maturity Assessment template; RSM WBS | High |
+| The formal enterprise gap matrix has not yet been produced. | Governance gaps remain directional and cannot yet be prioritized consistently by severity, risk, effort, or dependency. | RSM WBS; Epic Backlog Seed | High |
+| Evidence-to-finding traceability is incomplete. | Findings may be difficult to defend during stakeholder review, audit review, or executive decision-making. | Epic Backlog Seed | High |
+| Data ownership and stewardship roles are not consistently assigned across critical domains. | Data issues lack clear accountability, slowing issue resolution and weakening governance adoption. | Data Domains & Ownership epic; RSM WBS Ownership Assessment | High |
+| Governance decision rights and escalation paths are not fully documented. | Policy decisions, issue prioritization, and cross-domain conflicts may be handled inconsistently. | Governance Framework template; RSM WBS Decision Rights Assessment | High |
+| Critical data domains and data assets are still being identified and refined. | Domain boundaries, ownership assignments, stewardship responsibilities, and governance scope remain incomplete. | Data Domains & Ownership epic; RSM WBS; SQL Assessment workbook | High |
+| SQL Server inventory discovery is incomplete due to access and ownership gaps. | The team cannot fully validate database purpose, functional ownership, integrations, reporting dependencies, or migration relevance. | SQL Assessment workbook; Infrastructure meeting summary | High |
+| Metadata and business glossary coverage are immature. | Business definitions, ownership, and technical metadata are difficult to standardize, reuse, and govern. | RSM WBS Metadata & Catalog Assessment; Target-State Architecture template | High |
+| Data lineage and traceability are not consistently documented end to end. | Impact analysis, regulatory traceability, and audit evidence may require manual investigation. | RSM WBS Lineage Assessment; Target-State Architecture template | High |
+| Data Quality practices are not yet governed through a complete enterprise operating model. | DQ rules, CDE mappings, thresholds, scorecards, ownership, and remediation responsibilities may vary by team or domain. | RSM WBS Data Quality Assessment; Epic Backlog Seed | High |
+| Classification, privacy, and access governance require further validation. | Sensitive data handling, access controls, classification coverage, and regulatory alignment may be inconsistent across platforms. | RSM WBS Security, Privacy & Compliance Assessment; Governance Policy template | Medium-High |
+| Target-state architecture is still conceptual. | Governance controls for Databricks, Unity Catalog, lineage, metadata, security, and Data Quality cannot yet be translated into implementation-ready requirements. | Target-State Architecture template; RSM WBS | Medium-High |
+| Remediation roadmap is not yet populated with prioritized initiatives. | Leadership does not yet have a clear investment sequence, dependency view, or 30/60/90-day execution plan. | Remediation Roadmap template; RSM WBS | High |
+| Governance metrics and reporting are not yet established. | Leadership cannot consistently monitor ownership coverage, metadata completeness, lineage coverage, DQ maturity, issue resolution, or roadmap progress. | RSM WBS Monitoring & Reporting dimension; Governance Framework template | Medium |
 
 ## 6. Target State
 
