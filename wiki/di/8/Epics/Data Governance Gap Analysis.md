@@ -323,8 +323,6 @@ The target state is not limited to producing static documentation. The assessmen
 
 ## 7. Architecture and Design
 
-## 7. Architecture and Design
-
 The architecture and design scope for this epic defines how Data Governance capabilities should align with Bradesco Bank’s target cloud and Databricks data architecture. This section does not represent a production implementation design. It provides the conceptual governance architecture direction that should be validated through the RSM target-state architecture deliverable and translated into future implementation backlog items.
 
 The target design should embed governance controls across the data lifecycle, from source discovery and ingestion through landing, bronze, curated, warehouse, reporting, and consumption layers. Governance should not operate as a separate documentation exercise only; it should be connected to platform controls, data-domain ownership, metadata capture, lineage, Data Quality monitoring, classification, access management, retention, and auditability.
