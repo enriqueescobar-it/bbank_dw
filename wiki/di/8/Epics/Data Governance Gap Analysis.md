@@ -357,22 +357,55 @@ The final architecture package should include a target-state conceptual architec
 
 ## 8. Data Requirements
 
+The Data Governance Gap Analysis requires a reliable evidence base across governance documentation, stakeholder interviews, system inventories, database inventories, ownership mappings, and current-state architecture inputs. The current evidence set includes RSM assessment materials, Bradesco project documentation, SQL Server inventory workbooks, and infrastructure coordination notes.
+
+A key current-state finding is that technical inventory data alone is not sufficient to complete the governance assessment. The SQL Server assessment workbook provides server and database-level discovery fields, but several records still require validation of business purpose, technical owner, functional owner, application owner, vendor ownership, integrations, ETL dependencies, reporting usage, operational status, and migration relevance. The infrastructure meeting summary confirms that read-only technical access can identify databases and metadata, but stakeholder input is required to determine actual usage, ownership, dependencies, and governance accountability.
+
+The data requirements for this epic therefore include both technical inventory data and business / governance validation data.
+
 ### 8.1 Source Data
 
-| Source System | Object / Table / API | Description | Refresh Frequency | Owner |
-| --- | --- | --- | --- | --- |
-| Data Governance Assessment | Governance Artifacts | Existing Governance documentation and standards | Ad Hoc | @David Tatis |
-| Current Data Architecture | Architecture Documents | Current-state architecture, data flows and system inventory | Ad Hoc | @David Tatis |
-| Stakeholders | Interviews | Business and technical knowledge transfers | Ad Hoc |  |
+| Source | Object / Artifact | Description | Current Gap / Validation Need | Refresh Frequency | Owner |
+| --- | --- | --- | --- | --- | --- |
+| RSM Assessment Materials | WBS, project plan, deliverable templates, methodology artifacts | Defines assessment phases, deliverables, milestones, and expected governance outputs. | Must be reconciled with actual completed deliverables, evidence, and stakeholder-reviewed findings. | As updated by project team | RSM / Bradesco Team |
+| SQL Server Assessment Workbook | Server inventory tab | Inventory of servers, hostnames, IPs, locations, database technologies, environments, in-scope flags, support status, criticality, and review status. | In-scope classification, duplicate server handling, support status, ownership, access status, and SQL Server scope require validation. | During assessment waves | Data Intelligence / Infrastructure |
+| SQL Server Assessment Workbook | Database inventory tab | Database-level records linked to servers, including database name, version, state, size, backup information, environment, and discovery fields. | Business purpose, technical use, integrations, ETL dependencies, reports, operational status, functional owner, technical owner, vendor owner, and migration recommendation require validation. | During assessment waves | Data Intelligence / Infrastructure / Application Owners |
+| SQL Server Assessment Workbook | Questions tab | Open discovery questions related to duplicates, database scope, access, ownership, SQL Compact scope, Data Quality, and HA / DR. | Questions require assigned owners, answers, decisions, and closure status. | Weekly during discovery | Data Intelligence / Infrastructure |
+| Infrastructure Meeting Summary | DB Consolidation - Infrastructure Coordination notes | Captures current blocker, ownership discovery needs, access coordination, and proposed infrastructure support model. | Follow-up required for read-only access, owner mapping, vendor-managed systems, and validation of inactive / legacy records. | As meetings occur | Infrastructure / Data Intelligence |
+| Stakeholder Interviews | Interview notes and validation outcomes | Business and technical input used to confirm database purpose, dependencies, ownership, reporting usage, and governance accountability. | Interview coverage is incomplete; additional SMEs, application owners, vendors, and business contacts must be identified. | Per interview wave | RSM / Bradesco Team |
+| Governance Assessment Templates | Current-state maturity assessment, governance framework, target architecture, remediation roadmap | Defines required assessment outputs and target-state structure. | Templates contain placeholders and must be populated with Bradesco-specific evidence, scores, findings, risks, and remediation actions. | Per deliverable cycle | RSM |
+| Data Domains & Ownership Epic | Data domain ownership and stewardship scope | Defines ownership/stewardship objectives and target of assigning owners/stewards for critical domains. | Candidate domains, owners, stewards, approval status, and domain boundaries require validation. | During domain assessment | Data Governance / Data Intelligence |
+| Landing and Bronze Frameworks | LND and BRZ standardization frameworks | Provides governance control expectations for source fidelity, traceability, idempotency, schema visibility, quarantine, retention, observability, and ownership. | Must be mapped to Bradesco target-state architecture and implementation readiness. | As standards evolve | Data Architecture / Data Governance |
 
-### 8.2 Target Data Products
+### 8.2 Source Inventory and Ownership Requirements
 
-| Data Product | Description | Consumer | SLA | Owner |
+The assessment must produce or validate a source inventory that supports governance decision-making, not only infrastructure tracking. Each in-scope system, server, database, or data asset should be enriched with the fields needed to determine accountability, business relevance, criticality, migration readiness, and governance control needs.
+
+| Requirement Area | Required Information | Purpose | Current Status |
+| --- | --- | --- | --- |
+| Server Identification | Server ID, hostname, IP address, location, network, installed database engine, SQL Server version, environment, support status. | Establishes the technical estate and confirms SQL Server assessment scope. | Partially available in SQL Server assessment workbook. |
+| Database Identification | Database ID, linked server ID, database name, SQL version, state, size, backup information, file locations, environment. | Establishes database-level inventory and technical discovery baseline. | Partially available in SQL Server assessment workbook. |
+| Scope Classification | In-scope / out-of-scope flag, scope rationale, SQL Server vs non-SQL Server validation, SQL Compact disposition. | Prevents irrelevant assets from inflating the assessment backlog. | Partially available; requires validation. |
+| Business Purpose | Functional description, business process supported, active / legacy / inactive status, business criticality. | Determines whether the database is governed, migrated, consolidated, retired, or further analyzed. | Incomplete; requires application and business owner input. |
+| Ownership Mapping | Technical owner, functional owner, application owner, infrastructure owner, vendor contact, business SME. | Establishes accountability for validation, decisions, quality issues, and remediation. | Incomplete; identified as a current blocker. |
+| Integration and ETL Dependencies | Inbound feeds, outbound feeds, ETL jobs, file exchanges, application dependencies, reporting dependencies. | Supports lineage, impact analysis, migration planning, and operational risk assessment. | Incomplete; requires stakeholder interviews. |
+| Reporting and Consumption | Reports, dashboards, extracts, regulatory outputs, operational workflows, downstream consumers. | Supports criticality, lineage, data quality prioritization, and governance scope. | Incomplete; requires business validation. |
+| Operational Status | Active, inactive, legacy, closed, DR, unknown, pending validation. | Helps prioritize assessment effort and avoid unnecessary interviews or migration work. | Partially available; requires validation. |
+| Access and Discovery Status | Read-only access status, discovery source, reviewed flag, pending access actions. | Determines whether technical metadata can be independently validated. | Incomplete; infrastructure support required. |
+| Data Governance Relevance | Candidate data domain, data owner, data steward, CDE relevance, classification, retention, lineage priority, DQ priority. | Connects technical inventory to governance framework and roadmap actions. | Mostly incomplete; should be produced through the assessment. |
+
+### 8.3 Target Data Products
+
+| Data Product | Description | Consumer | SLA / Timing | Owner |
 | --- | --- | --- | --- | --- |
-| Data Governance Framework | Governance roles, and operating model | Business & IT |  | Data foundation |
-| Data Governance Policy | Governance principles, standards, and controls | Business & IT |  | Data foundation |
-| Future-State Architecture Diagram | Target conceptual data architecture | Infrastructure & Data Teams |  | Data Intelligence |
-| 30/60/90-Day Action Plan | Prioritized implementation roadmap | Business & IT |  | Data Intelligence |
+| Validated Source Inventory | Consolidated inventory of in-scope systems, servers, databases, owners, purpose, scope status, and discovery status. | Data Governance, Data Intelligence, Infrastructure, Architecture, RSM | Updated through assessment waves | Data Intelligence / Infrastructure |
+| Ownership and Contact Matrix | Mapping of databases, systems, domains, application owners, functional owners, technical owners, vendors, and SMEs. | RSM, Data Governance, Data Intelligence, Business and IT stakeholders | Required before findings validation | Data Intelligence / Infrastructure / Business SMEs |
+| Open Questions and Decisions Register | Tracked questions, assigned owners, answers, decisions, status, and closure dates. | Project team and assessment stakeholders | Reviewed weekly during discovery | RSM / Data Intelligence |
+| Evidence Register | Traceability from findings to source files, interviews, inventory records, meeting notes, and technical evidence. | RSM, Bradesco stakeholders, audit / compliance reviewers | Required before final assessment approval | RSM |
+| Current-State Maturity Scorecard | Scored maturity baseline across governance dimensions. | Leadership, Data Governance, Data Foundation, RSM | Targeted for current-state review milestone | RSM / Bradesco Team |
+| Enterprise Gap Matrix | Documented gaps between current state and target-state expectations, with severity, impact, evidence, owner, and recommended action. | Leadership, Data Governance, delivery teams | Required for target-state and roadmap review | RSM |
+| Risk Register | Governance, ownership, metadata, lineage, DQ, compliance, architecture, and delivery risks with mitigations. | Leadership, Risk / Compliance, project team | Required for target-state review | RSM / Bradesco Team |
+| Prioritized Remediation Roadmap | Sequenced remediation actions including quick wins, foundation work, 30/60/90-day plan, dependencies, and longer-term roadmap. | Leadership, Data Governance, delivery teams | Required before executive readout | RSM / Bradesco Team |
 
 ## 9. Functional Requirements
 
