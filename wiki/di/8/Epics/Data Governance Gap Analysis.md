@@ -456,15 +456,31 @@ The functional requirements for this epic are mapped to the RSM assessment WBS w
 
 ## 10. Non-Functional Requirements
 
-| Category | Requirement | Target |
+The non-functional requirements for this epic define the quality, traceability, reviewability, security, and readiness expectations for the Data Governance Gap Analysis deliverables. Because this epic produces assessment and planning outputs rather than production software, the key non-functional measures are evidence quality, stakeholder validation, completeness, auditability, and usability for executive decision-making and follow-on implementation.
+
+| Category | Requirement | Target / Measure |
 | --- | --- | --- |
-| Performance | Deliver assessment outputs within project timeline. | 10 weeks |
-| Availability | Governance artifacts accessible to stakeholders. | 100% availability in approved folder. |
-| Security | Documentation follows bank security standards. | No unauthorized access to project artifacts. |
-| Data Quality | Recommendations are based on validated information. | Stakeholder review and approval obtained. |
-| Observability | Progress and decisions are tracked. | Status updates and meeting notes maintained. |
-| Scalability | Framework supports future governance/cloud expansion. | Applicable across multiple business domains. |
-| Compliance | Governance recommendations align with regulatory requirements. | Compliance and risk stakeholders review deliverables. |
+| Completeness | The assessment package must include all required deliverables: current-state maturity assessment, evidence register, enterprise gap matrix, risk register, target-state governance framework, target-state architecture, prioritized roadmap, 30/60/90-day action plan, and executive readout. | 100% of required deliverables produced or explicitly marked as out of scope with rationale. |
+| Evidence Traceability | Every material finding must be traceable to at least one evidence source, such as stakeholder interview notes, RSM artifacts, system inventory, database inventory, architecture document, policy template, meeting summary, or technical assessment artifact. | Evidence register completed with evidence source, finding ID, governance dimension, confidence level, and source reference for each material finding. |
+| Maturity Scoring | The current-state maturity scorecard must be populated across the ten defined governance dimensions. | 100% of maturity dimensions scored: Strategy & Vision, Policies & Standards, Organization & Roles, Metadata & Catalog, Data Lineage, Data Quality, Classification & Privacy, Retention & Records, Architecture & Platform, Monitoring & Reporting. |
+| Gap Coverage | The enterprise gap matrix must cover the WBS-defined gap categories. | Gap matrix includes Governance, Technology, Organizational, Metadata, Lineage, and Data Quality gaps. |
+| Risk Documentation | Risks identified during the assessment must be formally recorded and linked to mitigation actions. | Risk register completed with risk, impact, probability, severity, owner, mitigation, dependency, and status. |
+| Roadmap Completion | Remediation actions must be sequenced into practical implementation horizons. | Roadmap includes quick wins / 0-90 days, 3-6 month foundation initiatives, 6-12 month governance program initiatives, and 12-24 month enterprise expansion items. |
+| 30/60/90-Day Actionability | Short-term remediation planning must be specific enough to support execution planning. | Each 30/60/90-day item includes action, owner or candidate owner, deliverable, dependency, status, and expected outcome. |
+| Reviewability | Stakeholders must be able to review and challenge findings, scores, risks, and recommendations. | Each major deliverable has a documented review status, reviewer group, review date or target date, and disposition of feedback. |
+| Auditability | Assessment conclusions must be defensible for audit, compliance, and leadership review. | No critical finding is accepted without evidence reference, confidence level, and documented rationale. |
+| Consistency | Terminology, governance dimensions, statuses, priorities, owners, and dates must be consistent across the epic, WBS, roadmap, scorecard, and final readout. | No unresolved conflicts between the epic, WBS, milestone plan, evidence register, and executive readout. |
+| Data Accuracy | Source inventory and ownership data must be validated before being used as the basis for final findings. | In-scope systems / databases used in findings have validated scope status, owner or owner gap, discovery source, and review status. |
+| Ownership Coverage | Priority domains and in-scope assets should have accountable owners or documented ownership gaps. | Ownership matrix completed for priority domains and in-scope assessment assets; unknown ownership explicitly tracked as a gap. |
+| Security | Assessment artifacts must follow bank security and access-control expectations. | Artifacts stored in approved repository or folder with access limited to authorized stakeholders. |
+| Confidentiality | Sensitive infrastructure, system, database, ownership, and assessment information must be handled as confidential project information. | No unauthorized distribution of workbooks, meeting notes, system inventories, or draft findings. |
+| Availability | Approved assessment artifacts must be accessible to authorized reviewers and project stakeholders. | Final deliverables available in the approved repository with clear naming, versioning, and ownership. |
+| Version Control | Assessment outputs must maintain clear version history and change traceability. | Change log populated with date, author, change summary, and version / status for material updates. |
+| Decision Traceability | Key governance and assessment decisions must be documented. | Decision log includes decision date, decision, owner / approver, rationale, and related deliverable or finding. |
+| Usability | The final package must be understandable by leadership and actionable by implementation teams. | Executive readout summarizes current maturity, top gaps, risk exposure, recommended target state, roadmap priorities, and near-term actions. |
+| Timeliness | Deliverables must align to the active project milestone schedule or clearly document slippage and impact. | Milestones tracked against target dates for maturity assessment, policy draft, target architecture / gap matrix / risk register, roadmap, and executive presentation. |
+| Confidence Rating | Findings and completion statements must include confidence levels based on evidence quality. | Each material finding uses a confidence rating such as High, Medium, Low, or Not Assessable. |
+| Acceptance Readiness | The epic should only be marked complete when deliverables are populated, reviewed, approved, and linked to follow-on actions. | Final acceptance criteria satisfied and approval / publication recorded. |
 
 ## 11. Data Quality and Validation
 
