@@ -320,6 +320,54 @@ Updates to the document
 Add these labels to the page:
 
 - data quality dashboard
-- 
+- ...
+
+## 23. Activites
+
+```
+ADF-44 Dashboard Monitoring DQ
+├── 1. Dashboard MVP
+│   ├── 1.1 Overview Page
+│   │   ├── Volume Monitoring KPIs
+│   │   ├── Freshness Monitoring KPIs
+│   │   └── Test Pass/Fail KPIs
+│   ├── 1.2 Table Health Page
+│   │   ├── Table-level Volume Values
+│   │   ├── Table-level Freshness Values
+│   │   └── Basic Table Diagnostics
+│   ├── 1.3 Coverage Page
+│   │   ├── Tables Without Tests
+│   │   ├── Tests Without Dimension Classification
+│   │   ├── Coverage % by Dimension
+│   │   └── Tables Missing loaded_at Column
+│   └── 1.4 Dashboard Filters
+│       ├── Period Filter
+│       ├── Data Source Filter
+│       └── Business Area Filter
+│
+├── 2. Monitoring Data Foundation
+│   ├── 2.1 Data Warehouse Metadata Monitoring Dataset
+│   ├── 2.2 dbt run_results Integration
+│   ├── 2.3 dbt manifest Integration
+│   └── 2.4 Dataset Refresh Process
+│
+├── 3. KPI Definitions
+│   ├── 3.1 Volume KPI Definitions
+│   ├── 3.2 Freshness KPI Definitions
+│   ├── 3.3 Test Pass/Fail KPI Definitions
+│   └── 3.4 Coverage KPI Definitions
+│
+├── 4. Validation Package
+│   ├── 4.1 Source-to-dashboard Reconciliation
+│   ├── 4.2 KPI Calculation Validation
+│   ├── 4.3 Filter Behavior Validation
+│   └── 4.4 Stakeholder Review Evidence
+│
+└── 5. Operational Package
+    ├── 5.1 Dashboard Access Model
+    ├── 5.2 Refresh Monitoring
+    ├── 5.3 Support / Escalation Path
+    └── 5.4 Publication and Handover Notes
+```
 
 # Epic Children
