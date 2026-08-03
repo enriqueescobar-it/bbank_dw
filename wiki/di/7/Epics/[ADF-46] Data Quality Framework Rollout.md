@@ -356,6 +356,83 @@ Updates to the document
 | --- | --- | --- |
 | 2026-07-31 | Split Work Breakdown into Phase 1 (Foundation) / Phase 2 (Guardrail Operationalization) for all three domains; renamed "Rule Type Definition" to "Type Test Definition by CDE"; added Phase column to Functional Requirements; flagged Regulatory resourcing gap. | @\_Mariane Moraes |
 
+## 23. Activities to Produce
+
+```
+ADF-46 Data Quality Framework Rollout
+├── 1. Rollout Scope Package
+│   ├── 1.1 Phase 1 Domain Scope
+│   │   ├── NICE/TMS
+│   │   ├── Report BI
+│   │   └── Regulatory
+│   ├── 1.2 Phase 1 In-Scope Framework Components
+│   │   ├── Domain Assessment
+│   │   ├── Stakeholder Mapping
+│   │   ├── RACI Implementation
+│   │   ├── CDE Identification
+│   │   ├── Dimension Applicability by Layer
+│   │   ├── Business Rule Definition
+│   │   ├── Type Test Definition by CDE
+│   │   └── Technical Control Implementation
+│   └── 1.3 Phase 2 Deferred Components
+│       ├── Threshold Definition
+│       ├── Business Severity Classification
+│       ├── Response Strategy Definition
+│       └── Full Guardrail Operationalization
+│
+├── 2. NICE/TMS Rollout Package
+│   ├── 2.1 Domain Assessment
+│   ├── 2.2 Stakeholder and RACI Matrix
+│   ├── 2.3 CDE Inventory
+│   ├── 2.4 Dimension Applicability by Layer Matrix
+│   ├── 2.5 Business Rules Catalog
+│   ├── 2.6 Type Test Mapping by CDE
+│   ├── 2.7 Technical Controls / DQ Tests
+│   └── 2.8 Domain Approval Evidence
+│
+├── 3. Report BI Rollout Package
+│   ├── 3.1 Domain Assessment
+│   ├── 3.2 Stakeholder and RACI Matrix
+│   ├── 3.3 CDE Inventory
+│   ├── 3.4 Dimension Applicability by Layer Matrix
+│   ├── 3.5 Business Rules Catalog
+│   ├── 3.6 Type Test Mapping by CDE
+│   ├── 3.7 Technical Controls / DQ Tests
+│   └── 3.8 Domain Approval Evidence
+│
+├── 4. Regulatory Rollout Package
+│   ├── 4.1 Domain Assessment
+│   ├── 4.2 Stakeholder and RACI Matrix
+│   ├── 4.3 CDE Inventory
+│   ├── 4.4 Dimension Applicability by Layer Matrix
+│   ├── 4.5 Business Rules Catalog
+│   ├── 4.6 Type Test Mapping by CDE
+│   ├── 4.7 Technical Controls / DQ Tests
+│   └── 4.8 Domain Approval Evidence
+│
+├── 5. Cross-Domain Standardization Package
+│   ├── 5.1 Common Rollout Template
+│   ├── 5.2 Standard CDE Inventory Template
+│   ├── 5.3 Standard RACI Template
+│   ├── 5.4 Standard Business Rule Template
+│   ├── 5.5 Standard Type Test Mapping Template
+│   └── 5.6 Reusable Domain Onboarding Checklist
+│
+├── 6. Traceability Package
+│   ├── 6.1 Domain-to-CDE Traceability
+│   ├── 6.2 CDE-to-Business Rule Traceability
+│   ├── 6.3 Business Rule-to-Type Test Traceability
+│   ├── 6.4 Type Test-to-Technical Control Traceability
+│   └── 6.5 Domain Approval Traceability
+│
+└── 7. Rollout Closure Package
+    ├── 7.1 Domain Completion Summary
+    ├── 7.2 Open Issues and Deferred Items
+    ├── 7.3 Phase 2 Guardrail Backlog
+    ├── 7.4 Stakeholder Sign-Off
+    └── 7.5 Rollout Lessons Learned
+```
+
 ## Recommended Confluence Labels
 
 Add these labels to the page:

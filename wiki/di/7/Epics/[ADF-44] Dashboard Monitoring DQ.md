@@ -315,14 +315,7 @@ Updates to the document
 | --- | --- | --- |
 |  | Initial draft |  |
 
-## Recommended Confluence Labels
-
-Add these labels to the page:
-
-- data quality dashboard
-- ...
-
-## 23. Activites
+## 23. Activities to Produce
 
 ```
 ADF-44 Dashboard Monitoring DQ
@@ -369,5 +362,13 @@ ADF-44 Dashboard Monitoring DQ
     ├── 5.3 Support / Escalation Path
     └── 5.4 Publication and Handover Notes
 ```
+
+## Recommended Confluence Labels
+
+Add these labels to the page:
+
+- data quality dashboard
+- ...
+
 
 # Epic Children
