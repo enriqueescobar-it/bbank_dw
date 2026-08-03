@@ -85,6 +85,10 @@ Future AI, BI, analytics, and data product initiatives may lack trusted governan
 
 ## 3. Scope
 
+This epic covers the assessment, definition, and planning activities required to establish Bradesco Bank's Data Governance baseline and target-state direction. The scope is focused on producing governance assessment deliverables, identifying current gaps, defining the recommended governance operating model, documenting target-state architecture guidance, and producing a prioritized remediation roadmap.
+
+The epic does not include implementation of the recommended roadmap items, deployment of governance platforms, or remediation of data quality issues. Those activities should be tracked as separate Jira epics or follow-on delivery initiatives.
+
 ### 3.1 In Scope
 
 - Assessment of current Data Governance capabilities, gaps, risks, and opportunities
@@ -93,11 +97,112 @@ Future AI, BI, analytics, and data product initiatives may lack trusted governan
 - Creation of a 30/60/90-Day Action Plan and implementation roadmap.
 - Design of the Future-State Conceptual Data Architecture aligned with Databricks and cloud strategy.
 
+- Conduct current-state Data Governance maturity assessment across core governance dimensions:
+  - Strategy & Vision
+  - Policies & Standards
+  - Organization & Roles
+  - Metadata & Catalog
+  - Data Lineage
+  - Data Quality
+  - Classification & Privacy
+  - Retention & Records
+  - Architecture & Platform
+  - Monitoring & Reporting
+
+- Assess current governance operating model, including:
+  - Executive sponsorship
+  - Decision rights
+  - Data ownership
+  - Data stewardship
+  - Escalation paths
+  - Governance participation model
+
+- Assess data domain and data asset governance readiness, including:
+  - Candidate business data domains
+  - Critical Data Elements readiness
+  - Source system inventory gaps
+  - Business glossary foundations
+  - Ownership and stewardship gaps
+
+- Assess metadata, catalog, lineage, and traceability capabilities, including:
+  - Business metadata
+  - Technical metadata
+  - Catalog coverage
+  - Source-to-landing lineage
+  - Landing-to-warehouse lineage
+  - Warehouse-to-reporting lineage
+  - Regulatory traceability
+
+- Assess Data Quality governance readiness, including:
+  - Data Quality framework maturity
+  - Data Quality dimensions
+  - CDE ownership
+  - Rule definition readiness
+  - Monitoring and reporting gaps
+
+- Assess security, privacy, and compliance governance considerations, including:
+  - Data classification model
+  - Access governance
+  - Regulatory control alignment
+  - Sensitive data handling considerations
+
+- Define target-state Data Governance Framework, including:
+  - Governance vision and principles
+  - Governance council / decision body concept
+  - Stewardship model
+  - RACI model
+  - Decision rights framework
+  - Escalation framework
+
+- Develop sample governance policy recommendations, including:
+  - Enterprise Data Governance Policy
+  - Data Quality Management Standard
+  - Data Classification & Security Standard
+  - Metadata Management recommendations
+  - Data Lifecycle / Retention recommendations
+
+- Define future-state conceptual data architecture aligned with cloud / Databricks strategy, including:
+  - Medallion architecture alignment
+  - Unity Catalog governance considerations
+  - Metadata and catalog architecture
+  - Data Quality architecture
+  - Lineage architecture
+  - Security and access control architecture
+
+- Create prioritized remediation roadmap, including:
+  - 30/60/90-day action plan
+  - Quick wins
+  - Foundation initiatives
+  - Governance program initiatives
+  - Longer-term enterprise expansion roadmap
+  - Dependencies, risks, and recommended sequencing
+
+- Prepare final executive readout and closure package, including:
+  - Current-state findings
+  - Gap analysis summary
+  - Target-state recommendations
+  - Strategic roadmap
+  - Final documentation package
+
 ### 3.2 Out of Scope
 
 - Implementation of governance tools, platforms, or technical solutions.
 - Remediation of data quality issues identified during the assessment.
 - Execution of roadmap initiatives beyond planning and recommendations.
+
+- Implementation of governance tools, platforms, or technical solutions.
+- Configuration or deployment of Databricks, Unity Catalog, data cataloging tools, lineage tools, or Data Quality monitoring platforms.
+- Remediation of Data Quality issues identified during the assessment.
+- Development or deployment of production Data Quality rules, tests, dashboards, scorecards, or alerts.
+- Execution of roadmap initiatives beyond planning and recommendation.
+- Full rollout of data ownership and stewardship assignments across all enterprise domains.
+- Full implementation of Critical Data Element governance, including CDE inventories, approved owners, thresholds, rules, and monitoring.
+- Creation of a complete enterprise business glossary or metadata catalog.
+- Production implementation of data classification, privacy controls, masking, encryption, or access-control changes.
+- Detailed data pipeline redesign, data migration, or data platform modernization execution.
+- Creation of source-to-target mappings for all enterprise systems.
+- Operational support, production incident management, or data remediation activities.
+- Formal audit remediation execution; this epic may identify audit-related gaps, but remediation should be handled through separate delivery work.
 
 ## 4. Users and Stakeholders
 
