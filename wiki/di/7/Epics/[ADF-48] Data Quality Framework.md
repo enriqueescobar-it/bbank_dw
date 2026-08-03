@@ -439,55 +439,6 @@ ADF-48 Enterprise Data Quality Framework
     └── 10.5 Backlog for Future Enhancements
 ```
 
-### Activity Tables
-
-| Jira Task | Jira Sub-task |
-| --- | --- |
-| **Deliver Dashboard MVP Foundation** | Confirm MVP scope for Overview, Table Health, and Coverage pages |
-| **Deliver Dashboard MVP Foundation** | Confirm out-of-scope items for Audit, Scorecard, alerting, and advanced table health |
-| **Deliver Dashboard MVP Foundation** | Align MVP success criteria with business and technical stakeholders |
-| **Deliver Overview Page** | Create Volume Monitoring KPI visual |
-| **Deliver Overview Page** | Create Freshness Monitoring KPI visual |
-| **Deliver Overview Page** | Create dbt Test Pass/Fail KPI visual |
-| **Deliver Overview Page** | Validate Overview page layout with stakeholders |
-| **Deliver Basic Table Health Page** | Display table-level volume values |
-| **Deliver Basic Table Health Page** | Display table-level freshness values |
-| **Deliver Basic Table Health Page** | Add table-level diagnostic columns |
-| **Deliver Basic Table Health Page** | Validate table health data against source monitoring dataset |
-| **Deliver Basic Coverage Page** | Calculate number of tables without tests |
-| **Deliver Basic Coverage Page** | Calculate number of tests without dimension classification |
-| **Deliver Basic Coverage Page** | Calculate coverage percentage by DQ dimension |
-| **Deliver Basic Coverage Page** | Identify tables missing `loaded_at` column |
-| **Deliver Basic Coverage Page** | Validate coverage metrics with DQ stakeholders |
-| **Implement Dashboard Filters** | Add Period filter |
-| **Implement Dashboard Filters** | Add Data Source filter |
-| **Implement Dashboard Filters** | Add Business Area filter |
-| **Implement Dashboard Filters** | Validate filter interactions across all dashboard pages |
-| **Build Monitoring Data Foundation** | Confirm source availability for Data Warehouse metadata monitoring dataset |
-| **Build Monitoring Data Foundation** | Confirm availability and structure of dbt `run_results.json` |
-| **Build Monitoring Data Foundation** | Confirm availability and structure of dbt `manifest.json` |
-| **Build Monitoring Data Foundation** | Define dataset refresh process |
-| **Build Monitoring Data Foundation** | Validate required fields for Volume, Freshness, Test Result, and Coverage metrics |
-| **Define KPI Calculation Logic** | Define Volume KPI business logic |
-| **Define KPI Calculation Logic** | Define Freshness KPI business logic |
-| **Define KPI Calculation Logic** | Define Test Pass/Fail KPI business logic |
-| **Define KPI Calculation Logic** | Define Coverage KPI business logic |
-| **Define KPI Calculation Logic** | Review KPI definitions with stakeholders |
-| **Complete Dashboard Validation** | Reconcile Volume KPI against source dataset |
-| **Complete Dashboard Validation** | Reconcile Freshness KPI against source dataset |
-| **Complete Dashboard Validation** | Reconcile dbt Test Pass/Fail counts against `run_results.json` |
-| **Complete Dashboard Validation** | Reconcile Coverage metrics against dbt metadata |
-| **Complete Dashboard Validation** | Capture validation evidence for sign-off |
-| **Prepare Operational Readiness** | Define dashboard access model |
-| **Prepare Operational Readiness** | Define dashboard refresh monitoring approach |
-| **Prepare Operational Readiness** | Define support and escalation path |
-| **Prepare Operational Readiness** | Prepare dashboard handover notes |
-| **Publish Dashboard MVP** | Publish dashboard to target Power BI workspace |
-| **Publish Dashboard MVP** | Conduct stakeholder review session |
-| **Publish Dashboard MVP** | Capture feedback and required refinements |
-| **Publish Dashboard MVP** | Obtain business and technical approval |
-| **Publish Dashboard MVP** | Close MVP delivery once acceptance criteria are met |
-
 ## Recommended Confluence Labels
 
 Add these labels to the page:
