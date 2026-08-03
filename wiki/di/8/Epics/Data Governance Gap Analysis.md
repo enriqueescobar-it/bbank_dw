@@ -22,7 +22,17 @@
 
 This epic establishes Bradesco Bank's Data Governance Framework and Target Data Architecture to improve data ownership, quality, compliance, aligned with the Databricks cloud strategy.
 
+The assessment is aligned with the bank's cloud and Databricks modernization strategy and focuses on the governance capabilities required to support trusted, compliant, scalable, and auditable data management. The scope includes current-state maturity assessment, governance framework and policy recommendations, target-state conceptual data architecture, and a 30/60/90-day action plan with longer-term remediation guidance.
+
+Based on the available RSM delivery plan and assessment backlog, the current engagement is primarily in the assessment and target-state definition phase. Discovery and project initiation activities are mostly complete, while maturity scoring, evidence mapping, detailed gap analysis, target architecture approval, and remediation roadmap completion remain in progress or pending.
+
+The expected outcome is a reviewed and approved assessment package that gives Bradesco Bank a clear view of current governance gaps, recommended operating model, architecture direction, and actionable next steps for implementation.
+
 ## 2. Business Context
+
+The Data Governance Gap Analysis supports Bradesco Bank’s broader cloud and data modernization strategy by assessing the current maturity of governance capabilities and defining the foundational improvements required before scaling governance across domains, platforms, and future Databricks-based architecture.
+This assessment focuses on identifying gaps across governance operating model, data ownership, stewardship, metadata, lineage, data quality, classification, privacy, retention, architecture, and governance reporting. The outcome will provide a structured view of current-state maturity, target-state expectations, prioritized remediation actions, and a practical roadmap for moving toward a more governed, auditable, and scalable data environment.
+Inputs for this assessment include RSM assessment deliverables, current-state governance and architecture artifacts, stakeholder interviews, data domain analysis, critical BR-file domain mapping, and existing Data Quality Framework materials.
 
 ### 2.1 Business Problem
 
@@ -35,6 +45,25 @@ This epic establishes Bradesco Bank's Data Governance Framework and Target Data 
 - What happens if we do nothing?
     - Data quality, accountability, compliance, and analytics challenges will continue and may increase during cloud adoption.
 
+Bradesco Bank currently has several governance capabilities in progress, but they are not yet consistently formalized, measured, or operationalized across the enterprise. Data ownership, stewardship, metadata management, lineage, data quality controls, and governance decision rights are handled inconsistently across domains and systems.
+Key pain points include:
+Data ownership and stewardship roles are not consistently defined across critical data domains.
+Governance policies, standards, decision rights, and escalation paths require formalization.
+Metadata, business glossary, cataloging, and lineage capabilities are not consistently applied.
+Critical data domains and data assets have started to be identified, but ownership, stewardship, and domain boundaries still need validation.
+Data Quality practices exist through related initiatives, but enterprise-level alignment between governance, CDEs, rules, monitoring, and remediation is still incomplete.
+Current-state maturity scores, evidence registers, findings, and remediation initiatives are not yet fully populated.
+Target-state architecture and governance operating model need to be connected to the cloud / Databricks modernization strategy.
+Without a structured gap analysis, governance improvements may remain fragmented, reactive, and difficult to prioritize.
+This matters now because the bank is moving toward a cloud and Databricks-aligned architecture. Without a clear governance baseline and roadmap, data quality, accountability, compliance, lineage, and trusted analytics challenges may increase during migration and modernization.
+If no action is taken:
+Regulatory and audit traceability may remain manual and inconsistent.
+Data quality issues may lack clear ownership and escalation.
+Critical data domains may continue without approved owners and stewards.
+Metadata and lineage gaps may limit impact analysis and control effectiveness.
+Cloud modernization may replicate existing governance weaknesses in the target platform.
+Future AI, BI, analytics, and data product initiatives may lack trusted governance foundations.
+
 ### 2.2 Business Goals
 
 | Goal | Description | Success Indicator |
@@ -43,6 +72,16 @@ This epic establishes Bradesco Bank's Data Governance Framework and Target Data 
 | Data Governance Policy | Develop a sample policy outlining governance principles and standards. | Sample Data Governance Policy delivered and reviewed. |
 | Future-State Data Architecture | Define the target conceptual architecture aligned with cloud and data strategy. | Future-State Architecture Diagram completed and approved. |
 | Action Plan & Roadmap | Define prioritized governance initiatives and next steps. | 30/60/90-Day Action Plan delivered and approved. |
+
+| Goal | Description | Success Indicator |
+| --- | --- | --- |
+| Establish Current-State Governance Baseline | Assess current maturity across governance dimensions including strategy, policies, roles, metadata, lineage, data quality, classification, retention, architecture, and monitoring. | Current-state maturity assessment completed, reviewed, and supported by documented observations/evidence. |
+| Identify Governance Gaps and Risks | Document gaps between current-state capabilities and target-state governance expectations. | Enterprise governance gap matrix completed with prioritized findings, severity, impact, and recommended actions. |
+| Define Target Governance Operating Model | Define governance roles, responsibilities, RACI, decision rights, escalation paths, stewardship cadence, and approval model. | Governance Framework and operating model reviewed and approved by stakeholders. |
+| Define Target Data Architecture Alignment | Align governance recommendations with the future-state Cloud / Databricks architecture, including Unity Catalog, lineage, access controls, data quality, and domain ownership. | Future-State Conceptual Data Architecture completed and approved. |
+| Improve Ownership and Stewardship Readiness | Connect the gap analysis to domain ownership, stewardship, CDE, and critical domain initiatives. | Ownership/stewardship gaps identified and linked to Data Domains & Ownership and Critical Data Domains work. |
+| Prioritize Remediation Roadmap | Define a 30/60/90-day action plan and longer-term roadmap based on risk, business value, effort, and dependency impact. | Prioritized remediation roadmap completed and approved. |
+| Support Executive Decision-Making | Provide leadership with a clear readout of current maturity, target state, key risks, and investment priorities. | Executive readout completed and final documentation published in the approved repository. |
 
 ## 3. Scope
 
