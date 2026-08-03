@@ -439,6 +439,72 @@ ADF-48 Enterprise Data Quality Framework
     └── 10.5 Backlog for Future Enhancements
 ```
 
+### Activity List
+
+| Jira Task | Jira Sub-task |
+| --- | --- |
+| **Deliver Framework Foundation Package** | Define framework purpose, value proposition, and delivery boundaries |
+| **Deliver Framework Foundation Package** | Confirm in-scope and out-of-scope framework capabilities |
+| **Deliver Framework Foundation Package** | Define Data Quality principles for enterprise adoption |
+| **Deliver Framework Foundation Package** | Define framework lifecycle from assessment through continuous improvement |
+| **Deliver Framework Foundation Package** | Align framework structure to Landing, Staging, Bronze, Silver, and Gold layers |
+| **Deliver Governance and Ownership Package** | Define Data Quality governance operating model |
+| **Deliver Governance and Ownership Package** | Define enterprise RACI matrix |
+| **Deliver Governance and Ownership Package** | Define Business Steward responsibilities |
+| **Deliver Governance and Ownership Package** | Define Technology Steward responsibilities |
+| **Deliver Governance and Ownership Package** | Define Data Owner responsibilities |
+| **Deliver Governance and Ownership Package** | Define escalation and approval model |
+| **Deliver Governance and Ownership Package** | Define governance review cadence |
+| **Deliver Data Quality Dimensions Package** | Define enterprise Data Quality dimension catalog |
+| **Deliver Data Quality Dimensions Package** | Document dimension definitions and usage guidance |
+| **Deliver Data Quality Dimensions Package** | Define dimension applicability by data layer |
+| **Deliver Data Quality Dimensions Package** | Add practical examples by Landing, Staging, Bronze, Silver, and Gold layers |
+| **Deliver CDE Methodology Package** | Define Critical Data Element identification criteria |
+| **Deliver CDE Methodology Package** | Define CDE discovery and assessment process |
+| **Deliver CDE Methodology Package** | Define CDE prioritization model |
+| **Deliver CDE Methodology Package** | Define CDE approval workflow |
+| **Deliver CDE Methodology Package** | Create standard CDE inventory template |
+| **Deliver Guardrail Methodology Package** | Define standard guardrail structure |
+| **Deliver Guardrail Methodology Package** | Define rule model including Min, Max, Between, Baseline, and Allowed Values |
+| **Deliver Guardrail Methodology Package** | Define threshold calibration methodology |
+| **Deliver Guardrail Methodology Package** | Define business severity classification model |
+| **Deliver Guardrail Methodology Package** | Define response strategy catalog |
+| **Deliver Guardrail Methodology Package** | Define severity-to-action mapping |
+| **Deliver Guardrail Methodology Package** | Define resolution SLA guidance |
+| **Deliver Technical Validation Standards Package** | Define technical rule catalog |
+| **Deliver Technical Validation Standards Package** | Define Type Test catalog |
+| **Deliver Technical Validation Standards Package** | Define technical action catalog |
+| **Deliver Technical Validation Standards Package** | Define validation patterns by data layer |
+| **Deliver Technical Validation Standards Package** | Define business-rule-to-technical-control mapping standard |
+| **Deliver Implementation Methodology Package** | Define domain assessment method |
+| **Deliver Implementation Methodology Package** | Define stakeholder mapping method |
+| **Deliver Implementation Methodology Package** | Define rule definition workflow |
+| **Deliver Implementation Methodology Package** | Define threshold calibration workflow |
+| **Deliver Implementation Methodology Package** | Define control implementation workflow |
+| **Deliver Implementation Methodology Package** | Define review and approval workflow |
+| **Deliver Implementation Methodology Package** | Define continuous improvement workflow |
+| **Deliver Reusable Templates and Artifacts Package** | Create domain assessment template |
+| **Deliver Reusable Templates and Artifacts Package** | Create RACI template |
+| **Deliver Reusable Templates and Artifacts Package** | Create CDE inventory template |
+| **Deliver Reusable Templates and Artifacts Package** | Create business rule template |
+| **Deliver Reusable Templates and Artifacts Package** | Create guardrail definition template |
+| **Deliver Reusable Templates and Artifacts Package** | Create dimension applicability matrix template |
+| **Deliver Reusable Templates and Artifacts Package** | Create technical control mapping template |
+| **Deliver Reusable Templates and Artifacts Package** | Create issue and exception handling template |
+| **Deliver Reusable Templates and Artifacts Package** | Create approval evidence template |
+| **Deliver Framework Documentation Package** | Produce Framework V1 main document |
+| **Deliver Framework Documentation Package** | Create framework glossary |
+| **Deliver Framework Documentation Package** | Add implementation examples and use cases |
+| **Deliver Framework Documentation Package** | Create adoption guide for future domains |
+| **Deliver Framework Documentation Package** | Create FAQ and decision guidance |
+| **Deliver Framework Documentation Package** | Update version history and change log |
+| **Deliver Framework Approval and Publication Package** | Facilitate stakeholder review cycle |
+| **Deliver Framework Approval and Publication Package** | Resolve open framework decisions |
+| **Deliver Framework Approval and Publication Package** | Incorporate approved stakeholder feedback |
+| **Deliver Framework Approval and Publication Package** | Obtain formal business and technology approval |
+| **Deliver Framework Approval and Publication Package** | Publish Framework V1 to Confluence |
+| **Deliver Framework Approval and Publication Package** | Create backlog for future framework enhancements |
+
 ## Recommended Confluence Labels
 
 Add these labels to the page:
@@ -446,7 +512,7 @@ Add these labels to the page:
 - data quality
 - framework
 - guardrail
-- data quality dimensiom
+- data quality dimension
 
 
 # Epic Children
