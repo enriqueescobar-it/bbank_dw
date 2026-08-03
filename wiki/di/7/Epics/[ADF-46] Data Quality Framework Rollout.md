@@ -433,6 +433,103 @@ ADF-46 Data Quality Framework Rollout
     └── 7.5 Rollout Lessons Learned
 ```
 
+### Activity Table
+
+| Jira Task | Jira Sub-task |
+| --- | --- |
+| **Confirm Rollout Scope and Delivery Boundaries** | Confirm Phase 1 domain scope for NICE/TMS, Report BI, and Regulatory |
+| **Confirm Rollout Scope and Delivery Boundaries** | Confirm Phase 1 framework components included in rollout |
+| **Confirm Rollout Scope and Delivery Boundaries** | Confirm Phase 2 guardrail components deferred from this epic |
+| **Confirm Rollout Scope and Delivery Boundaries** | Resolve scope conflict around guardrails, thresholds, severity, and response strategy |
+| **Deliver NICE/TMS Domain Assessment Package** | Complete NICE/TMS domain discovery |
+| **Deliver NICE/TMS Domain Assessment Package** | Document NICE/TMS business objectives and data flows |
+| **Deliver NICE/TMS Domain Assessment Package** | Identify NICE/TMS source systems and priority data assets |
+| **Deliver NICE/TMS Stakeholder and RACI Package** | Identify NICE/TMS business and technical stakeholders |
+| **Deliver NICE/TMS Stakeholder and RACI Package** | Define NICE/TMS RACI matrix |
+| **Deliver NICE/TMS Stakeholder and RACI Package** | Validate NICE/TMS ownership model with stakeholders |
+| **Deliver NICE/TMS CDE Inventory Package** | Identify NICE/TMS Critical Data Elements |
+| **Deliver NICE/TMS CDE Inventory Package** | Prioritize NICE/TMS CDEs for Phase 1 rollout |
+| **Deliver NICE/TMS CDE Inventory Package** | Obtain stakeholder validation for NICE/TMS CDE inventory |
+| **Deliver NICE/TMS Dimension Applicability Package** | Map NICE/TMS DQ dimensions by data layer |
+| **Deliver NICE/TMS Dimension Applicability Package** | Validate Landing, Staging, Bronze, Silver, and Gold layer applicability |
+| **Deliver NICE/TMS Dimension Applicability Package** | Obtain approval for NICE/TMS dimension applicability matrix |
+| **Deliver NICE/TMS Business Rule Package** | Document business rules for prioritized NICE/TMS CDEs |
+| **Deliver NICE/TMS Business Rule Package** | Trace NICE/TMS business rules to CDEs |
+| **Deliver NICE/TMS Business Rule Package** | Review NICE/TMS business rules with SMEs |
+| **Deliver NICE/TMS Type Test Mapping Package** | Define Type Test mapping for NICE/TMS CDEs |
+| **Deliver NICE/TMS Type Test Mapping Package** | Map NICE/TMS business rules to technical validation types |
+| **Deliver NICE/TMS Type Test Mapping Package** | Validate NICE/TMS Type Test mapping with technical stakeholders |
+| **Deliver NICE/TMS Technical Control Package** | Design NICE/TMS technical DQ controls |
+| **Deliver NICE/TMS Technical Control Package** | Implement NICE/TMS DQ tests for approved Type Test mappings |
+| **Deliver NICE/TMS Technical Control Package** | Validate NICE/TMS DQ test execution results |
+| **Deliver NICE/TMS Approval Package** | Package NICE/TMS rollout evidence for review |
+| **Deliver NICE/TMS Approval Package** | Capture NICE/TMS stakeholder feedback |
+| **Deliver NICE/TMS Approval Package** | Obtain NICE/TMS Phase 1 sign-off |
+| **Deliver Report BI Domain Assessment Package** | Complete Report BI domain discovery |
+| **Deliver Report BI Domain Assessment Package** | Document Report BI business objectives and data flows |
+| **Deliver Report BI Domain Assessment Package** | Identify Report BI source systems and priority data assets |
+| **Deliver Report BI Stakeholder and RACI Package** | Identify Report BI business and technical stakeholders |
+| **Deliver Report BI Stakeholder and RACI Package** | Define Report BI RACI matrix |
+| **Deliver Report BI Stakeholder and RACI Package** | Validate Report BI ownership model with stakeholders |
+| **Deliver Report BI CDE Inventory Package** | Identify Report BI Critical Data Elements |
+| **Deliver Report BI CDE Inventory Package** | Prioritize Report BI CDEs for Phase 1 rollout |
+| **Deliver Report BI CDE Inventory Package** | Obtain stakeholder validation for Report BI CDE inventory |
+| **Deliver Report BI Dimension Applicability Package** | Map Report BI DQ dimensions by data layer |
+| **Deliver Report BI Dimension Applicability Package** | Validate Landing, Staging, Bronze, Silver, and Gold layer applicability |
+| **Deliver Report BI Dimension Applicability Package** | Obtain approval for Report BI dimension applicability matrix |
+| **Deliver Report BI Business Rule Package** | Document business rules for prioritized Report BI CDEs |
+| **Deliver Report BI Business Rule Package** | Trace Report BI business rules to CDEs |
+| **Deliver Report BI Business Rule Package** | Review Report BI business rules with SMEs |
+| **Deliver Report BI Type Test Mapping Package** | Define Type Test mapping for Report BI CDEs |
+| **Deliver Report BI Type Test Mapping Package** | Map Report BI business rules to technical validation types |
+| **Deliver Report BI Type Test Mapping Package** | Validate Report BI Type Test mapping with technical stakeholders |
+| **Deliver Report BI Technical Control Package** | Design Report BI technical DQ controls |
+| **Deliver Report BI Technical Control Package** | Implement Report BI DQ tests for approved Type Test mappings |
+| **Deliver Report BI Technical Control Package** | Validate Report BI DQ test execution results |
+| **Deliver Report BI Approval Package** | Package Report BI rollout evidence for review |
+| **Deliver Report BI Approval Package** | Capture Report BI stakeholder feedback |
+| **Deliver Report BI Approval Package** | Obtain Report BI Phase 1 sign-off |
+| **Deliver Regulatory Domain Assessment Package** | Complete Regulatory domain discovery |
+| **Deliver Regulatory Domain Assessment Package** | Document Regulatory business objectives and reporting obligations |
+| **Deliver Regulatory Domain Assessment Package** | Identify Regulatory source systems and priority data assets |
+| **Deliver Regulatory Stakeholder and RACI Package** | Identify Regulatory business and technical stakeholders |
+| **Deliver Regulatory Stakeholder and RACI Package** | Define Regulatory RACI matrix |
+| **Deliver Regulatory Stakeholder and RACI Package** | Validate Regulatory ownership model with stakeholders |
+| **Deliver Regulatory CDE Inventory Package** | Identify Regulatory Critical Data Elements |
+| **Deliver Regulatory CDE Inventory Package** | Prioritize Regulatory CDEs for Phase 1 rollout |
+| **Deliver Regulatory CDE Inventory Package** | Obtain stakeholder validation for Regulatory CDE inventory |
+| **Deliver Regulatory Dimension Applicability Package** | Map Regulatory DQ dimensions by data layer |
+| **Deliver Regulatory Dimension Applicability Package** | Validate Landing, Staging, Bronze, Silver, and Gold layer applicability |
+| **Deliver Regulatory Dimension Applicability Package** | Obtain approval for Regulatory dimension applicability matrix |
+| **Deliver Regulatory Business Rule Package** | Document business rules for prioritized Regulatory CDEs |
+| **Deliver Regulatory Business Rule Package** | Trace Regulatory business rules to CDEs |
+| **Deliver Regulatory Business Rule Package** | Review Regulatory business rules with SMEs |
+| **Deliver Regulatory Type Test Mapping Package** | Define Type Test mapping for Regulatory CDEs |
+| **Deliver Regulatory Type Test Mapping Package** | Map Regulatory business rules to technical validation types |
+| **Deliver Regulatory Type Test Mapping Package** | Validate Regulatory Type Test mapping with technical stakeholders |
+| **Deliver Regulatory Technical Control Package** | Design Regulatory technical DQ controls |
+| **Deliver Regulatory Technical Control Package** | Implement Regulatory DQ tests for approved Type Test mappings |
+| **Deliver Regulatory Technical Control Package** | Validate Regulatory DQ test execution results |
+| **Deliver Regulatory Approval Package** | Package Regulatory rollout evidence for review |
+| **Deliver Regulatory Approval Package** | Capture Regulatory stakeholder feedback |
+| **Deliver Regulatory Approval Package** | Obtain Regulatory Phase 1 sign-off |
+| **Deliver Cross-Domain Standardization Package** | Create reusable rollout template |
+| **Deliver Cross-Domain Standardization Package** | Create standard CDE inventory template |
+| **Deliver Cross-Domain Standardization Package** | Create standard RACI template |
+| **Deliver Cross-Domain Standardization Package** | Create standard business rule template |
+| **Deliver Cross-Domain Standardization Package** | Create standard Type Test mapping template |
+| **Deliver Cross-Domain Standardization Package** | Create reusable domain onboarding checklist |
+| **Deliver Traceability Package** | Create domain-to-CDE traceability view |
+| **Deliver Traceability Package** | Create CDE-to-business-rule traceability view |
+| **Deliver Traceability Package** | Create business-rule-to-Type-Test traceability view |
+| **Deliver Traceability Package** | Create Type-Test-to-technical-control traceability view |
+| **Deliver Traceability Package** | Capture domain approval traceability |
+| **Close Phase 1 Rollout** | Prepare domain completion summary |
+| **Close Phase 1 Rollout** | Document open issues and deferred items |
+| **Close Phase 1 Rollout** | Create Phase 2 guardrail backlog |
+| **Close Phase 1 Rollout** | Capture stakeholder sign-off |
+| **Close Phase 1 Rollout** | Document rollout lessons learned |
+
 ## Recommended Confluence Labels
 
 Add these labels to the page:
