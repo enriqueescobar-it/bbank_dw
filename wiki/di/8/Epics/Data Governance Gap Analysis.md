@@ -283,15 +283,43 @@ Current-state completion by major area is summarized below:
 
 ## 6. Target State
 
-Bradesco Bank defined a formal Data Governance Framework, documented policies, defined governance roles, and a target-state data architecture that supports trusted, compliant, and scalable data management across the organization.
+The target state establishes a formal, enterprise Data Governance capability that supports Bradesco Bank’s cloud and Databricks modernization strategy. Governance should move from fragmented, project-specific practices to a documented and repeatable operating model with clear ownership, stewardship, decision rights, evidence, controls, and measurable adoption.
+
+In the target state, Bradesco Bank has an approved Data Governance Framework, documented policies and standards, defined roles and responsibilities, and an architecture-aligned governance model that can be applied across priority domains, data assets, platforms, and reporting use cases. Governance expectations are embedded into the data lifecycle from source discovery and ingestion through landing, bronze, curated, warehouse, reporting, and consumption layers.
+
+The target state should support the following outcomes:
+
+- Critical data domains are identified, documented, prioritized, and assigned accountable owners and stewards.
+- Governance policies, standards, decision rights, and escalation paths are documented and approved.
+- Metadata, glossary, catalog, lineage, classification, retention, and Data Quality expectations are defined and measurable.
+- Current-state maturity and gaps are supported by an evidence register and reviewed stakeholder observations.
+- Target-state architecture guidance aligns with Databricks, Unity Catalog, medallion architecture, landing and bronze controls, access governance, lineage, metadata, and Data Quality capabilities.
+- Remediation initiatives are prioritized by risk, business value, effort, dependency impact, and implementation readiness.
+- Leadership has a clear roadmap for 30/60/90-day actions and longer-term governance adoption.
+
+The target state is not limited to producing static documentation. The assessment should create a practical governance baseline that can be converted into delivery backlog items, operating routines, ownership assignments, architecture guardrails, and measurable governance controls.
 
 ### 6.1 Target-State Capabilities
 
-- Defined Data Governance Framework and operating model.
-- Documented Data Governance Policy and standards.
-- Future-state data architecture aligned with cloud modernization strategy.
-- Clear governance roles.
-- Roadmap and action plan for governance adoption.
+| Capability | Target-State Description | Success Indicator |
+| --- | --- | --- |
+| Governance Framework | A documented enterprise Data Governance Framework defines scope, principles, roles, responsibilities, decision rights, escalation paths, and operating cadence. | Framework reviewed and approved by stakeholders. |
+| Governance Operating Model | Governance bodies, working groups, owners, stewards, custodians, and technical teams have clear responsibilities and participation expectations. | RACI and decision-rights model approved and ready for implementation planning. |
+| Data Ownership and Stewardship | Critical domains and priority data assets have assigned or candidate Data Owners and Data Stewards. | Ownership / stewardship matrix completed for priority domains, with gaps and next actions documented. |
+| Data Domain Register | Critical business data domains are defined, prioritized, and maintained in a centralized register. | Data Domain Register published for in-scope domains. |
+| Current-State Maturity Baseline | Governance maturity is assessed across the defined maturity dimensions using evidence and stakeholder validation. | Maturity scorecard completed across all governance dimensions. |
+| Evidence Register | Findings and maturity scores are traceable to interviews, documents, inventories, architecture artifacts, and technical evidence. | Evidence register completed and linked to findings. |
+| Enterprise Gap Matrix | Current-state gaps are documented against target-state expectations, with severity, impact, owner, dependency, and recommended action. | Gap matrix completed and reviewed. |
+| Risk Register | Governance risks are formally documented, prioritized, and linked to mitigation actions. | Risk register completed and accepted by assessment stakeholders. |
+| Metadata and Business Glossary | Business metadata, technical metadata, glossary ownership, definition standards, and catalog coverage expectations are defined. | Metadata and glossary gaps documented with target-state recommendations. |
+| Lineage and Traceability | Lineage expectations are defined from source through landing, warehouse, reporting, and regulatory traceability paths. | Lineage gaps documented and priority lineage use cases identified. |
+| Data Quality Governance | Data Quality dimensions, CDE ownership, rule-definition approach, thresholds, exception handling, scorecards, and remediation workflow are defined. | DQ governance recommendations completed and linked to CDE / ownership remediation items. |
+| Classification, Privacy, and Compliance | Classification model, sensitive data handling, access governance, retention, auditability, and regulatory control alignment are included in governance recommendations. | Security, privacy, and compliance recommendations reviewed by appropriate stakeholders. |
+| Architecture Alignment | Governance recommendations are aligned with cloud / Databricks architecture, including Unity Catalog, medallion architecture, metadata, lineage, access controls, and Data Quality architecture. | Target-state conceptual data architecture completed and approved. |
+| Landing and Bronze Governance Controls | Landing and Bronze layer expectations are defined for source fidelity, traceability, idempotency, schema visibility, quarantine, retention, observability, and ownership. | Landing / Bronze governance controls mapped to platform standards or remediation needs. |
+| Monitoring and Reporting | Governance KPIs and reporting expectations are defined for maturity, ownership coverage, catalog completeness, lineage coverage, DQ issue resolution, and roadmap progress. | Governance reporting requirements documented and included in roadmap. |
+| Remediation Roadmap | Remediation initiatives are sequenced across quick wins, foundation initiatives, governance program buildout, and enterprise expansion. | Prioritized roadmap and 30/60/90-day action plan completed and approved. |
+| Executive Readout | Leadership receives a concise view of current maturity, major gaps, risk exposure, target-state recommendations, and investment priorities. | Executive presentation completed and delivered. |
 
 ## 7. Architecture and Design
 
