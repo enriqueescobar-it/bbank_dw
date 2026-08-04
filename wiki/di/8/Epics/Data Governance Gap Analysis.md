@@ -696,13 +696,46 @@ The epic is complete only when the Data Governance Gap Analysis is evidence-back
 
 ## 18. Operational Readiness
 
-| Area | Requirement | Status |
+Operational readiness for this epic means the assessment outputs are not only completed, but also stored, owned, reviewable, reusable, and ready to drive follow-on governance implementation. Because this epic produces governance assessment and planning deliverables, readiness focuses on artifact management, ownership, review cadence, handoff, decision tracking, and KPI reporting rather than production monitoring or application support.
+
+| Area | Requirement | Target / Readiness Criteria | Status |
+| --- | --- | --- | --- |
+| Artifact Repository | Final and working assessment artifacts must be stored in an approved project repository or folder with controlled access. | Repository location confirmed; final files published with clear naming, versioning, and access permissions. | Not Started |
+| Artifact Ownership | Each assessment artifact must have an accountable owner responsible for maintenance, updates, and publication. | Owner assigned for maturity assessment, evidence register, gap matrix, risk register, governance framework, target architecture, roadmap, and executive readout. | Not Started |
+| Version Control | Material updates to assessment artifacts must be tracked. | Change log includes date, author, version/status, change summary, and impacted section or deliverable. | Not Started |
+| Evidence Register Maintenance | Evidence used for findings must remain accessible and traceable after the assessment. | Evidence register published with finding ID, evidence source, source location, confidence level, and reviewer status. | Not Started |
+| Decision Log Maintenance | Key assessment, governance, architecture, ownership, and roadmap decisions must be documented. | Decision log includes decision date, decision, owner / approver, rationale, related finding or deliverable, and status. | Not Started |
+| Open Questions Management | Open questions, assumptions, and unresolved evidence gaps must be actively tracked through closure or accepted deferral. | Open questions register includes question, owner, due date, impact, status, and disposition. | Not Started |
+| Review Cadence | Deliverables must be reviewed on a defined cadence until final signoff. | Weekly working review during active assessment; milestone reviews for maturity assessment, policy draft, target architecture / gap matrix / risk register, roadmap, and executive readout. | In Progress |
+| Stakeholder Signoff | Final deliverables must be reviewed and accepted by the appropriate stakeholder groups. | Review log captures reviewer group, date, feedback, disposition, approval status, and residual open items. | Not Started |
+| Support / Handoff Model | Ownership of post-assessment actions must be handed off from RSM / project team to Bradesco operating teams. | Handoff completed for governance framework, roadmap items, ownership gaps, DQ gaps, metadata / lineage gaps, and architecture dependencies. | Not Started |
+| Follow-On Backlog Creation | Accepted gaps and remediation actions must be converted into actionable backlog items or project initiatives. | Roadmap items linked to candidate epics, stories, owners, dependencies, and implementation phases. | Not Started |
+| Governance KPI Tracking | Metrics must be defined to monitor governance adoption and remediation progress after the assessment. | KPI definitions documented for ownership coverage, stewardship coverage, evidence completeness, maturity score improvement, gap closure, roadmap progress, catalog completeness, lineage coverage, DQ rule coverage, and issue remediation. | Not Started |
+| Reporting Cadence | Governance progress reporting must have a defined cadence and audience. | Monthly governance progress review recommended for roadmap execution; executive updates aligned to major milestones or steering committee cadence. | Not Started |
+| Access Control | Assessment artifacts must be accessible only to authorized stakeholders. | Access reviewed for RSM, Data Intelligence, Data Governance, Infrastructure, Architecture, Risk / Compliance, Security, business SMEs, and leadership. | Not Started |
+| Security and Confidentiality | Infrastructure, database, ownership, risk, and assessment information must be handled as confidential project material. | Sensitive workbooks, meeting notes, system inventories, and risk findings stored in controlled-access location. | In Progress |
+| Knowledge Transfer | RSM and project team must transfer assessment rationale, open issues, and recommended next steps to Bradesco owners. | KT session completed; walkthrough covers evidence register, gap matrix, risk register, roadmap, open questions, and handoff owners. | Not Started |
+| Closure Package | Epic closure must include accepted deliverables, residual risks, open items, and follow-on actions. | Closure note completed and approved by epic owner, Data Governance, Data Intelligence, and leadership as applicable. | Not Started |
+
+### 18.1 Governance KPI Tracking
+
+The following KPIs should be defined as part of operational readiness so Bradesco can monitor governance adoption after the assessment closes.
+
+| KPI | Description | Suggested Measurement |
 | --- | --- | --- |
-| Monitoring | N/A | N/A |
-| Alerting | N/A | N/A |
-| Runbook | Final deliverables stored in approved place | Not Started |
-| Support Model | DI owns post-assessment activities | Not Started |
-| SLA / SLO | N/A | N/A |
+| Ownership Coverage | Percentage of priority domains, systems, databases, data assets, or CDEs with assigned Data Owner. | Assigned owners / total priority items. |
+| Stewardship Coverage | Percentage of priority domains, assets, or CDEs with assigned Data Steward. | Assigned stewards / total priority items. |
+| Evidence Completeness | Percentage of material findings linked to evidence and confidence rating. | Findings with evidence / total material findings. |
+| Maturity Score Completion | Percentage of governance dimensions with completed score, rationale, evidence, and reviewer status. | Completed scored dimensions / 10 dimensions. |
+| Gap Matrix Completion | Percentage of identified gaps with severity, impact, evidence, owner or owner gap, recommendation, and roadmap linkage. | Complete gap records / total gap records. |
+| Risk Register Completion | Percentage of risks with impact, probability, mitigation, owner, status, and roadmap linkage where applicable. | Complete risk records / total risks. |
+| Roadmap Progress | Percentage of roadmap items completed, in progress, blocked, or not started by phase. | Status by 0-90 days, 3-6 months, 6-12 months, and 12-24 months. |
+| Catalog / Metadata Completeness | Percentage of priority assets with required metadata fields populated. | Assets with required metadata / total priority assets. |
+| Lineage Coverage | Percentage of priority data flows, reports, CDEs, or domains with documented lineage. | Documented lineage items / total priority items. |
+| DQ Rule Coverage | Percentage of priority CDEs with approved Data Quality rules and thresholds. | CDEs with approved DQ rules / total priority CDEs. |
+| DQ Issue Remediation | Percentage of DQ issues closed within agreed target timing. | Closed on time / total closed or due issues. |
+| Open Question Closure | Percentage of assessment open questions closed or formally deferred. | Closed or deferred questions / total questions. |
+| Stakeholder Review Completion | Percentage of required stakeholder groups that reviewed and signed off on final deliverables. | Completed reviews / required reviews. |
 
 ## 19. Open Questions
 
