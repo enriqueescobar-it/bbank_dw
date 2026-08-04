@@ -240,18 +240,18 @@ Current evidence shows that Bradesco Bank has active data management, Data Intel
 
 The RSM work breakdown structure identifies several assessment workstreams currently in progress or pending, including governance operating model, data domains, data assets, metadata and catalog, data lineage, Data Quality, classification and privacy, current-state maturity scoring, gap analysis, target-state governance framework, target-state architecture, remediation roadmap, and executive readout.
 
-At this stage, the strongest current-state evidence is project and inventory-oriented rather than findings-oriented. The available source files include WBS materials, project plan and milestone tracking, deliverable templates, SQL Server inventory and assessment workbooks, meeting notes, landing / bronze standardization frameworks, and a draft epic backlog seed. These sources establish assessment scope and methodology, but they do not yet provide a complete evidence register, maturity scorecard, enterprise gap matrix, risk register, or finalized Bradesco-specific findings.
+At this stage, the strongest current-state evidence is planning- and template-oriented rather than findings-oriented. The available local source files include WBS materials, project plan and milestone tracking, deliverable templates, workbook metrics, the WBS hierarchy export, the Data Domains & Ownership epic, and a draft epic backlog seed. These sources establish assessment scope and methodology, but they do not yet provide a complete evidence register, maturity scorecard, enterprise gap matrix, risk register, or finalized Bradesco-specific findings.
 
 Current-state completion by major area is summarized below:
 
 | Assessment Area | Current-State Status | Evidence / Source |
 | --- | --- | --- |
 | Project Initiation and Planning | Mostly complete; kickoff, stakeholder alignment, methodology, and communication planning are complete or near complete. | RSM WBS; Project Plan workbook |
-| Stakeholder Interviews | Started; initial interviews and coordination activities have occurred, with further validation still required. | Project Plan workbook; Infrastructure meeting summary |
+| Stakeholder Interviews | Started; initial interviews and coordination activities have occurred, with further validation still required. | Project Plan workbook |
 | Current-State Governance Assessment | In progress; early analysis only, with limited Bradesco-specific findings visible. | RSM WBS; Epic Backlog Seed |
 | Governance Operating Model | Early analysis; sponsorship, decision rights, stewardship, and ownership assessment are not yet fully populated. | RSM WBS; Governance Framework template |
 | Data Domain Assessment | Started; candidate domains are identified, but ownership and stewardship assignment remains incomplete. | RSM WBS; Data Domains & Ownership epic |
-| Data Asset / Source Inventory | In progress; SQL Server inventory and database discovery are underway, but access, ownership, business purpose, and scope validation remain incomplete. | SQL Assessment workbook; Infrastructure meeting summary |
+| Data Asset / Source Inventory | In progress per WBS; source inventory, ownership, business purpose, and scope validation remain incomplete. | RSM WBS; Project Plan workbook |
 | Metadata and Catalog Assessment | Started; business glossary, metadata standards, and catalog coverage require further evidence and definition. | RSM WBS; Target-State Architecture template |
 | Data Lineage Assessment | Started; source-to-landing, landing-to-warehouse, warehouse-to-reporting, and regulatory traceability are not yet fully documented. | RSM WBS; Target-State Architecture template |
 | Data Quality Assessment | Started; Data Quality dimensions and CDE concepts are identified, but rule inventory, thresholds, ownership, and remediation workflow are incomplete. | RSM WBS; Epic Backlog Seed |
@@ -271,8 +271,8 @@ Current-state completion by major area is summarized below:
 | Evidence-to-finding traceability is incomplete. | Findings may be difficult to defend during stakeholder review, audit review, or executive decision-making. | Epic Backlog Seed | High |
 | Data ownership and stewardship roles are not consistently assigned across critical domains. | Data issues lack clear accountability, slowing issue resolution and weakening governance adoption. | Data Domains & Ownership epic; RSM WBS Ownership Assessment | High |
 | Governance decision rights and escalation paths are not fully documented. | Policy decisions, issue prioritization, and cross-domain conflicts may be handled inconsistently. | Governance Framework template; RSM WBS Decision Rights Assessment | High |
-| Critical data domains and data assets are still being identified and refined. | Domain boundaries, ownership assignments, stewardship responsibilities, and governance scope remain incomplete. | Data Domains & Ownership epic; RSM WBS; SQL Assessment workbook | High |
-| SQL Server inventory discovery is incomplete due to access and ownership gaps. | The team cannot fully validate database purpose, functional ownership, integrations, reporting dependencies, or migration relevance. | SQL Assessment workbook; Infrastructure meeting summary | High |
+| Critical data domains and data assets are still being identified and refined. | Domain boundaries, ownership assignments, stewardship responsibilities, and governance scope remain incomplete. | Data Domains & Ownership epic; RSM WBS | High |
+| Source inventory validation is incomplete due to ownership and business-purpose gaps. | The team cannot fully validate data asset purpose, functional ownership, integrations, reporting dependencies, or migration relevance. | RSM WBS Source System Inventory; Data Domains & Ownership epic | High |
 | Metadata and business glossary coverage are immature. | Business definitions, ownership, and technical metadata are difficult to standardize, reuse, and govern. | RSM WBS Metadata & Catalog Assessment; Target-State Architecture template | High |
 | Data lineage and traceability are not consistently documented end to end. | Impact analysis, regulatory traceability, and audit evidence may require manual investigation. | RSM WBS Lineage Assessment; Target-State Architecture template | High |
 | Data Quality practices are not yet governed through a complete enterprise operating model. | DQ rules, CDE mappings, thresholds, scorecards, ownership, and remediation responsibilities may vary by team or domain. | RSM WBS Data Quality Assessment; Epic Backlog Seed | High |
@@ -357,9 +357,9 @@ The final architecture package should include a target-state conceptual architec
 
 ## 8. Data Requirements
 
-The Data Governance Gap Analysis requires a reliable evidence base across governance documentation, stakeholder interviews, system inventories, database inventories, ownership mappings, and current-state architecture inputs. The current evidence set includes RSM assessment materials, Bradesco project documentation, SQL Server inventory workbooks, and infrastructure coordination notes.
+The Data Governance Gap Analysis requires a reliable evidence base across governance documentation, stakeholder interviews, system inventories, database inventories, ownership mappings, and current-state architecture inputs. The current local evidence set includes RSM assessment materials, WBS exports, project milestone tracking, governance deliverable templates, and related domain ownership documentation.
 
-A key current-state finding is that technical inventory data alone is not sufficient to complete the governance assessment. The SQL Server assessment workbook provides server and database-level discovery fields, but several records still require validation of business purpose, technical owner, functional owner, application owner, vendor ownership, integrations, ETL dependencies, reporting usage, operational status, and migration relevance. The infrastructure meeting summary confirms that read-only technical access can identify databases and metadata, but stakeholder input is required to determine actual usage, ownership, dependencies, and governance accountability.
+A key current-state finding is that technical inventory data alone will not be sufficient to complete the governance assessment. The WBS identifies source system inventory and data asset assessment workstreams, but those workstreams still require validation of business purpose, technical owner, functional owner, application owner, vendor ownership where applicable, integrations, ETL dependencies, reporting usage, operational status, and governance relevance. Stakeholder input is required to determine actual usage, ownership, dependencies, and governance accountability.
 
 The data requirements for this epic therefore include both technical inventory data and business / governance validation data.
 
@@ -368,14 +368,12 @@ The data requirements for this epic therefore include both technical inventory d
 | Source | Object / Artifact | Description | Current Gap / Validation Need | Refresh Frequency | Owner |
 | --- | --- | --- | --- | --- | --- |
 | RSM Assessment Materials | WBS, project plan, deliverable templates, methodology artifacts | Defines assessment phases, deliverables, milestones, and expected governance outputs. | Must be reconciled with actual completed deliverables, evidence, and stakeholder-reviewed findings. | As updated by project team | RSM / Bradesco Team |
-| SQL Server Assessment Workbook | Server inventory tab | Inventory of servers, hostnames, IPs, locations, database technologies, environments, in-scope flags, support status, criticality, and review status. | In-scope classification, duplicate server handling, support status, ownership, access status, and SQL Server scope require validation. | During assessment waves | Data Intelligence / Infrastructure |
-| SQL Server Assessment Workbook | Database inventory tab | Database-level records linked to servers, including database name, version, state, size, backup information, environment, and discovery fields. | Business purpose, technical use, integrations, ETL dependencies, reports, operational status, functional owner, technical owner, vendor owner, and migration recommendation require validation. | During assessment waves | Data Intelligence / Infrastructure / Application Owners |
-| SQL Server Assessment Workbook | Questions tab | Open discovery questions related to duplicates, database scope, access, ownership, SQL Compact scope, Data Quality, and HA / DR. | Questions require assigned owners, answers, decisions, and closure status. | Weekly during discovery | Data Intelligence / Infrastructure |
-| Infrastructure Meeting Summary | DB Consolidation - Infrastructure Coordination notes | Captures current blocker, ownership discovery needs, access coordination, and proposed infrastructure support model. | Follow-up required for read-only access, owner mapping, vendor-managed systems, and validation of inactive / legacy records. | As meetings occur | Infrastructure / Data Intelligence |
+| Source System Inventory Workstream | WBS 2.3.1 Source System Inventory | Required inventory of source systems, servers, databases, ownership, purpose, scope, access status, and governance relevance. | Inventory content is not visible in the local source package and must be produced or linked before final findings. | During assessment waves | Data Intelligence / Infrastructure |
+| Data Asset Assessment Workstream | WBS 2.3 Data Asset Assessment | Required review of source inventory, product inventory, and business glossary seed. | Business purpose, technical use, integrations, reports, operational status, owner mapping, and governance criticality require validation. | During assessment waves | Data Intelligence / Infrastructure / Application Owners |
+| Open Questions Register | Assessment open questions from this epic | Questions related to access, ownership, scope, operational status, business purpose, integrations, reporting, DQ, HA / DR, classification, CDEs, and repository location. | Questions require assigned owners, answers, decisions, and closure status. | Weekly during discovery | RSM / Data Intelligence |
 | Stakeholder Interviews | Interview notes and validation outcomes | Business and technical input used to confirm database purpose, dependencies, ownership, reporting usage, and governance accountability. | Interview coverage is incomplete; additional SMEs, application owners, vendors, and business contacts must be identified. | Per interview wave | RSM / Bradesco Team |
 | Governance Assessment Templates | Current-state maturity assessment, governance framework, target architecture, remediation roadmap | Defines required assessment outputs and target-state structure. | Templates contain placeholders and must be populated with Bradesco-specific evidence, scores, findings, risks, and remediation actions. | Per deliverable cycle | RSM |
 | Data Domains & Ownership Epic | Data domain ownership and stewardship scope | Defines ownership/stewardship objectives and target of assigning owners/stewards for critical domains. | Candidate domains, owners, stewards, approval status, and domain boundaries require validation. | During domain assessment | Data Governance / Data Intelligence |
-| Landing and Bronze Frameworks | LND and BRZ standardization frameworks | Provides governance control expectations for source fidelity, traceability, idempotency, schema visibility, quarantine, retention, observability, and ownership. | Must be mapped to Bradesco target-state architecture and implementation readiness. | As standards evolve | Data Architecture / Data Governance |
 
 ### 8.2 Source Inventory and Ownership Requirements
 
@@ -383,8 +381,8 @@ The assessment must produce or validate a source inventory that supports governa
 
 | Requirement Area | Required Information | Purpose | Current Status |
 | --- | --- | --- | --- |
-| Server Identification | Server ID, hostname, IP address, location, network, installed database engine, SQL Server version, environment, support status. | Establishes the technical estate and confirms SQL Server assessment scope. | Partially available in SQL Server assessment workbook. |
-| Database Identification | Database ID, linked server ID, database name, SQL version, state, size, backup information, file locations, environment. | Establishes database-level inventory and technical discovery baseline. | Partially available in SQL Server assessment workbook. |
+| Server Identification | Server ID, hostname, IP address, location, network, installed database engine, database version, environment, support status. | Establishes the technical estate and confirms assessment scope. | Required by source inventory workstream; not visible in local source package. |
+| Database Identification | Database ID, linked server ID, database name, database version, state, size, backup information, file locations, environment. | Establishes database-level inventory and technical discovery baseline. | Required by source inventory workstream; not visible in local source package. |
 | Scope Classification | In-scope / out-of-scope flag, scope rationale, SQL Server vs non-SQL Server validation, SQL Compact disposition. | Prevents irrelevant assets from inflating the assessment backlog. | Partially available; requires validation. |
 | Business Purpose | Functional description, business process supported, active / legacy / inactive status, business criticality. | Determines whether the database is governed, migrated, consolidated, retired, or further analyzed. | Incomplete; requires application and business owner input. |
 | Ownership Mapping | Technical owner, functional owner, application owner, infrastructure owner, vendor contact, business SME. | Establishes accountability for validation, decisions, quality issues, and remediation. | Incomplete; identified as a current blocker. |
@@ -406,6 +404,39 @@ The assessment must produce or validate a source inventory that supports governa
 | Enterprise Gap Matrix | Documented gaps between current state and target-state expectations, with severity, impact, evidence, owner, and recommended action. | Leadership, Data Governance, delivery teams | Required for target-state and roadmap review | RSM |
 | Risk Register | Governance, ownership, metadata, lineage, DQ, compliance, architecture, and delivery risks with mitigations. | Leadership, Risk / Compliance, project team | Required for target-state review | RSM / Bradesco Team |
 | Prioritized Remediation Roadmap | Sequenced remediation actions including quick wins, foundation work, 30/60/90-day plan, dependencies, and longer-term roadmap. | Leadership, Data Governance, delivery teams | Required before executive readout | RSM / Bradesco Team |
+
+### 8.4 Evidence Coverage Register
+
+The current local source package is sufficient to improve the epic structure, requirements, acceptance criteria, and provisional backlog. It is not sufficient to close the epic because several source files are templates or planning artifacts rather than completed assessment outputs.
+
+| Evidence Source | What It Contributes | Current Usability | Remaining Gap |
+| --- | --- | --- | --- |
+| 01_Current_State_Maturity_Assessment.docx | Defines ten governance maturity dimensions, 1-5 maturity scale, scorecard format, detailed findings format, stakeholder appendix, and documents-reviewed appendix. | Strong for required structure and acceptance criteria. | Does not contain populated Bradesco maturity scores, observations, evidence references, or stakeholder interview results. |
+| 02_Governance_Framework_Policy_Recommendations.docx | Defines governance principles, operating model roles, RACI areas, policy hierarchy, recommended policies, stewardship cadence, escalation path, and success metrics. | Strong for target governance model requirements. | Requires Bradesco-specific role names, decision rights, council membership, policy decisions, and approval path. |
+| 03_Target_State_Data_Architecture.docx | Defines Databricks / cloud layers, Unity Catalog, DQ framework, lineage, security, governance-to-architecture mapping, domain model, and design-decision register. | Strong for target architecture control mapping. | Requires actual Bradesco architecture diagrams, domain-to-catalog mapping, platform decisions, and migration constraints. |
+| 04_Prioritized_Remediation_Roadmap.docx | Defines prioritization criteria, effort sizing, initiative register, 30/60/90 action plan, two-year roadmap, and roadmap risk model. | Strong for remediation roadmap format. | Requires validated initiatives, owners, effort scores, dependencies, investment ranges, and leadership prioritization. |
+| BradescoRSM_AssessmentWBS_ProjectPlan07292026.xlsx | Provides the ten-week project plan and milestone dates M1-M6. | Strong for milestone correction and dependency tracking. | Requires current milestone status confirmation after July 29, 2026. |
+| BradescoRSM.xlsx / BradescoRSM.csv | Provides WBS detail, work packages, completion percentages, and overall program metrics. | Strong for current-state completion framing. | Does not include findings, scoring rationale, or evidence-to-finding traceability. |
+| RSM-US_WBS.md / RSM-US_WBS_h.md | Provides deliverable-oriented WBS, dashboard status, completion estimates, and confidence levels. | Strong for status, scope, and workstream coverage. | Uses planning estimates; must be reconciled with final RSM deliverables. |
+| BradescoRSM_AssessmentEpicBacklog.md | Provides proposed governance backlog areas and missing items across operating model, metadata, lineage, DQ, classification, CDEs, domains, and AI readiness. | Strong for child epic candidates and missing-item framing. | Requires product-owner validation, prioritization, sizing, and Jira creation. |
+| Data Domains & Ownership.md | Defines related ownership and stewardship epic, target of 80% critical domain owner/steward coverage, and BR 9 file domain-discovery input. | Strong for dependency and ownership acceptance criteria. | Domain register, owners, stewards, boundaries, and approval status remain incomplete. |
+
+### 8.5 Missing Items Required Before Final Closure
+
+| Missing Item | Why It Is Required | Owner / Resolver | Target Milestone |
+| --- | --- | --- | --- |
+| Populated maturity scorecard | Establishes evidence-backed current-state baseline across the ten governance dimensions. | RSM / Bradesco Team | M1 - Aug 12, 2026 |
+| Evidence register | Makes findings defensible for stakeholder, leadership, audit, and compliance review. | RSM | M1 / M3 |
+| Stakeholder interview notes and reviewer feedback | Validates current-state statements and resolves assumptions. | RSM / Bradesco Team | M1 |
+| Enterprise gap matrix | Converts directional concerns into prioritized governance, technology, organization, metadata, lineage, DQ, and compliance gaps. | RSM | M3 - Aug 26, 2026 |
+| Governance risk register | Documents probability, impact, mitigation, owner, and roadmap linkage for material governance risks. | RSM / Bradesco Team | M3 - Aug 26, 2026 |
+| Bradesco-specific governance operating model | Defines council, roles, RACI, decision rights, escalation path, cadence, and policy authority. | Data Governance / RSM | M2 / M3 |
+| Target-state architecture decisions | Confirms Databricks, Unity Catalog, medallion controls, metadata, lineage, DQ, security, and access-control direction. | Architecture / Platform / Data Governance | M3 |
+| Validated source inventory and ownership/contact matrix | Establishes accountability and scope for systems, databases, domains, reports, and data assets. | Data Intelligence / Infrastructure / Business SMEs | M1 / M3 |
+| Candidate CDE inventory and DQ rule-readiness assessment | Links Data Quality controls to critical elements, owners, rules, thresholds, scorecards, and remediation workflow. | Data Governance / RSM / Business SMEs | M3 / M4 |
+| Classification, privacy, retention, and compliance review | Ensures sensitive banking data governance and regulatory traceability are reviewed by appropriate stakeholders. | Risk / Compliance / Security | M3 / M4 |
+| Prioritized remediation roadmap and 30/60/90 action plan | Converts validated gaps into executable phases, owners, dependencies, and outcomes. | RSM / Bradesco Team | M4 - Sept 8, 2026 |
+| Executive readout and final package publication | Provides leadership approval and a durable handoff package for implementation. | RSM / Bradesco Team | M5 / M6 |
 
 ## 9. Functional Requirements
 
@@ -648,15 +679,40 @@ The Data Governance Gap Analysis epic depends on the completion and review of se
 
 ### 15.1 Milestones
 
-| Milestone | Target Date | Owner | Status |
-| --- | --- | --- | --- |
-| Project Kickoff Complete |  | RSM / Bradesco | Complete |
-| Current-State assessment |  | RSM | In progress |
-| DG Framework draft |  | RSM | Not Started |
-| Sample DG Policy |  | RSM | Not Started |
-| Future Architecture | Sept 04, 2026 | RSM | Not Started |
-| 30/60/90 Action Plan | Sept 18, 2026 | RSM | Not Started |
-| Final review | Sept 30, 2026 | RSM / Bradesco | Not Started |
+| Milestone | Phase | Target Date | Owner | Status | Dependency |
+| --- | --- | --- | --- | --- | --- |
+| Kickoff meeting and stakeholder alignment | 1 | Jul 16, 2026 | RSM Team | Complete | Project start |
+| Current State Maturity Assessment | 2 | Aug 12, 2026 | RSM & Bradesco Team | Pending Scheduling | Interviews and data complete |
+| Sample Data Governance Policy Draft | 2 | Aug 18, 2026 | RSM & Bradesco Team | Not Started / Pending Review | Current state validated |
+| Target State DG Architecture, Gap Analysis Matrix, Risk Register | 3 | Aug 26, 2026 | RSM & Bradesco Team | Not Started / Pending Scheduling | Policy draft reviewed |
+| Prioritized Implementation Roadmap and 30/60/90-Day Action Plan | 4 | Sept 8, 2026 | RSM Team / Bradesco Team | Not Started / Pending Scheduling | Findings validated |
+| Executive Presentation | 5 | Sept 17, 2026 | RSM Team / Bradesco Team | Pending Scheduling | Roadmap approved |
+| Deliverable package and project close | 5 | Sept 18, 2026 | RSM Team / Bradesco Team | Not Started | Final presentation delivered |
+
+### 15.2 Provisional Remediation Roadmap
+
+The roadmap below is a provisional planning view based on the available WBS, backlog seed, and RSM roadmap template. It should be replaced or confirmed when the formal enterprise gap matrix and risk register are completed.
+
+| ID | Initiative | Dimension | Effort | Phase | Dependencies | Expected Outcome |
+| --- | --- | --- | --- | --- | --- | --- |
+| REM-001 | Complete evidence register and documents-reviewed appendix. | Evidence / Assessment Quality | S | 0-30 days | Source files, interview notes, inventory extracts | Material findings become traceable and reviewable. |
+| REM-002 | Populate maturity scorecard across ten governance dimensions. | Current-State Maturity | M | 0-30 days | Interviews, evidence register, RSM maturity template | Current-state baseline is measurable and defensible. |
+| REM-003 | Validate priority domains and ownership gaps. | Organization & Roles | M | 0-60 days | Data Domains & Ownership epic, stakeholder validation | Domain owner/steward gaps are known and ready for remediation. |
+| REM-004 | Build enterprise gap matrix and risk register. | Gap Analysis / Risk | M | 31-60 days | Maturity scorecard, evidence register, target-state expectations | Governance gaps are prioritized by impact, severity, evidence, and owner gap. |
+| REM-005 | Define governance operating model, RACI, decision rights, and escalation path. | Governance Framework | M | 31-60 days | Governance framework template, leadership input | Policy decisions and issue escalation have clear accountability. |
+| REM-006 | Define target architecture control mapping for Databricks / Unity Catalog / medallion layers. | Architecture & Platform | M | 31-90 days | Target architecture template, platform stakeholder review | Governance controls are mapped to platform layers and future backlog items. |
+| REM-007 | Establish metadata, glossary, catalog, and lineage priority backlog. | Metadata / Lineage | M | 61-90 days | Gap matrix, domain priorities, source inventory | Metadata and lineage work can be sequenced by priority domain and critical asset. |
+| REM-008 | Establish DQ and CDE governance backlog. | Data Quality | M | 61-90 days | Domain priorities, CDE candidates, DQ framework review | DQ rules, thresholds, owners, scorecards, and remediation workflow become actionable. |
+| REM-009 | Validate classification, privacy, access, retention, and compliance recommendations. | Security / Compliance | M | 61-90 days | Security / IAM / Compliance review | Sensitive data and regulatory-control gaps are reviewed before roadmap approval. |
+| REM-010 | Publish final roadmap, executive readout, and follow-on implementation backlog. | Roadmap / Closure | S | 90 days | Gap matrix, risk register, stakeholder signoff | Leadership has approved remediation sequence and next implementation epics. |
+
+### 15.3 30/60/90-Day Action Plan
+
+| Window | Focus | Actions | Owner | Deliverables | Exit Criteria |
+| --- | --- | --- | --- | --- | --- |
+| Days 1-30 | Foundation and evidence | Complete evidence register, populate maturity scorecard, confirm reviewer groups, validate source inventory questions, identify domain owner/steward gaps. | RSM / Data Intelligence / Infrastructure | Evidence register, maturity scorecard draft, open questions register, ownership gap list. | Maturity review is ready and unresolved gaps are assigned owners. |
+| Days 31-60 | Build and operationalize | Produce enterprise gap matrix, risk register, governance operating model, RACI, policy draft, and target-state control mapping. | RSM / Data Governance / Architecture | Gap matrix, risk register, policy draft, RACI, decision rights, architecture control map. | Core findings and recommendations are reviewable by stakeholders. |
+| Days 61-90 | Scale and measure | Prioritize roadmap, validate DQ/CDE backlog, validate metadata/lineage backlog, review security/compliance gaps, prepare executive readout and closure package. | RSM / Bradesco Team | 30/60/90 action plan, two-year roadmap, executive readout, follow-on backlog, closure package. | Leadership can approve roadmap, residual risks, and follow-on implementation work. |
 
 ## 16. Jira / Backlog Links
 
@@ -793,17 +849,32 @@ The decision log should capture project milestone decisions, governance review c
 
 ## 21. Related Documents
 
-- RSM Share folder: [https://rsmnet.sharepoint.com/teams/td\_7191464/00024/SitePages/NewHome.aspx](https://rsmnet.sharepoint.com/teams/td_7191464/00024/SitePages/NewHome.aspx)
+Only the local files under this folder were used for this refresh:
+
+| File | Use in This Epic |
+| --- | --- |
+| 01_Current_State_Maturity_Assessment.docx | Maturity dimensions, maturity scale, scorecard structure, findings structure, evidence expectations. |
+| 02_Governance_Framework_Policy_Recommendations.docx | Governance principles, operating roles, RACI areas, policy hierarchy, stewardship cadence, escalation path, success metrics. |
+| 03_Target_State_Data_Architecture.docx | Databricks / cloud layer model, Unity Catalog, DQ, lineage, security, governance-to-platform controls. |
+| 04_Prioritized_Remediation_Roadmap.docx | Prioritization criteria, effort sizing, initiative register, 30/60/90 action plan, roadmap risk model. |
+| BradescoRSM_AssessmentEpicBacklog.md | Candidate child epics and missing-item analysis. |
+| BradescoRSM_AssessmentWBS_ProjectPlan07292026.xlsx | Ten-week WBS, milestone dates M1-M6, owners, dependencies. |
+| BradescoRSM.csv | WBS hierarchy export. |
+| BradescoRSM.xlsx | WBS detail, metrics, completion estimates. |
+| Data Domains & Ownership.md | Related domain ownership and stewardship epic, 80% critical-domain coverage target, ownership dependency. |
+| RSM-US_WBS.md | Deliverable-oriented WBS and completion/confidence estimates. |
+| RSM-US_WBS_h.md | WBS dashboard, deliverables completion matrix, executive scorecard. |
 
 ## 22. Change Log
 
 | Date | Change | Author |
 | --- | --- | --- |
 | Jul 2026 | Initial epic draft created for Data Governance Gap Analysis. | @David Tatis / Data Intelligence |
-| Aug 3, 2026 | Refreshed section content using first-level source files under SharePoint. | RSM |
+| Aug 3, 2026 | Refreshed section content using available assessment source files. | RSM |
 | Aug 3, 2026 | Updated epic summary, business goals, scope, stakeholders, current state, target state, architecture, data requirements, functional requirements, non-functional requirements, Data Quality, security / compliance, dependencies, risks, acceptance criteria, operational readiness, open questions, and decision log. | @Enrique Escobar |
-| Aug 3, 2026 | Added source-refresh findings from RSM WBS, project plan workbook, SQL Server assessment workbook, infrastructure meeting summary, Data Domains & Ownership epic, and governance deliverable templates. | @Enrique Escobar |
+| Aug 3, 2026 | Added source-refresh findings from RSM WBS, project plan workbook, Data Domains & Ownership epic, and governance deliverable templates. | @Enrique Escobar |
 | Aug 3, 2026 | Added evidence-based completion framing: maturity scorecard not yet populated, enterprise gap matrix not yet produced, evidence register incomplete, risk register pending, and remediation roadmap not yet finalized. | @Enrique Escobar |
+| Aug 4, 2026 | Improved epic using only local files under wiki/di/8/Epics: added evidence coverage register, missing closure items, corrected project milestones, provisional remediation roadmap, 30/60/90 action plan, detailed RSM deliverable acceptance checklist, and candidate epic children. | @Enrique Escobar |
 
 ## Recommended Confluence Labels
 
@@ -820,12 +891,28 @@ Add these labels to the page:
 
 ### RSM List
 
-| Deliverable | Description |
-| --- | --- |
-| Current-state maturity assessment | Scored baseline across all governance components, with prioritized observations based on the assessment framework |
-| Governance framework & policy recommendations | Policy sample draft, standards, and stewardship model to sustain governance |
-| Target-state conceptual data architecture | Conceptual data architecture on Cloud / Databricks and a governance operating model |
-| Prioritized remediation roadmap | Risk-based, sequenced actions with effort and dependency guidance, along with a 30/60/90-day action plan |
-| Final readout | Leadership-ready summary of findings, target state, and the path forward, which can be leveraged for the business plan |
+| Deliverable | Description | Required Contents | Current Evidence Status | Acceptance Signal |
+| --- | --- | --- | --- | --- |
+| Current-state maturity assessment | Scored baseline across all governance components, with prioritized observations based on the assessment framework. | Ten-dimension maturity scorecard, score rationale, evidence source, stakeholder reviewer, confidence rating, prioritized observations. | Template and WBS exist; scores and Bradesco-specific observations are not populated in the local source package. | M1 reviewed and accepted with all ten dimensions scored. |
+| Governance framework and policy recommendations | Policy sample draft, standards, and stewardship model to sustain governance. | Governance vision, principles, council / decision body, roles, RACI, decision rights, escalation path, stewardship cadence, policy hierarchy, recommended policies. | Template exists; Bradesco-specific council membership, role assignments, and approval path remain pending. | Policy draft and framework reviewed by Data Governance and leadership stakeholders. |
+| Target-state conceptual data architecture | Conceptual data architecture on cloud / Databricks and a governance operating model. | Current-state challenges, target architecture layers, Unity Catalog, DQ framework, lineage, security, access control, domain model, governance-to-platform control mapping, design decisions. | Template exists; Bradesco-specific architecture decisions and diagrams remain pending. | M3 target architecture reviewed with gap matrix and risk register. |
+| Enterprise gap matrix and risk register | Formal bridge between current maturity, target-state expectations, material gaps, and governance risks. | Gap ID, dimension, current state, target state, severity, impact, evidence, owner or owner gap, dependency, recommendation; risk probability, impact, mitigation, status. | Required by WBS and project plan; not produced in the local source package. | M3 package accepted with evidence-linked gaps and risks. |
+| Prioritized remediation roadmap | Risk-based, sequenced actions with effort and dependency guidance, plus a 30/60/90-day action plan. | Prioritization weights, effort sizing, initiative register, 30/60/90 actions, 3-6 month foundation work, 6-12 month program work, 12-24 month expansion, owners, dependencies. | Template exists; validated initiatives, owners, effort, priority scores, and dependencies are pending. | M4 roadmap approved and ready for follow-on backlog creation. |
+| Final readout | Leadership-ready summary of findings, target state, and path forward for business planning. | Executive summary, maturity baseline, top gaps, risk exposure, decisions required, recommended target state, roadmap priorities, investment / dependency view, residual risks. | Milestone exists; content depends on M1-M4 deliverables. | M5 executive presentation delivered and M6 package closed. |
 
 # Epic Children
+
+| Child Epic ID | Proposed Child Epic | Objective | Source Basis | Current Status | Primary Dependency |
+| --- | --- | --- | --- | --- | --- |
+| DGGA-CH-001 | Enterprise Data Governance Operating Model | Establish governance structure, ownership model, stewardship model, decision rights, and escalation process. | BradescoRSM_AssessmentEpicBacklog.md; 02_Governance_Framework_Policy_Recommendations.docx | Candidate / Not Created | Governance framework review and leadership approval. |
+| DGGA-CH-002 | Metadata and Business Glossary Program | Establish enterprise metadata standards, glossary ownership, catalog coverage expectations, and completeness metrics. | BradescoRSM_AssessmentEpicBacklog.md; 03_Target_State_Data_Architecture.docx | Candidate / Not Created | Priority domains and catalog target-state decisions. |
+| DGGA-CH-003 | Data Lineage and Traceability | Create source-to-consumption traceability for critical banking data, reports, and regulatory outputs. | BradescoRSM_AssessmentEpicBacklog.md; RSM-US_WBS.md | Candidate / Not Created | Source inventory, critical reports, CDE candidates, and lineage tool decisions. |
+| DGGA-CH-004 | Data Quality Framework | Define enterprise DQ dimensions, rules, thresholds, scorecards, ownership, monitoring, and remediation workflow. | BradescoRSM_AssessmentEpicBacklog.md; 01_Current_State_Maturity_Assessment.docx | Candidate / Not Created | CDE inventory, Data Owner / Steward assignments, DQ target architecture. |
+| DGGA-CH-005 | Data Classification and Privacy | Define classification taxonomy, sensitive-data handling, access governance, regulatory mappings, and platform enforcement requirements. | BradescoRSM_AssessmentEpicBacklog.md; 02_Governance_Framework_Policy_Recommendations.docx | Candidate / Not Created | Risk / Compliance / Security review. |
+| DGGA-CH-006 | Critical Data Elements Program | Identify, define, own, monitor, and govern enterprise CDEs for priority domains. | BradescoRSM_AssessmentEpicBacklog.md; Data Domains & Ownership.md | Candidate / Not Created | Domain register, business SME validation, CDE candidate list. |
+| DGGA-CH-007 | Banking Domain Model | Define enterprise banking domains, boundaries, ownership, stewardship, and platform namespace alignment. | BradescoRSM_AssessmentEpicBacklog.md; Data Domains & Ownership.md | Candidate / Not Created | Data domain validation and ownership approval. |
+| DGGA-CH-008 | AI-Ready Data Governance Foundation | Extend metadata, lineage, DQ, ownership, classification, and data product governance for BI, analytics, ML, RAG, and AI readiness. | BradescoRSM_AssessmentEpicBacklog.md | Candidate / Deferred | Completion of foundational governance capabilities. |
+
+## Completion Position
+
+YES_SIR: the epic could be improved with the available local folder sources, and it has been improved. The epic should still remain **In Progress** because the source package does not include final maturity scores, evidence-backed Bradesco findings, formal enterprise gap matrix, populated risk register, approved target-state architecture decisions, or final remediation roadmap.
