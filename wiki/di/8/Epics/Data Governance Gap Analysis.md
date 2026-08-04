@@ -484,29 +484,124 @@ The non-functional requirements for this epic define the quality, traceability, 
 
 ## 11. Data Quality and Validation
 
-### 11.1 Data Quality Rules
+Data Quality is a core assessment area for this epic and should not be marked as N/A. The RSM work breakdown structure includes a dedicated Data Quality Assessment workstream covering Data Quality framework review, quality dimensions, Critical Data Element readiness, CDE ownership, and quality rule definition. The current evidence indicates that Data Quality practices and related initiatives exist, but enterprise-level governance alignment is incomplete.
 
-N/A
+For this gap analysis, Data Quality and validation requirements apply to the assessment outputs and to the target-state governance recommendations. The epic must assess whether Bradesco Bank has the governance capabilities needed to define, own, monitor, escalate, and remediate Data Quality issues across critical domains and data assets.
+
+### 11.1 Data Quality Assessment Requirements
+
+| ID | Assessment Requirement | Current Gap / Concern | Acceptance Criteria |
+| --- | --- | --- | --- |
+| DQ-001 | Assess the current Data Quality framework and operating model. | Current DQ practices are not yet clearly connected to enterprise governance roles, decision rights, stewardship, and remediation accountability. | Data Quality framework assessment completed and linked to governance operating model gaps. |
+| DQ-002 | Assess Data Quality dimensions, including completeness, accuracy, consistency, timeliness, and validity. | DQ dimensions are identified in the WBS, but evidence-backed findings and maturity scores are not yet populated. | Each DQ dimension is reviewed, scored, and documented with evidence, observations, and gaps. |
+| DQ-003 | Identify Critical Data Elements in scope for governance assessment. | CDE inventory is incomplete or not yet visible in the available assessment artifacts. | Candidate CDE inventory is documented for priority domains or explicitly tracked as a gap. |
+| DQ-004 | Assess CDE ownership. | CDE owners are not consistently assigned or validated. | CDE ownership gaps are documented and linked to domain ownership / stewardship remediation actions. |
+| DQ-005 | Assess DQ rule definition readiness. | Rule catalog, thresholds, severity, exceptions, and approval process are not yet defined at enterprise level. | DQ rule-definition approach is documented, including owner, steward, threshold, severity, exception handling, and approval expectations. |
+| DQ-006 | Assess DQ monitoring and reporting readiness. | Scorecards, dashboards, issue tracking, and governance KPIs are not yet established or not evidenced. | DQ monitoring requirements are documented and linked to target-state reporting / observability recommendations. |
+| DQ-007 | Assess DQ issue remediation workflow. | Remediation ownership, escalation paths, SLAs, and closure criteria are not consistently documented. | DQ issue workflow is documented with roles, escalation path, status model, and closure expectations. |
+| DQ-008 | Assess linkage between DQ and metadata / lineage. | DQ rules may not be traceable to CDEs, business definitions, owners, lineage paths, or downstream reports. | Recommendations define how DQ rules link to glossary terms, CDEs, catalog metadata, lineage, and reporting impact. |
+| DQ-009 | Assess DQ controls in the target cloud / Databricks architecture. | Target-state DQ architecture is conceptual and requires validation against platform design. | Target-state architecture identifies where DQ checks, exceptions, scorecards, and remediation workflows should operate. |
+| DQ-010 | Maintain evidence-backed DQ findings. | Current DQ conclusions are directional and not yet fully supported by an evidence register. | Each material DQ finding includes evidence source, confidence level, impact, priority, and recommended remediation action. |
+
+### 11.2 Critical Data Element Requirements
+
+| Requirement Area | Required Information | Purpose | Current Status |
+| --- | --- | --- | --- |
+| CDE Inventory | List of candidate CDEs by domain, system, data asset, report, or business process. | Establishes which data elements require stronger governance, quality rules, lineage, and ownership. | Not yet complete / not visible. |
+| CDE Business Definition | Approved business meaning, acceptable values, calculation logic where applicable, and usage context. | Supports consistency, glossary alignment, stewardship, and quality rule design. | Incomplete; requires business SME and steward validation. |
+| CDE Owner | Accountable Data Owner for meaning, quality expectations, and prioritization. | Ensures business accountability for quality and remediation decisions. | Incomplete; ownership gaps must be tracked. |
+| CDE Steward | Operational Data Steward responsible for definitions, rule review, issue triage, and metadata maintenance. | Enables ongoing stewardship and DQ governance execution. | Incomplete; stewardship gaps must be tracked. |
+| Source System / Data Asset Mapping | System, database, table, field, report, or data product where the CDE is captured, transformed, or consumed. | Supports lineage, impact analysis, and DQ rule placement. | Partially dependent on source inventory and database discovery. |
+| DQ Rules | Rule name, description, dimension, logic, threshold, severity, owner, exception handling, and approval status. | Defines measurable DQ controls for critical data. | Rule catalog not yet produced. |
+| Monitoring and Scorecard | Frequency, metric, threshold result, trend, owner, issue status, and remediation outcome. | Provides visibility into DQ performance and governance adoption. | Not yet established or not evidenced. |
+| Issue Management | Issue ID, affected CDE, severity, owner, root cause, remediation action, due date, status, and closure evidence. | Creates accountable remediation workflow. | Not yet formalized or not evidenced. |
+| Lineage Linkage | Source-to-consumption lineage for CDEs used in critical reports, controls, or business processes. | Supports regulatory traceability, change impact analysis, and root-cause investigation. | Incomplete; tied to lineage workstream gaps. |
+
+### 11.3 Validation Rules for Assessment Outputs
+
+| Validation Rule | Description | Pass Criteria |
+| --- | --- | --- |
+| Evidence Required | DQ findings must be supported by interview notes, documents, inventory records, existing DQ artifacts, system evidence, or stakeholder validation. | No material DQ finding is marked final without evidence and confidence rating. |
+| CDE Gap Transparency | Missing CDE inventory, missing ownership, or missing rule catalog must be classified as a documented gap, not ignored. | CDE gaps appear in the enterprise gap matrix and remediation roadmap. |
+| Traceability Required | DQ findings should link to related maturity dimension, evidence source, gap, risk, and remediation action. | Each DQ finding can be traced from maturity score to gap matrix to roadmap item. |
+| Ownership Required | DQ rules, issues, and CDEs should identify a Data Owner or Data Steward; unknown ownership must be captured as a gap. | Ownership matrix includes assigned owners or explicit owner gaps. |
+| Platform Alignment Required | DQ recommendations must identify where controls belong in the target architecture, such as ingestion, Bronze, Silver, Gold, reporting, or governance workflow. | Target-state architecture includes DQ control placement and operating responsibilities. |
+| Stakeholder Review Required | DQ findings, CDE gaps, and remediation priorities must be reviewed with appropriate business, Data Governance, Data Intelligence, and technical stakeholders. | Review status and feedback disposition are documented. |
+
+### 11.4 Data Quality Success Indicators
+
+| Success Indicator | Target |
+| --- | --- |
+| Data Quality assessment completed | DQ framework, DQ dimensions, CDE readiness, ownership, rule definition, monitoring, and remediation workflow assessed. |
+| CDE inventory gap documented | Candidate CDE inventory produced or missing CDE inventory formally captured as a high-priority gap. |
+| CDE ownership gap documented | CDE ownership and stewardship gaps linked to Data Domains & Ownership remediation. |
+| DQ rule catalog readiness assessed | Rule-definition approach and missing rule inventory documented. |
+| DQ scorecard requirements defined | Monitoring and scorecard needs included in target-state recommendations. |
+| DQ findings traceable to evidence | Each major DQ conclusion linked to evidence, impact, confidence, and remediation action. |
+| DQ roadmap items created | DQ-related gaps translated into prioritized remediation initiatives. |
 
 ## 12. Security, Governance, and Compliance
 
+Security, governance, and compliance are core assessment areas for this epic. The RSM WBS includes a dedicated Security, Privacy & Compliance Assessment workstream covering data classification and regulatory controls. The gap analysis must assess whether Bradesco Bank has the policies, ownership, controls, metadata, evidence, and operating processes needed to govern sensitive and regulated data across current platforms and the target cloud / Databricks architecture.
+
+The current-state assessment should determine how data classification, privacy expectations, access governance, retention, auditability, and regulatory control alignment are currently defined and enforced. The target-state recommendations should define how these capabilities should be embedded into governance roles, architecture controls, metadata, lineage, Data Quality processes, and remediation planning.
+
 ### 12.1 Access Control
 
-| Role / Group | Access Level | Data Scope |
-| --- | --- | --- |
-| RSM Assessment Team | Read | Governance, Architecture, and project documentation |
-| Data Intelligence Team | Read / Write | Assessment Artifacts and Deliverables |
-| Business Stakeholders | Read / Write | Governance Framework and policy Documents |
+Access to assessment artifacts and source inventories must be controlled because the materials may include system names, database names, infrastructure details, ownership information, risk findings, architecture direction, and governance gaps. Access should follow least-privilege principles and should be limited to authorized project stakeholders.
+
+| Role / Group | Access Level | Data Scope | Notes |
+| --- | --- | --- | --- |
+| RSM Assessment Team | Read / Write | Assessment workpapers, maturity assessment, gap matrix, risk register, roadmap, and executive readout drafts. | Responsible for producing assessment deliverables and incorporating review feedback. |
+| Data Intelligence Team | Read / Write | Source inventory, database discovery, assessment artifacts, technical findings, and remediation backlog inputs. | Supports current-state validation and post-assessment action planning. |
+| Data Governance / Data Foundation Team | Read / Write / Approve | Governance framework, policies, ownership model, stewardship model, classification requirements, and remediation priorities. | Owns governance direction and validates target-state feasibility. |
+| Infrastructure Team | Read / Write for assigned inventory fields | Server inventory, access status, infrastructure owner mapping, SQL Server scope validation, and technical discovery support. | Provides access coordination and infrastructure-level validation. |
+| Architecture / Platform / Databricks Team | Read / Write for architecture inputs | Current-state architecture, target-state architecture, Unity Catalog, metadata, lineage, security, and platform-control recommendations. | Validates architecture alignment and implementation feasibility. |
+| Business SMEs / Application Owners | Read / Write for assigned assets | Business purpose, functional owner, application owner, operational status, integrations, reports, and data usage validation. | Confirms business relevance and accountability. |
+| Data Owners / Data Stewards | Read / Write for assigned domains | Domain definitions, ownership, stewardship, CDEs, DQ expectations, glossary terms, classification, and issue workflow. | Accountable for governance validation within assigned domains. |
+| Risk, Compliance, and Audit Stakeholders | Read / Comment / Approve where applicable | Regulatory control alignment, auditability, privacy, classification, retention, and risk findings. | Validates compliance expectations and risk treatment. |
+| Security / IAM | Read / Write for security controls | Access governance, group-based permissions, sensitive data controls, masking, audit logging, and security standards. | Reviews control design and access recommendations. |
+| Executive Stakeholders | Read / Approve | Executive summary, major gaps, risk exposure, roadmap priorities, and final recommendations. | Supports decision-making and investment prioritization. |
 
 ### 12.2 Governance Requirements
 
-- Data classification: Consider data classification requirements in governance recommendations
-- PII / sensitive data handling: Align recommendations with existing regulatory and security requirements
-- Data retention: Review current retention practices and identify governance gaps
-- Audit logging: Include auditability considerations in governance recommendations
-- Lineage: Assess current lineage capabilities and future-state requirements
-- Approval workflow: Define governance decision-making and approval processes
-- Business glossary updates: Recommend ownership and maintenance approach
+| Governance Area | Requirement | Assessment Focus | Target-State Expectation |
+| --- | --- | --- | --- |
+| Data Classification | Assess whether classification levels are defined, consistently applied, and connected to access, privacy, retention, and handling expectations. | Public, Internal, Confidential, Restricted classification maturity; classification coverage; classification ownership; classification metadata gaps. | Approved classification model with ownership, metadata tagging, handling rules, and platform enforcement path. |
+| Privacy and Sensitive Data Handling | Assess how PII, confidential, restricted, and regulated data are identified, protected, used, shared, retained, and monitored. | Sensitive data inventory, PII identification, masking needs, privacy controls, data sharing restrictions, and evidence gaps. | Sensitive data handling requirements documented and mapped to governance roles, catalog metadata, access controls, and remediation actions. |
+| Access Governance | Assess whether access is granted, reviewed, and revoked using approved roles, groups, policies, and least-privilege principles. | Current access-control model, manual access processes, ownership of access approvals, access review cadence, and audit trail availability. | Role-based / group-based access model aligned with data classification, ownership, Unity Catalog, IAM, and audit expectations. |
+| Regulatory Control Alignment | Assess whether governance controls support applicable banking, audit, compliance, privacy, and records-management expectations. | Regulatory control mapping, evidence availability, ownership of controls, gaps in traceability, and review process. | Regulatory control expectations documented, assigned, and traceable to policies, data assets, lineage, and evidence. |
+| Retention and Records | Assess whether data retention, records-management, lifecycle, archival, and disposal requirements are documented and enforceable. | Retention policy coverage, data lifecycle controls, records classification, disposal evidence, and platform retention gaps. | Retention requirements documented by data class / domain / asset and linked to platform controls and ownership. |
+| Auditability and Evidence | Assess whether governance decisions, approvals, access changes, DQ issues, lineage, classifications, and remediation actions are evidenced. | Evidence register, decision log, audit trail availability, approval workflow, issue history, and finding traceability. | Material findings, risks, decisions, and control recommendations have evidence references and confidence levels. |
+| Metadata and Catalog Governance | Assess whether classification, owner, steward, criticality, retention, glossary, and lineage metadata are captured in a governed catalog. | Catalog coverage, mandatory metadata fields, ownership fields, glossary linkage, classification tags, and completeness metrics. | Metadata requirements defined and aligned to Unity Catalog / target catalog architecture. |
+| Data Quality Governance | Assess whether DQ expectations are governed through CDE ownership, rule approval, thresholds, monitoring, escalation, and remediation. | CDE ownership, DQ rule catalog, issue workflow, scorecards, exception handling, and remediation accountability. | DQ governance model linked to ownership, stewardship, metadata, lineage, and roadmap actions. |
+| Lineage and Traceability | Assess whether lineage supports impact analysis, regulatory traceability, audit response, and root-cause analysis. | Source-to-landing, landing-to-warehouse, warehouse-to-reporting, and regulatory lineage gaps. | Priority lineage requirements documented and mapped to target architecture and remediation roadmap. |
+| Governance Approval Workflow | Assess whether policy, classification, ownership, access, DQ, metadata, and architecture decisions have defined approval paths. | Current approval gaps, decision rights, escalation paths, review cadence, and responsible roles. | Decision rights and approval workflow documented in the governance operating model. |
+
+### 12.3 Classification and Privacy Assessment Requirements
+
+| ID | WBS Alignment | Requirement | Priority | Acceptance Criteria |
+| --- | --- | --- | --- | --- |
+| SG-001 | 6.1 | Assess the current data classification model. | Must | Classification levels, definitions, handling expectations, ownership, and known coverage gaps are documented. |
+| SG-002 | 6.1.1 | Assess Public classification practices. | Should | Criteria for public data and evidence of public classification usage are documented or classified as not evidenced. |
+| SG-003 | 6.1.2 | Assess Internal classification practices. | Must | Criteria for internal data and evidence of internal classification usage are documented or classified as not evidenced. |
+| SG-004 | 6.1.3 | Assess Confidential classification practices. | Must | Criteria for confidential data, handling requirements, access expectations, and evidence gaps are documented. |
+| SG-005 | 6.1.4 | Assess Restricted classification practices. | Must | Criteria for restricted data, sensitive-data controls, access requirements, masking / encryption considerations, and evidence gaps are documented. |
+| SG-006 | 6.2 | Assess regulatory control alignment. | Must | Regulatory, audit, privacy, retention, access, lineage, and evidence-control expectations are documented and mapped to governance gaps. |
+| SG-007 | 6.0 / 10.2.5 | Align security and privacy recommendations with target-state architecture. | Must | Security architecture recommendations include classification tagging, access model, audit logging, sensitive data handling, and Unity Catalog / IAM alignment. |
+| SG-008 | 6.0 / 8.0 | Include security, privacy, and compliance gaps in the enterprise gap matrix. | Must | Gap matrix includes classification, privacy, access, retention, auditability, and regulatory-control gaps with severity, impact, evidence, and recommended action. |
+| SG-009 | 6.0 / 11.0 | Translate security, privacy, and compliance gaps into roadmap items. | Must | Roadmap includes prioritized remediation actions for classification, access governance, sensitive data handling, regulatory traceability, and audit evidence. |
+
+### 12.4 Compliance Validation Rules
+
+| Validation Rule | Description | Pass Criteria |
+| --- | --- | --- |
+| Evidence Required | Security, privacy, and compliance findings must be supported by documents, interviews, inventories, architecture artifacts, policy references, or stakeholder validation. | No material security / compliance finding is marked final without evidence and confidence rating. |
+| Missing Evidence Classification | Lack of evidence must be recorded as “not evidenced” or as a documented gap, not treated as proof of compliance. | Evidence gaps appear in the evidence register, gap matrix, or open questions register. |
+| Ownership Required | Classification, access approval, sensitive data handling, retention, and control remediation must have accountable owners or owner gaps. | Owner or owner gap is documented for each material control area. |
+| Target Architecture Alignment | Security recommendations must be connected to the target cloud / Databricks architecture. | Target architecture includes security, access, classification, metadata, lineage, and auditability controls. |
+| Regulatory Review Required | Compliance-sensitive findings and recommendations must be reviewed by Risk, Compliance, Audit, or Security stakeholders as applicable. | Review status, reviewer group, and feedback disposition are documented. |
+| Roadmap Traceability | Security and compliance gaps must be translated into sequenced remediation actions. | Each material gap links to a roadmap item or documented rationale for deferral. |
 
 ## 13. Dependencies
 
