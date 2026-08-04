@@ -739,9 +739,30 @@ The following KPIs should be defined as part of operational readiness so Bradesc
 
 ## 19. Open Questions
 
-| Question | Owner | Due Date | Status |
-| --- | --- | --- | --- |
-|  |  |  | Open |
+The following open questions should be tracked through closure because they affect source inventory accuracy, ownership mapping, scope classification, Data Quality confidence, HA / DR interpretation, and downstream governance recommendations.
+
+| ID | Topic | Question | Owner | Due Date | Status | Impact if Unresolved |
+| --- | --- | --- | --- | --- | --- | --- |
+| OQ-001 | Access | Which in-scope SQL Server hosts still require read-only access for database enumeration and metadata validation? | Infrastructure | TBD | Open | The assessment may rely on incomplete or inconsistent inventory data. |
+| OQ-002 | Access | If read-only access cannot be granted for a server, can Infrastructure provide an authoritative database export with database names, status, size, backup metadata, and owner/contact fields? | Infrastructure | TBD | Open | Technical discovery may remain incomplete for restricted hosts. |
+| OQ-003 | Ownership | For each in-scope server and database, who is the technical owner, functional owner, application owner, business owner, and vendor contact where applicable? | Infrastructure / Data Intelligence / Business SMEs | TBD | Open | Findings, DQ issues, lineage gaps, and remediation actions may lack accountable owners. |
+| OQ-004 | Ownership | Which internal team leads or application teams should be contacted for each server/database group? | Infrastructure / Data Intelligence | TBD | Open | Discovery interviews may be delayed or routed to the wrong stakeholders. |
+| OQ-005 | Scope | For duplicate server records, was the database engine / product considered when identifying duplicates? | Data Intelligence / Infrastructure | TBD | Open | Duplicate handling may incorrectly merge or inflate inventory records. |
+| OQ-006 | Scope | When the workbook states “No business databases found,” does that mean the databases do not exist, the team lacks access, or the business purpose is unknown? | Data Intelligence / Infrastructure | TBD | Open | Scope classification and database-count assumptions may be inaccurate. |
+| OQ-007 | Scope | Can SQL Compact instances be considered out of scope if they contain no business databases or are not relevant to the SQL Server consolidation / governance assessment? | Data Intelligence / Infrastructure | TBD | Open | Out-of-scope decisions may be inconsistent or undocumented. |
+| OQ-008 | Scope | Which non-SQL Server technologies, such as MySQL or MongoDB records, should be excluded from this assessment, and what evidence is required for exclusion? | Data Intelligence / Infrastructure | TBD | Open | Non-relevant assets may distort governance scope and assessment effort. |
+| OQ-009 | Operational Status | Which databases are active, inactive, legacy, closed, DR-only, vendor-managed, or pending validation? | Application Owners / Infrastructure / Business SMEs | TBD | Open | Remediation priorities and migration relevance may be inaccurate. |
+| OQ-010 | Business Purpose | What business process, application, report, workflow, or regulatory output does each in-scope database support? | Application Owners / Business SMEs | TBD | Open | Criticality, ownership, lineage, and DQ prioritization cannot be completed. |
+| OQ-011 | Integrations | What inbound feeds, outbound feeds, ETL processes, file exchanges, jobs, or downstream dependencies exist for each in-scope database? | Application Owners / Developers / Data Intelligence | TBD | Open | Lineage, impact analysis, and migration risk may remain incomplete. |
+| OQ-012 | Reporting | Which reports, dashboards, extracts, regulatory submissions, or operational consumers depend on each database? | Business SMEs / Application Owners | TBD | Open | Critical reporting lineage and governance priority may be missed. |
+| OQ-013 | Data Quality | The workbook includes a Data Quality question about a server running MSSQL 2019 while its note indicates “Non-MSSQL.” Which field is correct, and what validation source should be authoritative? | Data Intelligence / Infrastructure | TBD | Open | Engine classification, scope, and inventory quality may be unreliable. |
+| OQ-014 | Data Quality | Which workbook fields are validated versus pending validation, unknown, formula-derived, or manually entered? | Data Intelligence | TBD | Open | Evidence confidence may be overstated if data quality status is unclear. |
+| OQ-015 | Data Quality | What controls should be applied to validate completeness, accuracy, consistency, timeliness, and validity of the source inventory? | Data Intelligence / RSM | TBD | Open | Inventory defects may flow into maturity scoring, gap analysis, and roadmap actions. |
+| OQ-016 | HA / DR | The HA / DR column is marked as DR for some records. Can the DR pair or related production server be identified? | Infrastructure | TBD | Open | Criticality, recoverability, scope, and dependency analysis may be incomplete. |
+| OQ-017 | HA / DR | Should DR-only databases be included in governance findings, migration scope, ownership mapping, and DQ analysis? | Infrastructure / Data Governance / Data Intelligence | TBD | Open | DR assets may be incorrectly excluded or double-counted. |
+| OQ-018 | Classification / Privacy | Do any in-scope databases contain confidential, restricted, PII, or regulated banking data? | Data Owners / Security / Compliance | TBD | Open | Classification, privacy, access, and regulatory-control recommendations may be incomplete. |
+| OQ-019 | CDEs | Which databases or reports contain candidate Critical Data Elements for priority domains? | Data Governance / Business SMEs / Data Intelligence | TBD | Open | DQ rule design, stewardship, lineage, and ownership remediation may lack focus. |
+| OQ-020 | Final Repository | Where will the final evidence register, maturity scorecard, gap matrix, risk register, roadmap, and executive readout be stored? | Data Intelligence / Data Governance | TBD | Open | Final deliverables may lack controlled access, versioning, and durable ownership. |
 
 ## 20. Decision Log
 
