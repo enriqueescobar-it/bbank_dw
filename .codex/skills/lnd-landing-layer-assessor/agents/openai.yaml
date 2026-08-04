@@ -1,0 +1,4 @@
+interface:
+  display_name: "LND Landing Layer Assessor"
+  short_description: "Assess landing SQL against LND controls"
+  default_prompt: "Use $lnd-landing-layer-assessor to assess the dbx_landing SQL files against the LND landing-layer framework."
