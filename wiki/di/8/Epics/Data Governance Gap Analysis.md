@@ -766,13 +766,30 @@ The following open questions should be tracked through closure because they affe
 
 ## 20. Decision Log
 
-| Date | Decision | Owner | Notes |
-| --- | --- | --- | --- |
-| Jul 2026 | Engage RSM to perform Data Governance Assessment | Bradesco | Approved |
-| Jul 2026 | Adopt governance assessment and roadmap approach | Bradesco | Approved |
-| TBD | Approve Data Governance Framework | Data foundation / RSM | Pending |
-| TBD | Approve Future State Architecture | IT | Pending |
-| TBD | Approve 30/60/90 action plan | Data foundation | Pending |
+The decision log should capture project milestone decisions, governance review checkpoints, approval points, and unresolved decisions that affect completion of the Data Governance Gap Analysis. Dates below reflect the active project plan milestones and should be updated as decisions are completed or rescheduled.
+
+| Date | Decision / Checkpoint | Owner / Approver | Status | Notes |
+| --- | --- | --- | --- | --- |
+| Jul 2026 | Engage RSM to perform the Bradesco Bank Data Governance Assessment. | Bradesco Leadership | Approved | Establishes the assessment engagement and expected RSM deliverables. |
+| Jul 2026 | Use the RSM deliverable-oriented WBS as the working structure for the assessment. | RSM / Bradesco Team | Approved | WBS covers current-state assessment, maturity scoring, gap analysis, target governance framework, target architecture, roadmap, and executive readout. |
+| Jul 2026 | Adopt a phased assessment approach: project initiation, current-state confirmation, target-state architecture / gap analysis, recommendations / roadmap, and final readout. | RSM / Bradesco Team | Approved | Reflected in the project plan workbook and milestone schedule. |
+| Jul 16, 2026 | Complete kickoff meeting and initial stakeholder alignment. | RSM / Bradesco Team | Complete | Kickoff and project initiation activities marked complete in the project plan. |
+| Jul 21, 2026 | Conduct stakeholder interviews for executive sponsorship, strategy, and in-flight initiatives. | RSM / Bradesco Team | Complete | Interview activity marked complete in the project plan. |
+| Jul 22, 2026 | Conduct stakeholder interviews for data architecture, platform, lineage, and metadata. | RSM / Bradesco Team | Complete | Interview activity marked complete in the project plan. |
+| Jul 24, 2026 | Confirm Infrastructure support model for SQL Server inventory validation, read-only access coordination, and owner mapping. | Infrastructure / Data Intelligence | In Progress | Meeting summary confirms access and ownership mapping are required for reliable discovery. |
+| Aug 11, 2026 | Review / define Target State Data Governance direction. | RSM & Bradesco Team | Pending Scheduling | Required input for gap analysis and target-state recommendations. |
+| Aug 12, 2026 | Review and confirm Current State Maturity Assessment. | RSM & Bradesco Team | Pending Scheduling | Milestone M1. Required before finalizing maturity scores and evidence-backed findings. |
+| Aug 18, 2026 | Review Sample Data Governance Policy Draft. | RSM & Bradesco Team | Pending Scheduling | Milestone M2. Required to validate policy expectations used in the gap analysis. |
+| Aug 26, 2026 | Review Target State DG Architecture, Gap Analysis Matrix, and Risk Register. | RSM & Bradesco Team | Pending Scheduling | Milestone M3. Core checkpoint for this epic. |
+| Sept 8, 2026 | Review Prioritized Implementation Roadmap and 30/60/90-Day Action Plan. | RSM Team / Bradesco Team | Pending Scheduling | Milestone M4. Required to convert validated gaps into sequenced remediation actions. |
+| Sept 14, 2026 | Collect feedback from Bradesco on executive presentation. | Bradesco Team | Not Started | Feedback checkpoint before final readout. |
+| Sept 17, 2026 | Deliver final executive presentation to stakeholders. | RSM Team / Bradesco Team | Pending Scheduling | Milestone M5. Required for leadership review and closure direction. |
+| TBD | Approve Data Governance Framework and operating model. | Data Governance / Bradesco Leadership | Pending | Approval required before implementation planning. |
+| TBD | Approve target-state conceptual data architecture direction. | Architecture / Platform / Data Governance | Pending | Should confirm Databricks, Unity Catalog, metadata, lineage, DQ, access, and medallion governance alignment. |
+| TBD | Approve enterprise gap matrix and risk register. | RSM / Bradesco Team / Data Governance | Pending | Required before roadmap finalization. |
+| TBD | Approve prioritized remediation roadmap and 30/60/90-day action plan. | Bradesco Leadership / Data Governance | Pending | Required before epic closure and follow-on backlog creation. |
+| TBD | Confirm final documentation repository and access model. | Data Intelligence / Data Governance | Pending | Required for artifact publication, versioning, and controlled access. |
+| TBD | Approve epic closure with residual risks and open items documented. | Epic Owner / Data Governance / Bradesco Leadership | Pending | Closure should confirm accepted deliverables, unresolved items, and follow-on actions. |
 
 ## 21. Related Documents
 
