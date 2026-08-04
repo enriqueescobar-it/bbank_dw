@@ -42,3 +42,6 @@ For each framework control:
 
 Do not infer business rules or downstream responsibilities from landing-table names.
 
+## Assessment artifact
+
+The current `dbx_landing` LANDING-layer assessment is documented in `LND_Landing_Layer_Assessment.md`.
