@@ -627,9 +627,22 @@ The Data Governance Gap Analysis epic depends on the completion and review of se
 
 | Risk | Impact | Probability | Mitigation | Owner |
 | --- | --- | --- | --- | --- |
-| Delayed stakeholder participation | High | Medium | Schedule interviews early and track attendance | Project Team |
-| Incomplete documentation | High | Medium | Identify document gaps and request alternatives | Data Intelligence |
-| Delays in deliverable reviews | High | Medium | Establish review deadlines and escalation path | RSM |
+| Missing or incomplete evidence register | Findings may be difficult to defend during stakeholder, executive, audit, or compliance review. | High | Create an evidence register linking each material finding to documents, interviews, inventory records, meeting notes, technical evidence, and confidence level. | RSM |
+| Maturity scorecard not populated | The assessment cannot establish a reliable baseline or quantify current-state gaps by governance dimension. | High | Complete scoring across all ten governance dimensions and document scoring rationale, evidence, reviewer, and confidence. | RSM / Bradesco Team |
+| Enterprise gap matrix not produced | Governance gaps remain directional and cannot be prioritized consistently. | High | Produce the formal gap matrix covering governance, technology, organizational, metadata, lineage, and Data Quality gaps. | RSM |
+| Placeholder deliverables remain unpopulated | The final package may appear complete structurally but lack Bradesco-specific findings, decisions, risks, and roadmap actions. | High | Track placeholder sections as open items; require each deliverable to pass a completeness review before approval. | RSM / Data Intelligence |
+| Source inventory ownership gaps | Databases, systems, reports, and data assets may lack accountable technical, functional, application, or business owners. | High | Use infrastructure owner mapping, application owner validation, vendor contacts, and SME interviews to populate the ownership and contact matrix. | Data Intelligence / Infrastructure |
+| Read-only access gaps | The assessment team may be unable to independently validate database inventories, technical metadata, operational status, and scope. | Medium-High | Provide read-only SQL access or authoritative database exports for in-scope hosts; track unavailable access as evidence gaps. | Infrastructure |
+| Incomplete business-purpose validation | Technical inventory may identify databases but not explain business use, integrations, reports, operational workflows, or migration relevance. | High | Conduct targeted interviews with application owners, functional owners, developers, business SMEs, and vendors. | RSM / Data Intelligence |
+| Incorrect in-scope / out-of-scope classification | Non-SQL Server, SQL Compact, inactive, legacy, DR, duplicate, or irrelevant records may inflate or distort assessment scope. | Medium | Validate scope rationale, engine type, operational status, duplicate handling, and business relevance in the source inventory. | Data Intelligence / Infrastructure |
+| Delayed stakeholder participation | Maturity scoring, findings validation, ownership mapping, and roadmap approval may slip. | Medium | Schedule interviews and review checkpoints early; escalate missing participation through project governance. | Project Team |
+| Delayed target architecture, gap matrix, or risk register | Core inputs required for this epic may not be ready for review by the planned milestone. | Medium-High | Track the Aug 26, 2026 milestone; split unresolved items into open questions, assumptions, and roadmap dependencies. | RSM / Bradesco Team |
+| Roadmap remains template-only | Leadership may not have actionable sequencing, ownership, effort, or dependency information for remediation. | High | Convert validated gaps and risks into prioritized roadmap items with phase, owner, effort, dependency, and expected outcome. | RSM |
+| Data ownership and stewardship assignments remain incomplete | Data Quality, glossary, metadata, lineage, and remediation actions may lack business accountability. | High | Link gap analysis to the Data Domains & Ownership epic and track owner / steward gaps as remediation items. | Data Governance / Data Intelligence |
+| Classification, privacy, and compliance evidence gaps | Sensitive data handling, access governance, retention, and regulatory traceability recommendations may lack sufficient validation. | Medium-High | Review findings with Risk, Compliance, Audit, Security / IAM, and Data Governance stakeholders. | Risk / Compliance / Security |
+| Data Quality and CDE gaps are under-defined | DQ rules, thresholds, ownership, monitoring, and remediation workflow may not be actionable. | High | Document DQ and CDE gaps explicitly; link them to the DQ assessment, ownership matrix, target architecture, and roadmap. | RSM / Data Governance |
+| Inconsistent terminology or status across artifacts | Epic, WBS, project plan, templates, and roadmap may present conflicting completion levels, dates, or statuses. | Medium | Normalize terms, statuses, owners, dates, and completion percentages across documents before final review. | Data Intelligence / RSM |
+| Executive readout depends on incomplete inputs | Leadership presentation may overstate confidence or omit unresolved gaps. | Medium-High | Include confidence levels, open questions, unresolved evidence gaps, and decision points in the executive readout. | RSM / Bradesco Team |
 
 ## 15. Delivery Plan
 
@@ -656,16 +669,30 @@ The Data Governance Gap Analysis epic depends on the completion and review of se
 
 ## 17. Acceptance Criteria
 
-The epic is complete when:
+The epic is complete only when the Data Governance Gap Analysis is evidence-backed, reviewed, and actionable. Completion should not be based on the presence of template sections alone. Each required deliverable must be populated with Bradesco-specific content, linked to supporting evidence, reviewed by the appropriate stakeholders, and approved or explicitly accepted with documented open items.
 
-- Current-state assessment is completed and reviewed.
-- Data Governance Framework is documented.
-- Sample Data Governance Policy is delivered and reviewed.
-- Future-State Conceptual Data Architecture Diagram is completed.
-- 30/60/90-Day Action Plan is documented.
-- Key stakeholders have reviewed and provided feedback on deliverables.
-- Executive readout has been completed.
-- Final project documentation has been published and stored in the approved repository.
+| ID | Acceptance Criteria | Evidence Required | Owner / Approver |
+| --- | --- | --- | --- |
+| AC-001 | Current-state maturity assessment is completed across all defined governance dimensions. | Scored maturity matrix covering Strategy & Vision, Policies & Standards, Organization & Roles, Metadata & Catalog, Data Lineage, Data Quality, Classification & Privacy, Retention & Records, Architecture & Platform, and Monitoring & Reporting. | RSM / Bradesco Team |
+| AC-002 | Each maturity score has documented rationale and evidence. | Score rationale, evidence source, reviewer feedback, and confidence rating for each maturity dimension. | RSM / Bradesco Team |
+| AC-003 | Evidence register is completed. | Evidence register linking findings to source documents, interview notes, inventory records, meeting summaries, architecture artifacts, policy templates, and technical evidence. | RSM |
+| AC-004 | Enterprise gap matrix is completed. | Gap matrix covering governance, technology, organizational, metadata, lineage, Data Quality, classification / privacy, compliance, architecture, and monitoring gaps. | RSM |
+| AC-005 | Each material gap is prioritized and actionable. | Gap records include severity, impact, probability or risk level, owner or owner gap, dependency, confidence level, and recommended remediation action. | RSM / Data Governance |
+| AC-006 | Risk register is completed and reviewed. | Risk register with risk, impact, probability, severity, owner, mitigation, dependency, status, and linkage to roadmap items where applicable. | RSM / Bradesco Team |
+| AC-007 | Target-state governance framework is documented and reviewed. | Governance framework including vision, principles, operating model, roles, stewardship model, RACI, decision rights, escalation paths, and governance cadence. | Data Governance / Bradesco Leadership |
+| AC-008 | Target-state conceptual data architecture is documented and reviewed. | Architecture package or section covering Databricks / cloud alignment, Unity Catalog, medallion architecture, metadata, lineage, Data Quality, classification, access controls, landing / bronze controls, and governance-to-platform mapping. | Architecture / Platform / Data Governance |
+| AC-009 | Data ownership and stewardship gaps are documented. | Ownership / stewardship matrix or gap list for priority domains, systems, databases, data assets, CDEs, and governance roles. | Data Governance / Data Intelligence |
+| AC-010 | Source inventory and ownership gaps are reflected in the assessment. | Validated source inventory updates, open ownership gaps, access gaps, business-purpose gaps, and related open questions from SQL Server discovery. | Data Intelligence / Infrastructure |
+| AC-011 | Data Quality and CDE gaps are documented and linked to remediation. | DQ assessment findings covering DQ dimensions, CDE inventory, CDE ownership, DQ rule catalog, thresholds, scorecards, issue workflow, and remediation ownership. | RSM / Data Governance |
+| AC-012 | Security, privacy, classification, and compliance gaps are documented. | Findings and recommendations for classification model, sensitive data handling, access governance, retention, auditability, regulatory traceability, and compliance review. | Risk / Compliance / Security |
+| AC-013 | Prioritized remediation roadmap is completed and approved. | Roadmap with quick wins, 0-90 day actions, 3-6 month foundation initiatives, 6-12 month governance program initiatives, and 12-24 month enterprise expansion items. | RSM / Bradesco Leadership |
+| AC-014 | 30/60/90-day action plan is actionable. | Each action includes owner or candidate owner, deliverable, dependency, target timing, expected outcome, and status. | RSM / Data Governance / Data Intelligence |
+| AC-015 | Stakeholder review and signoff are completed. | Review log showing reviewer group, date, feedback received, disposition, approval status, and unresolved open items. | RSM / Bradesco Team |
+| AC-016 | Executive readout is completed. | Final presentation or executive summary covering maturity baseline, top gaps, risk exposure, target-state recommendations, roadmap priorities, decisions required, and next steps. | RSM / Bradesco Leadership |
+| AC-017 | Open questions and assumptions are documented. | Open questions register with owner, due date, status, decision needed, and impact if unresolved. | Project Team |
+| AC-018 | Decision log is populated. | Decision log with date, decision, owner / approver, rationale, and related deliverable or finding. | Project Team |
+| AC-019 | Final documentation package is published in the approved repository. | Published files or links for final maturity assessment, evidence register, gap matrix, risk register, target-state recommendations, roadmap, and executive readout. | Data Intelligence / Data Governance |
+| AC-020 | Epic closure is approved with known residual risks documented. | Closure note confirming accepted deliverables, stakeholder signoff, unresolved items, residual risks, and follow-on backlog items. | Epic Owner / Data Governance / Bradesco Leadership |
 
 ## 18. Operational Readiness
 
