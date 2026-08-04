@@ -605,11 +605,23 @@ Access to assessment artifacts and source inventories must be controlled because
 
 ## 13. Dependencies
 
-| Dependency | Type | Owner | Status | Notes |
-| --- | --- | --- | --- | --- |
-| Stakeholder Interviews | Team | Business & IT SMEs | Open | Required for assessment validation |
-| RSM Deliverables | Vendor | RSM | Open | Framework, Policy, Architecture, and Action Plan |
-| Executive Review & Approval | Team | Sponsors | Open | Required for final sign-off |
+The Data Governance Gap Analysis epic depends on the completion and review of several RSM assessment deliverables and Bradesco validation activities. These dependencies are tied to the active project plan milestones and must be tracked because delays in current-state validation, policy review, target architecture, gap matrix, risk register, roadmap, or executive readout will delay final epic acceptance.
+
+| Dependency | Type | Owner | Target Date | Status | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Stakeholder Interviews and Data Collection | Team / Evidence | RSM & Bradesco Team | Before Aug 12, 2026 | In Progress | Required to complete the current-state maturity assessment and validate findings. |
+| Current State Maturity Assessment | Deliverable | RSM & Bradesco Team | Aug 12, 2026 | Pending Scheduling | Milestone M1. Required before finalizing maturity scores, evidence-backed findings, and gap analysis. |
+| Sample Data Governance Policy Draft | Deliverable | RSM & Bradesco Team | Aug 18, 2026 | Not Started / Pending Review | Milestone M2. Required to compare current-state practices against target governance policy expectations. |
+| Target State Data Governance Definition | Deliverable / Design Input | RSM & Bradesco Team | Aug 11, 2026 | Pending Scheduling | Required to establish the target governance model used by the gap analysis. |
+| Target State DG Architecture, Gap Analysis Matrix, and Risk Register | Deliverable Package | RSM & Bradesco Team | Aug 26, 2026 | Not Started / Pending Scheduling | Milestone M3. Core dependency for this epic; includes the target architecture, formal enterprise gap matrix, and risk register. |
+| Prioritized Implementation Roadmap and 30/60/90-Day Action Plan | Deliverable | RSM Team / Bradesco Team | Sept 8, 2026 | Not Started / Pending Scheduling | Milestone M4. Required to translate findings and risks into sequenced remediation actions. |
+| Executive Presentation | Deliverable | RSM Team / Bradesco Team | Sept 17, 2026 | Not Started / Pending Scheduling | Milestone M5. Required for leadership review, final readout, and decision-making. |
+| SQL Server Source Inventory Validation | Data / Technical | Data Intelligence / Infrastructure / Application Owners | During assessment waves | In Progress | Required to validate source inventory, ownership, business purpose, operational status, integrations, and reporting dependencies. |
+| Read-Only SQL Access or Authoritative Database Exports | Technical / Access | Infrastructure | During assessment waves | Open | Required where the assessment team cannot independently enumerate databases or collect comparable metadata. |
+| Ownership and Contact Mapping | Team / Governance | Infrastructure / Data Intelligence / Business SMEs | Before findings validation | Open | Required to route discovery questions to the correct application owners, functional owners, technical owners, vendors, and SMEs. |
+| Data Domain and Stewardship Validation | Governance | Data Governance / Data Intelligence / Business SMEs | Before roadmap finalization | In Progress | Required to link governance gaps to data ownership, stewardship, CDE readiness, and domain remediation actions. |
+| Classification, Privacy, Risk, and Compliance Review | Compliance / Governance | Risk, Compliance, Audit, Security / IAM | Before final recommendations | Open | Required to validate classification, sensitive data handling, access governance, auditability, retention, and regulatory-control recommendations. |
+| Final Documentation Repository / Publication Location | Operational | Data Intelligence / Data Governance | Before epic closure | Open | Required so final deliverables are stored in an approved location with versioning and controlled access. |
 
 ## 14. Risks and Mitigations
 
