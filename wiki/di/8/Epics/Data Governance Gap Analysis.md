@@ -799,7 +799,11 @@ The decision log should capture project milestone decisions, governance review c
 
 | Date | Change | Author |
 | --- | --- | --- |
-|  | Initial draft |  |
+| Jul 2026 | Initial epic draft created for Data Governance Gap Analysis. | @David Tatis / Data Intelligence |
+| Aug 3, 2026 | Refreshed section content using first-level source files under SharePoint. | RSM |
+| Aug 3, 2026 | Updated epic summary, business goals, scope, stakeholders, current state, target state, architecture, data requirements, functional requirements, non-functional requirements, Data Quality, security / compliance, dependencies, risks, acceptance criteria, operational readiness, open questions, and decision log. | @Enrique Escobar |
+| Aug 3, 2026 | Added source-refresh findings from RSM WBS, project plan workbook, SQL Server assessment workbook, infrastructure meeting summary, Data Domains & Ownership epic, and governance deliverable templates. | @Enrique Escobar |
+| Aug 3, 2026 | Added evidence-based completion framing: maturity scorecard not yet populated, enterprise gap matrix not yet produced, evidence register incomplete, risk register pending, and remediation roadmap not yet finalized. | @Enrique Escobar |
 
 ## Recommended Confluence Labels
 
