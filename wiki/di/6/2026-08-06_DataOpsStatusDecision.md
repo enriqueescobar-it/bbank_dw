@@ -40,25 +40,40 @@ Traceability principle:
 | Confirm priority among SQL inventory, governance, and Databricks documentation. | Resources are distributed across several simultaneous demands. | Prioritize SQL inventory and source assessment first. | Aug. 7 |
 | Confirm expected RSM governance deliverables. | Current responsibilities and outputs are not sufficiently explicit. | Require a defined deliverable, owner, and due date. | Aug. 7 |
 | Confirm Enrique's authority to coordinate contributors. | Avoids conflicting direction from consultants or Scrum/agile roles. | Enrique coordinates operational execution; escalations go to Michel. | Aug. 7 |
+| Confirm whether Data Quality framework review is a management blocker. | ADF-48 shows stakeholder review and framework approval blocked or awaiting review. | Michel confirms review path, reviewer group, and approval timing. | Aug. 7 |
 
 ## 5. Risks and Dependencies
 
 | Risk / Dependency | Impact | Mitigation Underway | Escalation Needed |
 | --- | --- | --- | --- |
-| Incomplete SQL Server ownership information. | Delays reliable inventory. | Consultants validating systems and owners. | Help identifying unresolved owners. |
-| Governance scope remains ambiguous. | Meetings may not produce usable deliverables. | Converting discussions into actions and due dates. | Confirm expected governance outcome. |
-| Databricks environment not yet available. | Limits implementation and validation. | Preparing standards and readiness documentation. | No immediate escalation. |
+| Incomplete SQL Server ownership, access, and disposition information. | Delays reliable inventory and migration/consolidation recommendations. | Inventory baseline documented; missing owners and access gaps are visible. | Help identifying unresolved owners and access path. |
+| Governance scope remains ambiguous. | Meetings may not produce usable deliverables. | Converting discussions into deliverables, acceptance criteria, and due dates. | Confirm expected governance outcome and RSM accountability. |
+| Data Quality framework review / approval is pending. | DQ rollout and dashboard work may proceed without approved operating model. | Framework, rollout, and dashboard epics are separated and traceable. | Confirm reviewer group and approval timing. |
+| Databricks environment not yet available. | Limits implementation and validation. | Preparing standards, parity rules, and readiness documentation. | No immediate escalation. |
 | Contributor responsibilities overlap. | Creates duplicated or conflicting direction. | Centralizing actions and status in Confluence. | Confirm operating model. |
 
-## 6. Next Seven Days
+## 6. Wiki Refresh Findings
+
+The local wiki Markdown refresh identified concrete updates that should be visible on Michel's page:
+
+| Finding | Evidence | Management Meaning |
+| --- | --- | --- |
+| SQL Server inventory is measurable but not disposition-ready. | [SQL Server Consolidation Readiness Assessment](../3/Epics/SqlServerConsolidationEpic.md) | Keep SQL inventory Amber until owners, access, environments, and business purpose are validated. |
+| Data Quality is active but approval and implementation gaps remain. | [DQ Framework](../7/Epics/%5BADF-48%5D%20Data%20Quality%20Framework.md); [DQ Rollout](../7/Epics/%5BADF-46%5D%20Data%20Quality%20Framework%20Rollout.md); [DQ Dashboard](../7/Epics/%5BADF-44%5D%20Dashboard%20Monitoring%20DQ.md) | Use Amber, not Green, until review/approval and first rollout/test-monitoring deliverables are completed. |
+| Databricks readiness has concrete inventory evidence and control gaps. | [Current State Overview](../3/Current%20State%20Overview.md); [LandingDW](../3/LandingDW.md) | Show progress on DBX assets while escalating operational controls only if needed. |
+| Governance assessment has structure but not final RSM outputs. | [Data Governance Gap Analysis](../8/Epics/Data%20Governance%20Gap%20Analysis.md) | Michel should confirm deliverables, owners, due dates, and acceptance criteria. |
+| Domain/SME work has useful analysis but ownership validation is still open. | [Critical Data Domains](../8/Critical%20Data%20Domains.md); [Data Domains & Ownership](../8/Epics/Data%20Domains%20%26%20Ownership.md) | Treat SME/domain documentation as progress with a validation dependency. |
+
+## 7. Next Seven Days
 
 1. Complete the first validated SQL Server inventory baseline.
 2. Close the highest-priority SME knowledge gaps.
 3. Review and classify initial data-quality findings.
 4. Define the RSM governance deliverable and acceptance criteria.
 5. Consolidate Databricks standards into a migration-readiness structure.
+6. Confirm the Data Quality framework review and approval path.
 
-## 7. Traceability Structure
+## 8. Traceability Structure
 
 Traceability chain:
 
@@ -84,7 +99,7 @@ Every decision should contain this table:
 | --- | --- | --- | --- | --- |
 | TBD | TBD | TBD | TBD | TBD |
 
-## 8. Recommended Confluence Organization
+## 9. Recommended Confluence Organization
 
 Current **6. Meeting Agendas** appears to mix meeting records, recorded meetings, prioritization, and the SME draft. Recommended structure:
 
@@ -125,7 +140,7 @@ Recommended SME header:
 | --- | --- | --- | --- | --- | --- |
 | TBD | TBD | TBD | TBD | TBD | TBD |
 
-## 9. What To Do Today
+## 10. What To Do Today
 
 1. Create the Michel status page.
 2. Add the five workstreams and links.
@@ -134,7 +149,7 @@ Recommended SME header:
 5. Identify **three decisions** Michel needs to make.
 6. Leave Wednesday for validation, cleanup, and concise wording.
 
-## 10. Return Briefing Message
+## 11. Return Briefing Message
 
 When Michel returns Thursday, start with:
 
