@@ -26,13 +26,15 @@ The three models evaluated were:
 
 # 2. Executive Recommendation
 
-Bradesco should adopt **Version 3 as the target data-domain model**.
+Bradesco should adopt **Version 3 as the business-facing data-domain taxonomy**, while maintaining a separate but connected **banking canonical data-domain model** for architecture, Gold/Platinum data products, MDM, interoperability, and AI use cases.
 
 The hybrid model provides the best balance between business clarity and data-governance discipline. It uses terms that business stakeholders recognize, such as **Customer & Relationship, Accounts, Deposits, Lending & Credit, Payments & Transfers, Investments, Financial Performance, and Treasury**, while preserving boundaries that data and technology teams can consistently apply to files, tables, reports, and data products.
 
 Unlike a purely technical model, Version 3 does not require business users to interpret abstract entities such as *Party* or *Position & Valuation*. Unlike a purely business-oriented model, it is not a copy of the organizational chart and should therefore remain valid when departments, reporting lines, or responsibilities change.
 
-Version 3 should be treated as the **enterprise classification structure**. Ownership should subsequently be assigned to each domain based on accountability for its business purpose and outcomes, not merely on which team produces or stores the data.
+Version 3 should be treated as the **enterprise governance classification structure**. Ownership should subsequently be assigned to each domain based on accountability for its business purpose and outcomes, not merely on which team produces or stores the data.
+
+For long-term banking architecture, Version 3 should not be used alone as the canonical data model. The canonical layer should use stable banking concepts such as **Party, Account, Product, Agreement, Transaction, Position, Instrument, Financial Performance, Risk & Compliance, Reference Data, Market Data, and Metadata / Lineage / Quality**. These canonical domains should then be mapped back to the Version 3 governance domains for ownership, stewardship, and catalog classification.
 
 # 3. Evaluation of the Three Models
 
@@ -263,6 +265,7 @@ The subdomains below establish an initial level of decomposition. They provide m
 
 **Subdomains:**
 
+- Business Reference Data
 - Country Codes
 - Calendar
 - Metadata
@@ -277,7 +280,7 @@ The following table applies the recommended model to the BR files included in th
 | --- | --- | --- | --- |
 | BR-01: Customer Master | Customer identification, profile, documentation, referral, and relationship information | Customer & Relationship | Party & Customer Master |
 | BR-02: Account Master | Core account record, ownership, status, lifecycle, product association, and summary measures | Accounts | Account Master |
-| BR-07: Account and Product Type Reference | Reference mapping of account and product type codes and descriptions | Accounts | Account Master |
+| BR-07: Account and Product Type Reference | Reference mapping of account and product type codes and descriptions | Reference & Metadata | Business Reference Data |
 | BR-08: Customer-to-Account Relationships | Relationship between customers and accounts, including relationship type | Accounts | Account Relationships |
 | BR-09: Account Financial Performance | Account-level balances, revenue, profitability, interest, FTP, and income or expense measures | Financial Performance | Valuation & Performance |
 | BR-10: Investment Positions and Valuation | Investment accounts, portfolios, instruments, quantities, prices, market values, accrued interest, and valuation dates | Investments | Holdings & Positions |
@@ -335,7 +338,128 @@ The ten primary domains are broad enough to remain manageable at the enterprise 
 | Support for AI-ready business context | Medium | Medium | High |
 
 
-# 8. Recommended Governance Principles
+# 8. Banking Data-Domain Strategy Assessment
+
+Version 3 is the strongest option for governance adoption because it is understandable to business stakeholders and practical for assigning Data Owners and Data Stewards. However, as a banking data strategy, it should be positioned as the ownership taxonomy rather than the only enterprise data-domain model.
+
+The main architectural risk is that the current taxonomy mixes several different kinds of concepts in one hierarchy:
+
+| **Concept type** | **Examples in Version 3** | **Assessment** |
+| --- | --- | --- |
+| Business entities | Customer, Account, Relationship | Appropriate for governance, but should map to canonical concepts such as Party and Account. |
+| Product families | Deposits, Lending & Credit, Credit Cards | Useful for ownership, but these should also map to a canonical Product and Agreement model. |
+| Functional areas | Treasury, Financial Performance, Risk & Compliance | Useful for accountability, but these are not always canonical data entities. |
+| Technical and governance concerns | Reference & Metadata | Should be handled as cross-cutting controls, with Reference Data separated from operational metadata, lineage, and data quality. |
+
+This mixture is acceptable for an initial data-governance taxonomy, but it can limit maturity if the same hierarchy is used directly for canonical modeling, MDM, ISO 20022 alignment, BIAN alignment, Gold/Platinum data products, or AI semantic discovery.
+
+## 8.1 Recommended Two-Layer Model
+
+Bradesco should manage data domains through two connected layers:
+
+| **Layer** | **Primary purpose** | **Recommended use** |
+| --- | --- | --- |
+| Governance domain taxonomy | Ownership, stewardship, business accountability, catalog classification | Use Version 3 as the approved business-facing taxonomy. |
+| Banking canonical domain model | Data architecture, MDM, semantic modeling, enterprise data products, AI-ready context | Use stable banking entities and events that can survive organization and product changes. |
+
+The governance layer answers: **Who owns the business meaning, quality, access, and appropriate use of the data?**
+
+The canonical layer answers: **What reusable banking concept does the data represent, and how should it be modeled across systems and data products?**
+
+```mermaid
+flowchart TB
+    A["Business-facing governance taxonomy<br/>Version 3"] --> B["Domain ownership"]
+    A --> C["Data stewardship"]
+    A --> D["Catalog classification"]
+    A --> E["Access and usage accountability"]
+
+    F["Banking canonical domain model"] --> G["Enterprise data architecture"]
+    F --> H["MDM and semantic modeling"]
+    F --> I["Gold and Platinum data products"]
+    F --> J["AI-ready discovery and context"]
+
+    A <--> F
+    F --> K["Physical models, files, tables, reports, and data products"]
+    A --> K
+```
+
+## 8.2 Recommended Canonical Banking Domains
+
+The following canonical domains should be maintained alongside Version 3:
+
+| **Canonical domain** | **Purpose** |
+| --- | --- |
+| Party | People, organizations, customers, counterparties, beneficial owners, relationship managers, and other actors. |
+| Account | Account master, account status, balances, availability, ownership, and account relationships. |
+| Product | Deposit products, loan products, credit card products, investment products, terms, and product codes. |
+| Agreement / Contract | Legal and commercial agreements connecting parties, accounts, and products. |
+| Transaction | Payments, transfers, settlements, trades, fees, adjustments, and cash movements. |
+| Position & Valuation | Holdings, cash positions, security positions, market values, accrued interest, and valuation balances. |
+| Instrument | Securities, currencies, financial instruments, and instrument identifiers. |
+| Financial Performance | Revenue, profitability, net interest income, FTP, ledger measures, income, and expense. |
+| Risk & Compliance | KYC, AML, screening, risk ratings, regulatory status, tax documentation, and control evidence. |
+| Reference Data | Shared codes, calendars, statuses, relationship types, currencies, branch codes, and product codes. |
+| Market Data | FX rates, security prices, interest rates, currency data, and market reference values. |
+| Metadata, Lineage & Quality | Technical metadata, lineage, processing metadata, audit information, data-quality rules, and data-quality results. |
+
+```mermaid
+flowchart LR
+    Party["Party"] --> Agreement["Agreement / Contract"]
+    Product["Product"] --> Agreement
+    Agreement --> Account["Account"]
+    Account --> Transaction["Transaction"]
+    Transaction --> Position["Position & Valuation"]
+    Instrument["Instrument"] --> Position
+    Market["Market Data"] --> Position
+    Account --> Performance["Financial Performance"]
+    Product --> Performance
+    Party --> Risk["Risk & Compliance"]
+    Agreement --> Risk
+    Reference["Reference Data"] -. supports .-> Party
+    Reference -. supports .-> Account
+    Reference -. supports .-> Product
+    Reference -. supports .-> Transaction
+    Metadata["Metadata, Lineage & Quality"] -. governs .-> Party
+    Metadata -. governs .-> Account
+    Metadata -. governs .-> Transaction
+    Metadata -. governs .-> Position
+```
+
+## 8.3 Banking Maturity Assessment
+
+| **Area** | **Assessment** | **Implication** |
+| --- | --- | --- |
+| Governance usability | Strong | Version 3 can support ownership and stewardship conversations. |
+| Business readability | Strong | Domain names are understandable for executives and business SMEs. |
+| Ownership assignment | Good | One primary owner per domain is practical, but owner mapping still needs validation. |
+| Banking canonical modeling | Moderate | Canonical domains need to be separated from business domains and product families. |
+| ISO 20022 alignment | Weak to moderate | Party, transaction, instrument, account, and settlement concepts need stronger representation. |
+| BIAN alignment | Moderate | Business capability alignment is possible, but service-domain mapping is not yet explicit. |
+| MDM readiness | Moderate | Party, Account, Product, and Reference Data should become explicit enterprise master-data domains. |
+| AI/data product readiness | Moderate | The taxonomy helps discovery, but AI semantic layers need canonical entities, definitions, lineage, and quality signals. |
+| Long-term scalability | Needs refinement | The strategy should avoid using one mixed hierarchy for all governance and architecture purposes. |
+
+## 8.4 Recommended Classification Flow
+
+Each critical asset should be classified through both lenses. The governance classification assigns accountability. The canonical classification defines the banking concept represented by the data and supports reusable modeling across layers.
+
+```mermaid
+flowchart TD
+    A["Critical asset<br/>BR file, table, report, data product"] --> B["Identify predominant business purpose"]
+    B --> C["Assign one Version 3 governance domain"]
+    C --> D["Assign accountable Domain Owner"]
+    D --> E["Assign Data Steward by domain or subdomain"]
+
+    A --> F["Identify reusable banking concepts"]
+    F --> G["Map to canonical domain or domains"]
+    G --> H["Document relationships, lineage, quality rules, and reference data"]
+
+    E --> I["Governance catalog"]
+    H --> I
+    I --> J["Gold layer, Platinum products, feature store, and AI semantic layer"]
+```
+
+# 9. Recommended Governance Principles
 
 1. **One primary domain per critical asset.** Assign the domain based on the asset's predominant business purpose.
 2. **One accountable Domain Owner per domain.** Supporting stakeholders may be consulted, but accountability should remain explicit.
@@ -345,22 +469,27 @@ The ten primary domains are broad enough to remain manageable at the enterprise 
 6. **Keep domains stable.** Organizational changes should trigger owner mapping updates, not automatic redesign of the domain taxonomy.
 7. **Document cross-domain relationships.** Use lineage, metadata, related-domain fields, and data-product dependencies instead of shared primary ownership.
 8. **Review ambiguous assets through governance.** Classification exceptions should be resolved using business purpose, authoritative source, and accountability for quality.
+9. **Separate governance taxonomy from canonical modeling.** The same asset should have a business owner classification and, where relevant, a canonical banking-domain classification.
+10. **Treat metadata, lineage, and data quality as cross-cutting controls.** They should support all domains rather than operate only as a standalone business domain.
 
-# 9. Proposed Next Steps
+# 10. Proposed Next Steps
 
 1. Validate the ten primary domains and their definitions with management.
 2. Review the proposed subdomains with candidate Domain Owners and subject-matter experts.
 3. Confirm the primary domain and subdomain for each in-scope BR file.
-4. Resolve the final classification of BR-07 and determine whether a broader **Business Reference Data** subdomain is required.
+4. Validate the classification of BR-07 under **Reference & Metadata / Business Reference Data** with the accountable business stakeholders.
 5. Map one accountable Domain Owner to each approved primary domain.
 6. Assign Data Stewards at the domain or subdomain level, depending on operational responsibility.
 7. Record the taxonomy, definitions, owners, stewards, critical assets, and relationships in the governance catalog.
 8. Apply the same classification method to additional tables, reports, and future Platinum-layer data products.
 9. Establish a controlled process for proposing, approving, and versioning future taxonomy changes.
+10. Define the canonical banking-domain model and map each governance domain, subdomain, BR file, Gold-layer table, Platinum-layer product, and feature-store asset to the appropriate canonical concepts.
+11. Separate Reference Data from Metadata, Lineage, and Data Quality in the catalog so shared business codes are not confused with technical processing information.
+12. Strengthen ISO 20022 and BIAN alignment by explicitly modeling Party, Account, Product, Agreement, Transaction, Position, Instrument, and Market Data.
 
-# 10. Final Recommendation Statement
+# 11. Final Recommendation Statement
 
-***Bradesco should adopt Version 3, the hybrid data-domain model, because it combines business-recognizable banking concepts with stable and governable data boundaries. It provides the clearest foundation for ownership, stewardship, critical-asset classification, enterprise metadata, data products, and future AI consumption, while remaining independent from temporary organizational structures and technology implementations.***
+***Bradesco should adopt Version 3, the hybrid data-domain model, as the business-facing governance taxonomy because it combines recognizable banking concepts with stable and governable data boundaries. To mature the strategy for banking architecture, ISO 20022/BIAN alignment, MDM, Gold/Platinum data products, and future AI consumption, Bradesco should pair Version 3 with a separate canonical banking-domain model based on Party, Account, Product, Agreement, Transaction, Position, Instrument, Financial Performance, Risk & Compliance, Reference Data, Market Data, and Metadata / Lineage / Quality.***
 
 # Appendix A: Version 3 Domain Inventory
 
@@ -375,6 +504,21 @@ The ten primary domains are broad enough to remain manageable at the enterprise 
 | Risk & Compliance | Enterprise Risk; Operational Risk; Customer Risk; KYC & Controls; AML & Financial Intelligence; Audit & Control Findings |
 | Financial Performance | Valuation & Performance; General Ledger Information; Bank Financial Management |
 | Treasury | Cash Position; Liquidity Management; Funding; Foreign Exchange; Treasury Investments |
-| Reference & Metadata | Country Codes; Calendar; Metadata |
+| Reference & Metadata | Business Reference Data; Country Codes; Calendar; Metadata |
+
+# Appendix B: Governance-to-Canonical Domain Mapping
+
+| **Version 3 governance domain** | **Primary canonical domains to map** |
+| --- | --- |
+| Customer & Relationship | Party; Party Role; Party Relationship; Agreement |
+| Accounts | Account; Account Balance; Account Status; Account Ownership; Agreement |
+| Deposits | Product; Agreement; Account; Financial Performance |
+| Lending & Credit | Product; Agreement; Account; Risk & Compliance; Financial Performance |
+| Payments & Transfers | Transaction; Payment; Settlement; Account; Party |
+| Investments | Product; Instrument; Portfolio; Position & Valuation; Market Data; Transaction |
+| Risk & Compliance | Risk & Compliance; Party; Agreement; Reference Data |
+| Financial Performance | Financial Performance; Account; Product; Agreement; Ledger Measures |
+| Treasury | Position & Valuation; Market Data; Instrument; Transaction; Financial Performance |
+| Reference & Metadata | Reference Data; Metadata, Lineage & Quality |
 
 # Children
