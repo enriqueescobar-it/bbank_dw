@@ -20,7 +20,7 @@
 
 **Created Date:**  
 
-**Last Updated:** 05-08-2026 (data refresh — see Section 23 Change Log)
+**Last Updated:** 05-08-2026 (data refresh — see Section 24 Change Log)
 
 ### 1.1 Executive Summary
 
@@ -487,7 +487,184 @@ The epic is complete when:
 - Test plan: TBD
 - Release plan: TBD
 
-## 23. Change Log
+## 23. Activities to Produce
+
+Product Breakdown Structure for the SQL Server Consolidation Readiness Assessment:
+
+```text
+SQL Server Consolidation Readiness Assessment
+|-- 1. Assessment Governance
+|   |-- 1.1 Epic ownership and delivery governance
+|   |   |-- Confirm Jira Epic key / reference
+|   |   |-- Confirm Business Owner and Product Owner
+|   |   |-- Confirm Technical Lead / Architect
+|   |   |-- Confirm target release / PI / quarter
+|   |   `-- Confirm final stakeholder review status
+|   |-- 1.2 Assessment operating model
+|   |   |-- Maintain blocker and open question log
+|   |   |-- Track milestones and workstream status
+|   |   |-- Define evidence required for disposition decisions
+|   |   `-- Document approval boundaries for discovery vs. production change
+|   `-- 1.3 Governance and compliance baseline
+|       |-- Define data classification requirements
+|       |-- Define PII / sensitive-data handling requirements
+|       |-- Define data retention requirements
+|       |-- Define audit logging expectations
+|       `-- Define approval workflow for future production changes
+|-- 2. Server Inventory Product
+|   |-- 2.1 Validated SQL Server server inventory
+|   |   |-- Confirm 58 total server rows
+|   |   |-- Confirm 30 in-scope MSSQL servers
+|   |   |-- Confirm 28 out-of-scope non-MSSQL servers
+|   |   `-- Maintain evidence for scope reclassification
+|   |-- 2.2 Server attribute validation
+|   |   |-- Validate hostname, IP, location, and network
+|   |   |-- Validate engine / product and SQL Server version
+|   |   |-- Validate environment
+|   |   |-- Validate criticality
+|   |   |-- Validate HA / DR indicator and pairing
+|   |   |-- Validate support status
+|   |   `-- Validate access and reviewed status
+|   `-- 2.3 Server exception register
+|       |-- Resolve duplicate server records
+|       |-- Resolve SQL Compact / LocalDB scope classification
+|       |-- Resolve "no business databases found" cases
+|       `-- Resolve inconsistent engine/scope notes such as BFBWEBDEV
+|-- 3. Database Inventory Product
+|   |-- 3.1 Validated database inventory
+|   |   |-- Confirm 279 database records
+|   |   |-- Reconcile database records to valid server IDs
+|   |   |-- Validate database state
+|   |   |-- Validate database size and footprint
+|   |   |-- Validate last backup metadata
+|   |   `-- Validate data and log file metadata where available
+|   |-- 3.2 Database classification dataset
+|   |   |-- Populate environment classification
+|   |   |-- Populate criticality
+|   |   |-- Populate migration status
+|   |   |-- Populate recommendation
+|   |   `-- Separate active, inactive, legacy, retained, retired, and decommission candidates
+|   `-- 3.3 Database quality controls
+|       |-- Run null checks on required fields
+|       |-- Run duplicate detection
+|       |-- Run source-to-inventory reconciliation
+|       |-- Reconcile dashboard KPIs to raw field values
+|       `-- Correct support-status under-reporting for EOS SQL versions
+|-- 4. Access Enablement Product
+|   |-- 4.1 Read-only access plan
+|   |   |-- Confirm assessment participant names
+|   |   |-- Confirm applicable server list
+|   |   |-- Submit or track formal access request
+|   |   `-- Limit access to read-only assessment activities
+|   |-- 4.2 Access coverage tracker
+|   |   |-- Track servers with access confirmed
+|   |   |-- Track servers without access
+|   |   |-- Track access blockers
+|   |   `-- Track exported inventory alternatives
+|   `-- 4.3 Non-invasive metadata collection package
+|       |-- Capture database names
+|       |-- Capture SQL version and state
+|       |-- Capture size and backup metadata
+|       `-- Capture technical metadata without production changes
+|-- 5. Ownership and Stakeholder Product
+|   |-- 5.1 Owner map
+|   |   |-- Validate Application / Functional Owner coverage
+|   |   |-- Populate Technical Owner
+|   |   |-- Populate Business Owner
+|   |   |-- Populate Sources Owner
+|   |   |-- Populate Dependency Owner
+|   |   `-- Document owner escalation paths where owners remain unknown
+|   |-- 5.2 Stakeholder interview schedule
+|   |   |-- Group databases by server
+|   |   |-- Group databases by owner
+|   |   |-- Group databases by application or business area
+|   |   `-- Prioritize high-density, high-criticality, and blocked systems
+|   `-- 5.3 Vendor engagement path
+|       |-- Identify vendor-managed databases
+|       |-- Confirm vendor contacts
+|       |-- Confirm vendor approval constraints
+|       `-- Track Ocean System, Prologue, and additional vendor paths
+|-- 6. Functional Discovery Product
+|   |-- 6.1 Database purpose catalog
+|   |   |-- Capture actual functional or business purpose
+|   |   |-- Capture technical use
+|   |   |-- Capture operational status
+|   |   `-- Capture execution frequency or schedule
+|   |-- 6.2 Dependency catalog
+|   |   |-- Capture inbound integrations
+|   |   |-- Capture outbound integrations
+|   |   |-- Capture ETL processes
+|   |   |-- Capture file-based exchanges
+|   |   |-- Capture reports and operational workflows
+|   |   `-- Capture downstream consumers
+|   `-- 6.3 Criticality and business-impact validation
+|       |-- Validate operational criticality
+|       |-- Identify what breaks if the database changes
+|       |-- Confirm business owner sign-off requirements
+|       `-- Document accepted exceptions
+|-- 7. Migration Readiness Product
+|   |-- 7.1 Disposition framework
+|   |   |-- Define keep criteria
+|   |   |-- Define migrate criteria
+|   |   |-- Define lift-and-shift / rehost criteria
+|   |   |-- Define replatform criteria
+|   |   |-- Define refactor criteria
+|   |   |-- Define retain criteria
+|   |   |-- Define retire criteria
+|   |   |-- Define decommission criteria
+|   |   `-- Define investigate / pending-validation criteria
+|   |-- 7.2 Readiness backlog
+|   |   |-- Convert validated databases from Pending analysis to disposition status
+|   |   |-- Prioritize by access, ownership, criticality, EOS exposure, and dependency completeness
+|   |   |-- Identify blockers per server/database group
+|   |   `-- Prepare backlog items for the next delivery phase
+|   `-- 7.3 Target-architecture input package
+|       |-- Group databases by application and owner
+|       |-- Group databases by SQL version and support status
+|       |-- Group databases by dependency pattern
+|       |-- Group databases by environment and criticality
+|       `-- Provide evidence for future consolidation or cloud migration architecture
+|-- 8. Validation and Acceptance Product
+|   |-- 8.1 Data quality validation pack
+|   |   |-- Validate required inventory fields
+|   |   |-- Validate owner mapping completeness
+|   |   |-- Validate source and dependency completeness
+|   |   |-- Validate migration status evidence
+|   |   `-- Validate dashboard/raw-data reconciliation
+|   |-- 8.2 Business validation pack
+|   |   |-- Review discovery findings with owners
+|   |   |-- Confirm criticality and business impact
+|   |   |-- Confirm disposition recommendation acceptance
+|   |   `-- Capture sign-off or approved exception
+|   `-- 8.3 Operational readiness pack
+|       |-- Define monitoring of discovery progress
+|       |-- Define runbook for assessment execution
+|       |-- Define support model for the next phase
+|       `-- Define SLA / SLO inputs after architecture approval
+`-- 9. Delivery Backlog Product
+    |-- 9.1 Epic and child backlog
+    |   |-- Create story for server scope and duplicate validation
+    |   |-- Create story for read-only access or exported database lists
+    |   |-- Create story for database owner mapping
+    |   |-- Create story for priority discovery interviews
+    |   |-- Create story for open question resolution
+    |   |-- Create story for disposition recommendations
+    |   `-- Create spike for target architecture options
+    |-- 9.2 Risk and dependency register
+    |   |-- Track access risk
+    |   |-- Track ownership risk
+    |   |-- Track inactive/legacy database risk
+    |   |-- Track vendor coordination risk
+    |   |-- Track EOS SQL Server risk
+    |   `-- Track dashboard/raw-data discrepancy risk
+    `-- 9.3 Final assessment documentation
+        |-- Update Epic documentation
+        |-- Update related document references
+        |-- Update change log
+        `-- Prepare final discovery handoff
+```
+
+## 24. Change Log
 
 | Date | Change | Author |
 | --- | --- | --- |
