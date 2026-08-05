@@ -472,6 +472,87 @@ flowchart TD
 9. **Separate governance taxonomy from canonical modeling.** The same asset should have a business owner classification and, where relevant, a canonical banking-domain classification.
 10. **Treat metadata, lineage, and data quality as cross-cutting controls.** They should support all domains rather than operate only as a standalone business domain.
 
+## 9.1 Product Breakdown Structure
+
+This section treats the data-domain strategy as an epic and decomposes it into the products that must exist for the strategy to be usable. The breakdown is product-oriented rather than activity-oriented: each item represents a deliverable, artifact, model, catalog object, governance object, or reusable classification asset.
+
+The tree below is the primary Product Breakdown Structure. The table that follows provides the delivery-oriented definition of each product component.
+
+```text
+Bradesco Banking Data-Domain Strategy
+|-- Governance Domain Taxonomy
+|   |-- Version 3 Primary Domains
+|   |-- Domain Definitions
+|   |-- Subdomain Inventory
+|   `-- Domain Classification Rules
+|-- Canonical Banking Domain Model
+|   |-- Canonical Domain Inventory
+|   |-- Canonical Relationship Model
+|   |-- Governance-to-Canonical Mapping
+|   `-- ISO 20022 and BIAN Alignment Targets
+|-- Critical Asset Classification
+|   |-- BR-01 Customer Master Classification
+|   |-- BR-02 Account Master Classification
+|   |-- BR-07 Account and Product Type Reference Classification
+|   |-- BR-08 Customer-to-Account Relationships Classification
+|   |-- BR-09 Account Financial Performance Classification
+|   `-- BR-10 Investment Positions and Valuation Classification
+|-- Ownership and Stewardship Model
+|   |-- Domain Owner Map
+|   |-- Data Steward Map
+|   |-- Business Accountability Rules
+|   `-- Custody-versus-Ownership Separation
+|-- Governance Catalog Foundation
+|   |-- Domain and Subdomain Catalog Entries
+|   |-- Critical Asset Register
+|   |-- Reference Data Catalog
+|   `-- Metadata, Lineage, and Quality Controls
+|-- Data Product Enablement
+|   |-- Gold-Layer Classification Pattern
+|   |-- Platinum-Product Classification Pattern
+|   |-- Feature-Store Domain Mapping
+|   `-- AI Semantic Discovery Context
+`-- Operating Model and Change Control
+    |-- Governance Principles
+    |-- Taxonomy Approval Process
+    |-- Classification Review Process
+    `-- Versioning and Change-Management Process
+```
+
+| **PBS ID** | **Product / deliverable** | **Included sub-products** | **Purpose** |
+| --- | --- | --- | --- |
+| PBS-1 | Governance domain taxonomy | Version 3 primary domains; domain definitions; subdomain inventory; classification rules | Provides the business-facing structure for ownership, stewardship, access, and catalog classification. |
+| PBS-2 | Canonical banking domain model | Party; Account; Product; Agreement / Contract; Transaction; Position & Valuation; Instrument; Financial Performance; Risk & Compliance; Reference Data; Market Data; Metadata, Lineage & Quality | Provides the stable banking architecture layer for MDM, Gold/Platinum data products, interoperability, and AI-ready semantic context. |
+| PBS-3 | Governance-to-canonical mapping | Mapping from each Version 3 domain to canonical banking domains | Connects business accountability to reusable banking concepts without forcing one mixed hierarchy to serve every purpose. |
+| PBS-4 | Critical BR asset classification | BR-01, BR-02, BR-07, BR-08, BR-09, and BR-10 classifications | Assigns each critical BR file to one primary governance domain and subdomain based on predominant business purpose. |
+| PBS-5 | Ownership and stewardship model | Domain Owner map; Data Steward map; ownership rules; custody separation rules | Establishes who is accountable for business meaning, quality, access, and appropriate use. |
+| PBS-6 | Governance catalog foundation | Domain entries; subdomain entries; critical asset register; reference data catalog; lineage and quality controls | Creates the metadata foundation required to operationalize the taxonomy. |
+| PBS-7 | Data product enablement model | Gold-layer classification pattern; Platinum-product classification pattern; feature-store mapping; AI semantic layer context | Extends the strategy beyond BR files into future governed data products and AI consumption. |
+| PBS-8 | Operating model and change control | Governance principles; classification review; ambiguous-asset decisions; taxonomy versioning | Keeps the taxonomy stable while allowing controlled refinement as new assets enter scope. |
+
+## 9.2 Critical Asset Product Breakdown
+
+| **Critical asset product** | **Primary product component** | **Supporting product components** | **Expected governance output** |
+| --- | --- | --- | --- |
+| BR-01: Customer Master | Customer & Relationship / Party & Customer Master | Risk & Compliance; Metadata, Lineage & Quality | Customer-domain ownership with documented compliance and traceability relationships. |
+| BR-02: Account Master | Accounts / Account Master | Financial Performance; Reference Data | Account-domain ownership with financial measures and reusable codes documented as related classifications. |
+| BR-07: Account and Product Type Reference | Reference & Metadata / Business Reference Data | Product; Account | Reference-data ownership with business validation of account and product code meanings. |
+| BR-08: Customer-to-Account Relationships | Accounts / Account Relationships | Customer & Relationship | Account-domain ownership with explicit relationship to customer-party concepts. |
+| BR-09: Account Financial Performance | Financial Performance / Valuation & Performance | Accounts | Financial Performance ownership with account relationships documented for context. |
+| BR-10: Investment Positions and Valuation | Investments / Holdings & Positions | Accounts; Customer & Relationship; Market Data; Position & Valuation | Investment-domain ownership with account, party, instrument, market data, and valuation relationships documented. |
+
+## 9.3 Acceptance Criteria for the Epic Products
+
+| **Product area** | **Acceptance criteria** |
+| --- | --- |
+| Governance domain taxonomy | The ten Version 3 domains have approved definitions, subdomains, and classification rules. |
+| Canonical banking model | Canonical domains are defined separately from the governance taxonomy and include Party, Account, Product, Agreement, Transaction, Position, Instrument, Reference Data, Market Data, and Metadata / Lineage / Quality. |
+| Asset classification | Each in-scope BR file has one primary governance domain, one primary subdomain, and documented secondary relationships where needed. |
+| Ownership and stewardship | Each approved primary domain has one accountable Domain Owner and assigned Data Stewards at the appropriate domain or subdomain level. |
+| Governance catalog | Domains, subdomains, BR files, owners, stewards, canonical mappings, lineage, reference data, and quality controls are represented in the catalog. |
+| Data product enablement | Gold-layer, Platinum-product, feature-store, and AI semantic-layer assets can be classified using both governance and canonical domains. |
+| Change control | Future taxonomy changes, ambiguous classifications, and new critical assets follow a controlled review and versioning process. |
+
 # 10. Proposed Next Steps
 
 1. Validate the ten primary domains and their definitions with management.
@@ -486,6 +567,7 @@ flowchart TD
 10. Define the canonical banking-domain model and map each governance domain, subdomain, BR file, Gold-layer table, Platinum-layer product, and feature-store asset to the appropriate canonical concepts.
 11. Separate Reference Data from Metadata, Lineage, and Data Quality in the catalog so shared business codes are not confused with technical processing information.
 12. Strengthen ISO 20022 and BIAN alignment by explicitly modeling Party, Account, Product, Agreement, Transaction, Position, Instrument, and Market Data.
+13. Use the Product Breakdown Structure as the delivery scope for converting the epic into roadmap items, work packages, and implementation backlog.
 
 # 11. Final Recommendation Statement
 
