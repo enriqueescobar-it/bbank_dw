@@ -878,3 +878,177 @@ Add these labels to the page:
 
 
 #  Epic Children
+
+## 23. Activities to Produce
+
+The product breakdown structure below translates this epic into the concrete assessment products and activity groups required to complete the Data Governance Gap Analysis. It is derived from the epic scope, functional requirements, dependencies, acceptance criteria, operational readiness items, RSM deliverables, and provisional roadmap.
+
+```text
+Data Governance Gap Analysis
+├── 1. Assessment Management and Traceability
+│   ├── 1.1 Confirm assessment scope, objectives, and stakeholder groups
+│   ├── 1.2 Maintain assessment workplan and milestone tracking
+│   ├── 1.3 Maintain evidence register
+│   ├── 1.4 Maintain open questions register
+│   ├── 1.5 Maintain decision log
+│   ├── 1.6 Maintain review log and feedback disposition
+│   └── 1.7 Publish final assessment package in approved repository
+│
+├── 2. Current-State Governance Assessment
+│   ├── 2.1 Assess Strategy & Vision maturity
+│   ├── 2.2 Assess Policies & Standards maturity
+│   ├── 2.3 Assess Organization & Roles maturity
+│   ├── 2.4 Assess Metadata & Catalog maturity
+│   ├── 2.5 Assess Data Lineage maturity
+│   ├── 2.6 Assess Data Quality maturity
+│   ├── 2.7 Assess Classification & Privacy maturity
+│   ├── 2.8 Assess Retention & Records maturity
+│   ├── 2.9 Assess Architecture & Platform maturity
+│   ├── 2.10 Assess Monitoring & Reporting maturity
+│   └── 2.11 Produce current-state maturity scorecard
+│
+├── 3. Source Inventory and Ownership Assessment
+│   ├── 3.1 Produce validated source inventory
+│   ├── 3.2 Validate server, database, system, and data asset identification
+│   ├── 3.3 Validate in-scope and out-of-scope classification
+│   ├── 3.4 Validate business purpose and operational status
+│   ├── 3.5 Map technical, functional, application, business, and vendor owners
+│   ├── 3.6 Validate integration, ETL, reporting, and consumer dependencies
+│   ├── 3.7 Document access and discovery gaps
+│   └── 3.8 Link inventory records to governance relevance, domain, CDE, lineage, DQ, classification, and retention needs
+│
+├── 4. Data Domain and Stewardship Assessment
+│   ├── 4.1 Identify candidate business data domains
+│   ├── 4.2 Identify critical data domains
+│   ├── 4.3 Define domain boundaries and domain register fields
+│   ├── 4.4 Identify candidate Data Owners
+│   ├── 4.5 Identify candidate Data Stewards
+│   ├── 4.6 Document ownership and stewardship gaps
+│   ├── 4.7 Validate ownership and stewardship assignments with stakeholders
+│   └── 4.8 Link domain gaps to remediation roadmap items
+│
+├── 5. Metadata, Catalog, Glossary, and Lineage Assessment
+│   ├── 5.1 Assess business metadata coverage
+│   ├── 5.2 Assess technical metadata coverage
+│   ├── 5.3 Assess business glossary foundations
+│   ├── 5.4 Assess metadata standards and ownership fields
+│   ├── 5.5 Assess catalog coverage and completeness metrics
+│   ├── 5.6 Assess source-to-landing lineage
+│   ├── 5.7 Assess landing-to-warehouse lineage
+│   ├── 5.8 Assess warehouse-to-reporting lineage
+│   ├── 5.9 Assess regulatory traceability
+│   └── 5.10 Produce metadata and lineage gap findings
+│
+├── 6. Data Quality and CDE Assessment
+│   ├── 6.1 Assess existing Data Quality framework maturity
+│   ├── 6.2 Assess Data Quality dimensions
+│   ├── 6.3 Identify candidate Critical Data Elements
+│   ├── 6.4 Validate CDE business definitions
+│   ├── 6.5 Validate CDE ownership and stewardship
+│   ├── 6.6 Assess Data Quality rule definition readiness
+│   ├── 6.7 Assess threshold, severity, and exception-handling readiness
+│   ├── 6.8 Assess scorecard, monitoring, and reporting readiness
+│   ├── 6.9 Assess issue remediation workflow readiness
+│   ├── 6.10 Link DQ findings to metadata, lineage, ownership, and architecture
+│   └── 6.11 Produce Data Quality and CDE gap findings
+│
+├── 7. Security, Privacy, Compliance, and Retention Assessment
+│   ├── 7.1 Assess data classification model
+│   ├── 7.2 Assess public, internal, confidential, and restricted classification practices
+│   ├── 7.3 Assess sensitive data and privacy handling
+│   ├── 7.4 Assess access governance and least-privilege controls
+│   ├── 7.5 Assess regulatory control alignment
+│   ├── 7.6 Assess retention and records-management expectations
+│   ├── 7.7 Assess auditability and evidence expectations
+│   ├── 7.8 Review findings with Risk, Compliance, Audit, Security, and IAM stakeholders
+│   └── 7.9 Produce security, privacy, compliance, and retention gap findings
+│
+├── 8. Target-State Governance Framework
+│   ├── 8.1 Define governance vision and principles
+│   ├── 8.2 Define governance council or decision body
+│   ├── 8.3 Define governance operating model
+│   ├── 8.4 Define Data Owner, Data Steward, Technical Steward, and Data Custodian roles
+│   ├── 8.5 Produce RACI matrix
+│   ├── 8.6 Define decision rights framework
+│   ├── 8.7 Define escalation framework
+│   ├── 8.8 Define stewardship operating cadence
+│   ├── 8.9 Define policy hierarchy
+│   └── 8.10 Produce governance framework and policy recommendations
+│
+├── 9. Target-State Data Architecture Alignment
+│   ├── 9.1 Define target-state conceptual data architecture
+│   ├── 9.2 Map governance controls to source inventory and ingestion
+│   ├── 9.3 Map governance controls to Landing layer
+│   ├── 9.4 Map governance controls to Bronze layer
+│   ├── 9.5 Map governance controls to Curated / Silver layer
+│   ├── 9.6 Map governance controls to Consumption / Gold layer
+│   ├── 9.7 Define Unity Catalog / catalog governance considerations
+│   ├── 9.8 Define metadata architecture
+│   ├── 9.9 Define lineage architecture
+│   ├── 9.10 Define Data Quality architecture
+│   ├── 9.11 Define classification and access-control architecture
+│   ├── 9.12 Define domain-oriented governance alignment
+│   └── 9.13 Produce architecture decisions, trade-offs, dependencies, and implementation backlog inputs
+│
+├── 10. Enterprise Gap Matrix and Risk Register
+│   ├── 10.1 Produce governance gaps
+│   ├── 10.2 Produce technology gaps
+│   ├── 10.3 Produce organizational gaps
+│   ├── 10.4 Produce metadata gaps
+│   ├── 10.5 Produce lineage gaps
+│   ├── 10.6 Produce Data Quality gaps
+│   ├── 10.7 Produce classification, privacy, compliance, and retention gaps
+│   ├── 10.8 Assign severity, impact, evidence, confidence, owner, and recommended action for each gap
+│   ├── 10.9 Produce governance risk register
+│   └── 10.10 Link maturity scores, findings, gaps, risks, and remediation actions
+│
+├── 11. Prioritized Remediation Roadmap
+│   ├── 11.1 Define prioritization criteria
+│   ├── 11.2 Size remediation effort and dependencies
+│   ├── 11.3 Produce remediation initiative register
+│   ├── 11.4 Define quick wins and 0-90 day actions
+│   ├── 11.5 Define 3-6 month foundation initiatives
+│   ├── 11.6 Define 6-12 month governance program initiatives
+│   ├── 11.7 Define 12-24 month enterprise expansion roadmap
+│   ├── 11.8 Link roadmap items to gaps, risks, owners, and expected outcomes
+│   └── 11.9 Produce approved 30/60/90-day action plan
+│
+├── 12. Executive Readout and Closure Package
+│   ├── 12.1 Produce executive summary
+│   ├── 12.2 Summarize maturity baseline
+│   ├── 12.3 Summarize top gaps and risk exposure
+│   ├── 12.4 Summarize target-state recommendations
+│   ├── 12.5 Summarize roadmap priorities and investment dependencies
+│   ├── 12.6 Identify decisions required from leadership
+│   ├── 12.7 Document residual risks and accepted open items
+│   ├── 12.8 Complete stakeholder signoff
+│   ├── 12.9 Complete knowledge transfer and handoff
+│   └── 12.10 Approve epic closure
+│
+└── 13. Follow-On Backlog Candidates
+    ├── 13.1 Enterprise Data Governance Operating Model
+    ├── 13.2 Metadata and Business Glossary Program
+    ├── 13.3 Data Lineage and Traceability
+    ├── 13.4 Data Quality Framework
+    ├── 13.5 Data Classification and Privacy
+    ├── 13.6 Critical Data Elements Program
+    ├── 13.7 Banking Domain Model
+    └── 13.8 AI-Ready Data Governance Foundation
+```
+
+### 23.1 Product Completion Checklist
+
+| Product Area | Primary Outputs | Completion Signal |
+| --- | --- | --- |
+| Assessment Management and Traceability | Evidence register, open questions register, decision log, review log, published final package. | Material findings are traceable, reviewed, and stored in the approved repository. |
+| Current-State Governance Assessment | Ten-dimension maturity scorecard and detailed findings. | Maturity assessment completed, reviewed, and supported by evidence. |
+| Source Inventory and Ownership Assessment | Validated source inventory, ownership/contact matrix, access and discovery gap list. | In-scope systems, databases, assets, owners, purpose, and status are validated or documented as gaps. |
+| Data Domain and Stewardship Assessment | Data domain register, ownership matrix, stewardship gaps. | Priority domains have owners/stewards assigned or documented owner gaps. |
+| Metadata, Catalog, Glossary, and Lineage Assessment | Metadata findings, glossary findings, catalog coverage findings, lineage findings. | Metadata and lineage gaps are documented and linked to roadmap items. |
+| Data Quality and CDE Assessment | DQ framework assessment, CDE gap list, rule-readiness assessment, monitoring/remediation recommendations. | DQ and CDE gaps are documented with ownership, evidence, and remediation path. |
+| Security, Privacy, Compliance, and Retention Assessment | Classification, privacy, access, retention, auditability, and regulatory-control findings. | Security and compliance stakeholders review recommendations and unresolved gaps. |
+| Target-State Governance Framework | Governance vision, principles, operating model, roles, RACI, decision rights, escalation path, policy recommendations. | Framework reviewed and approved by stakeholders. |
+| Target-State Data Architecture Alignment | Conceptual architecture, governance-to-platform control mapping, architecture decisions, dependencies. | Architecture package reviewed and approved by Architecture, Platform, and Data Governance stakeholders. |
+| Enterprise Gap Matrix and Risk Register | Gap matrix, risk register, severity/impact/evidence/owner mapping. | Gaps and risks are prioritized, evidence-backed, and linked to remediation actions. |
+| Prioritized Remediation Roadmap | Initiative register, 30/60/90 plan, longer-term roadmap, dependency and owner mapping. | Roadmap approved and ready for follow-on backlog creation. |
+| Executive Readout and Closure Package | Executive presentation, final recommendations, residual risks, signoff, handoff. | Executive readout completed and epic closure approved. |
