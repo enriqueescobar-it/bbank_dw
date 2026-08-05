@@ -1,39 +1,43 @@
 # SqlServerConsolidationEpic
 
-# Epic: SQL Server Consolidation Readiness Assessment
+#   
+
+# SqlServerConsolidationEpic 
+
+# Epic: Sql Server Consolidation
 
 ## 1. Epic Summary
 
-**Epic ID:** TBD
+**Epic ID:** \\\<Jira Epic Key / Reference\\\> 
 
-**Owner:** TBD
+**Owner:** Product Owner 
 
-**Technical Lead:** TBD
+**Technical Lead:** @Enrique Escobar  
 
-**Status:** Draft / Discovery
+**Status:** Draft / In Review / Approved / In Progress / Blocked / Complete 
 
-**Target Release:** TBD
+**Target Release:** Q3 
 
-**Created Date:** TBD
+**Created Date:**  
 
-**Last Updated:** 2026-08-04
+**Last Updated:** 05-08-2026 (data refresh — see Section 23 Change Log)
 
 ### 1.1 Executive Summary
 
 This epic establishes a governed current-state assessment for Bradesco Miami SQL Server databases so the team can make defensible consolidation, migration, retention, redesign, or retirement recommendations.
 
-The current evidence shows 58 inventoried servers, 48 rows marked in scope for Microsoft SQL Server, 178 database records, approximately 4,032.5 GB of database footprint, and 176 databases still in pending analysis. No database is currently classified as migration-ready. The immediate blocker is not only connectivity: read-only SQL access can identify database metadata, but application owners, business owners, developers, and vendors are required to validate purpose, integrations, reporting dependencies, criticality, operational status, and migration suitability.
+The current evidence shows 58 inventoried servers, of which 30 are now confirmed in scope for Microsoft SQL Server (revised down from a prior working figure of 48 following engine-level re-validation; 28 servers have been reclassified out of scope as MySQL, MongoDB, or MariaDB engines), 279 database records (up from 178 previously documented), approximately 4,032.5 GB of database footprint, and 178 databases still in pending analysis. No database is currently classified as migration-ready. Application/Functional Owner identification has advanced materially and is now effectively complete (278 of 279 databases, 99.6%), but Dependency Owner and Sources Owner fields remain largely unpopulated at the raw-data level, and a data-quality discrepancy between the assessment workbook's dashboard-reported owner KPIs and the underlying raw field values has been identified and requires reconciliation (see Section 5.2). The immediate blocker is not only connectivity: read-only SQL access can identify database metadata, but application owners, business owners, developers, and vendors are still required to validate purpose, integrations, reporting dependencies, criticality, operational status, and migration suitability.
 
 This epic covers the discovery and readiness phase. It does not authorize production change, shutdown, decommissioning, or migration execution.
 
 ### 1.2 Source Evidence Used
 
-Only files in `wiki/di/3/Epics/` were used:
-
-- `Bradesco_SQL_Assessment_v2_shared 1.xlsx`
-- `Bradesco_Databases_Caddiel_Campos_Technical_Owners_v1.xlsx`
-- `Bradesco_Databases_Renan_Silva_Technical_Owners_v1.xlsx`
-- `Detailed_Meeting_Summary_DB_Consolidation_Infra_20260724_EN.docx`
+- `BradescoSQLAssessmentv2shared 1.xlsx`
+- `BradescoDatabasesCaddielCamposTechnicalOwnersv1.xlsx`
+- `BradescoDatabasesRenanSilvaTechnicalOwnersv1.xlsx`
+- `DetailedMeetingSummaryDBConsolidationInfra20260724_EN.docx`
+- Bradesco\_SQL\_Assessment\_v10.xlsx
+- Bradesco\_Tasks\_MSSQL\_Discovery\_v2.xlsx
 
 ## 2. Business Context
 
@@ -56,7 +60,7 @@ If this work is not completed, the organization risks:
 | Establish a reliable SQL Server inventory | Validate which servers and databases are actually in scope for SQL Server assessment. | In-scope, out-of-scope, duplicate, inactive, and vendor-managed records are classified with evidence. |
 | Complete ownership discovery | Map each in-scope server/database to technical, functional, application, business, or vendor contacts. | Each in-scope database has a named accountable contact or documented escalation path. |
 | Enable defensible disposition recommendations | Collect enough context to recommend migration, consolidation, retention, redesign, retirement, or decommissioning. | Databases move from `Pending analysis` to an approved migration/disposition status. |
-| Reduce assessment blockers | Resolve access and ownership gaps that prevent repeatable discovery across the estate. | Read-only access or authoritative database exports are available for remaining in-scope hosts. |
+| Reduce assessment blockers | Resolve access and ownership gaps that prevent repeatable discovery across the estate. | Read-only access or authoritative database exports are available for remaining in-scope hosts |
 
 ## 3. Scope
 
@@ -85,45 +89,55 @@ If this work is not completed, the organization risks:
 | Business Owner | TBD | Owns business value, prioritization, and final business acceptance. |
 | Product Owner | TBD | Owns backlog, sequencing, and acceptance criteria. |
 | Technical Lead / Architect | TBD | Owns assessment approach, target-state design inputs, and technical recommendations. |
-| Assessment Team | NTT Assessment Team | Builds current-state view, conducts discovery, and prepares readiness recommendations. |
-| Infrastructure Lead | Rodney Laurent / Infrastructure | Supports server identification, access change request, and owner/team-lead routing. |
+| Assessment Team | NTT Assessment Team (Franco Rafael, Gustavo David Flores, Felipe Leocadio) | Builds current-state view, conducts discovery, and prepares readiness recommendations. |
+| Infrastructure Lead | Rodney Laurent / Infrastructure; Fabiano Rodrigues and Gustavo Oliveira (Infra) confirmed as active task owners | Supports server identification, access change request, and owner/team-lead routing. |
+| Data Sponsor | Eric Luis (Data); Michel Ferreira confirmed as Sponsor in the task tracker | Owns the MSSQL Databases discovery epic and functional/business owner identification. |
 | Program / Coordination | Enrique Escobar | Participates in coordination and may be included in follow-up review meetings. |
-| Technical Contacts | Rafael, Igor, Renan, Gregory, Eric Luis, Yanniel, Andres Paulino, Ivan Sanchez, Caddiel Campos, others TBD | Validate technical ownership, application usage, sources, dependencies, and operational context. |
+| Technical Contacts | Rafael, Igor, Renan Silva, Gregory, Eric Luis, Yanniel, Andres Paulino, Ivan Sanchez, Caddiel Campos, Rodney Laurent, Victor De Souza Conte, Juan Grass, Mariane, Marina Daibs, Ramon Cambrelen, others TBD | Validate technical ownership, application usage, sources, dependencies, and operational context. |
 | Vendor Contacts | Ocean System, Prologue, others TBD | Support vendor-managed system validation and future change coordination. |
 | Data / Application Owners | Devs, IT Operations Team, DataWarehouse, Operations Department, BSA, Finance, Corporate Security, vendors | Explain business usage, criticality, reporting, integrations, and disposition constraints. |
 | QA / Validation | TBD | Validates assessment completeness, data quality checks, and business sign-off evidence. |
+
+**Update note:** Names above reflect stakeholders now explicitly named in the operational task tracker (`BradescoTasksMSSQLDiscoveryv2.xlsx`) and the `Application / Functional Owner` field of the assessment workbook. Role assignments (Business Owner, Product Owner, Technical Lead/Architect, QA/Validation) remain unconfirmed and are still tracked as open items under Section 18.
 
 ## 5. Current State
 
 The current assessment workbook contains server and database views used to track SQL Server consolidation readiness. The server inventory originated from infrastructure input and includes server identifiers, host names, IP information, installed database technologies, environments, ownership fields, in-scope flags, access status, and review status. The database sheet links database records to server IDs and includes fields for SQL version, state, size, backup information, ownership, purpose, sources, dependencies, migration status, recommendation, and discovery source.
 
+This section has been refreshed against the latest versions of `BradescoSQLAssessmentv10.xlsx`* and the operational discovery tracker (*`BradescoTasksMSSQLDiscovery_v2.xlsx`, referred to elsewhere as `Discovery.xlsx`). The comparison below is against the current-state figures previously documented in this epic.
+
 ### 5.1 Current-State Metrics
 
-| Metric | Current Value |
-| --- | ---: |
-| Total server rows | 58 |
-| In-scope MSSQL rows | 48 |
-| Out-of-scope / non-MSSQL rows | 10 |
-| Total database records | 178 |
-| Total database size | 4,032.5 GB |
-| Servers with database records | 13 |
-| Migration-ready databases | 0 |
-| Databases pending analysis | 176 |
-| Databases marked retire | 2 |
-| Servers with access marked Yes | 7 |
-| Servers with access marked No | 51 |
-| Servers reviewed Yes | 2 |
-| Servers reviewed No | 56 |
+| Metric | Previous Value | Current Value | Change |
+| --- | --- | --- | --- |
+| Total server rows | 58 | 58 | No change |
+| In-scope MSSQL rows | 48 | 30 | -18 (engine-level re-validation; see below) |
+| Out-of-scope / non-MSSQL rows | 10 | 28 | +18 |
+| Total database records | 178 | 279 | +101 (new inventory identified) |
+| Total database size | 4,032.5 GB | 4,032.5 GB | No material change |
+| Servers with database records | 13 | 23 | +10 |
+| Migration-ready databases | 0 | 0 | No change |
+| Databases pending analysis | 176 | 178 | +2 |
+| Databases marked retire | 2 | 2 | No change |
+| Servers with access marked Yes | 7 | 19 | +12 |
+| Servers with access marked No | 51 | 39 | -12 |
+| Servers reviewed Yes | 2 | 2 | No change |
+| Servers reviewed No | 56 | 54 | -2 |
+
+**Note on scope reclassification:** The in-scope MSSQL count has been revised from 48 to 30 following engine-level validation against the `Engine / Product` field. The 28 servers now classified out of scope run MySQL, MongoDB, or MariaDB engines and have been formally excluded from the SQL Server assessment. This is a data-quality correction, not a reduction in assessment coverage — total server rows (58) and total database records tracked (279) both remain, or increase, under the corrected classification.
 
 ### 5.2 Current-State Challenges
 
-- Read-only access exists for only a limited portion of the SQL Server estate.
-- Database-level owners are unknown for many records.
-- 159 of 178 database records have blank `Application / Functional Owner`.
-- 176 of 178 database records remain in `Pending analysis`.
-- 128 of 178 database records have `Environment` as `Pending validation`.
-- 160 of 178 database records have blank `Criticality`.
-- 157 of 178 database records have blank `Recommendation`.
+- Read-only access exists for only a limited portion of the SQL Server estate; access is now confirmed for 19 of 58 servers (32.8%), up from 7 previously, but coverage remains a blocker for the majority of the estate.
+- Application/Functional Owner identification is now effectively complete: only 1 of 279 database records (0.4%) has a blank `Application / Functional Owner`, a marked improvement from 159 of 178 (89.3%) previously blank. This item can be considered substantially closed pending final validation.
+- Dependency Owner and Sources Owner identification remain significant gaps at the raw-data level: 257 of 279 database records (92.1%) have a blank `Dependency Owner` field, and 250 of 279 (89.6%) have a blank `Sources Owner` field.
+- **New data-quality finding:** The assessment workbook's own Dashboard tab reports "Dependency Owners Databases" as 122 of 279 (43.7%) and "Sources Owners Databases" as 124 of 279 (44.4%) — figures materially higher than the raw field counts above. This discrepancy between dashboard-reported KPIs and underlying raw data must be reconciled before either figure is quoted externally or used to gate migration decisions.
+- 178 of 279 database records (63.8%) remain in `Pending analysis` migration status (99 additional records have no migration status populated at all).
+- 143 of 279 database records (51.3%) have `Environment` as `Pending validation`, improved from 128 of 178 (71.9%) previously, though still a majority-scale gap.
+- 146 of 279 database records (52.3%) have blank `Criticality`, improved from 160 of 178 (89.9%) previously.
+- 182 of 279 database records (65.2%) have blank `Recommendation`.
+- Only 2 of 30 in-scope servers (6.7%) have been technically reviewed, unchanged since the prior assessment cycle — this remains the critical-path constraint on producing defensible disposition recommendations.
+- Support Status is unpopulated for 13 of 30 in-scope servers (43.3%); of the 17 servers with a populated value, only 2 are flagged `End of Support (EOS)` in the tracker. Cross-referencing installed engine versions independently shows 11 of 30 in-scope servers (36.7%) — hosting 115 databases, including all 4 `Critical`-rated databases — run SQL Server 2016 or 2012, both past Microsoft's mainstream/extended support windows. This represents a 9-server under-reporting gap between the tracker's `Support Status` field and the actual installed-version evidence, and should be treated as a confirmed risk pending Support Status field correction (see Section 14).
 - Some records appear duplicate or inconsistent across server/product classification.
 - Some servers are marked with SQL installed but no business databases found, while related database counts still require clarification.
 - SQL Compact and LocalDB entries require explicit scope validation.
@@ -132,33 +146,51 @@ The current assessment workbook contains server and database views used to track
 
 ### 5.3 Current Systems
 
-| Server ID | Host / System | Engine / Version | Environment | Database Count | Access | Technical Owner | Business Owner | Notes |
-| --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| SRV-002 | BACBPTRANSDB1 | SQL Server 2016 Standard | Production | 40 | No | IT Operations Team, Rena Silva | Devs | Login/domain and server-found issues recorded. |
-| SRV-026 | BFBNAPDB | SQL Server 2016 Standard | Production | 36 | Yes | IT Operations Team, Rena Silva | Devs | Current detailed discovery example. |
-| SRV-052 | UATSYNDB | SQL Server 2019 Standard | Staging/UAT | 35 | No | IT Operations Team, Rena Silva | IT Operations Team, Devs | Duplicate noted in server inventory. |
-| SRV-006 | BACSANSRV | SQL Server 2017 Express | Production | 23 | Yes | IT Operations Team | IT Operations Team | Needs clarification because notes say no business databases found. |
-| SRV-057 | sqlserver-7db9877b68-6h74t | SQL Server 2022 | Development | 10 | Yes | Renan Silva | Devs | Discovery source: Devs NiFi. |
-| SRV-036 | BFBJXWORKFLOWDB | SQL Server 2019 Standard | Production | 7 | Yes | IT Operations Team | Operations Department | JX/workflow area requires owner validation. |
-| SRV-053 | BB-VV-BD-006 | SQL Server 2022 | Production | 6 | Yes | IT Operations Team | DataWarehouse | Includes large DQP databases. |
-| SRV-015 | BB-VV-BD-001 | SQL Server 2019 Standard | Production | 5 | Yes | IT Operations Team | DataWarehouse | Notes mention SQLEXPRESS 2017 version detected. |
-| SRV-056 | BB-VV-BD-008 | SQL Server 2022 | Development | 5 | No | Renan Silva | Devs | Linked Server from NiFi Dev. |
-| SRV-058 | sqlserver-6d45bcd4bf-vz9k2 | SQL Server 2022 | Development | 5 | Yes | Renan Silva | Devs | Discovery source: Devs NiFi. |
-| SRV-029 | BFBDSNAP | SQL Server 2019 Standard | Production | 4 | No | IT Operations Team, Rena Silva | Devs | Database owner details still incomplete. |
-| SRV-054 | BB-VV-BD-005 | SQL Server 2019 Standard | Production | 1 | No | IT Operations Team | DataWarehouse | Requires access and functional validation. |
-| SRV-055 | BFB-FEDLINK | SQL Server 2019 Standard | Production | 1 | No | IT Operations Team | Operations Department | FedLink ownership/use requires confirmation. |
+The inventory of servers hosting databases has expanded from 13 to 23 following the corrected scope classification and continued discovery. The table below reflects the current top systems by database count (in-scope, MSSQL-confirmed servers only).
+
+| Server ID | Host / System | Engine / Version | Environment | Database Count | Access | Support Status | Technical Owner | Business Owner | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| SRV-002 | BACBPTRANSDB1 | SQL Server 2016 (64-bit) | Production | 40 | No | End of Support (EOS) | IT Operations Team, Renan Silva | Devs | Hosted in the DMZ; contains databases used for development. |
+| SRV-026 | BFBNAPDB | SQL Server 2016 (64-bit) | Production | 36 | Yes | Information not currently available in the assessment data. | IT Operations Team, Renan Silva | Devs | High criticality; not yet technically reviewed. |
+| SRV-052 | UATSYNDB | SQL Server 2019 (64-bit) | Staging/UAT | 35 | No | Information not currently available in the assessment data. | IT Operations Team, Renan Silva | Devs | Duplicate noted in server inventory (see Open Question Q1). |
+| SRV-038 | BFBORLDB | SQL Server 2016 (64-bit) | DR | 27 | Yes | Information not currently available in the assessment data. | IT Operations Team, Renan Silva | Devs | New to top-tier inventory; DR pairing not yet confirmed (see Open Question Q6). |
+| SRV-048 | BFBSYNDB | SQL Server 2019 (64-bit) | Production | 24 | Yes | Supported | IT Operations Team | Operations Department | New to top-tier inventory. |
+| SRV-006 | BACSANSRV | SQL Server 2017 (64-bit) | Production | 23 | Yes | Information not currently available in the assessment data. | IT Operations Team | IT Operations Team | Data warehouse databases; open question on "no business databases found" note (Q2). |
+| SRV-035 | BFBJXSERVERDB\\\\JXCHANGE | SQL Server 2019 (64-bit) | Production | 21 | Yes | Supported | IT Operations Team, Caddiel Campos | Operations Department | New to top-tier inventory. |
+| SRV-017 | BB-VV-BD-004 | SQL Server 2019 (64-bit) | Production | 10 | Yes | Supported | IT Operations Team | Operations Department | New to top-tier inventory. |
+| SRV-057 | sqlserver-7db9877b68-6h74t | SQL Server 2022 (64-bit) | Development | 10 | Yes | Information not currently available in the assessment data. | Renan Silva | Devs | Kubernetes-pattern instance; discovery source: Devs NiFi. |
+| SRV-029 | BFBDSNAP | SQL Server 2022 (64-bit) | Production | 8 | Yes | Supported | IT Operations Team, Renan Silva | Devs | Database owner details still incomplete. |
+| SRV-036 | BFBJXWORKFLOWDB | SQL Server 2019 (64-bit) | Production | 7 | Yes | Supported | IT Operations Team | Operations Department | JX/workflow area requires owner validation. |
+| SRV-053 | BB-VV-BD-006 | SQL Server 2022 (64-bit) | Production | 6 | Yes | Supported | IT Operations Team, Renan Silva | DataWarehouse | Includes large DQP databases (medallion-pattern data platform cluster). |
+| SRV-015 | BB-VV-BD-001 | SQL Server 2019 (64-bit) | Production | 5 | Yes | Supported | IT Operations Team, Eric | DataWarehouse | Notes mention SQLEXPRESS 2017 version detected. |
+| SRV-056 | BB-VV-BD-008 | SQL Server 2022 (64-bit) | Development | 5 | No | Information not currently available in the assessment data. | Renan Silva | Devs | Linked Server from NiFi Dev; access still pending. |
+| SRV-058 | sqlserver-6d45bcd4bf-vz9k2 | SQL Server 2022 (64-bit) | Development | 5 | Yes | Information not currently available in the assessment data. | Renan Silva | Devs | Kubernetes-pattern instance; discovery source: Devs NiFi. |
+
+**Newly surfaced in this cycle:** SRV-038 (BFBORLDB, 27 databases), SRV-048 (BFBSYNDB, 24 databases), SRV-035 (BFBJXSERVERDB\\\\JXCHANGE, 21 databases), and SRV-017 (BB-VV-BD-004, 10 databases) were not present in the previously documented top-system view and now rank among the highest-density hosts in the estate.
 
 ### 5.4 Known Ownership Inputs
 
-| Source | Owner Information |
+Application/Functional Owner data is now captured directly and natively within `BradescoSQLAssessment_v10.xlsx` (Tab 3, `Application / Functional Owner` field) rather than requiring cross-reference against the separate Caddiel Campos and Renan Silva owner-mapping workbooks referenced in the prior assessment cycle. Coverage from the live workbook is summarized below; the supplemental owner workbooks were not provided for this refresh cycle and could not be independently reconciled.
+
+| Owner / Contact (as recorded in Tab 3) | Database Records Mapped |
 | --- | --- |
-| Caddiel Campos workbook | 56 database rows mapped to Caddiel Campos and related contacts across BFBSYNDB, BFBJXSERVERDB\\JXCHANGE, BB-VV-BD-004, and BB-VV-AP-009. |
-| Caddiel Campos workbook | BFBSYNDB has 24 rows mapped to Caddiel Campos and Rodney Laurent. |
-| Caddiel Campos workbook | BFBJXSERVERDB\\JXCHANGE has 21 rows mapped to Caddiel Campos. |
-| Caddiel Campos workbook | BB-VV-BD-004 has 10 rows mapped to Caddiel Campos, Rodney Laurent, and Infra. |
-| Caddiel Campos workbook | BB-VV-AP-009 has 1 row mapped to Caddiel Campos, Paul Ippolito, and vendor Prologue. |
-| Renan Silva workbook | 53 database rows list server/database combinations but the technical owner field is blank for all rows. |
-| Renan Silva workbook | Rows include BFBORLDB, UATSYNDB, BFBDSNAP, BFBORLLC, BBFBDBVIEW, BFBREPORTS, BACBPTRANSDB1, and BB-VV-BD-005. |
+| Renan Silva | 55 |
+| Yanniel / Eric | 30 |
+| Andres Paulino | 27 |
+| Caddiel Campos, Rodney Laurent | 24 |
+| Fabiano | 23 |
+| Caddiel Campos | 21 |
+| Victor De Souza Conte | 15 |
+| Eric | 14 |
+| Yanniel / Eric / Juan Grass | 11 |
+| Mariane | 11 |
+| Juan Grass | 10 |
+| Caddiel Campos, Rodney Laurent, Infra | 10 |
+| Yanniel | 9 |
+| Rodney Laurent | 7 |
+| Other / partial (Yanniel / Eric / Ivan Sanchez; Juan Grass "?"; Eric / Juan Grass; Vendor; unresolved "?") | 10 |
+
+**Data quality note:** Application/Functional Owner coverage (278 of 279, 99.6%) should not be read as equivalent to validated business ownership. These are named contacts recorded during discovery and have not yet been confirmed through the formal stakeholder interview process required under FR-003/FR-004. Dependency Owner and Sources Owner — the fields needed to assess integration and reporting impact — remain largely unpopulated (see Section 5.2).
 
 ## 6. Target State
 
@@ -176,23 +208,11 @@ The target state is a validated SQL Server readiness baseline that can support l
 
 ### 6.2 Target Architecture Summary
 
-The final target architecture is TBD. This epic prepares the input needed for architecture decisions by building a governed current-state baseline. After discovery is complete, the team can group databases by application, owner, criticality, version, support status, environment, dependency pattern, and migration suitability to define future waves for consolidation, modernization, or retirement.
+The final target architecture is TBD. This epic prepares the input needed for architecture decisions by building a governed current-state baseline. After discovery is complete, the team can group databases by application, owner, criticality, version, support status, environment, dependency pattern, and migration suitability to define future waves for consolidation, modernization, or retirement
 
 ## 7. Architecture and Design
 
 ### 7.1 High-Level Discovery Flow
-
-```mermaid
-flowchart LR
-    A["Infrastructure inventory"] --> B["Server scope validation"]
-    B --> C["Read-only SQL access or exported database lists"]
-    C --> D["Database metadata capture"]
-    D --> E["Owner and vendor mapping"]
-    E --> F["Discovery interviews"]
-    F --> G["Dependency and usage validation"]
-    G --> H["Migration / consolidation disposition"]
-    H --> I["Prioritized delivery backlog"]
-```
 
 ### 7.2 Design Principles
 
@@ -228,9 +248,9 @@ flowchart LR
 
 | Entity | Definition | Source of Truth | Notes |
 | --- | --- | --- | --- |
-| Server | Host or instance container where database technologies are installed. | `2. Servers` tab | One server can have multiple products/instances and duplicate records requiring validation. |
+| Server | Host or instance container where database technologies are installed. | 1. `Servers` tab | One server can have multiple products/instances and duplicate records requiring validation. |
 | SQL Server Instance | Independent SQL Server installation on a server. | Infrastructure inventory / SQL Server access | Versions include SQL Server 2008/R2, 2012, 2016, 2017, 2019, 2022, LocalDB, and Compact variants. |
-| Database | Named data collection linked to a server ID. | `3. Databases` tab | One row equals one database record. |
+| Database | Named data collection linked to a server ID. | 1. `Databases` tab | One row equals one database record. |
 | Owner | Technical, functional, application, business, or vendor contact accountable for knowledge or decisions. | Owner workbooks and discovery interviews | Many database owner fields remain blank or pending. |
 | Dependency | Source, ETL, report, workflow, consumer, vendor, or application relying on a database. | Discovery interviews and documentation | Required before migration disposition is defensible. |
 | Migration Disposition | Recommended path such as migrate, rehost, replatform, retain, retire, decommission, or investigate. | Assessment workbook after validation | Currently mostly pending analysis. |
@@ -295,6 +315,8 @@ flowchart LR
 | Q5 | Data Quality | BFBWEBDEV runs MSSQL 2019 but has a note saying "Non-MSSQL product detected"; which value is correct? | Open |
 | Q6 | HA / DR | Which servers are actual DR pairs, for example BBFBDBVIEW and related systems? | Open |
 
+**Status as of this refresh:** All six open questions remain unanswered and unowned in the `5. Questions` tab (no `Owner` or `Answer` value populated for any row). No change since the previously documented cycle. These should be escalated given their direct bearing on scope classification (Q1, Q4, Q5) and access/ownership routing (Q2, Q3, Q6).
+
 ## 12. Security, Governance, and Compliance
 
 ### 12.1 Access Control
@@ -339,7 +361,8 @@ flowchart LR
 | Vendor-managed databases require external coordination. | Medium | Medium | Identify vendors early and establish separate engagement and approval path. | Business / Vendor Owner |
 | Database volume is uneven across servers. | Medium | Medium | Prioritize high-density servers and group interviews by owner/application. | Assessment Team |
 | Inconsistent inventory values lead to wrong scope decisions. | High | Medium | Resolve open workbook questions before final classification. | Assessment Team / Infrastructure |
-| End-of-support SQL versions remain in production. | High | Medium | Flag EOS instances for prioritized remediation planning after assessment. | Architecture / Infrastructure |
+| End-of-support SQL versions remain in production, and the assessment tracker under-reports the exposure. | High | High | Confirmed: 11 of 30 in-scope servers (36.7%) run SQL Server 2016 or 2012 — versions past Microsoft's extended support window — hosting 115 databases including all 4 `Critical`-rated databases. The tracker's `Support Status` field flags only 2 of these 11 as End of Support. Correct the tracker field and prioritize EOS remediation planning. | Architecture / Infrastructure |
+| Dashboard-reported ownership KPIs materially overstate raw-data coverage. | Medium | High | Confirmed data-quality gap: the workbook Dashboard reports Dependency Owner coverage at 43.7% and Sources Owner coverage at 44.4%, while the underlying raw fields show 7.9% and 10.4% populated respectively. Reconcile the dashboard formulas against source columns before either figure informs planning or is shared externally. | Assessment Team |
 
 ## 15. Delivery Plan
 
@@ -350,23 +373,26 @@ flowchart LR
 | Infrastructure coordination meeting completed | 2026-07-24 | NTT Assessment Team / Infrastructure | Complete |
 | Initial Infrastructure owner/access update | 2026-07-27 12:00 PM, timezone not stated | Rodney Laurent | Planned / Needs confirmation |
 | Monday review meeting | 2026-07-27 2:00 PM, timezone not stated | NTT Assessment Team + Infrastructure | Planned / Needs confirmation |
-| Read-only access or exported database lists available | TBD | Infrastructure | Not Started |
-| Owner mapping first pass complete | TBD | Infrastructure / team leads | Not Started |
+| Read-only access or exported database lists available | TBD | Infrastructure | In Progress — 19 of 58 servers now have confirmed access (up from 7) |
+| Owner mapping first pass complete | TBD | Infrastructure / team leads | In Progress — Application/Functional Owner now populated for 278 of 279 databases (99.6%); Dependency/Sources Owner still open |
 | Discovery interviews completed for priority wave | TBD | Assessment Team | Not Started |
-| Scope and duplicate classifications approved | TBD | Assessment Team / Infrastructure | Not Started |
+| Scope and duplicate classifications approved | TBD | Assessment Team / Infrastructure | In Progress — engine-level scope re-validation completed (30 in-scope / 28 out-of-scope); duplicate questions (Q1) remain open |
 | Migration/disposition recommendations drafted | TBD | Assessment Team / Architecture | Not Started |
 | Business validation complete | TBD | Business / Application owners | Not Started |
+| Assessment target end date | 2026-09-18 | Assessment Team | 44 calendar days remaining as of this update (05-Aug-2026); On Track per workbook threshold (\>30 days) |
 
 ### 15.2 Work Breakdown
 
+Status below reflects the current task tracker (`BradescoTasksMSSQLDiscoveryv2.xlsx`, Tasks sheet) as of this refresh: 0 of 11 tasks Completed, 4 In Progress, 7 Pending, 0 Blocked; 6 of 11 tasks (54.5%) carry an External/Third-Party dependency. Overall weighted discovery progress is 16%.
+
 | Workstream | Description | Owner | Status |
 | --- | --- | --- | --- |
-| Inventory validation | Confirm server and database inventory accuracy, scope, duplicates, inactive records, and product classification. | Assessment Team / Infrastructure | In Progress |
-| Access enablement | Submit and track read-only SQL access request or collect authoritative database exports. | Rodney Laurent / Infrastructure | Open |
-| Ownership mapping | Map each server/database to technical, functional, business, application, or vendor contacts. | Infrastructure / team leads | Open |
-| Discovery interviews | Capture database purpose, sources, ETL, reports, consumers, execution frequency, dependencies, and operational status. | Assessment Team | Not Started |
-| Data quality | Resolve blanks and inconsistent fields in owner, environment, criticality, recommendation, status, and scope. | Assessment Team | Open |
-| Migration readiness | Convert validated evidence into disposition recommendations and prioritized backlog. | Assessment Team / Architecture | Not Started |
+| Inventory validation | Confirm server and database inventory accuracy, scope, duplicates, inactive records, and product classification. | Assessment Team / Infrastructure | In Progress — "Consolidation Servers" task is In Review (96.7% complete, Fabiano Rodrigues); "Validate Server Inventory" is To Do |
+| Access enablement | Submit and track read-only SQL access request or collect authoritative database exports. | Rodney Laurent / Infrastructure | Open — access confirmed for 19 of 58 servers (32.8%) to date |
+| Ownership mapping | Map each server/database to technical, functional, business, application, or vendor contacts. | Infrastructure / team leads | In Progress — "Identify Business Owners" task at 30% (Eric Luis, Data); Application/Functional Owner field now 99.6% populated |
+| Discovery interviews | Capture database purpose, sources, ETL, reports, consumers, execution frequency, dependencies, and operational status. | Assessment Team | In Progress — "Discover with Technical Owners for DBs" task at 30% (IT Operationals); "Database Functional Discovery" not yet started |
+| Data quality | Resolve blanks and inconsistent fields in owner, environment, criticality, recommendation, status, and scope. | Assessment Team | Open — Dependency/Sources Owner and Criticality remain the largest gaps; dashboard-vs-raw KPI discrepancy identified this cycle (see Section 14) |
+| Migration readiness | Convert validated evidence into disposition recommendations and prioritized backlog. | Assessment Team / Architecture | Not Started — "Consolidation Databases" task at 42.6% (Eric Luis, Data) is the immediate precursor |
 | Governance | Confirm access, classification, retention, lineage, and approval requirements. | Security / Governance / Business | Not Started |
 
 ## 16. Jira / Backlog Links
@@ -450,13 +476,13 @@ The epic is complete when:
 ## 22. Related Documents
 
 - Architecture diagram: TBD
-- Data dictionary: `Bradesco_SQL_Assessment_v2_shared 1.xlsx`, `6. Glossary` tab
+- Data dictionary: `BradescoSQLAssessmentv2shared 1.xlsx`, `6. Glossary` tab
 - Source-to-target mapping: TBD after target architecture is approved
-- Business glossary: `Bradesco_SQL_Assessment_v2_shared 1.xlsx`, `6. Glossary` tab
-- Assessment workbook: `Bradesco_SQL_Assessment_v2_shared 1.xlsx`
-- Owner mapping: `Bradesco_Databases_Caddiel_Campos_Technical_Owners_v1.xlsx`
-- Owner mapping: `Bradesco_Databases_Renan_Silva_Technical_Owners_v1.xlsx`
-- Meeting summary: `Detailed_Meeting_Summary_DB_Consolidation_Infra_20260724_EN.docx`
+- Business glossary: `BradescoSQLAssessmentv2shared 1.xlsx`, `6. Glossary` tab
+- Assessment workbook: `BradescoSQLAssessmentv2shared 1.xlsx`
+- Owner mapping: `BradescoDatabasesCaddielCamposTechnicalOwnersv1.xlsx`
+- Owner mapping: `BradescoDatabasesRenanSilvaTechnicalOwnersv1.xlsx`
+- Meeting summary: `DetailedMeetingSummaryDBConsolidationInfra20260724_EN.docx`
 - Security review: TBD
 - Test plan: TBD
 - Release plan: TBD
@@ -465,7 +491,11 @@ The epic is complete when:
 
 | Date | Change | Author |
 | --- | --- | --- |
-| 2026-08-04 | Populated discovery Epic from the assessment workbook, owner mapping workbooks, and infrastructure coordination meeting summary. | Codex |
+| 14-07-2026 | Initial draft |  |
+| 04-08-2026 | First draft |  |
+| 05-08-2026 | Data refresh against latest `BradescoSQLAssessment_v10.xlsx` and `Discovery.xlsx`: corrected in-scope MSSQL count (48→30) following engine-level re-validation; updated database record count (178→279), server/database metrics, and top-system inventory (Sections 5.1–5.3); refreshed ownership coverage from live workbook data (Section 5.4); identified and flagged a confirmed EOS under-reporting gap and a dashboard-vs-raw-data ownership KPI discrepancy (Section 14); updated discovery task status and workstream progress against the current task tracker (Section 15.2); confirmed no change to the six open assessment questions (Section 11.3); updated stakeholder names now confirmed in source data (Section 4). | Automatic by Franco |
+
+## Provided Files
 
 ## Recommended Confluence Labels
 
@@ -480,13 +510,3 @@ Add these labels to the page:
 - migration-planning
 
 # Epic Children
-
-| Child Type | Draft Title | Purpose | Status |
-| --- | --- | --- | --- |
-| Story | Validate SQL Server scope and duplicate inventory records | Resolve in-scope, out-of-scope, duplicate, inactive, SQL Compact, LocalDB, and non-SQL classifications. | Draft |
-| Story | Obtain read-only SQL access or exported database lists | Enable repeatable metadata collection for remaining in-scope hosts. | Draft |
-| Story | Complete database owner mapping | Assign technical, functional, application, business, or vendor owners to in-scope databases. | Draft |
-| Story | Conduct priority discovery interviews | Capture purpose, sources, dependencies, reports, consumers, schedules, criticality, and operational status. | Draft |
-| Story | Resolve workbook open questions | Close known assessment questions before final disposition recommendations. | Draft |
-| Story | Draft migration and consolidation disposition recommendations | Convert validated evidence into a prioritized recommendation backlog. | Draft |
-| Spike | Evaluate target architecture options | Assess consolidation/cloud migration options after current-state validation is complete. | Draft |
