@@ -1,33 +1,33 @@
 ---
 name: bronze-to-dbx-generator
-description: Generate or repair Databricks bronze SQL files under dbx_bronze from SQL Server bronze SQL under sqlserver_brz, non-empty dbt SQL Server bronze models under sqlserver_brz_dbt, populated landing dbt transformation models under sqlserver_landing_dbt when they are the available source, or existing bronze DBX SQL. Use when creating bronze.default tables or source-specific bronze catalogs such as bronze_jh.default and bronze_pershing.default when requested or source-specific parity requires it, reading from the correct landing catalog such as landing.default, landing_jh.default, landing_pershing.default, or landing_sei.default, replacing SQL Server syntax with DBX syntax, adding bronze table comments, validating landing column coverage, and avoiding landing-layer edits.
+description: Generate or repair Databricks bronze SQL files under dbx_brz from SQL Server bronze SQL under sqlserver_brz, non-empty dbt SQL Server bronze models under sqlserver_brz_dbt, populated landing dbt transformation models under sqlserver_lnd_dbt when they are the available source, or existing bronze DBX SQL. Use when creating bronze.default tables or source-specific bronze catalogs such as bronze_jh.default and bronze_pershing.default when requested or source-specific parity requires it, reading from the correct landing catalog such as landing.default, landing_jh.default, landing_pershing.default, or landing_sei.default, replacing SQL Server syntax with DBX syntax, adding bronze table comments, validating landing column coverage, and avoiding landing-layer edits.
 ---
 
 # Bronze To DBX Generator
 
 ## Purpose
 
-Use this skill to generate or repair `dbx_bronze/*.dbx.sql` files. Bronze SQL should preserve source model logic from `sqlserver_brz/*.ms.sql` or a populated dbt model, read from the landing layer, write to the bronze layer, and run in Databricks SQL.
+Use this skill to generate or repair `dbx_brz/*.dbx.sql` files. Bronze SQL should preserve source model logic from `sqlserver_brz/*.ms.sql` or a populated dbt model, read from the landing layer, write to the bronze layer, and run in Databricks SQL.
 
 This skill owns bronze-file structure, source-to-landing references, output bronze table naming, bronze comments, landing column validation, and bronze-only validation. Use `$sqlserver-dbx-syntax-converter` for SQL Server type, function, cast, and reserved-word conversion rules.
 
 ## Required Preflight
 
 1. Read the source bronze artifact before generating anything.
-2. Read the matching `dbx_landing/*.dbx.sql` file to confirm source table and column availability.
-3. Read any existing target `dbx_bronze/*.dbx.sql` file and preserve user edits unless replacement is explicitly requested.
+2. Read the matching `dbx_lnd/*.dbx.sql` file to confirm source table and column availability.
+3. Read any existing target `dbx_brz/*.dbx.sql` file and preserve user edits unless replacement is explicitly requested.
 4. Confirm the task is bronze-only. Do not create or modify landing files.
 5. Check current repo conventions for table naming, comments, and source references before writing.
 
-When the user says to refresh files in memory, do not rely on prior conversation context. Re-list the current files on disk with `rg --files sqlserver_brz sqlserver_brz_dbt sqlserver_landing_dbt dbx_landing dbx_bronze`, then re-read the relevant SQL Server bronze source files, dbt SQL Server files when in scope, the matching landing file or files, and the current target bronze file before comparing or editing.
+When the user says to refresh files in memory, do not rely on prior conversation context. Re-list the current files on disk with `rg --files sqlserver_brz sqlserver_brz_dbt sqlserver_lnd_dbt sqlserver_lnd_desc dbx_lnd dbx_brz`, then re-read the relevant SQL Server bronze source files, dbt SQL Server files when in scope, landing description files when they are used as metadata, the matching landing file or files, and the current target bronze file before comparing or editing.
 
 ## Workflow
 
 ```mermaid
 flowchart TD
     A["Bronze generation or repair request"] --> B["Read source SQL or existing bronze SQL"]
-    B --> C["Read matching dbx_landing source tables"]
-    B --> C1["For sqlserver_brz_dbt/brz-pers*.dbt.ms.sql, pair to dbx_bronze/bronze-pers*.dbx.sql"]
+    B --> C["Read matching dbx_lnd source tables"]
+    B --> C1["For sqlserver_brz_dbt/brz-pers*.dbt.ms.sql, pair to dbx_brz/brz-pers*.dbx.sql"]
     C1 --> C
 
     C --> D["Identify bronze outputs"]
@@ -77,7 +77,7 @@ flowchart TD
     K --> K7["No landing files touched"]
 
     K --> L{"Validation clean?"}
-    L -->|No| M["Fix dbx_bronze SQL only"]
+    L -->|No| M["Fix dbx_brz SQL only"]
     M --> K
     L -->|Yes| N["Report changed files and validation result"]
 ```
@@ -88,7 +88,7 @@ flowchart TD
 
 Use SQL Server bronze source files as bronze transformation logic. Extract each model/table block, source references, selected columns, type conversions, date logic, and final output table names from comments or local naming patterns.
 
-### `sqlserver_brz_dbt/*.dbt.ms.sql` and `sqlserver_landing_dbt/*.dbt.ms.sql`
+### `sqlserver_brz_dbt/*.dbt.ms.sql` and `sqlserver_lnd_dbt/*.dbt.ms.sql`
 
 Extract:
 
@@ -99,11 +99,11 @@ Extract:
 
 Remove dbt config, Jinja conditionals, `{{ this }}`, and logging blocks from final `.dbx.sql`.
 
-Use `sqlserver_brz_dbt/*.dbt.ms.sql` only when the file is populated. For Pershing bronze generation, map every populated `sqlserver_brz_dbt/brz-pers*.dbt.ms.sql` file one-to-one to `dbx_bronze/bronze-pers*.dbx.sql`. Use the dbt model name and `source("pershing", "...")` table mapping from the dbt file, then use the matching `dbx_landing/landing-*.dbx.sql` table definition as the deployable typed column source for `landing_pershing.default.<table>`. Pershing bronze targets must use `bronze_pershing.default.<bronze_model>` for parity with `landing_pershing.default`. This avoids carrying SQL Server packed-numeric conversion syntax into Databricks bronze when the DBX landing table already exposes typed columns.
+Use `sqlserver_brz_dbt/*.dbt.ms.sql` only when the file is populated. For Pershing bronze generation, map every populated `sqlserver_brz_dbt/brz-pers*.dbt.ms.sql` file one-to-one to `dbx_brz/brz-pers*.dbx.sql`. Use the dbt model name and `source("pershing", "...")` table mapping from the dbt file, then use the matching `dbx_lnd/lnd-*.dbx.sql` table definition as the deployable typed column source for `landing_pershing.default.<table>`. Pershing bronze targets must use `bronze_pershing.default.<bronze_model>` for parity with `landing_pershing.default`. This avoids carrying SQL Server packed-numeric conversion syntax into Databricks bronze when the DBX landing table already exposes typed columns.
 
-For populated Pershing dbt transformation logic outside `sqlserver_brz_dbt/`, use the matching `sqlserver_landing_dbt/landing-*.dbt.ms.sql` file when it contains the `landing_data` and `bronze_data` CTEs.
+For populated Pershing dbt transformation logic outside `sqlserver_brz_dbt/`, use the matching `sqlserver_lnd_dbt/lnd-*.dbt.ms.sql` file when it contains the `landing_data` and `bronze_data` CTEs.
 
-### Existing `dbx_bronze/*.dbx.sql`
+### Existing `dbx_brz/*.dbx.sql`
 
 When repairing existing bronze SQL, preserve working structure and narrow the edit to the requested behavior. Do not rewrite entire files unless the user asks or the file is structurally unusable.
 
@@ -111,7 +111,7 @@ When repairing existing bronze SQL, preserve working structure and narrow the ed
 
 Before writing bronze SQL:
 
-1. Locate the matching `dbx_landing` source table.
+1. Locate the matching `dbx_lnd` source table.
 2. Extract its `CREATE TABLE` columns.
 3. Confirm every landing input referenced by bronze logic exists.
 4. Confirm reserved identifiers are referenced consistently with backticks.
@@ -128,7 +128,7 @@ catalog                  -> bronze
 schema                   -> default
 output table             -> bronze.default.<bronze_model_name>
 source table             -> landing.default.<landing_table>
-output file              -> dbx_bronze/bronze-<source-family>.dbx.sql
+output file              -> dbx_brz/brz-<source-family>.dbx.sql
 ```
 
 When the user requests a source-specific bronze catalog, preserve that catalog in all CTAS and comment targets. Current local exception:
@@ -137,7 +137,7 @@ When the user requests a source-specific bronze catalog, preserve that catalog i
 Jack Henry combined bronze -> bronze_jh.default.<bronze_table>
 ```
 
-For the combined Jack Henry bronze file, use `dbx_landing/landing-jh.dbx.sql` as the landing source of truth and keep source reads on `landing_jh.default.<table>`. The older split `dbx_landing/landing-jh_*.dbx.sql` files may exist for reference, but the combined landing file is the parity input when generating `dbx_bronze/bronze-jh.dbx.sql`.
+For the combined Jack Henry bronze file, use `dbx_lnd/lnd-jh.dbx.sql` as the landing source of truth and keep source reads on `landing_jh.default.<table>`. The older split `dbx_lnd/lnd-jh_*.dbx.sql` files may exist for reference, but the combined landing file is the parity input when generating `dbx_brz/brz-jh.dbx.sql`.
 
 Use this landing source catalog map:
 
@@ -172,7 +172,7 @@ sqlserver_brz/brz-jh_*.ms.sql with requested Jack Henry bronze catalog
 -> landing_pershing.default.pershing_aca2_a
 
 sqlserver_brz_dbt/brz-pershing_aca2_rec_a.dbt.ms.sql
--> dbx_bronze/bronze-pershing_aca2_rec_a.dbx.sql
+-> dbx_brz/brz-pershing_aca2_rec_a.dbx.sql
 -> bronze_pershing.default.bronze_pershing_aca2_rec_a
 ```
 
@@ -247,11 +247,11 @@ Fix obvious English typos in generated descriptions when you see them. Do not "f
 
 Before finishing:
 
-- Only `dbx_bronze/*.dbx.sql` files were created or edited.
-- No `dbx_landing/` files were touched.
+- Only `dbx_brz/*.dbx.sql` files were created or edited.
+- No `dbx_lnd/` files were touched.
 - Outputs use `bronze.default` unless the user requested or current source parity requires a source-specific bronze catalog, such as `bronze_jh.default` for the combined Jack Henry bronze file or `bronze_pershing.default` for Pershing bronze dbt outputs.
 - Inputs use the matching landing catalog: `landing.default`, `landing_jh.default`, `landing_pershing.default`, or `landing_sei.default`.
-- For `dbx_bronze/bronze-jh.dbx.sql`, landing coverage was checked against the current `dbx_landing/landing-jh.dbx.sql`.
+- For `dbx_brz/brz-jh.dbx.sql`, landing coverage was checked against the current `dbx_lnd/lnd-jh.dbx.sql`.
 - No executable `CONVERT(`, `GETUTCDATE()`, `GETDATE()`, SQL Server brackets, or dbt Jinja remain.
 - No blind `CAST(` remains on source data.
 - All referenced landing columns exist.
@@ -270,10 +270,10 @@ Use this prompt to test skill behavior without edits:
 Use $bronze-to-dbx-generator to assess, but do not edit files.
 
 Source bronze SQL:
-sqlserver_landing_dbt/landing-pershing_aca2_rec_a.dbt.ms.sql
+sqlserver_lnd_dbt/lnd-pershing_aca2_rec_a.dbt.ms.sql
 
 Landing source:
-dbx_landing/landing-pershing_aca2_a.dbx.sql
+dbx_lnd/lnd-pershing_aca2_a.dbx.sql
 
 Tell me the target bronze table, source landing table, required column coverage, and validation checks.
 ```
@@ -295,17 +295,17 @@ Use this prompt when writes are intended:
 Use $bronze-to-dbx-generator to generate or repair bronze SQL for:
 
 Source:
-sqlserver_landing_dbt/landing-pershing_aca2_rec_a.dbt.ms.sql
+sqlserver_lnd_dbt/lnd-pershing_aca2_rec_a.dbt.ms.sql
 
 Landing:
-dbx_landing/landing-pershing_aca2_a.dbx.sql
+dbx_lnd/lnd-pershing_aca2_a.dbx.sql
 
-Write only under dbx_bronze. Do not touch dbx_landing.
+Write only under dbx_brz. Do not touch dbx_lnd.
 ```
 
 Expected generated output:
 
-- A repo-consistent `dbx_bronze/bronze-*.dbx.sql` file.
+- A repo-consistent `dbx_brz/brz-*.dbx.sql` file.
 - `CREATE CATALOG IF NOT EXISTS bronze_pershing`.
 - `CREATE OR REPLACE TABLE bronze_pershing.default.<table> AS`.
 - Reads from `landing_pershing.default.pershing_aca2_a`.
@@ -319,11 +319,11 @@ Expected generated output:
 Run targeted checks against the generated file:
 
 ```bash
-rg -n 'CONVERT\(|GETUTCDATE\(|GETDATE\(|\{\{|\{%|\[|\]' dbx_bronze/<generated-file>.dbx.sql
-rg -n '\bCAST\(' dbx_bronze/<generated-file>.dbx.sql
-rg -n '\b(apex|q2|ibkr|pershing|assist|cos|dmi|fis|manual|mis|mulesoft|rprt|sblc)\.default\b' dbx_bronze/<generated-file>.dbx.sql
-rg -n $'\t' dbx_bronze/<generated-file>.dbx.sql
-rg -n 'CREATE OR REPLACE TABLE|COMMENT ON TABLE' dbx_bronze/<generated-file>.dbx.sql
+rg -n 'CONVERT\(|GETUTCDATE\(|GETDATE\(|\{\{|\{%|\[|\]' dbx_brz/<generated-file>.dbx.sql
+rg -n '\bCAST\(' dbx_brz/<generated-file>.dbx.sql
+rg -n '\b(apex|q2|ibkr|pershing|assist|cos|dmi|fis|manual|mis|mulesoft|rprt|sblc)\.default\b' dbx_brz/<generated-file>.dbx.sql
+rg -n $'\t' dbx_brz/<generated-file>.dbx.sql
+rg -n 'CREATE OR REPLACE TABLE|COMMENT ON TABLE' dbx_brz/<generated-file>.dbx.sql
 ```
 
 The first, third, and fourth commands should return no matches. The `CAST` command should return no source-data casts; controlled constant casts may be acceptable only when they match local style and cannot fail.

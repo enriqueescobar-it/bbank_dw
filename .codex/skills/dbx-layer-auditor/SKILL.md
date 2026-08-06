@@ -1,6 +1,6 @@
 ---
 name: dbx-layer-auditor
-description: Audit Databricks SQL files under dbx_landing and dbx_bronze for SQL Server conversion mistakes, catalog/schema drift, landing-to-bronze mismatches, missing table comments, unsafe casts, reserved-word quoting issues, tab characters, dbt/Jinja leftovers, source-specific landing catalog issues such as landing_jh, landing_pershing, and landing_sei, plus Pershing DataProd dbx_landing to sqlserver_landing_dbt pair consistency. Use when validating generated DBX SQL, comparing landing and bronze layers, producing an issue report, or planning safe repairs without generating new landing or bronze files.
+description: Audit Databricks SQL files under dbx_lnd and dbx_brz for SQL Server conversion mistakes, catalog/schema drift, landing-to-bronze mismatches, missing table comments, unsafe casts, reserved-word quoting issues, tab characters, dbt/Jinja leftovers, source-specific landing catalog issues such as landing_jh, landing_pershing, and landing_sei, plus Pershing DataProd dbx_lnd to sqlserver_lnd_dbt pair consistency. Use when validating generated DBX SQL, comparing landing and bronze layers, producing an issue report, or planning safe repairs without generating new landing or bronze files.
 ---
 
 # DBX Layer Auditor
@@ -13,7 +13,7 @@ This skill audits the work produced by `$landing-to-dbx-generator`, `$bronze-to-
 
 ## Work Units
 
-1. Gather the requested scope: one file, selected files, one layer, or both `dbx_landing` and `dbx_bronze`.
+1. Gather the requested scope: one file, selected files, one layer, or both `dbx_lnd` and `dbx_brz`.
 2. Read the current files from disk. Treat the current repo state as the source of truth.
 3. Classify each file by layer, source family, target tables, source tables, comments, inserts, and validation queries.
 4. Run syntax-pattern checks for SQL Server leftovers and Databricks deployment hazards.
@@ -28,10 +28,10 @@ flowchart TD
     A["Validation request"] --> B["Resolve audit scope"]
     B --> B1["Single SQL file"]
     B --> B2["Selected SQL files"]
-    B --> B3["dbx_landing layer"]
-    B --> B4["dbx_bronze layer"]
+    B --> B3["dbx_lnd layer"]
+    B --> B4["dbx_brz layer"]
     B --> B5["Landing plus bronze cross-check"]
-    B --> B6["Pershing DataProd sqlserver_landing_dbt plus DBX landing pairs"]
+    B --> B6["Pershing DataProd sqlserver_lnd_dbt plus DBX landing pairs"]
     B --> B7["Known Pershing isca_rec_i typo check"]
     B --> B8["Pershing sqlserver_brz_dbt plus DBX bronze pairs"]
 
@@ -63,7 +63,7 @@ flowchart TD
     P --> P3["YEARMONTH derives from LOADED_AT"]
     P --> P4["No Databricks-only syntax in dbt model"]
     B8 --> R["Cross-check Pershing bronze dbt to DBX bronze model"]
-    R --> R1["Every brz-pers*.dbt.ms.sql has bronze-pers*.dbx.sql"]
+    R --> R1["Every brz-pers*.dbt.ms.sql has brz-pers*.dbx.sql"]
     R --> R2["DBX bronze reads landing_pershing.default"]
     R --> R3["DBX bronze writes bronze_pershing.default"]
     R --> R4["DBX bronze has COMMENT ON TABLE"]
@@ -100,19 +100,19 @@ Use this plan for every validation pass:
 3. Read files in parallel when possible.
 4. Extract table definitions and references using SQL-aware patterns where practical.
 5. Identify layer expectations:
-   - Landing files live under `dbx_landing/`.
-   - Bronze files live under `dbx_bronze/`.
+   - Landing files live under `dbx_lnd/`.
+   - Bronze files live under `dbx_brz/`.
    - Landing targets use `landing.default` or a source-specific landing catalog.
    - Bronze targets use `bronze.default` unless a source-specific bronze catalog is intentional, such as `bronze_jh.default`, `bronze_pershing.default`, or `bronze_sei.default`.
    - Bronze sources read from the matching landing catalog.
 6. Compare actual SQL against those expectations.
 7. Report only actionable findings. Do not invent missing source columns or assume exceptions.
 
-When the user says to refresh files in memory, treat the current filesystem as the source of truth. Re-list `sqlserver_brz/`, `sqlserver_landing_dbt/`, `sqlserver_brz_dbt/`, `dbx_landing/`, and `dbx_bronze/`, then re-read the files in scope before auditing or repairing, even if similar files were read earlier in the conversation.
+When the user says to refresh files in memory, treat the current filesystem as the source of truth. Re-list `sqlserver_brz/`, `sqlserver_brz_dbt/`, `sqlserver_lnd_dbt/`, `sqlserver_lnd_desc/`, `dbx_lnd/`, and `dbx_brz/`, then re-read the files in scope before auditing or repairing, even if similar files were read earlier in the conversation.
 
-When validating regenerated Pershing DataProd landing dbt models, pair `dbx_landing/landing-pershingdataprod_*.dbx.sql` with `sqlserver_landing_dbt/landing-pershingdataprod_*.dbt.ms.sql`. The dbt model should use `{{ source("pershing", "PERSHINGDATAPROD_*") }}`, include all DBX table columns in the same order, derive `YEARMONTH` from `LOADED_AT` with SQL Server `CONVERT`, replace output `LOADED_AT` in `bronze_data` with `GETUTCDATE() AS LOADED_AT`, and contain no Databricks DDL, table comments, seed SQL, backticks, `TRY_CAST`, `timestampadd`, or `date_add`.
+When validating regenerated Pershing DataProd landing dbt models, pair `dbx_lnd/lnd-pershingdataprod_*.dbx.sql` with `sqlserver_lnd_dbt/lnd-pershingdataprod_*.dbt.ms.sql`. The dbt model should use `{{ source("pershing", "PERSHINGDATAPROD_*") }}`, include all DBX table columns in the same order, derive `YEARMONTH` from `LOADED_AT` with SQL Server `CONVERT`, replace output `LOADED_AT` in `bronze_data` with `GETUTCDATE() AS LOADED_AT`, and contain no Databricks DDL, table comments, seed SQL, backticks, `TRY_CAST`, `timestampadd`, or `date_add`.
 
-When validating regenerated Pershing bronze files, pair every populated `sqlserver_brz_dbt/brz-pers*.dbt.ms.sql` file with `dbx_bronze/bronze-pers*.dbx.sql`. The DBX bronze file should read from `landing_pershing.default.<source_table>`, write to `bronze_pershing.default.<bronze_model>`, include a `COMMENT ON TABLE`, contain no dbt Jinja, contain no SQL Server-only functions such as `CONVERT(`, `GETUTCDATE()`, or `GETDATE()`, and contain no tabs.
+When validating regenerated Pershing bronze files, pair every populated `sqlserver_brz_dbt/brz-pers*.dbt.ms.sql` file with `dbx_brz/brz-pers*.dbx.sql`. The DBX bronze file should read from `landing_pershing.default.<source_table>`, write to `bronze_pershing.default.<bronze_model>`, include a `COMMENT ON TABLE`, contain no dbt Jinja, contain no SQL Server-only functions such as `CONVERT(`, `GETUTCDATE()`, or `GETDATE()`, and contain no tabs.
 
 When auditing Pershing ISCA records, flag any active `isca_rec_i` file, table, or provenance reference as stale. The corrected artifact is `isca_rec_j`, sourced from `PERSHING_ISCA_J`, and should resolve to `landing_pershing.default.pershing_isca_j`.
 
@@ -139,7 +139,7 @@ Use context before deciding whether `CAST(` is a defect. In this repository, cas
 
 ## Landing File Rules
 
-For `dbx_landing/*.dbx.sql`, validate:
+For `dbx_lnd/*.dbx.sql`, validate:
 
 - The file creates or uses the expected landing catalog.
 - Tables are created in the matching landing schema, such as `landing.default`, `landing_jh.default`, `landing_pershing.default`, or `landing_sei.default`.
@@ -152,7 +152,7 @@ For `dbx_landing/*.dbx.sql`, validate:
 
 ## Bronze File Rules
 
-For `dbx_bronze/*.dbx.sql`, validate:
+For `dbx_brz/*.dbx.sql`, validate:
 
 - The file creates or uses the expected bronze catalog: normally `bronze`, or a requested source-specific catalog such as `bronze_jh` for combined Jack Henry bronze.
 - Bronze outputs are `bronze.default.<table>` unless the file is intentionally source-specific, such as `bronze_jh.default.<table>` for Jack Henry, `bronze_pershing.default.<table>` for Pershing, or `bronze_sei.default.<table>` for SEI.
@@ -168,14 +168,14 @@ For `dbx_bronze/*.dbx.sql`, validate:
 
 When both layers are in scope:
 
-1. Map each bronze `FROM <landing_catalog>.default.<table>` reference to a `dbx_landing` table.
+1. Map each bronze `FROM <landing_catalog>.default.<table>` reference to a `dbx_lnd` table.
 2. Extract landing `CREATE TABLE` columns.
 3. Extract bronze references to landing columns.
 4. Report missing columns with exact bronze file references.
 5. Report orphan landing tables only when the user asks for coverage analysis.
 6. Preserve source-specific landing catalogs from current source-of-truth files.
 
-For `dbx_bronze/bronze-jh.dbx.sql`, check landing coverage against the consolidated `dbx_landing/landing-jh.dbx.sql` and expect source reads from `landing_jh.default.*`. Do not require the split `dbx_landing/landing-jh_*.dbx.sql` files when the combined landing file is present and current.
+For `dbx_brz/brz-jh.dbx.sql`, check landing coverage against the consolidated `dbx_lnd/lnd-jh.dbx.sql` and expect source reads from `landing_jh.default.*`. Do not require the split `dbx_lnd/lnd-jh_*.dbx.sql` files when the combined landing file is present and current.
 
 Use this expected catalog map:
 
@@ -224,7 +224,7 @@ Only repair files when explicitly asked. When repairing:
 ### Single-File Audit Test
 
 ```text
-Use $dbx-layer-auditor to audit dbx_bronze/bronze-apex.dbx.sql.
+Use $dbx-layer-auditor to audit dbx_brz/brz-apex.dbx.sql.
 Do not edit files.
 Report deployment blockers, unsafe casts, missing comments, and source table issues.
 ```
@@ -240,8 +240,8 @@ Expected behavior:
 
 ```text
 Use $dbx-layer-auditor to compare:
-dbx_landing/landing-apex.dbx.sql
-dbx_bronze/bronze-apex.dbx.sql
+dbx_lnd/lnd-apex.dbx.sql
+dbx_brz/brz-apex.dbx.sql
 
 Do not edit files. Tell me whether bronze references match landing tables and columns.
 ```
@@ -257,7 +257,7 @@ Expected behavior:
 ### Full Folder Audit Test
 
 ```text
-Use $dbx-layer-auditor to audit all *.dbx.sql files under dbx_landing and dbx_bronze.
+Use $dbx-layer-auditor to audit all *.dbx.sql files under dbx_lnd and dbx_brz.
 Do not edit files.
 Group findings by P0/P1/P2/P3 and include a short remediation plan.
 ```
@@ -273,14 +273,14 @@ Expected behavior:
 ### Repair Test
 
 ```text
-Use $dbx-layer-auditor to audit and repair only unsafe CAST usage in dbx_bronze/bronze-assist.dbx.sql.
+Use $dbx-layer-auditor to audit and repair only unsafe CAST usage in dbx_brz/brz-assist.dbx.sql.
 Do not change landing files.
 ```
 
 Expected behavior:
 
 - Audits first.
-- Edits only `dbx_bronze/bronze-assist.dbx.sql`.
+- Edits only `dbx_brz/brz-assist.dbx.sql`.
 - Replaces unsafe source-data `CAST` with `TRY_CAST`.
 - Leaves controlled literal casts alone when safe.
 - Re-runs checks for remaining unsafe casts.
@@ -290,11 +290,11 @@ Expected behavior:
 Use these commands as targeted checks during audits:
 
 ```bash
-rg -n 'CONVERT\(|GETUTCDATE\(|GETDATE\(|ISNULL\(|\{\{|\{%|\[|\]' dbx_landing dbx_bronze
-rg -n '\bCAST\(' dbx_bronze
-rg -n '\b(apex|q2|ibkr|pershing|assist|cos|dmi|fis|manual|mis|mulesoft|rprt|sblc)\.default\b' dbx_landing dbx_bronze
-rg -n $'\t' dbx_landing dbx_bronze
-rg -n 'CREATE OR REPLACE TABLE|CREATE TABLE IF NOT EXISTS|COMMENT ON TABLE' dbx_landing dbx_bronze
+rg -n 'CONVERT\(|GETUTCDATE\(|GETDATE\(|ISNULL\(|\{\{|\{%|\[|\]' dbx_lnd dbx_brz
+rg -n '\bCAST\(' dbx_brz
+rg -n '\b(apex|q2|ibkr|pershing|assist|cos|dmi|fis|manual|mis|mulesoft|rprt|sblc)\.default\b' dbx_lnd dbx_brz
+rg -n $'\t' dbx_lnd dbx_brz
+rg -n 'CREATE OR REPLACE TABLE|CREATE TABLE IF NOT EXISTS|COMMENT ON TABLE' dbx_lnd dbx_brz
 ```
 
 Interpret command output in context; grep-style matches are candidates, not automatic defects.
@@ -304,7 +304,7 @@ Interpret command output in context; grep-style matches are candidates, not auto
 Lead with findings:
 
 ```text
-P1 dbx_bronze/<file>.dbx.sql:<line>
+P1 dbx_brz/<file>.dbx.sql:<line>
 Problem: ...
 Impact: ...
 Fix: ...

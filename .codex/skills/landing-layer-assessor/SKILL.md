@@ -1,9 +1,9 @@
 ---
-name: lnd-landing-layer-assessor
-description: Assess Databricks landing-layer SQL files against the repository LND landing-layer framework and core prompt. Use when the user asks to analyze, audit, compare, or report on dbx_landing SQL from a LANDING-only perspective using LND_Landing_Layer_Standardization_Framework_v1.2_Landing_Only.md and LND_Landing_Layer.md, including requests to classify framework controls as compliant, partially compliant, non-compliant, not evidenced, or not applicable.
+name: landing-layer-assessor
+description: Assess Databricks landing-layer SQL files against the repository LND landing-layer framework and core prompt. Use when the user asks to analyze, audit, compare, or report on dbx_lnd SQL from a LANDING-only perspective using LND_Landing_Layer_Standardization_Framework_v1.2_Landing_Only.md and LND_Landing_Layer.md, including requests to classify framework controls as compliant, partially compliant, non-compliant, not evidenced, or not applicable.
 ---
 
-# LND Landing Layer Assessor
+# Landing Layer Assessor
 
 ## Scope Rule
 
@@ -48,7 +48,7 @@ If all are present, say `YES_SIR` and proceed. If anything is missing, list the 
 Run the helper from the requested folder or pass absolute SQL paths:
 
 ```bash
-python3 /path/to/lnd-landing-layer-assessor/scripts/lnd_landing_sql_evidence.py landing-apex.dbx.sql landing-assist.dbx.sql
+python3 /path/to/landing-layer-assessor/scripts/lnd_landing_sql_evidence.py lnd-apex.dbx.sql lnd-assist.dbx.sql
 ```
 
 The helper reports:
@@ -118,7 +118,7 @@ Keep severity practical:
 Use exact file references such as:
 
 ```text
-dbx_landing/landing-apex.dbx.sql:80
+dbx_lnd/lnd-apex.dbx.sql:80
 ```
 
 In final answers, use clickable absolute paths when possible.

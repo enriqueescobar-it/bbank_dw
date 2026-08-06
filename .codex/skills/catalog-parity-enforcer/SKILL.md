@@ -40,8 +40,8 @@ Do not treat old source-system catalogs such as `pershing.default`, `jh.default`
 
 ## Audit Rules
 
-1. Refresh the current files with `rg --files` before auditing.
-2. Inspect `dbx_bronze/*.dbx.sql` for `FROM <landing_catalog>.default.<table>` references.
+1. Refresh the current files with `rg --files sqlserver_brz sqlserver_brz_dbt sqlserver_lnd_dbt sqlserver_lnd_desc dbx_lnd dbx_brz` before auditing.
+2. Inspect `dbx_brz/*.dbx.sql` for `FROM <landing_catalog>.default.<table>` references.
 3. Derive the expected bronze catalog from the landing catalog map.
 4. Verify these statements use the expected bronze catalog:
    - `CREATE CATALOG IF NOT EXISTS <bronze_catalog>;`
@@ -63,9 +63,9 @@ Do not treat old source-system catalogs such as `pershing.default`, `jh.default`
 For a source-specific family, validate with checks equivalent to:
 
 ```bash
-rg -n 'CREATE CATALOG IF NOT EXISTS bronze;|USE CATALOG bronze;|bronze\.default\.' dbx_bronze/bronze-pers*.dbx.sql
-rg -n 'bronze_pershing\.default|landing_pershing\.default' dbx_bronze/bronze-pers*.dbx.sql
-rg -n $'\t' dbx_bronze/bronze-pers*.dbx.sql
+rg -n 'CREATE CATALOG IF NOT EXISTS bronze;|USE CATALOG bronze;|bronze\.default\.' dbx_brz/brz-pers*.dbx.sql
+rg -n 'bronze_pershing\.default|landing_pershing\.default' dbx_brz/brz-pers*.dbx.sql
+rg -n $'\t' dbx_brz/brz-pers*.dbx.sql
 ```
 
 The first command should return no matches for Pershing-specific bronze files. The second command should confirm both source and target catalog families are present.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bronze Layer Assessor"
+  short_description: "Assess Bronze SQL against BRZ controls"
+  default_prompt: "Use $bronze-layer-assessor to assess dbx_brz SQL files against the BRZ Bronze-layer framework."

@@ -1,9 +1,9 @@
 ---
-name: brz-bronze-layer-assessor
-description: Assess Databricks Bronze SQL files against the repository BRZ Bronze-layer framework and core prompt. Use when the user asks to analyze, audit, compare, create a control table, or report on dbx_bronze SQL from a BRONZE-only perspective using BRZ_Bronze_Layer_Standardization_Framework_v1.0_Bronze_Only.md and BRZ_Bronze_Layer.md, including requests to classify framework controls as compliant, partially compliant, non-compliant, not evidenced, or not applicable.
+name: bronze-layer-assessor
+description: Assess Databricks Bronze SQL files against the repository BRZ Bronze-layer framework and core prompt. Use when the user asks to analyze, audit, compare, create a control table, or report on dbx_brz SQL from a BRONZE-only perspective using BRZ_Bronze_Layer_Standardization_Framework_v1.0_Bronze_Only.md and BRZ_Bronze_Layer.md, including requests to classify framework controls as compliant, partially compliant, non-compliant, not evidenced, or not applicable.
 ---
 
-# BRZ Bronze Layer Assessor
+# Bronze Layer Assessor
 
 ## Scope Rule
 
@@ -48,7 +48,7 @@ If all are present, say `YES_SIR` and proceed. If anything is missing, list the 
 Run the helper from the requested folder or pass absolute SQL paths:
 
 ```bash
-python3 /path/to/brz-bronze-layer-assessor/scripts/brz_bronze_sql_evidence.py bronze-apex.dbx.sql bronze-assist.dbx.sql
+python3 /path/to/bronze-layer-assessor/scripts/brz_bronze_sql_evidence.py brz-apex.dbx.sql brz-assist.dbx.sql
 ```
 
 The helper reports:
@@ -109,7 +109,7 @@ Controlled casts over literals, static seed values, or `CAST(NULL AS type)` are 
 When the user asks to create or refresh the BRZ assessment document, write the report to:
 
 ```text
-dbx_bronze/BRZ_Bronze_Layer_Assessment.md
+dbx_brz/BRZ_Bronze_Layer_Assessment.md
 ```
 
 Match the repository LND assessment style while using the BRZ framework and BRZ-only terminology.
@@ -149,7 +149,7 @@ Keep severity practical:
 Use exact file references such as:
 
 ```text
-dbx_bronze/bronze-dmi.dbx.sql:262
+dbx_brz/brz-dmi.dbx.sql:262
 ```
 
 In final answers, use clickable absolute paths when possible.
