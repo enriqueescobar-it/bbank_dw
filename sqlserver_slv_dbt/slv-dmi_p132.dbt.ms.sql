@@ -1,0 +1,51 @@
+-- NAME: SILVER_DMI_P132
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: SILVER
+-- FREQUENCY: DAILY
+-- LOAD TYPE: APPEND
+-- TYPE: REPLICATION
+-- DATE: MARCH 20, 2026
+
+{{
+   config(
+          materialized='incremental',
+          incremental_strategy='append',
+          tags=["dmi_standard"]
+        )
+}}
+
+
+
+WITH cte_silver_dmi_p110 AS (
+	SELECT
+	 	ReportID
+		,CONVERT(DATE,ReportDate) AS ReportDate
+		,LoanNumber
+		,InvestorCode
+		,CAT
+		,TRN
+		,CONVERT(DATE,DUE_DATE) as DUE_DATE
+		,TP
+		,CLOSING
+		,AM_CD
+		,AM_CD_MO
+		,CONVERT(DECIMAL(17,2),REPLACE(REPLACE(REPLACE(ORIGINAL_DISC, ',', ''), ')', ''), '(', '-')) AS ORIGINAL_DISC
+		,CONVERT(DECIMAL(17,2),REPLACE(REPLACE(REPLACE(DISC_BALANCE, ',', ''), ')', ''), '(', '-'))	 AS DISC_BALANCE
+		,CONVERT(DECIMAL(17,2),REPLACE(REPLACE(REPLACE(DISC_DECREASE, ',', ''), ')', ''), '(', '-')) AS DISC_DECREASE
+		,CONVERT(DECIMAL(17,2),REPLACE(REPLACE(REPLACE(DISC_INCREASE, ',', ''), ')', ''), '(', '-')) AS DISC_INCREASE
+		,DISC_PTS_FLG
+		,PTS_PD_BORR
+		,PTS_PD_BORR_YR
+		,PPBB_FLG
+		,CONVERT(DECIMAL(17,2),REPLACE(REPLACE(REPLACE(DEDUCTIBLE_MI, ',', ''), ')', ''), '(', '-')) AS DEDUCTIBLE_MI
+		,DEDUCTIBLE_MI_YR
+		,FILE_NAME_DMI
+		,CONVERT(DATE,SUBSTRING(FILE_NAME_DMI , 15, 10)) AS DATE_OF_DATA
+	FROM {{ ref('bronze_dmi_p132')}}
+		{% if is_incremental() %}
+	    	WHERE CONVERT(DATE,SUBSTRING(FILE_NAME_DMI , 15, 10)) NOT IN (SELECT DISTINCT CONVERT(DATE,DATE_OF_DATA) FROM {{ this }})
+	    {% endif %}
+)
+
+SELECT *, CONVERT(VARCHAR(6), DATE_OF_DATA, 112) AS YEARMONTH, GETUTCDATE() AS LOADED_AT from cte_silver_dmi_p110
