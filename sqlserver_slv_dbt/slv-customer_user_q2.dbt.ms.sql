@@ -1,0 +1,36 @@
+-- NAME: SILVER_CUSTOMER_USER_Q2
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: SILVER
+-- FREQUENCY: DAILY
+-- LOAD TYPE: FULL LOAD
+-- TYPE: REPLICATION
+-- DATE: June 28, 2024
+
+{{
+   config(
+          tags=["q2_standard"]
+        )
+}}
+
+WITH bronze_data AS (
+    SELECT
+	   	USER_ID
+ 		,CUSTOMER_ID
+ 		,USER_ROLE_ID
+ 		,GROUP_ID
+ 		,ACTIVE_INACTIVE
+ 		,CREATED_DATE
+ 		,DELETED_DATE
+ 		,GROUP_NAME
+ 		,GROUP_DELETED_DATES
+ 		,ZONE_ID
+ 		,ZONE_DESCRIPTION
+ 		,AUTO_GENERATED
+ 		,YEARMONTH
+		,GETUTCDATE() LOADED_AT
+    FROM {{ ref('bronze_q2_user') }}
+	WHERE CONVERT(date, LOADED_AT) = CONVERT(date, GETUTCDATE())
+)
+
+SELECT * FROM bronze_data
