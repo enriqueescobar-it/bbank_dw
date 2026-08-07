@@ -1,0 +1,34 @@
+-- NAME: SILVER_NICE_REFERENCE_BUSINESS_UNIT
+-- CATEGORY: MODEL
+-- MATURITY LEVEL: 0
+-- LAYER: SILVER
+-- FREQUENCY: MONTHLY
+-- LOAD TYPE: FULL LOAD
+-- TYPE: SOURCE
+-- DATE: December 23, 2025
+
+{{
+   config(
+          tags=["Monthly"]
+        )
+}}
+
+WITH cte_data AS (
+  SELECT
+      BUSINESS_UNIT_CD,
+      TENANT_CD,
+      BUSINESS_UNIT_NAME,
+      SOURCE_SYSTEM_CD,
+      SHORT_NAME,
+      [DEFINITION],
+      CUSTOM_BOOLEAN_01,
+      CUSTOM_LARGE_STRING_01,
+      CUSTOM_MEDIUM_STRING_01,
+      CUSTOM_SMALL_STRING_01,
+      CUSTOM_SMALL_STRING_02,
+      CUSTOM_SMALL_STRING_03
+  FROM
+    {{ ref('bronze_nice_reference_business_unit') }}
+)
+
+select *, GETUTCDATE() as LOADED_AT FROM cte_data
